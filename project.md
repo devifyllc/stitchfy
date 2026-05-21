@@ -1,95 +1,97 @@
 # Project Information
 
+> **Instructions**: Replace all placeholder text with your specific project details. This template is designed to guide you through defining your website requirements.
+
 ## Project Name
-SomeCompany LLC
+[Your Company or Project Name]
 
 ## Website Type
-Technology Consulting Company Website
+[e.g., E-commerce Store, Portfolio, SaaS Product, Consulting Firm, Blog, Non-profit, etc.]
 
 ## Primary Goal
-Generate qualified leads and discovery calls from U.S. small and medium-sized businesses.
+[What is the main objective? e.g., Generate leads, Sell products, Build community, Showcase work, etc.]
 
 ## Secondary Goals
-- Establish credibility and trust
-- Showcase technical expertise in a business-friendly way
-- Improve online visibility
-- Create a scalable digital foundation for future growth
+- [Goal 1 - e.g., Establish credibility and trust]
+- [Goal 2 - e.g., Improve online visibility]
+- [Goal 3 - e.g., Build email list]
+- [Goal 4 - e.g., Create scalable foundation]
 
 ---
 
 # Business Overview
 
 ## Company Description
-SomeCompany LLC helps small and medium-sized businesses modernize their digital presence and backend systems through professional websites, cloud solutions, backend APIs, modernization, and AI-enabled solutions.
+[Describe what your business does, who you serve, and how you help them. 2-3 sentences.]
 
-## Core Services
-- Business Website Development
-- Cloud & Backend Solutions
-- Legacy Modernization
-- AI-Powered Business Automation
-- Technical Advisory & Training
+## Core Services/Products
+- [Service/Product 1]
+- [Service/Product 2]
+- [Service/Product 3]
+- [Service/Product 4]
+- [Service/Product 5]
 
 ## Unique Value Proposition
-Work directly with a Senior Software Architect with enterprise experience helping businesses modernize technology without unnecessary complexity.
+[What makes you different? Why should customers choose you over competitors? 1-2 sentences.]
 
 ---
 
 # Target Audience
 
 ## Primary Audience
-U.S.-based SMB owners and decision makers.
+[Who is your ideal customer? Be specific about demographics, location, role, etc.]
 
 ## Audience Characteristics
-- Non-technical
-- Need practical business solutions
-- Limited internal technical teams
-- Want trustworthy partners
-- Interested in automation and digital growth
+- [Characteristic 1 - e.g., Non-technical decision makers]
+- [Characteristic 2 - e.g., Budget-conscious]
+- [Characteristic 3 - e.g., Time-sensitive needs]
+- [Characteristic 4 - e.g., Value quality over price]
+- [Characteristic 5 - e.g., Prefer self-service]
 
 ## Audience Pain Points
-- Outdated website
-- Low online credibility
-- Slow or confusing websites
-- Manual business processes
-- Lack of analytics or automation
-- Difficulty understanding technology options
+- [Pain point 1 - What problem do they face?]
+- [Pain point 2]
+- [Pain point 3]
+- [Pain point 4]
+- [Pain point 5]
 
 ---
 
 # Brand Guidelines
 
 ## Brand Personality
-- Professional
-- Modern
-- Trustworthy
-- Practical
-- Premium but approachable
+- [Trait 1 - e.g., Professional, Playful, Bold, Minimalist, etc.]
+- [Trait 2]
+- [Trait 3]
+- [Trait 4]
+- [Trait 5]
 
 ## Tone of Voice
-Clear, concise, business-focused, non-technical.
+[Describe how you communicate: e.g., Friendly and conversational, Formal and authoritative, Technical but approachable, etc.]
 
 ## Color Palette
-- Deep Navy: #0A192F
-- Bright Blue: #007BFF
-- Soft Light Background: #F8FAFC
+- Primary Color: [Color name and hex code, e.g., Deep Navy: #0A192F]
+- Secondary Color: [Color name and hex code, e.g., Bright Blue: #007BFF]
+- Background Color: [Color name and hex code, e.g., Soft Light: #F8FAFC]
+- Accent Color (optional): [Color name and hex code]
 
 ## Typography Style
-Modern sans-serif, high readability, minimalistic.
+[Describe preferred fonts: e.g., Modern sans-serif, Classic serif, Monospace for tech feel, etc.]
 
 ---
 
 # Website Structure
 
 ## Required Pages
-- Home
-- Services
-- About
-- Contact
+- [Page 1 - e.g., Home]
+- [Page 2 - e.g., Services/Products]
+- [Page 3 - e.g., About]
+- [Page 4 - e.g., Contact]
 
 ## Optional Pages
-- Case Studies
-- Blog
-- FAQ
+- [Optional page 1 - e.g., Case Studies, Portfolio, Testimonials]
+- [Optional page 2 - e.g., Blog, Resources]
+- [Optional page 3 - e.g., FAQ, Pricing]
 
 ---
 
@@ -97,65 +99,68 @@ Modern sans-serif, high readability, minimalistic.
 
 ## Hero Section
 ### Goal
-Quickly communicate value proposition.
+[What should the hero accomplish? e.g., Quickly communicate value proposition, Capture attention, Drive immediate action]
 
 ### Requirements
-- Strong headline
-- Supporting subheadline
-- Primary CTA button
-- Modern professional appearance
+- [Requirement 1 - e.g., Strong headline]
+- [Requirement 2 - e.g., Supporting subheadline]
+- [Requirement 3 - e.g., Primary CTA button]
+- [Requirement 4 - e.g., Hero image or video]
 
-### Example CTA
-"Book a Discovery Call"
+### Primary CTA
+[Your main call-to-action text, e.g., "Get Started", "Book a Call", "Shop Now", "Learn More"]
 
 ---
 
-## Services Section
+## Key Features/Services Section
 ### Goal
-Explain core services clearly without technical jargon.
+[What should this section accomplish? e.g., Explain offerings, Showcase benefits, Build interest]
 
 ### Requirements
-- Service cards
-- Short business-oriented descriptions
-- Clear outcomes and benefits
+- [Requirement 1 - e.g., Feature/service cards]
+- [Requirement 2 - e.g., Clear descriptions]
+- [Requirement 3 - e.g., Visual icons or images]
+- [Requirement 4 - e.g., Benefits-focused copy]
 
 ---
 
-## Trust Section
+## Trust/Credibility Section
 ### Goal
-Increase credibility.
+[What builds trust? e.g., Showcase credentials, Display social proof, Highlight experience]
 
 ### Requirements
-- Founder experience
-- Enterprise background
-- Professional presentation
-- Optional client/testimonial placeholders
+- [Requirement 1 - e.g., Testimonials or reviews]
+- [Requirement 2 - e.g., Client logos or case studies]
+- [Requirement 3 - e.g., Certifications or awards]
+- [Requirement 4 - e.g., Team credentials or stats]
 
 ---
 
 ## Final CTA Section
 ### Goal
-Encourage contact form submission.
+[What action do you want visitors to take? e.g., Submit contact form, Sign up, Make purchase]
 
 ### Requirements
-- Simple contact CTA
-- Minimal friction
-- Mobile friendly
+- [Requirement 1 - e.g., Clear CTA message]
+- [Requirement 2 - e.g., Minimal friction]
+- [Requirement 3 - e.g., Mobile friendly]
+- [Requirement 4 - e.g., Value reinforcement]
 
 ---
 
 # SEO Requirements
 
 ## Primary SEO Goals
-- Rank for SMB technology consulting searches
-- Improve local and national discoverability
+- [SEO Goal 1 - e.g., Rank for industry-specific searches]
+- [SEO Goal 2 - e.g., Improve local discoverability]
+- [SEO Goal 3 - e.g., Increase organic traffic]
 
 ## Target Keywords
-- small business website development
-- cloud consulting for SMBs
-- backend API development
-- business modernization services
-- AI automation for small business
+- [Keyword 1 - your primary keyword]
+- [Keyword 2 - secondary keyword]
+- [Keyword 3 - long-tail keyword]
+- [Keyword 4 - location-based keyword if relevant]
+- [Keyword 5 - competitor/alternative keyword]
 
 ## SEO Requirements
 - Semantic HTML structure
@@ -180,53 +185,53 @@ Encourage contact form submission.
 # Technical Preferences
 
 ## Preferred Stack
-- Static website
-- Tailwind CSS
-- Lightweight JavaScript
-- Fast-loading assets
+- [Technology 1 - e.g., Static website, React, WordPress, etc.]
+- [Technology 2 - e.g., Tailwind CSS, Bootstrap, custom CSS]
+- [Technology 3 - e.g., JavaScript framework or vanilla JS]
+- [Technology 4 - e.g., Build tools, CMS, etc.]
 
 ## Hosting Preferences
-AWS S3 + CloudFront
+[Where will this be hosted? e.g., AWS, Netlify, Vercel, Shared hosting, etc.]
 
 ## Analytics
-Google Analytics or equivalent.
+[What analytics tools? e.g., Google Analytics, Plausible, Mixpanel, etc.]
 
 ---
 
 # Design Preferences
 
 ## Visual Style
-Minimalistic corporate design with subtle modern tech elements.
+[Describe your preferred aesthetic: e.g., Minimalist, Bold and colorful, Corporate, Playful, Elegant, etc.]
 
 ## Avoid
-- Cluttered layouts
-- Overly flashy animations
-- Excessive text blocks
-- Generic stock-photo appearance
+- [What to avoid 1 - e.g., Cluttered layouts]
+- [What to avoid 2 - e.g., Overly flashy animations]
+- [What to avoid 3 - e.g., Generic stock photos]
+- [What to avoid 4 - e.g., Too much text]
 
 ---
 
 # AI Generation Instructions
 
 ## Stitch Prompt Style
-Generate clean, modern, responsive layouts focused on conversion and trust-building.
+[How should AI generate your site? e.g., Clean and modern, Bold and creative, Minimal and elegant, etc.]
 
 ## AI Reviewer Instructions
 Review generated layouts for:
-- SEO quality
-- Conversion optimization
-- Visual hierarchy
-- Accessibility
-- Mobile responsiveness
-- Business clarity
+- [Review criteria 1 - e.g., SEO quality]
+- [Review criteria 2 - e.g., Conversion optimization]
+- [Review criteria 3 - e.g., Visual hierarchy]
+- [Review criteria 4 - e.g., Accessibility]
+- [Review criteria 5 - e.g., Mobile responsiveness]
+- [Review criteria 6 - e.g., Brand alignment]
 
 ---
 
 # Success Criteria
 
 ## The website should:
-- Look trustworthy within first 5 seconds
-- Clearly explain services
-- Encourage discovery calls
-- Perform well on mobile devices
-- Be easy to maintain and extend
+- [Success criterion 1 - e.g., Make strong first impression]
+- [Success criterion 2 - e.g., Clearly communicate value]
+- [Success criterion 3 - e.g., Drive desired action]
+- [Success criterion 4 - e.g., Perform well on all devices]
+- [Success criterion 5 - e.g., Be easy to maintain]

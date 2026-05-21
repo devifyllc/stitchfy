@@ -4,7 +4,15 @@
 
 ## Overview
 
-**Stitchfy** enables users to describe websites in plain Markdown, then runs a guided AI pipeline that transforms those specifications into optimized prompts for Google Stitch. The framework orchestrates multiple specialized AI agents to review outputs through marketing, UX, SEO, accessibility, and implementation lenses—ensuring high-quality, production-ready designs.
+**Stitchfy** is an advanced, deterministic orchestration framework that bridges the gap between raw business requirements and high-fidelity, AI-driven UI development. By implementing a systematic multi-agent architecture, Stitchfy automates the optimization, review, and refinement loops required to generate production-ready websites.
+
+The framework orchestrates multiple specialized AI agents to autonomously evaluate designs through critical industry lenses—including technical marketing, User Experience (UX), Search Engine Optimization (SEO), Web Accessibility (WCAG compliance), and core implementation logic.
+
+### System Architecture
+
+The following schematic outlines the execution architecture of the Stitchfy framework, detailing the data lifecycle from initial plain-text specifications to final production delivery via our multi-agent refinement loops:
+
+![Stitchfy Architecture Diagram](assets/stitchfy-architecture.png)
 
 ### Why Stitchfy?
 
@@ -267,6 +275,18 @@ Using OpenAI Structured Outputs, agents return predictable JSON:
 ```
 
 ---
+
+## 💼 Stitchfy Pro & Commercial Ecosystem
+
+Stitchfy Core is open-source and free to the community. For organizations requiring advanced enterprise capabilities, Devify LLC offers **Stitchfy Pro**, a proprietary extended framework that includes:
+
+- **Proprietary Agent Tuning:** Custom-trained agents tailored to specific corporate brand compliance standards.
+- **Enterprise Pipelines:** Advanced multi-threaded processing for large-scale corporate web architectures.
+- **Direct Code Export:** Deep integrations with corporate CI/CD pipelines and cloud infrastructure deployment.
+- **Secure Data Handling:** Zero-data retention agent endpoints ensuring enterprise-grade data privacy.
+
+For inquiries regarding enterprise licensing, custom agent development, or commercial consulting, contact us at [cardozo@devifyllc.com](mailto:cardozo@devifyllc.com).
+
 
 ## VS Code Extension (Planned)
 
