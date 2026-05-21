@@ -66,7 +66,6 @@ buildNumber.properties
 # Environment variables
 .env
 .env.local
-.env.*.local
 
 # Logs
 logs/
