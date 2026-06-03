@@ -2,6 +2,29 @@
 
 > A repeatable, structured, and auditable framework for transforming business specifications into polished websites using AI-powered design pipelines.
 
+## 🚀 Getting Started (3 Steps)
+
+```bash
+# 1. Install dependencies
+pip3 install -r requirements.txt
+
+# 2. Set up your API keys (choose at least one provider)
+cp .env.example .env
+# Edit .env and add: OPENAI_API_KEY, ANTHROPIC_API_KEY, or GOOGLE_API_KEY
+
+# 3. Generate your first website page
+python3 -m src.cli.commands generate --page home --generator gpt --show-cost
+```
+
+**Choose Your AI Provider:**
+- `--generator gpt` → OpenAI GPT-4 (balanced, reliable)
+- `--generator claude` → Anthropic Claude (advanced reasoning)
+- `--generator gemini` → Google Gemini (fast, often free)
+
+📖 **Full Setup Guide:** See [SETUP.md](SETUP.md) | **Detailed Usage:** See [MULTI_GENERATOR_GUIDE.md](MULTI_GENERATOR_GUIDE.md)
+
+---
+
 ## Overview
 
 **Stitchfy** is an advanced, deterministic orchestration framework that bridges the gap between raw business requirements and high-fidelity, AI-driven UI development. By implementing a systematic multi-agent architecture, Stitchfy automates the optimization, review, and refinement loops required to generate production-ready websites.
@@ -20,19 +43,27 @@ The following schematic outlines the execution architecture of the Stitchfy fram
 - **Structured**: Organized agent pipeline ensures comprehensive coverage
 - **Auditable**: Track every transformation from spec to final design
 - **Iterative**: Built-in review and refinement cycles
-- **AI-Native**: Leverages Google Stitch's natural-language UI generation and OpenAI Structured Outputs for predictable, automated refinement
+- **AI-Native**: Leverages multiple AI providers (GPT, Claude, Gemini) for flexible, high-quality UI generation
+- **Multi-Provider**: Choose from OpenAI GPT-4, Anthropic Claude, or Google Gemini based on your needs and preferences
 
 ---
 
 ## Core Concept
 
-Google Stitch already supports natural-language UI generation and high-fidelity design from prompts, including web/mobile UI workflows. Stitchfy acts as an intelligent orchestration layer that:
+Stitchfy provides a **multi-strategy generator system** that allows you to choose from multiple AI providers for UI generation. The framework acts as an intelligent orchestration layer that:
 
 1. Parses your business requirements
-2. Generates optimized Stitch prompts
-3. Reviews generated designs
+2. Generates optimized prompts for your chosen AI provider
+3. Reviews generated designs with specialized agents
 4. Refines prompts based on expert feedback
-5. Produces production-ready implementations
+5. Produces production-ready HTML, CSS, and JavaScript
+
+### Supported AI Providers
+
+- **OpenAI GPT-4** - Industry-leading language model with excellent code generation
+- **Anthropic Claude** - Advanced reasoning and long-context capabilities
+- **Google Gemini** - Fast, efficient, with multimodal capabilities
+- **Fallback Support** - Automatically switch to alternative providers if primary fails
 
 ---
 
@@ -90,20 +121,40 @@ Modern, premium, practical, trustworthy.
 Book a discovery call.
 ```
 
-### 3. Run the Pipeline
+### 3. Configure API Keys
+
+Set up your environment variables:
 
 ```bash
-# Generate optimized Stitch prompts from your specs
-Stitchfy generate
+# Copy the example environment file
+cp .env.example .env
 
-# Run expert review agents
-Stitchfy review
+# Edit .env and add your API keys
+# You only need keys for the providers you plan to use
+```
 
-# Refine based on feedback
-Stitchfy refine
+### 4. Run the Pipeline
 
-# Export final implementation
-Stitchfy export
+```bash
+# Generate using default generator (from config)
+stitchfy generate
+
+# Generate using specific generator
+stitchfy generate --generator gpt
+stitchfy generate --generator claude
+stitchfy generate --generator gemini
+
+# Generate with cost estimation
+stitchfy generate --show-cost
+
+# Generate with automatic fallback
+stitchfy generate --with-fallback
+
+# List available generators
+stitchfy list-generators
+
+# Get info about a specific generator
+stitchfy info gpt
 ```
 
 ---
@@ -117,15 +168,45 @@ Spec Parser
      ↓
 AI Agent Pipeline
      ↓
-Prompt Builder for Google Stitch
+Prompt Optimizer
      ↓
-Google Stitch Design / Export
+Multi-Strategy Generator
+  ├── OpenAI GPT-4
+  ├── Anthropic Claude
+  └── Google Gemini
+     ↓
+HTML/CSS/JavaScript Output
      ↓
 Reviewer Agents
      ↓
 Refined Prompt / Code Recommendations
      ↓
-Website Implementation
+Final Website Implementation
+```
+
+### Generator Strategy Pattern
+
+Stitchfy uses a pluggable generator architecture:
+
+```
+┌─────────────────────────────────────┐
+│     Generator Factory               │
+│  (Creates & Manages Generators)     │
+└──────────────┬──────────────────────┘
+               │
+       ┌───────┴────────┬──────────────┐
+       ▼                ▼              ▼
+┌──────────┐    ┌──────────┐    ┌──────────┐
+│   GPT    │    │  Claude  │    │  Gemini  │
+│Generator │    │Generator │    │Generator │
+└──────────┘    └──────────┘    └──────────┘
+       │                │              │
+       └────────────────┴──────────────┘
+                        ▼
+              ┌──────────────────┐
+              │    UIOutput      │
+              │ (HTML/CSS/JS)    │
+              └──────────────────┘
 ```
 
 ---
@@ -411,11 +492,134 @@ Stitchfy export --format stitch
 
 ---
 
+## Multi-Generator System
+
+### Configuration
+
+Stitchfy uses a YAML configuration file (`stitchfy.config.yaml`) to manage generator settings:
+
+```yaml
+# Default generator to use
+default_generator: gpt
+
+# Generator-specific configurations
+generators:
+  gpt:
+    api_key: ${OPENAI_API_KEY}
+    model: gpt-4o
+    temperature: 0.7
+    max_tokens: 8000
+  
+  claude:
+    api_key: ${ANTHROPIC_API_KEY}
+    model: claude-3-5-sonnet-20241022
+    temperature: 0.7
+    max_tokens: 8000
+  
+  gemini:
+    api_key: ${GOOGLE_API_KEY}
+    model: gemini-2.0-flash-exp
+    temperature: 0.7
+    max_tokens: 8000
+
+# Fallback strategy
+fallback_enabled: true
+fallback_generators:
+  - claude
+  - gpt
+  - gemini
+```
+
+### Generator Comparison
+
+| Feature | OpenAI GPT-4 | Anthropic Claude | Google Gemini |
+|---------|--------------|------------------|---------------|
+| **Best For** | General-purpose, balanced | Long context, reasoning | Speed, efficiency |
+| **Context Window** | 128K tokens | 200K tokens | 1M tokens |
+| **Code Quality** | Excellent | Excellent | Very Good |
+| **Speed** | Fast | Fast | Very Fast |
+| **Cost** | $5-15/1M tokens | $3-15/1M tokens | $0-5/1M tokens |
+| **Strengths** | Well-rounded, reliable | Superior reasoning | Multimodal, fast |
+| **API Key Required** | OPENAI_API_KEY | ANTHROPIC_API_KEY | GOOGLE_API_KEY |
+
+### CLI Commands
+
+```bash
+# Initialize new project
+stitchfy init my-website
+
+# Generate with default generator
+stitchfy generate
+
+# Generate with specific generator
+stitchfy generate --generator claude
+
+# Generate specific page
+stitchfy generate --page about --generator gpt
+
+# Show cost estimate before generating
+stitchfy generate --show-cost
+
+# Use fallback if primary fails
+stitchfy generate --with-fallback
+
+# List all available generators
+stitchfy list-generators
+
+# Get detailed info about a generator
+stitchfy info gpt
+stitchfy info claude
+stitchfy info gemini
+```
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/devifyllc/stitchfy.git
+cd stitchfy
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Set up environment variables
+cp .env.example .env
+# Edit .env and add your API keys
+
+# Run Stitchfy
+python -m src.cli.commands generate --help
+```
+
+### Environment Variables
+
+Create a `.env` file with your API keys:
+
+```bash
+# OpenAI (for GPT generators)
+OPENAI_API_KEY=sk-your-key-here
+
+# Anthropic (for Claude generators)
+ANTHROPIC_API_KEY=sk-ant-your-key-here
+
+# Google (for Gemini generators)
+GOOGLE_API_KEY=AIza-your-key-here
+```
+
+**Note**: You only need to set up API keys for the generators you plan to use.
+
+---
+
 ## Roadmap
 
-- [ ] Core CLI implementation
+- [x] Multi-strategy generator system
+- [x] OpenAI GPT-4 integration
+- [x] Anthropic Claude integration
+- [x] Google Gemini integration
+- [x] Generator factory pattern
+- [x] Configuration system with env variables
+- [x] CLI with generator selection
 - [ ] Agent pipeline with OpenAI Structured Outputs
-- [ ] Google Stitch API integration
+- [ ] Review and refinement loops
 - [ ] VS Code extension
 - [ ] Web-based spec editor
 - [ ] Template library
