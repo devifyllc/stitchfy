@@ -1,0 +1,74 @@
+# Stitchfy Configuration File
+# 
+# This file configures the multi-strategy generator system.
+# Environment variables can be referenced using ${VAR_NAME} syntax.
+
+# Default generator to use when none is specified
+default_generator: gpt
+
+# Generator-specific configurations
+generators:
+  # OpenAI GPT Configuration
+  gpt:
+    api_key: ${OPENAI_API_KEY}
+    model: gpt-4o
+    temperature: 0.7
+    max_tokens: 8000
+    additional_params: {}
+  
+  # Anthropic Claude Configuration
+  claude:
+    api_key: ${ANTHROPIC_API_KEY}
+    model: claude-3-5-sonnet-20241022
+    temperature: 0.7
+    max_tokens: 8000
+    additional_params: {}
+  
+  # Google Gemini Configuration
+  gemini:
+    api_key: ${GOOGLE_API_KEY}
+    model: gemini-2.0-flash-exp
+    temperature: 0.7
+    max_tokens: 8000
+    additional_params: {}
+
+# Fallback strategy if primary generator fails
+# Generators will be tried in order until one succeeds
+fallback_enabled: true
+fallback_generators:
+  - claude
+  - gpt
+  - gemini
+
+# Output configuration
+output:
+  # Directory for generated files
+  output_dir: output/final
+  
+  # Save metadata with generated files
+  save_metadata: true
+  
+  # Pretty print JSON metadata
+  pretty_json: true
+
+# Logging configuration
+logging:
+  # Log level: DEBUG, INFO, WARNING, ERROR, CRITICAL
+  level: INFO
+  
+  # Log file path (leave empty to disable file logging)
+  file: logs/stitchfy.log
+  
+  # Log to console
+  console: true
+
+# Cost tracking
+cost_tracking:
+  # Enable cost estimation
+  enabled: true
+  
+  # Warn if estimated cost exceeds this threshold (USD)
+  warn_threshold: 1.00
+  
+  # Require confirmation if cost exceeds this threshold (USD)
+  confirm_threshold: 5.00

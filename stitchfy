@@ -1,0 +1,17 @@
+#!/usr/bin/env python3
+"""
+Stitchfy CLI Entry Point
+
+This script provides a convenient entry point for running Stitchfy commands.
+"""
+
+import sys
+from pathlib import Path
+
+# Add src directory to path
+sys.path.insert(0, str(Path(__file__).parent))
+
+from src.cli.commands import cli
+
+if __name__ == '__main__':
+    cli()
