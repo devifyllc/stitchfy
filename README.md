@@ -69,32 +69,15 @@ Stitchfy provides a **multi-strategy generator system** that allows you to choos
 
 ## Quick Start
 
-### 1. Initialize Your Project
+### 1. Clone and Install
 
 ```bash
-Stitchfy init my-website
-```
+# Clone the repository
+git clone https://github.com/devifyllc/stitchfy.git
+cd stitchfy
 
-This creates the following structure:
-
-```
-/my-website
-  project.md                    # Project overview and goals
-  brand.md                      # Brand guidelines
-  pages/
-    home.md                     # Homepage specifications
-    services.md                 # Services page specs
-    about.md                    # About page specs
-    contact.md                  # Contact page specs
-  agents/
-    marketer.prompt.md          # Marketing agent configuration
-    seo.prompt.md               # SEO agent configuration
-    ux.prompt.md                # UX agent configuration
-    accessibility.prompt.md     # Accessibility agent configuration
-  output/
-    stitch-prompts/             # Generated Stitch prompts
-    reviews/                    # Agent review outputs
-    final/                      # Final deliverables
+# Install dependencies
+pip3 install -r requirements.txt
 ```
 
 ### 2. Define Your Specifications
@@ -133,28 +116,28 @@ cp .env.example .env
 # You only need keys for the providers you plan to use
 ```
 
-### 4. Run the Pipeline
+### 4. Generate UI
 
 ```bash
 # Generate using default generator (from config)
-stitchfy generate
+python3 -m src.cli.commands generate
 
 # Generate using specific generator
-stitchfy generate --generator gpt
-stitchfy generate --generator claude
-stitchfy generate --generator gemini
+python3 -m src.cli.commands generate --generator gpt
+python3 -m src.cli.commands generate --generator claude
+python3 -m src.cli.commands generate --generator gemini
 
 # Generate with cost estimation
-stitchfy generate --show-cost
+python3 -m src.cli.commands generate --show-cost
 
 # Generate with automatic fallback
-stitchfy generate --with-fallback
+python3 -m src.cli.commands generate --with-fallback
 
 # List available generators
-stitchfy list-generators
+python3 -m src.cli.commands list-generators
 
 # Get info about a specific generator
-stitchfy info gpt
+python3 -m src.cli.commands info gpt
 ```
 
 ---
@@ -188,26 +171,7 @@ Final Website Implementation
 
 Stitchfy uses a pluggable generator architecture:
 
-```
-┌─────────────────────────────────────┐
-│     Generator Factory               │
-│  (Creates & Manages Generators)     │
-└──────────────┬──────────────────────┘
-               │
-       ┌───────┴────────┬──────────────┐
-       ▼                ▼              ▼
-┌──────────┐    ┌──────────┐    ┌──────────┐
-│   GPT    │    │  Claude  │    │  Gemini  │
-│Generator │    │Generator │    │Generator │
-└──────────┘    └──────────┘    └──────────┘
-       │                │              │
-       └────────────────┴──────────────┘
-                        ▼
-              ┌──────────────────┐
-              │    UIOutput      │
-              │ (HTML/CSS/JS)    │
-              └──────────────────┘
-```
+![Stitchfy Multi-Strategy Generator System](assets/stitchfy-mult-strategy.jpg)
 
 ---
 
@@ -299,61 +263,61 @@ Technical Requirements:
 
 ---
 
-## Refinement Cycle
+## Current Generation Flow (v1.0.0)
 
-The framework's most powerful feature is its **iterative refinement loop**:
+Stitchfy v1.0.0 provides **direct UI generation** from specifications:
+
+```
+User Specifications (Markdown)
+         ↓
+   Configuration Loader
+         ↓
+   Generator Selection
+   (GPT / Claude / Gemini)
+         ↓
+   AI Model Generation
+         ↓
+  HTML + CSS + JavaScript
+         ↓
+   Output Files Saved
+```
+
+**What's Generated:**
+- Complete HTML with semantic structure
+- Responsive CSS with modern layouts
+- JavaScript for interactivity (when needed)
+- Metadata with generation details
+
+### Future: Iterative Refinement Loop (v2.0.0 - Planned)
+
+The next major release will add **automated review and refinement**:
 
 ```
 User Spec
     ↓
-Stitch Prompt v1
-    ↓
-Google Stitch Output
+Generate UI (v1)
     ↓
 Review Agents (parallel)
+  ├── SEO Agent
+  ├── UX Agent
+  ├── Accessibility Agent
+  └── Marketing Agent
     ↓
 Structured Feedback (JSON)
     ↓
-Stitch Prompt v2
+Refine Prompt
     ↓
-Final Design
+Generate UI (v2)
+    ↓
+Final Polished Output
 ```
 
-### Example Review Output
-
-Using OpenAI Structured Outputs, agents return predictable JSON:
-
-```json
-{
-  "seo_issues": [
-    "Homepage headline is too generic",
-    "Missing local/service-intent keywords",
-    "Meta description exceeds 160 characters"
-  ],
-  "ux_issues": [
-    "CTA appears too late in the flow",
-    "Services section lacks visual hierarchy",
-    "Contact form has too many required fields"
-  ],
-  "accessibility_issues": [
-    "Color contrast ratio 3.2:1 (needs 4.5:1)",
-    "Missing alt text on hero image",
-    "Form labels not properly associated"
-  ],
-  "marketing_issues": [
-    "Value proposition unclear in hero",
-    "Missing social proof elements",
-    "CTA language not action-oriented"
-  ],
-  "recommended_prompt_changes": [
-    "Move primary CTA above the fold",
-    "Add trust indicators under hero section",
-    "Use clearer service cards with icons",
-    "Simplify contact form to 3 fields",
-    "Add specific keyword: 'cloud consulting for small businesses'"
-  ]
-}
-```
+**Planned Review Features:**
+- Automated SEO analysis and optimization
+- UX/UI best practices validation
+- WCAG accessibility compliance checking
+- Marketing copy and CTA optimization
+- Structured JSON feedback for refinements
 
 ---
 
@@ -449,23 +413,23 @@ Work directly with a Senior Software Architect to modernize your technology
 Book a Discovery Call
 ```
 
-### 4. Run the Pipeline
+### 4. Generate UI Code
 
 ```bash
-# Generate initial prompt
-Stitchfy generate
+# Generate with default generator
+python3 -m src.cli.commands generate --page home
 
-# Review with all agents
-Stitchfy review --all
+# Generate with specific generator and cost estimate
+python3 -m src.cli.commands generate --page home --generator claude --show-cost
 
-# View feedback
-cat output/reviews/combined-review.json
+# List available generators
+python3 -m src.cli.commands list-generators
 
-# Refine based on feedback
-Stitchfy refine
+# Get generator information
+python3 -m src.cli.commands info gpt
 
-# Export final prompt
-Stitchfy export --format stitch
+# View generated files
+ls -la output/final/
 ```
 
 ---
@@ -545,31 +509,31 @@ fallback_generators:
 ### CLI Commands
 
 ```bash
-# Initialize new project
-stitchfy init my-website
-
 # Generate with default generator
-stitchfy generate
+python3 -m src.cli.commands generate
 
 # Generate with specific generator
-stitchfy generate --generator claude
+python3 -m src.cli.commands generate --generator claude
 
 # Generate specific page
-stitchfy generate --page about --generator gpt
+python3 -m src.cli.commands generate --page about --generator gpt
 
 # Show cost estimate before generating
-stitchfy generate --show-cost
+python3 -m src.cli.commands generate --show-cost
 
 # Use fallback if primary fails
-stitchfy generate --with-fallback
+python3 -m src.cli.commands generate --with-fallback
 
 # List all available generators
-stitchfy list-generators
+python3 -m src.cli.commands list-generators
 
 # Get detailed info about a generator
-stitchfy info gpt
-stitchfy info claude
-stitchfy info gemini
+python3 -m src.cli.commands info gpt
+python3 -m src.cli.commands info claude
+python3 -m src.cli.commands info gemini
+
+# Initialize new project (creates directory structure)
+python3 -m src.cli.commands init my-website
 ```
 
 ### Installation
@@ -580,15 +544,17 @@ git clone https://github.com/devifyllc/stitchfy.git
 cd stitchfy
 
 # Install dependencies
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 
 # Set up environment variables
 cp .env.example .env
 # Edit .env and add your API keys
 
-# Run Stitchfy
-python -m src.cli.commands generate --help
+# Run Stitchfy (no installation needed, run from source)
+python3 -m src.cli.commands generate --help
 ```
+
+**Note:** Stitchfy v1.0.0 runs directly from source. No package installation required.
 
 ### Environment Variables
 
@@ -611,6 +577,7 @@ GOOGLE_API_KEY=AIza-your-key-here
 
 ## Roadmap
 
+### ✅ Implemented (v1.0.0)
 - [x] Multi-strategy generator system
 - [x] OpenAI GPT-4 integration
 - [x] Anthropic Claude integration
@@ -618,15 +585,24 @@ GOOGLE_API_KEY=AIza-your-key-here
 - [x] Generator factory pattern
 - [x] Configuration system with env variables
 - [x] CLI with generator selection
-- [ ] Agent pipeline with OpenAI Structured Outputs
-- [ ] Review and refinement loops
-- [ ] VS Code extension
-- [ ] Web-based spec editor
-- [ ] Template library
-- [ ] Custom agent support
-- [ ] Multi-language support
-- [ ] Analytics integration
-- [ ] A/B testing recommendations
+- [x] Cost estimation
+- [x] Fallback support
+- [x] Direct HTML/CSS/JS generation
+
+### 🚧 Planned (Future Releases)
+- [ ] **Agent pipeline** with OpenAI Structured Outputs for automated reviews
+- [ ] **Review commands** (`review --all`, `review --seo`, etc.)
+- [ ] **Refinement loops** (`refine` command based on agent feedback)
+- [ ] **Export commands** (`export --format stitch`)
+- [ ] **VS Code extension** with inline diagnostics
+- [ ] **Web-based spec editor**
+- [ ] **Template library**
+- [ ] **Custom agent support**
+- [ ] **Multi-language support**
+- [ ] **Analytics integration**
+- [ ] **A/B testing recommendations**
+
+**Note:** v1.0.0 focuses on core UI generation. Agent-based review and refinement features are planned for v2.0.0.
 
 ---
 

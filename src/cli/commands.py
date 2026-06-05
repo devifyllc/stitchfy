@@ -19,7 +19,7 @@ from src.generators.base_generator import GeneratorConfig
 
 
 @click.group()
-@click.version_option(version='0.1.0')
+@click.version_option(version='1.0.0')
 def cli():
     """
     Stitchfy - AI-Powered Website Generation Framework
