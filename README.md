@@ -577,7 +577,7 @@ GOOGLE_API_KEY=AIza-your-key-here
 
 ## Roadmap
 
-### ✅ Implemented (v1.0.0)
+### ✅ Implemented (v1.0.0 - Multi-Generator System)
 - [x] Multi-strategy generator system
 - [x] OpenAI GPT-4 integration
 - [x] Anthropic Claude integration
@@ -589,10 +589,25 @@ GOOGLE_API_KEY=AIza-your-key-here
 - [x] Fallback support
 - [x] Direct HTML/CSS/JS generation
 
-### 🚧 Planned (Future Releases)
-- [ ] **Agent pipeline** with OpenAI Structured Outputs for automated reviews
-- [ ] **Review commands** (`review --all`, `review --seo`, etc.)
+### ✅ Designed (v2.0.0 - Agent Architecture)
+- [x] **BaseAgent** abstract class with structured outputs
+- [x] **SEO Agent** - Meta tags, heading hierarchy, semantic HTML
+- [x] **UX Agent** - Navigation, layout, mobile responsiveness
+- [x] **Accessibility Agent** - WCAG 2.1 Level AA compliance
+- [x] **Marketing Agent** - Value prop, CTAs, conversion optimization
+- [x] **ReviewOrchestrator** - Parallel agent execution and aggregation
+- [x] **Data models** - ReviewContext, AgentFeedback, FeedbackItem
+- [x] **Cost estimation** - Per-agent and total review costs
+- [x] **Test suite** - Comprehensive architecture validation
+
+### 🚧 In Progress (v2.0.0 - Integration)
+- [ ] **CLI review commands** (`review --all`, `review --seo`, etc.)
 - [ ] **Refinement loops** (`refine` command based on agent feedback)
+- [ ] **Live API testing** - Real agent reviews with OpenAI
+- [ ] **Report generation** - Markdown and HTML output formats
+
+### 📋 Planned (Future Releases)
+- [ ] **Iterative refinement** - Multi-cycle improvement loops
 - [ ] **Export commands** (`export --format stitch`)
 - [ ] **VS Code extension** with inline diagnostics
 - [ ] **Web-based spec editor**
@@ -602,7 +617,7 @@ GOOGLE_API_KEY=AIza-your-key-here
 - [ ] **Analytics integration**
 - [ ] **A/B testing recommendations**
 
-**Note:** v1.0.0 focuses on core UI generation. Agent-based review and refinement features are planned for v2.0.0.
+**Current Status:** v1.0.0 (UI Generation) ✅ Complete | v2.0.0 (Agent Architecture) ✅ Designed | v2.0.0 (CLI Integration) 🚧 In Progress
 
 ---
 
