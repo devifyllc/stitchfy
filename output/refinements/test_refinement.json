@@ -1,0 +1,28 @@
+{
+  "page_name": "test",
+  "initial_score": 83.2,
+  "final_score": 80.8,
+  "total_improvement": -2.4000000000000057,
+  "total_iterations": 1,
+  "converged": true,
+  "convergence_reason": "Improvement below threshold (-2.4 < 2.0)",
+  "total_cost_estimate": 0.0,
+  "iterations": [
+    {
+      "iteration_number": 1,
+      "timestamp": "2026-06-07T02:28:46.969991",
+      "before_score": 83.2,
+      "after_score": 80.8,
+      "score_improvement": -2.4000000000000057,
+      "feedback_addressed": [
+        "Improved marketing_conversion: 2 \u2192 1 issues"
+      ],
+      "review_summary": {
+        "overall_score": 80.8,
+        "total_issues": 18,
+        "critical_issues": 0,
+        "high_priority_issues": 7
+      }
+    }
+  ]
+}
