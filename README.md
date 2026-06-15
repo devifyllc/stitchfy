@@ -1,646 +1,438 @@
-# Stitchfy
+# Stitchfy v2
 
-> A repeatable, structured, and auditable framework for transforming business specifications into polished websites using AI-powered design pipelines.
+**Turn a plain Markdown file into a production-ready static website — in minutes.**
 
-## 🚀 Getting Started (3 Steps)
-
-```bash
-# 1. Install dependencies
-pip3 install -r requirements.txt
-
-# 2. Set up your API keys (choose at least one provider)
-cp .env.example .env
-# Edit .env and add: OPENAI_API_KEY, ANTHROPIC_API_KEY, or GOOGLE_API_KEY
-
-# 3. Generate your first website page
-python3 -m src.cli.commands generate --page home --generator gpt --show-cost
-```
-
-**Choose Your AI Provider:**
-- `--generator gpt` → OpenAI GPT-4 (balanced, reliable)
-- `--generator claude` → Anthropic Claude (advanced reasoning)
-- `--generator gemini` → Google Gemini (fast, often free)
-
-📖 **Full Setup Guide:** See [SETUP.md](SETUP.md) | **Detailed Usage:** See [MULTI_GENERATOR_GUIDE.md](MULTI_GENERATOR_GUIDE.md)
+[![Version](https://img.shields.io/badge/version-2.0.0-brightgreen.svg)](package.json)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
+[![Node](https://img.shields.io/badge/node-%3E%3D18-green.svg)](package.json)
+[![Next.js](https://img.shields.io/badge/Next.js-14-black.svg)](https://nextjs.org)
 
 ---
 
-## Overview
+## What is Stitchfy?
 
-**Stitchfy** is an advanced, deterministic orchestration framework that bridges the gap between raw business requirements and high-fidelity, AI-driven UI development. By implementing a systematic multi-agent architecture, Stitchfy automates the optimization, review, and refinement loops required to generate production-ready websites.
+Stitchfy is an open-source, AI-assisted code generation framework that takes a single Markdown file describing a business and produces a fully structured, accessible, SEO-optimized static website — deployable to any static host with no server required.
 
-The framework orchestrates multiple specialized AI agents to autonomously evaluate designs through critical industry lenses—including technical marketing, User Experience (UX), Search Engine Optimization (SEO), Web Accessibility (WCAG compliance), and core implementation logic.
+You describe the business in plain language. Stitchfy runs a pipeline of specialized agents that each handle a distinct concern (intake, UX strategy, SEO, accessibility, frontend assembly), then generates a complete Next.js site and exports it as static HTML/CSS/JS.
 
-### System Architecture
-
-The following schematic outlines the execution architecture of the Stitchfy framework, detailing the data lifecycle from initial plain-text specifications to final production delivery via our multi-agent refinement loops:
-
-![Stitchfy Architecture Diagram](assets/stitchfy-architecture.png)
-
-### Why Stitchfy?
-
-- **Accessible**: Write specs in plain English Markdown—no technical expertise required
-- **Structured**: Organized agent pipeline ensures comprehensive coverage
-- **Auditable**: Track every transformation from spec to final design
-- **Iterative**: Built-in review and refinement cycles
-- **AI-Native**: Leverages multiple AI providers (GPT, Claude, Gemini) for flexible, high-quality UI generation
-- **Multi-Provider**: Choose from OpenAI GPT-4, Anthropic Claude, or Google Gemini based on your needs and preferences
+**Who it's built for:** Developers and agencies building websites for small and mid-sized local businesses — beauty salons, nail studios, massage spas, medical clinics, dental offices, restaurants, and similar service providers.
 
 ---
 
-## Core Concept
+## The Problem It Solves
 
-Stitchfy provides a **multi-strategy generator system** that allows you to choose from multiple AI providers for UI generation. The framework acts as an intelligent orchestration layer that:
+Building a professional website for a local business involves repetitive work: establishing page structure, writing meta tags, ensuring WCAG compliance, setting up routing, wiring navigation, and applying brand colors — all before a single line of content is written.
 
-1. Parses your business requirements
-2. Generates optimized prompts for your chosen AI provider
-3. Reviews generated designs with specialized agents
-4. Refines prompts based on expert feedback
-5. Produces production-ready HTML, CSS, and JavaScript
+Stitchfy encodes that professional knowledge into a pipeline. Each agent applies best practices for its domain so you don't have to rediscover them for every client:
 
-### Supported AI Providers
+- The UX Agent decides page hierarchy and hero strategy based on industry type
+- The SEO Agent writes structured data (JSON-LD), Open Graph tags, and per-page meta descriptions
+- The Accessibility Agent enforces WCAG 2.1 AA requirements — skip links, landmarks, keyboard navigation, color contrast, ARIA
+- The Frontend Agent assembles everything into a validated blueprint that drives real code generation
 
-- **OpenAI GPT-4** - Industry-leading language model with excellent code generation
-- **Anthropic Claude** - Advanced reasoning and long-context capabilities
-- **Google Gemini** - Fast, efficient, with multimodal capabilities
-- **Fallback Support** - Automatically switch to alternative providers if primary fails
+The output is a complete Next.js static site with 12 pre-built components and an HTML audit report — all from one Markdown file.
 
 ---
 
 ## Quick Start
 
-### 1. Clone and Install
-
 ```bash
-# Clone the repository
+# 1. Install
 git clone https://github.com/devifyllc/stitchfy.git
 cd stitchfy
+npm install
 
-# Install dependencies
-pip3 install -r requirements.txt
+# 2. Describe your business
+cp examples/beauty-salon.md input/project.md
+# (edit input/project.md with the real business details)
+
+# 3. Generate blueprint + website
+npm run stitchfy
+npm run build:site
+
+# 4. Audit accessibility and SEO
+npm run audit
 ```
 
-### 2. Define Your Specifications
+Open `output/static-site/index.html` in any browser. Deploy the `output/static-site/` folder to S3, Netlify, Vercel, or any static host.
 
-Write your requirements in plain English:
+---
+
+## How It Works
+
+```
+input/project.md
+       │
+       ▼
+┌─────────────────────┐
+│  1. Intake Agent    │  Parses Markdown → structured business data
+└────────┬────────────┘  (name, hours, services, contact, socials, brand tone)
+         │
+         ▼
+┌─────────────────────┐
+│  2. UX Agent        │  Industry-aware page strategy, color palette,
+└────────┬────────────┘  navigation, hero visual spec, typography
+         │
+         ▼
+┌─────────────────────┐
+│  3. SEO Agent       │  Per-page titles + descriptions, JSON-LD schema.org,
+└────────┬────────────┘  Open Graph tags, canonical URLs
+         │
+         ▼
+┌─────────────────────┐
+│  4. Accessibility   │  WCAG 2.1 AA checklist (30 checks), landmark
+│     Agent           │  requirements, ARIA guidelines, reduced-motion rules
+└────────┬────────────┘
+         │
+         ▼
+┌─────────────────────┐
+│  5. Frontend Agent  │  Component map, routing plan, unsupported features
+└────────┬────────────┘  list, implementation notes
+         │
+         ▼
+┌─────────────────────┐
+│  Schema Validation  │  Zod validates the entire blueprint before writing
+└────────┬────────────┘
+         │
+         ▼
+output/blueprint/website-blueprint.v1.json   ← Validated, machine-readable spec
+         │
+         ▼ (npm run build:site)
+┌─────────────────────┐
+│  Site Generator     │  Reads blueprint → writes a complete Next.js app
+└────────┬────────────┘  with real brand data embedded in every component
+         │
+         ▼
+output/generated-site/    ← Next.js 14 App Router project (generated)
+output/static-site/       ← Pure HTML/CSS/JS export (deployable)
+         │
+         ▼ (npm run audit)
+output/reports/
+  ├── accessibility-report.html
+  ├── seo-report.html
+  └── final-report.html
+```
+
+---
+
+## Writing Your Input
+
+Create `input/project.md` with the following sections. All sections are optional but the more you include, the better the output.
 
 ```markdown
-# Website Goal
-Create a professional website for a cloud consulting company targeting U.S. SMBs.
+# Project: Your Business Name
 
-# Audience
-Non-technical business owners looking for reliable technology partners.
+## Business Information
+- **Business Name:** Luxe Beauty Studio
+- **Industry:** Beauty Salon
+- **Description:** One-paragraph description of what you do and who you serve.
 
-# Pages
+## Operating Hours
+- Monday–Friday: 9:00 AM – 7:00 PM
+- Saturday: 9:00 AM – 6:00 PM
+- Sunday: Closed
+
+## Services
+- Service Name One
+- Service Name Two
+- Service Name Three
+
+## Location
+- Address: 1234 Main St, Suite 1, City, ST 00000
+- Neighborhood: Optional — neighborhood name helps local SEO
+
+## Contact Information
+- Phone: (555) 555-0100
+- Email: hello@yourbusiness.com
+
+## Social Networks
+- Instagram: @yourhandle
+- Facebook: /yourpage
+- TikTok: @yourhandle
+
+## Booking Preference
+- Online booking via Vagaro (https://www.vagaro.com/yourbusiness)
+- Phone call during business hours
+
+## Desired Pages
 - Home
 - Services
-- About
+- Gallery
+- About Us
 - Contact
+- Book Online
 
-# Tone
-Modern, premium, practical, trustworthy.
+## Brand Tone
+- Warm and welcoming
+- Modern and visually polished
 
-# Conversion Goal
-Book a discovery call.
+## Color Preferences
+- Primary: #C4847A
+- Secondary: #FAF8F5
+- Accent: #C9A96E
+- Text: #2C2C2C
+- Borders/subtle backgrounds: #EDD9D5
+
+## Special Notes
+- Any additional instructions for the agents go here.
 ```
 
-### 3. Configure API Keys
+See the `examples/` directory for complete working inputs: `beauty-salon.md`, `massage-spa.md`, and `medical-center.md`.
 
-Set up your environment variables:
+---
+
+## Commands
+
+| Command | Description |
+|---|---|
+| `npm run stitchfy` | Run the full agent pipeline on `input/project.md` |
+| `npm run stitchfy -- --input path/to/file.md` | Run pipeline on a specific input file |
+| `npm run validate` | Validate the input file and the last generated blueprint |
+| `npm run build:site` | Generate the Next.js app and export to `output/static-site/` |
+| `npm run build:site -- --blueprint path/to/blueprint.json` | Build from a specific blueprint file |
+| `npm run audit` | Run 14-point HTML accessibility + SEO audit; write HTML reports |
+| `npm run typecheck` | TypeScript type-check the framework without emitting |
+
+---
+
+## Generated Output
+
+### Blueprint
+
+`output/blueprint/website-blueprint.v1.json` is a versioned, Zod-validated JSON document with eight sections:
+
+| Section | Content |
+|---|---|
+| `project` | Schema version, generation timestamp, source file, framework version |
+| `business` | All extracted business data — hours, services, contact, socials, booking |
+| `pages` | Page definitions with purpose, sections, CTAs, and component hints |
+| `ux` | Color palette, typography, navigation, header/footer config, hero visual spec |
+| `seo` | Site title, per-page meta, JSON-LD fields, Open Graph values |
+| `accessibility` | WCAG 2.1 AA target, 30-item QA checklist, landmark + ARIA requirements |
+| `frontend` | Component map, routes, asset plan, unsupported features list |
+| `qa` | Lighthouse targets, known limitations, expected report list |
+
+### Pages
+
+The standard page set for a local business site:
+
+| Route | Page | Key Sections |
+|---|---|---|
+| `/` | Home | Hero, Services preview, Testimonials, Gallery preview, Booking CTA, Hours |
+| `/services` | Services | ServicesGrid, FAQ, Booking CTA |
+| `/gallery` | Gallery | Filterable GallerySection by service category |
+| `/about` | About Us | Hero, Services, Testimonials, CTA, Contact |
+| `/contact` | Contact | ContactSection, Hours, FAQ |
+| `/book` | Book Online | Booking CTA with external link (Vagaro, phone, or email) |
+
+### Components
+
+12 pre-built accessible React components in `site-template/components/`:
+
+| Component | Description |
+|---|---|
+| `AccessibilitySkipLink` | Visually hidden skip-to-main link; revealed on keyboard focus |
+| `Header` | Sticky header with navigation, phone link, and booking CTA button |
+| `Footer` | 3-column footer: brand + contact, navigation, hours; social icons |
+| `SocialIcons` | Inline SVG icons for Instagram, Facebook, Twitter/X, TikTok, YouTube, Pinterest, Yelp, LinkedIn |
+| `Hero` | Full-width hero with brand gradient or solid background, headline, CTA buttons |
+| `ServicesGrid` | Responsive 3-column service card grid |
+| `HoursBlock` | Operating hours rendered as an accessible `<dl>` list |
+| `ContactSection` | Phone, email, address with `tel:` and `mailto:` links |
+| `CTASection` | Accent-background call-to-action with headline and button |
+| `FAQSection` | Expandable FAQ accordion with ARIA |
+| `GallerySection` | Photo grid with optional category filter buttons and `aria-pressed` state |
+| `TestimonialsSection` | Testimonial card grid with author attribution |
+| `BookingCTA` | Standalone booking section; supports external link, phone, or email |
+
+### Reports
+
+Three self-contained HTML reports in `output/reports/`:
+
+- **`accessibility-report.html`** — WCAG 2.1 AA compliance checklist (30 checks), per-page HTML analysis (14 regex-based checks per route), pass/warn/fail badges
+- **`seo-report.html`** — Per-page meta title + description table, structured data recommendations, Open Graph tag audit
+- **`final-report.html`** — Pipeline summary, route table, unsupported features, recommended next steps
+
+> All reports include the disclaimer: *"Stitchfy completed an automated and structured accessibility-oriented review against the framework checklist. This does not constitute legal certification. Lighthouse scores were not generated in this run."*
+
+---
+
+## Deployment
+
+The `output/static-site/` folder is pure static HTML/CSS/JS with no Node.js runtime required. Deploy it anywhere:
 
 ```bash
-# Copy the example environment file
-cp .env.example .env
+# AWS S3 + CloudFront
+aws s3 sync output/static-site/ s3://your-bucket --delete
 
-# Edit .env and add your API keys
-# You only need keys for the providers you plan to use
+# Netlify
+netlify deploy --prod --dir output/static-site
+
+# Vercel
+vercel --prebuilt output/static-site
+
+# GitHub Pages — copy contents into your gh-pages branch
 ```
 
-### 4. Generate UI
-
-```bash
-# Generate using default generator (from config)
-python3 -m src.cli.commands generate
-
-# Generate using specific generator
-python3 -m src.cli.commands generate --generator gpt
-python3 -m src.cli.commands generate --generator claude
-python3 -m src.cli.commands generate --generator gemini
-
-# Generate with cost estimation
-python3 -m src.cli.commands generate --show-cost
-
-# Generate with automatic fallback
-python3 -m src.cli.commands generate --with-fallback
-
-# List available generators
-python3 -m src.cli.commands list-generators
-
-# Get info about a specific generator
-python3 -m src.cli.commands info gpt
-```
+Or simply open `output/static-site/index.html` directly in a browser for local preview.
 
 ---
 
-## Architecture
+## Industry Support
 
-```
-Markdown Specs
-     ↓
-Spec Parser
-     ↓
-AI Agent Pipeline
-     ↓
-Prompt Optimizer
-     ↓
-Multi-Strategy Generator
-  ├── OpenAI GPT-4
-  ├── Anthropic Claude
-  └── Google Gemini
-     ↓
-HTML/CSS/JavaScript Output
-     ↓
-Reviewer Agents
-     ↓
-Refined Prompt / Code Recommendations
-     ↓
-Final Website Implementation
-```
+The UX and SEO agents apply industry-specific defaults for color palette, typography, page strategy, JSON-LD schema type, and gallery content. Supported verticals:
 
-### Generator Strategy Pattern
-
-Stitchfy uses a pluggable generator architecture:
-
-![Stitchfy Multi-Strategy Generator System](assets/stitchfy-mult-strategy.jpg)
+| Industry keyword | Schema.org type | Palette style | Gallery seeds |
+|---|---|---|---|
+| `beauty`, `salon`, `hair`, `nail`, `lash` | `BeautySalon` | Warm rose + cream gradient | Hair, nails, skincare |
+| `wellness`, `massage`, `yoga`, `spa` | `HealthAndBeautyBusiness` | Soft green + warm off-white | Massage, classes, body |
+| `medical`, `clinic`, `dental`, `doctor` | `MedicalClinic` | Clean white + navy | Facility, team, technology |
+| `restaurant`, `cafe`, `bistro`, `dining` | `Restaurant` | Warm cream + tan gradient | Food, drinks, ambiance |
+| *(any other)* | `LocalBusiness` | Neutral blue-grey | Services, team, facility |
 
 ---
 
-## AI Agent Roles
+## Design System
 
-Stitchfy orchestrates specialized AI agents, each focused on a specific domain:
+Brand colors from `input/project.md` are wired into CSS custom properties applied across the entire site:
 
-### 🎯 Business Strategist Agent
-- Clarifies positioning and value proposition
-- Defines target audience characteristics
-- Optimizes conversion goals and CTAs
-- Ensures business objectives are met
+```css
+--color-primary      /* main brand color — buttons, accents */
+--color-secondary    /* background tone */
+--color-accent       /* highlight color — hover states, badges */
+--color-text         /* body text */
+--color-border       /* subtle dividers and card borders */
+--font-heading       /* heading typeface (Google Fonts, loaded via <link>) */
+--font-body          /* body typeface */
+```
 
-### 📢 Technical Marketer Agent
-- Improves copy and messaging
-- Strengthens value propositions
-- Adds trust signals and credibility markers
-- Optimizes conversion language
+The hero background is derived from `ux.heroStyle` — a structured field the UX Agent generates from the palette — so the hero always uses the actual brand gradient rather than defaulting to white.
 
-### 🔍 SEO Agent
-- Generates title tags and meta descriptions
-- Optimizes heading hierarchy
-- Identifies keyword opportunities
-- Ensures semantic HTML structure
-- Improves discoverability
-
-### 🎨 UX Agent
-- Optimizes layout and navigation
-- Improves visual hierarchy
-- Enhances conversion flows
-- Ensures intuitive user journeys
-- Reviews mobile responsiveness
-
-### ♿ Accessibility Agent
-- Validates WCAG compliance
-- Checks color contrast ratios
-- Ensures semantic structure
-- Reviews keyboard navigation
-- Validates form usability
-
-### 🤖 Stitch Prompt Agent
-- Converts all inputs into precise Google Stitch prompts
-- Structures prompts for optimal output
-- Incorporates feedback from all agents
-- Maintains consistency across iterations
+Gallery images use [picsum.photos](https://picsum.photos) with deterministic seeds for realistic layout previews. Replace the URLs in `site.config.ts` with real photos before going live.
 
 ---
 
-## Intelligent Prompt Generation
+## OpenAI Integration
 
-Stitchfy doesn't just pass raw user text to Google Stitch. It generates **structured, optimized prompts** like:
+All five agents are structured to support an OpenAI API call but run **fully deterministically** in the default mode — no API key required. The integration point is marked in each agent file:
 
+```typescript
+// OPENAI INTEGRATION POINT:
+//   const response = await openai.chat.completions.create({
+//     model: process.env.OPENAI_MODEL ?? "gpt-4o",
+//     messages: [
+//       { role: "system", content: readPrompt("ux.prompt.md") },
+//       { role: "user", content: JSON.stringify(businessData) },
+//     ],
+//     response_format: { type: "json_object" },
+//   });
 ```
-Create a responsive 4-page website for a technology consulting company.
 
-Brand:
-- Deep navy background (#0A192F)
-- Bright blue accents (#007BFF)
-- White/light sections (#F8FAFC)
-- Modern enterprise style
+To enable AI generation:
+1. Add `OPENAI_API_KEY=sk-...` to a `.env` file in the project root
+2. Replace the deterministic logic in each agent with the commented API call
+3. Parse the `response.choices[0].message.content` into the expected typed output
 
-Audience:
-- U.S. small business owners
-- Non-technical decision makers
-- Seeking reliable technology partners
-
-Pages:
-1. Home
-2. Services
-3. About
-4. Contact
-
-Homepage sections:
-- Hero with strong CTA ("Book a Discovery Call")
-- Pain points section
-- Services overview with cards
-- Founder credibility section
-- Final contact CTA
-
-Style:
-Premium, minimal, corporate, trustworthy.
-
-Technical Requirements:
-- Mobile-first responsive design
-- Fast loading performance
-- Semantic HTML structure
-- WCAG AA accessibility compliance
-```
+The framework's Zod schema validates the agent output regardless of whether it comes from AI or local logic — so the pipeline stays safe either way.
 
 ---
 
-## Complete Workflow (v2.0.0 - Production Ready)
+## What This Does NOT Include
 
-Stitchfy v2.0.0 provides **end-to-end AI-powered website generation** with automated review and refinement:
+By design, Stitchfy generates **informational static websites only**. The following are deliberately out of scope:
 
-```
-User Specifications (Markdown)
-         ↓
-   Configuration Loader
-         ↓
-   Generator Selection
-   (GPT / Claude / Gemini)
-         ↓
-   AI Model Generation
-         ↓
-  HTML + CSS + JavaScript
-         ↓
-   Review Agents (parallel)
-  ├── SEO Agent
-  ├── UX Agent
-  ├── Accessibility Agent
-  └── Marketing Agent
-         ↓
-   Structured Feedback (JSON)
-         ↓
-   Iterative Refinement Loop
-         ↓
-   Production-Ready Output
-```
+- Real booking, scheduling, or appointment systems
+- Payment flows, e-commerce, or product catalogs
+- User accounts, authentication, or session management
+- Backend APIs, databases, or server-side logic
+- CRM or email marketing integrations
+- HIPAA-grade forms or protected health information handling
 
-**What's Generated:**
-- Complete HTML with semantic structure
-- Responsive CSS with modern layouts
-- JavaScript for interactivity (when needed)
-- Comprehensive review reports (JSON + Markdown)
-- Refinement summaries with score tracking
-
-**Review Features (Live):**
-- ✅ Automated SEO analysis and optimization
-- ✅ UX/UI best practices validation
-- ✅ WCAG 2.1 Level AA accessibility compliance
-- ✅ Marketing copy and CTA optimization
-- ✅ Structured JSON feedback with severity levels
-- ✅ Parallel execution (~30 seconds for 4 agents)
-- ✅ Iterative refinement until target scores met
+Booking links point to third-party platforms the business already uses (Vagaro, Mindbody, OpenTable, etc.). Stitchfy generates the page that links out — not the booking engine itself.
 
 ---
 
-## 💼 Stitchfy Pro & Commercial Ecosystem
+## Repository Structure
 
-Stitchfy Core is open-source and free to the community. For organizations requiring advanced enterprise capabilities, Devify LLC offers **Stitchfy Pro**, a proprietary extended framework that includes:
-
-- **Proprietary Agent Tuning:** Custom-trained agents tailored to specific corporate brand compliance standards.
-- **Enterprise Pipelines:** Advanced multi-threaded processing for large-scale corporate web architectures.
-- **Direct Code Export:** Deep integrations with corporate CI/CD pipelines and cloud infrastructure deployment.
-- **Secure Data Handling:** Zero-data retention agent endpoints ensuring enterprise-grade data privacy.
-
-For inquiries regarding enterprise licensing, custom agent development, or commercial consulting, contact us at [cardozo@devifyllc.com](mailto:cardozo@devifyllc.com).
-
-
-## VS Code Extension (Planned)
-
-A VS Code plugin will provide seamless workflow integration:
-
-### Commands
-
-- `Stitchfy: Initialize Website Spec` - Create new project structure
-- `Stitchfy: Generate Stitch Prompt` - Convert specs to optimized prompts
-- `Stitchfy: Run SEO Review` - Execute SEO agent analysis
-- `Stitchfy: Run Marketing Review` - Execute marketing agent analysis
-- `Stitchfy: Run UX Review` - Execute UX agent analysis
-- `Stitchfy: Run Accessibility Review` - Execute accessibility agent analysis
-- `Stitchfy: Run Full Review` - Execute all agents in parallel
-- `Stitchfy: Generate Final Website Brief` - Compile all outputs
-- `Stitchfy: Export Prompt to Clipboard` - Copy refined prompt
-
-### Features
-
-- Syntax highlighting for `.prompt.md` files
-- Inline diagnostics from agent reviews
-- Quick fixes for common issues
-- Live preview of generated prompts
-- Diff view for prompt iterations
-- Integration with Google Stitch API (when available)
-
----
-
-## Example Workflow
-
-### 1. Define Business Requirements
-
-Edit `project.md`:
-
-```markdown
-# Project Name
-TechConsult Pro
-
-# Website Type
-Technology Consulting Company Website
-
-# Primary Goal
-Generate qualified leads and discovery calls from U.S. SMBs
-
-# Target Audience
-Non-technical business owners needing cloud solutions
 ```
-
-### 2. Define Brand Guidelines
-
-Edit `brand.md`:
-
-```markdown
-# Brand Personality
-Professional, modern, trustworthy, practical
-
-# Color Palette
-- Deep Navy: #0A192F
-- Bright Blue: #007BFF
-- Soft Light: #F8FAFC
-
-# Typography
-Modern sans-serif, high readability
+stitchfy/
+├── input/
+│   └── project.md                ← Your business spec goes here
+│
+├── examples/
+│   ├── beauty-salon.md
+│   ├── massage-spa.md
+│   └── medical-center.md
+│
+├── framework/
+│   ├── orchestrator/
+│   │   ├── orchestrator.ts       ← Pipeline driver (9 steps)
+│   │   ├── agent-runner.ts       ← Runs each agent, handles errors
+│   │   └── workflow-state.ts     ← Shared state passed between agents
+│   ├── agents/
+│   │   ├── intake.agent.ts       ← Stage 1: business data extraction
+│   │   ├── ux.agent.ts           ← Stage 2: UX strategy + hero spec
+│   │   ├── seo.agent.ts          ← Stage 3: meta tags + structured data
+│   │   ├── accessibility.agent.ts← Stage 4: WCAG 2.1 AA checklist
+│   │   └── frontend.agent.ts     ← Stage 5: component map + routes
+│   ├── core/
+│   │   ├── site-generator.ts     ← Blueprint → Next.js source code
+│   │   ├── report-generator.ts   ← Static HTML audit reports
+│   │   ├── markdown-parser.ts    ← Parses input/project.md
+│   │   └── blueprint-writer.ts   ← Writes output/blueprint/*.json
+│   ├── schemas/
+│   │   ├── blueprint.types.ts    ← TypeScript interfaces (source of truth)
+│   │   └── blueprint.schema.ts   ← Zod validation + error messages
+│   └── validators/
+│       ├── validate-input.ts
+│       └── validate-blueprint.ts
+│
+├── site-template/                ← React components copied into every generated site
+│   ├── app/
+│   │   ├── layout.tsx            ← Root layout: JSON-LD, Google Fonts, metadata
+│   │   └── page.tsx              ← Template placeholder (overwritten per site)
+│   ├── components/               ← 12 accessible React components
+│   └── lib/types.ts              ← Shared TypeScript types
+│
+├── scripts/
+│   ├── run-stitchfy.ts           ← Entry point: npm run stitchfy
+│   ├── build-site.ts             ← Entry point: npm run build:site
+│   ├── audit-site.ts             ← Entry point: npm run audit
+│   └── validate.ts               ← Entry point: npm run validate
+│
+├── output/                       ← All generated artifacts (gitignored)
+│   ├── blueprint/
+│   ├── generated-site/
+│   ├── static-site/
+│   └── reports/
+│
+├── assets/                       ← Project images and diagrams
+├── LICENSE
+├── NOTICE
+└── package.json
 ```
-
-### 3. Define Page Content
-
-Edit `pages/home.md`:
-
-```markdown
-# Hero Section
-## Headline
-Transform Your Business with Modern Cloud Solutions
-
-## Subheadline
-Work directly with a Senior Software Architect to modernize your technology
-
-## CTA
-Book a Discovery Call
-```
-
-### 4. Generate UI Code
-
-```bash
-# Generate with default generator
-python3 -m src.cli.commands generate --page home
-
-# Generate with specific generator and cost estimate
-python3 -m src.cli.commands generate --page home --generator claude --show-cost
-
-# List available generators
-python3 -m src.cli.commands list-generators
-
-# Get generator information
-python3 -m src.cli.commands info gpt
-
-# View generated files
-ls -la output/final/
-```
-
----
-
-## Benefits
-
-### For Non-Technical Users
-- Write in plain English
-- No coding required
-- Guided by expert AI agents
-- Professional results
-
-### For Developers
-- Structured, version-controlled specs
-- Automated quality checks
-- Consistent output format
-- Easy to extend with custom agents
-
-### For Agencies
-- Repeatable process
-- Client-friendly spec format
-- Built-in quality assurance
-- Auditable decision trail
-
----
-
-## Multi-Generator System
-
-### Configuration
-
-Stitchfy uses a YAML configuration file (`stitchfy.config.yaml`) to manage generator settings:
-
-```yaml
-# Default generator to use
-default_generator: gpt
-
-# Generator-specific configurations
-generators:
-  gpt:
-    api_key: ${OPENAI_API_KEY}
-    model: gpt-4o
-    temperature: 0.7
-    max_tokens: 8000
-  
-  claude:
-    api_key: ${ANTHROPIC_API_KEY}
-    model: claude-3-5-sonnet-20241022
-    temperature: 0.7
-    max_tokens: 8000
-  
-  gemini:
-    api_key: ${GOOGLE_API_KEY}
-    model: gemini-2.0-flash-exp
-    temperature: 0.7
-    max_tokens: 8000
-
-# Fallback strategy
-fallback_enabled: true
-fallback_generators:
-  - claude
-  - gpt
-  - gemini
-```
-
-### Generator Comparison
-
-| Feature | OpenAI GPT-4 | Anthropic Claude | Google Gemini |
-|---------|--------------|------------------|---------------|
-| **Best For** | General-purpose, balanced | Long context, reasoning | Speed, efficiency |
-| **Context Window** | 128K tokens | 200K tokens | 1M tokens |
-| **Code Quality** | Excellent | Excellent | Very Good |
-| **Speed** | Fast | Fast | Very Fast |
-| **Cost** | $5-15/1M tokens | $3-15/1M tokens | $0-5/1M tokens |
-| **Strengths** | Well-rounded, reliable | Superior reasoning | Multimodal, fast |
-| **API Key Required** | OPENAI_API_KEY | ANTHROPIC_API_KEY | GOOGLE_API_KEY |
-
-### CLI Commands
-
-```bash
-# Generate with default generator
-python3 -m src.cli.commands generate
-
-# Generate with specific generator
-python3 -m src.cli.commands generate --generator claude
-
-# Generate specific page
-python3 -m src.cli.commands generate --page about --generator gpt
-
-# Show cost estimate before generating
-python3 -m src.cli.commands generate --show-cost
-
-# Use fallback if primary fails
-python3 -m src.cli.commands generate --with-fallback
-
-# List all available generators
-python3 -m src.cli.commands list-generators
-
-# Get detailed info about a generator
-python3 -m src.cli.commands info gpt
-python3 -m src.cli.commands info claude
-python3 -m src.cli.commands info gemini
-
-# Initialize new project (creates directory structure)
-python3 -m src.cli.commands init my-website
-```
-
-### Installation
-
-```bash
-# Clone the repository
-git clone https://github.com/devifyllc/stitchfy.git
-cd stitchfy
-
-# Install dependencies
-pip3 install -r requirements.txt
-
-# Set up environment variables
-cp .env.example .env
-# Edit .env and add your API keys
-
-# Run Stitchfy (no installation needed, run from source)
-python3 -m src.cli.commands generate --help
-```
-
-**Note:** Stitchfy v1.0.0 runs directly from source. No package installation required.
-
-### Environment Variables
-
-Create a `.env` file with your API keys:
-
-```bash
-# OpenAI (for GPT generators)
-OPENAI_API_KEY=sk-your-key-here
-
-# Anthropic (for Claude generators)
-ANTHROPIC_API_KEY=sk-ant-your-key-here
-
-# Google (for Gemini generators)
-GOOGLE_API_KEY=AIza-your-key-here
-```
-
-**Note**: You only need to set up API keys for the generators you plan to use.
-
----
-
-## Roadmap
-
-### ✅ Implemented (v1.0.0 - Multi-Generator System)
-- [x] Multi-strategy generator system
-- [x] OpenAI GPT-4 integration
-- [x] Anthropic Claude integration
-- [x] Google Gemini integration
-- [x] Generator factory pattern
-- [x] Configuration system with env variables
-- [x] CLI with generator selection
-- [x] Cost estimation
-- [x] Fallback support
-- [x] Direct HTML/CSS/JS generation
-
-### ✅ Complete (v2.0.0 - Production Ready)
-- [x] **BaseAgent** abstract class with structured outputs
-- [x] **SEO Agent** - Meta tags, heading hierarchy, semantic HTML
-- [x] **UX Agent** - Navigation, layout, mobile responsiveness
-- [x] **Accessibility Agent** - WCAG 2.1 Level AA compliance
-- [x] **Marketing Agent** - Value prop, CTAs, conversion optimization
-- [x] **ReviewOrchestrator** - Parallel agent execution and aggregation
-- [x] **Data models** - ReviewContext, AgentFeedback, FeedbackItem
-- [x] **Cost estimation** - Per-agent and total review costs
-- [x] **Test suite** - Comprehensive architecture validation
-- [x] **CLI review commands** (`review --all`, `review --seo`, etc.)
-- [x] **Refinement loops** (`refine` command based on agent feedback)
-- [x] **Live API testing** - Real agent reviews with OpenAI
-- [x] **Report generation** - Markdown and JSON output formats
-- [x] **Iterative refinement** - Multi-cycle improvement loops
-- [x] **Score tracking** - Convergence detection and progress monitoring
-
-### 📋 Planned (Future Releases)
-- [ ] **Export commands** (`export --format stitch`)
-- [ ] **VS Code extension** with inline diagnostics
-- [ ] **Web-based spec editor**
-- [ ] **Template library**
-- [ ] **Custom agent support**
-- [ ] **Multi-language support**
-- [ ] **Analytics integration**
-- [ ] **A/B testing recommendations**
-- [ ] **CI/CD integration** - Git hooks and automated reviews
-- [ ] **Web dashboard** - Visual results and comparisons
-
-**Current Status:** v2.0.0 ✅ Production Ready | All core features complete
 
 ---
 
 ## Contributing
 
-Stitchfy is designed to be extensible. Contributions welcome for:
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/my-feature`
+3. Agents live in `framework/agents/` — one file per stage, following the `AgentConfig` interface in `framework/orchestrator/agent-runner.ts`
+4. Add or update the Zod schema in `framework/schemas/blueprint.schema.ts` for any new blueprint fields
+5. Keep TypeScript types in `framework/schemas/blueprint.types.ts` in sync with the Zod schema
+6. Run `npm run typecheck` before submitting a pull request
 
-- New agent types
-- Template improvements
-- Integration plugins
-- Documentation
-- Example projects
+When adding a new component to `site-template/components/`, the site generator picks it up automatically — no additional copy step needed.
 
 ---
 
 ## License
 
-Stitchfy is licensed under the **Apache License 2.0**.
+Apache License 2.0 — see [LICENSE](LICENSE) and [NOTICE](NOTICE) for full terms.
 
-This is a permissive open-source license that allows organizations to:
-- ✅ Use the framework commercially
-- ✅ Modify and distribute the code
-- ✅ Use it in proprietary software
-- ✅ Grant patent rights from contributors
-
-See the [LICENSE](LICENSE) file for full details, or visit [apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0)
+Copyright 2024–2025 Devify LLC
 
 ---
 
-## Contact
-
-For questions, feedback, or collaboration opportunities, please open an issue or reach out to the maintainers.
-
----
-
-**Stitchfy**: From business vision to polished website—structured, intelligent, automated.
+*Stitchfy v2.0.0 — Built by [Devify LLC](https://github.com/devifyllc)*

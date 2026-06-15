@@ -1,0 +1,102 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "qa-report.schema.json",
+  "title": "QAReport",
+  "description": "Quality assurance report produced by the audit stage, covering accessibility and SEO findings.",
+  "type": "object",
+  "required": ["generatedAt", "inputBlueprint", "accessibility", "seo", "summary"],
+  "properties": {
+    "generatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "inputBlueprint": {
+      "type": "string",
+      "description": "Path to the website-blueprint.json that was audited."
+    },
+    "accessibility": {
+      "type": "object",
+      "required": ["passed", "warnings", "errors", "checks"],
+      "properties": {
+        "passed": { "type": "boolean" },
+        "score": { "type": "number", "minimum": 0, "maximum": 100 },
+        "warnings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["rule", "message"],
+            "properties": {
+              "rule": { "type": "string" },
+              "message": { "type": "string" },
+              "element": { "type": "string" }
+            }
+          }
+        },
+        "errors": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["rule", "message"],
+            "properties": {
+              "rule": { "type": "string" },
+              "message": { "type": "string" },
+              "element": { "type": "string" }
+            }
+          }
+        },
+        "checks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["rule", "status"],
+            "properties": {
+              "rule": { "type": "string" },
+              "status": { "type": "string", "enum": ["pass", "warn", "fail", "skip"] },
+              "detail": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "seo": {
+      "type": "object",
+      "required": ["passed", "warnings", "errors"],
+      "properties": {
+        "passed": { "type": "boolean" },
+        "score": { "type": "number", "minimum": 0, "maximum": 100 },
+        "warnings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["rule", "message"],
+            "properties": {
+              "rule": { "type": "string" },
+              "message": { "type": "string" }
+            }
+          }
+        },
+        "errors": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["rule", "message"],
+            "properties": {
+              "rule": { "type": "string" },
+              "message": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "required": ["overallPassed", "totalErrors", "totalWarnings"],
+      "properties": {
+        "overallPassed": { "type": "boolean" },
+        "totalErrors": { "type": "integer" },
+        "totalWarnings": { "type": "integer" },
+        "recommendation": { "type": "string" }
+      }
+    }
+  }
+}
