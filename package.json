@@ -1,0 +1,34 @@
+{
+  "name": "stitchfy",
+  "version": "2.0.0",
+  "description": "AI-powered Markdown-to-static-website framework for small and mid-sized businesses",
+  "license": "Apache-2.0",
+  "author": "Devify LLC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/devifyllc/stitchfy"
+  },
+  "scripts": {
+    "stitchfy": "tsx scripts/run-stitchfy.ts",
+    "validate": "tsx scripts/validate.ts",
+    "build:site": "tsx scripts/build-site.ts",
+    "audit": "tsx scripts/audit-site.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "next": "^14.2.0",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "tsx": "^4.15.0",
+    "typescript": "^5.5.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

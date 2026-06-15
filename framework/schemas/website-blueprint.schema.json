@@ -1,0 +1,124 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "website-blueprint.schema.json",
+  "title": "WebsiteBlueprint",
+  "description": "The complete website blueprint produced by the Stitchfy pipeline. Aggregates all agent outputs into a single document consumed by the site-template.",
+  "type": "object",
+  "required": ["meta", "business", "ux", "seo", "accessibility", "pages"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": ["version", "generatedAt", "stitchfyVersion"],
+      "properties": {
+        "version": { "type": "string" },
+        "generatedAt": { "type": "string", "format": "date-time" },
+        "stitchfyVersion": { "type": "string" }
+      }
+    },
+    "business": {
+      "$ref": "intake.schema.json",
+      "description": "Normalized business data from the Intake Agent."
+    },
+    "ux": {
+      "type": "object",
+      "description": "UX blueprint from the UX Agent.",
+      "required": ["navigation", "hero", "sections", "layout"],
+      "properties": {
+        "navigation": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["label", "href"],
+            "properties": {
+              "label": { "type": "string" },
+              "href": { "type": "string" }
+            }
+          }
+        },
+        "hero": {
+          "type": "object",
+          "required": ["headline", "subheadline", "primaryCta"],
+          "properties": {
+            "headline": { "type": "string" },
+            "subheadline": { "type": "string" },
+            "primaryCta": { "type": "string" },
+            "secondaryCta": { "type": "string" }
+          }
+        },
+        "sections": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "layout": {
+          "type": "string",
+          "enum": ["single-column", "two-column", "grid"]
+        }
+      }
+    },
+    "seo": {
+      "type": "object",
+      "description": "SEO configuration from the SEO Agent.",
+      "required": ["globalTitle", "globalDescription", "keywords"],
+      "properties": {
+        "globalTitle": { "type": "string" },
+        "globalDescription": { "type": "string" },
+        "keywords": { "type": "array", "items": { "type": "string" } },
+        "ogImage": { "type": "string" },
+        "robots": { "type": "string" },
+        "canonicalBase": { "type": "string" },
+        "jsonLdType": { "type": "string" },
+        "pages": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "title", "description"],
+            "properties": {
+              "id": { "type": "string" },
+              "title": { "type": "string" },
+              "description": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "accessibility": {
+      "type": "object",
+      "description": "Accessibility configuration from the Accessibility Agent.",
+      "required": ["wcagLevel", "skipLinks"],
+      "properties": {
+        "wcagLevel": { "type": "string", "enum": ["A", "AA", "AAA"] },
+        "skipLinks": { "type": "boolean" },
+        "focusIndicators": { "type": "boolean" },
+        "altTextRequired": { "type": "boolean" },
+        "colorContrastMin": { "type": "number" },
+        "landmarkRoles": { "type": "array", "items": { "type": "string" } },
+        "checks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["rule", "description", "required"],
+            "properties": {
+              "rule": { "type": "string" },
+              "description": { "type": "string" },
+              "required": { "type": "boolean" }
+            }
+          }
+        }
+      }
+    },
+    "pages": {
+      "type": "array",
+      "description": "Page-level configuration consumed by the site-template.",
+      "items": {
+        "type": "object",
+        "required": ["id", "path", "title", "components"],
+        "properties": {
+          "id": { "type": "string" },
+          "path": { "type": "string" },
+          "title": { "type": "string" },
+          "components": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    }
+  }
+}

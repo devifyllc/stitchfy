@@ -102,10 +102,23 @@ htmlcov/
 dist/
 build/
 
-# Stitchfy specific
-output/final/*.html
-output/final/*.css
-output/final/*.js
-output/final/*.json
-!output/final/.gitkeep
+# Stitchfy v2 output
+output/blueprint/*.json
+!output/blueprint/.gitkeep
+output/generated-site/**
+!output/generated-site/.gitkeep
+output/static-site/**
+!output/static-site/.gitkeep
+output/reports/*.md
+output/reports/*.json
+!output/reports/.gitkeep
+
+# Next.js
+.next/
+next-env.d.ts
+
+# TypeScript build
+dist/
+
+# Logs
 logs/

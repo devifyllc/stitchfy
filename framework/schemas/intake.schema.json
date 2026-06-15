@@ -1,0 +1,79 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "intake.schema.json",
+  "title": "IntakeData",
+  "description": "Normalized business data extracted from the Markdown project file by the Intake Agent.",
+  "type": "object",
+  "required": ["businessName", "industry", "pages"],
+  "properties": {
+    "businessName": {
+      "type": "string",
+      "description": "Primary name of the business."
+    },
+    "industry": {
+      "type": "string",
+      "description": "Normalized industry category (e.g., Beauty Salon, Day Spa, Medical Center)."
+    },
+    "description": {
+      "type": "string",
+      "description": "Short business description, 1–3 sentences."
+    },
+    "hours": {
+      "type": "object",
+      "description": "Operating hours keyed by day range.",
+      "additionalProperties": { "type": "string" }
+    },
+    "services": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "List of services offered."
+    },
+    "location": {
+      "type": "string",
+      "description": "Full street address as a single string."
+    },
+    "contact": {
+      "type": "object",
+      "properties": {
+        "phone": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "website": { "type": "string", "format": "uri" }
+      },
+      "additionalProperties": { "type": "string" }
+    },
+    "social": {
+      "type": "object",
+      "description": "Social media handles or URLs keyed by platform name.",
+      "additionalProperties": { "type": "string" }
+    },
+    "booking": {
+      "type": "string",
+      "description": "Description of how customers book appointments."
+    },
+    "pages": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "List of pages the client wants on the site.",
+      "minItems": 1
+    },
+    "tone": {
+      "type": "string",
+      "description": "Brand voice description."
+    },
+    "colors": {
+      "type": "object",
+      "properties": {
+        "primary": { "type": "string" },
+        "secondary": { "type": "string" },
+        "accent": { "type": "string" },
+        "text": { "type": "string" }
+      },
+      "additionalProperties": { "type": "string" }
+    },
+    "notes": {
+      "type": "string",
+      "description": "Special instructions or constraints from the client."
+    }
+  },
+  "additionalProperties": false
+}
