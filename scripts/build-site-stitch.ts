@@ -107,6 +107,7 @@ async function main() {
 
   ok(`${result.pagesGenerated} page(s) written to output/stitch-site/`);
   ok(`Stitch project ID: ${result.projectId}`);
+  if (result.reportPath) ok(`Review report: ${result.reportPath}`);
 
   // ── Step 3: Done ────────────────────────────────────────────────────────────
   step(3, TOTAL, "Done");

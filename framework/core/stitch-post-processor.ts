@@ -33,9 +33,19 @@ export function postProcessPage(
   // ── Step 1: Remove Stitch-generated head tags we will replace ─────────────
   let result = html
     .replace(/<title>[^<]*<\/title>/gi, "")
-    .replace(/<meta\s+charset[^>]*>/gi, "")
-    .replace(/<meta\s+name=["']viewport["'][^>]*>/gi, "")
-    .replace(/<meta\s+name=["']description["'][^>]*>/gi, "");
+    .replace(/<meta\s[^>]*?\bcharset\b[^>]*>/gi, "")
+    .replace(/<meta\s[^>]*?\bname=["']viewport["'][^>]*>/gi, "")
+    .replace(/<meta\s[^>]*?\bname=["']description["'][^>]*>/gi, "");
+
+  // Remove duplicate <link> tags (Stitch occasionally emits the same stylesheet twice)
+  const seenLinkHrefs = new Set<string>();
+  result = result.replace(/<link([^>]*)>/gi, (match, attrs: string) => {
+    const m = attrs.match(/href=["']([^"']+)["']/);
+    if (!m) return match;
+    if (seenLinkHrefs.has(m[1])) return "";
+    seenLinkHrefs.add(m[1]);
+    return match;
+  });
 
   // ── Step 2: Inject SEO meta block ─────────────────────────────────────────
   const metaBlock = buildMetaBlock(title, description, og, siteUrl, page.path);

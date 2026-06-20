@@ -2,7 +2,7 @@
 
 **Turn a plain Markdown file into a production-ready static website — in minutes.**
 
-[![Version](https://img.shields.io/badge/version-2.0.0-brightgreen.svg)](package.json)
+[![Version](https://img.shields.io/badge/version-2.1.0-brightgreen.svg)](package.json)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 [![Node](https://img.shields.io/badge/node-%3E%3D18-green.svg)](package.json)
 [![Next.js](https://img.shields.io/badge/Next.js-14-black.svg)](https://nextjs.org)
@@ -13,7 +13,7 @@
 
 Stitchfy is an open-source, AI-assisted code generation framework that takes a single Markdown file describing a business and produces a fully structured, accessible, SEO-optimized static website — deployable to any static host with no server required.
 
-You describe the business in plain language. Stitchfy runs a pipeline of specialized agents that each handle a distinct concern (intake, UX strategy, SEO, accessibility, frontend assembly), then generates a complete Next.js site and exports it as static HTML/CSS/JS.
+You describe the business in plain language. Stitchfy runs a pipeline of specialized agents that each handle a distinct concern (intake, UX strategy, SEO, accessibility, frontend assembly), then generates a complete static site and exports it as HTML/CSS/JS.
 
 **Who it's built for:** Developers and agencies building websites for small and mid-sized local businesses — beauty salons, nail studios, massage spas, medical clinics, dental offices, restaurants, and similar service providers.
 
@@ -30,7 +30,7 @@ Stitchfy encodes that professional knowledge into a pipeline. Each agent applies
 - The Accessibility Agent enforces WCAG 2.1 AA requirements — skip links, landmarks, keyboard navigation, color contrast, ARIA
 - The Frontend Agent assembles everything into a validated blueprint that drives real code generation
 
-The output is a complete Next.js static site with 12 pre-built components and an HTML audit report — all from one Markdown file.
+The output is a complete static site with pre-built components and an HTML audit report — all from one Markdown file.
 
 ---
 
@@ -46,19 +46,26 @@ npm install
 cp examples/beauty-salon.md input/project.md
 # (edit input/project.md with the real business details)
 
-# 3. Generate blueprint + website
+# 3. Generate the blueprint
 npm run stitchfy
+
+# 4a. Generate website — template-based (no API key required)
 npm run build:site
 
-# 4. Audit accessibility and SEO
+# 4b. Generate website — AI-designed via Google Stitch (requires STITCH_API_KEY)
+npm run build:site:stitch
+
+# 5. Audit accessibility and SEO
 npm run audit
 ```
 
-Open `output/static-site/index.html` in any browser. Deploy the `output/static-site/` folder to S3, Netlify, Vercel, or any static host.
+Open `output/static-site/index.html` (template) or `output/stitch-site/index.html` (Stitch) in any browser.
 
 ---
 
 ## How It Works
+
+### Stage 1 — Blueprint pipeline (shared by both generators)
 
 ```
 input/project.md
@@ -96,22 +103,50 @@ input/project.md
          │
          ▼
 output/blueprint/website-blueprint.v1.json   ← Validated, machine-readable spec
-         │
-         ▼ (npm run build:site)
-┌─────────────────────┐
-│  Site Generator     │  Reads blueprint → writes a complete Next.js app
-└────────┬────────────┘  with real brand data embedded in every component
-         │
-         ▼
-output/generated-site/    ← Next.js 14 App Router project (generated)
-output/static-site/       ← Pure HTML/CSS/JS export (deployable)
-         │
-         ▼ (npm run audit)
-output/reports/
-  ├── accessibility-report.html
-  ├── seo-report.html
-  └── final-report.html
 ```
+
+### Stage 2 — Code generation (choose one)
+
+```
+output/blueprint/website-blueprint.v1.json
+         │
+         ├─── npm run build:site ──────────────────────────────────────────────┐
+         │    Template-based generator                                         │
+         │    Reads blueprint → writes Next.js app → next build → static export│
+         │                                                                     ▼
+         │                                                      output/static-site/
+         │
+         └─── npm run build:site:stitch ──────────────────────────────────────┐
+              Google Stitch MCP generator                                      │
+              Creates Stitch project → generates one AI screen per page        │
+              → fetches HTML → post-processes → SEO Agent review               │
+              → A11y Agent review → auto-patches → writes HTML                 │
+                                                                               ▼
+                                                              output/stitch-site/
+                                                    output/reports/stitch-review-report.html
+
+         └─── npm run audit ──────────────────────────────────────────────────┐
+              Runs on output/static-site/ or output/stitch-site/              │
+                                                                               ▼
+                                              output/reports/accessibility-report.html
+                                              output/reports/seo-report.html
+                                              output/reports/final-report.html
+```
+
+---
+
+## Commands
+
+| Command | Description |
+|---|---|
+| `npm run stitchfy` | Run the full agent pipeline on `input/project.md` |
+| `npm run stitchfy -- --input path/to/file.md` | Run pipeline on a specific input file |
+| `npm run validate` | Validate the input file and the last generated blueprint |
+| `npm run build:site` | Generate Next.js app and export to `output/static-site/` |
+| `npm run build:site -- --blueprint path/to/blueprint.json` | Build from a specific blueprint file |
+| `npm run build:site:stitch` | Generate AI-designed site via Google Stitch MCP |
+| `npm run audit` | Run 14-point HTML accessibility + SEO audit; write HTML reports |
+| `npm run typecheck` | TypeScript type-check the framework without emitting |
 
 ---
 
@@ -181,20 +216,6 @@ See the `examples/` directory for complete working inputs: `beauty-salon.md`, `m
 
 ---
 
-## Commands
-
-| Command | Description |
-|---|---|
-| `npm run stitchfy` | Run the full agent pipeline on `input/project.md` |
-| `npm run stitchfy -- --input path/to/file.md` | Run pipeline on a specific input file |
-| `npm run validate` | Validate the input file and the last generated blueprint |
-| `npm run build:site` | Generate the Next.js app and export to `output/static-site/` |
-| `npm run build:site -- --blueprint path/to/blueprint.json` | Build from a specific blueprint file |
-| `npm run audit` | Run 14-point HTML accessibility + SEO audit; write HTML reports |
-| `npm run typecheck` | TypeScript type-check the framework without emitting |
-
----
-
 ## Generated Output
 
 ### Blueprint
@@ -212,75 +233,120 @@ See the `examples/` directory for complete working inputs: `beauty-salon.md`, `m
 | `frontend` | Component map, routes, asset plan, unsupported features list |
 | `qa` | Lighthouse targets, known limitations, expected report list |
 
-### Pages
+### Template site (`output/static-site/`)
 
-The standard page set for a local business site:
+Generated by `npm run build:site`. A Next.js 14 App Router project built from 12 pre-built accessible React components in `site-template/components/`. Pure HTML/CSS/JS export — no Node.js runtime required.
 
-| Route | Page | Key Sections |
+### Stitch site (`output/stitch-site/`)
+
+Generated by `npm run build:site:stitch`. Each page is AI-designed by Google Stitch using Gemini, then post-processed and reviewed by the framework's SEO and Accessibility agents before being written to disk.
+
+### Reports (`output/reports/`)
+
+| Report | Generator | Contents |
 |---|---|---|
-| `/` | Home | Hero, Services preview, Testimonials, Gallery preview, Booking CTA, Hours |
-| `/services` | Services | ServicesGrid, FAQ, Booking CTA |
-| `/gallery` | Gallery | Filterable GallerySection by service category |
-| `/about` | About Us | Hero, Services, Testimonials, CTA, Contact |
-| `/contact` | Contact | ContactSection, Hours, FAQ |
-| `/book` | Book Online | Booking CTA with external link (Vagaro, phone, or email) |
-
-### Components
-
-12 pre-built accessible React components in `site-template/components/`:
-
-| Component | Description |
-|---|---|
-| `AccessibilitySkipLink` | Visually hidden skip-to-main link; revealed on keyboard focus |
-| `Header` | Sticky header with navigation, phone link, and booking CTA button |
-| `Footer` | 3-column footer: brand + contact, navigation, hours; social icons |
-| `SocialIcons` | Inline SVG icons for Instagram, Facebook, Twitter/X, TikTok, YouTube, Pinterest, Yelp, LinkedIn |
-| `Hero` | Full-width hero with brand gradient or solid background, headline, CTA buttons |
-| `ServicesGrid` | Responsive 3-column service card grid |
-| `HoursBlock` | Operating hours rendered as an accessible `<dl>` list |
-| `ContactSection` | Phone, email, address with `tel:` and `mailto:` links |
-| `CTASection` | Accent-background call-to-action with headline and button |
-| `FAQSection` | Expandable FAQ accordion with ARIA |
-| `GallerySection` | Photo grid with optional category filter buttons and `aria-pressed` state |
-| `TestimonialsSection` | Testimonial card grid with author attribution |
-| `BookingCTA` | Standalone booking section; supports external link, phone, or email |
-
-### Reports
-
-Three self-contained HTML reports in `output/reports/`:
-
-- **`accessibility-report.html`** — WCAG 2.1 AA compliance checklist (30 checks), per-page HTML analysis (14 regex-based checks per route), pass/warn/fail badges
-- **`seo-report.html`** — Per-page meta title + description table, structured data recommendations, Open Graph tag audit
-- **`final-report.html`** — Pipeline summary, route table, unsupported features, recommended next steps
-
-> All reports include the disclaimer: *"Stitchfy completed an automated and structured accessibility-oriented review against the framework checklist. This does not constitute legal certification. Lighthouse scores were not generated in this run."*
+| `accessibility-report.html` | `npm run audit` | WCAG 2.1 AA checklist, per-page HTML analysis |
+| `seo-report.html` | `npm run audit` | Per-page meta, structured data, Open Graph audit |
+| `final-report.html` | `npm run audit` | Pipeline summary, route table, next steps |
+| `stitch-review-report.html` | `npm run build:site:stitch` | Per-page: auto-patches applied, manual findings |
 
 ---
 
-## Deployment
+## Google Stitch Integration
 
-The `output/static-site/` folder is pure static HTML/CSS/JS with no Node.js runtime required. Deploy it anywhere:
+Stitchfy integrates with [Google Stitch](https://stitch.google.com) as an alternative code generator. Stitch uses Gemini to transform text prompts into production HTML/CSS. Stitchfy drives Stitch via its official MCP server, using the blueprint as the structured brief for each page.
+
+### Setup
 
 ```bash
-# AWS S3 + CloudFront
-aws s3 sync output/static-site/ s3://your-bucket --delete
+# Add to your .env file
+STITCH_API_KEY=your-key-here
 
-# Netlify
-netlify deploy --prod --dir output/static-site
-
-# Vercel
-vercel --prebuilt output/static-site
-
-# GitHub Pages — copy contents into your gh-pages branch
+# Optional: choose the generation model (default: GEMINI_3_1_PRO)
+STITCH_MODEL=GEMINI_3_FLASH   # faster; GEMINI_3_1_PRO for higher quality
 ```
 
-Or simply open `output/static-site/index.html` directly in a browser for local preview.
+### Stitch pipeline flow
+
+```
+blueprint.json
+    ↓
+Create Stitch project
+    ↓
+For each page:
+  generate_screen_from_text   ← Gemini generates the visual design
+    ↓
+  get_screen                  ← fetch HTML via downloadUrl
+    ↓
+  post-processor              ← inject SEO meta, skip link, lang, JSON-LD
+    ↓
+  stitch-seo.agent            ← fix JSON-LD @type/url/hours, flag dead links
+    ↓
+  stitch-a11y.agent           ← fix data-alt→alt, nav aria-label, icon aria-hidden
+    ↓
+  stitch-patcher              ← apply all attribute-level patches
+    ↓
+  write HTML                  → output/stitch-site/{route}/index.html
+    ↓
+stitch-review-reporter        → output/reports/stitch-review-report.html
+```
+
+### What the review agents do
+
+After Stitch generates HTML, two agents run on each page before it is written to disk:
+
+**SEO Agent (`stitch-seo.agent.ts`)**
+- Patches: rewrites JSON-LD with correct `@type` (e.g. `BeautySalon`), absolute URL, and Schema.org-compliant opening hours (24hr format, individual days)
+- Flags: missing `og:image`, relative canonical URL, meta description that contains internal blueprint text, title exceeding 60 chars, dead links to routes not in the blueprint
+
+**Accessibility Agent (`stitch-a11y.agent.ts`)**
+- Patches: converts `data-alt` → `alt` on all `<img>` elements, adds `aria-label` to unlabelled `<nav>`, adds `aria-label="Open menu"` to the icon-only mobile menu button, replaces `focus:outline-none` with a visible focus ring, adds `role="img"` and `aria-label` to star rating groups, adds `aria-hidden="true"` to decorative material icons
+- Flags: footer links without a `<nav>` landmark, any remaining images without alt text, multiple `focus:outline-none` occurrences
+
+All patches are **attribute-level only** — no structural changes, no content edits. The review report shows exactly what was patched automatically and what requires human review before deploying.
+
+### Template vs. Stitch — choosing a generator
+
+| | Template (`build:site`) | Stitch (`build:site:stitch`) |
+|---|---|---|
+| API key required | No | Yes (STITCH_API_KEY) |
+| Visual quality | Consistent, predictable | Higher — AI-generated layouts |
+| Control | Full | Partial — Stitch decides visual detail |
+| Speed | Fast (no network calls) | Slower (~30–90s per page) |
+| Offline use | Yes | No |
+| Deterministic output | Yes | No — reruns differ |
+| Post-generation review | Via `npm run audit` | Built-in (agents run automatically) |
+
+---
+
+## OpenAI Integration
+
+All five blueprint agents are structured to support an OpenAI API call but run **fully deterministically** in the default mode — no API key required. The integration point is marked in each agent file:
+
+```typescript
+// OPENAI INTEGRATION POINT:
+//   const response = await openai.chat.completions.create({
+//     model: process.env.OPENAI_MODEL ?? "gpt-4o",
+//     messages: [
+//       { role: "system", content: readPrompt("ux.prompt.md") },
+//       { role: "user", content: JSON.stringify(businessData) },
+//     ],
+//     response_format: { type: "json_object" },
+//   });
+```
+
+To enable AI generation:
+1. Add `OPENAI_API_KEY=sk-...` to a `.env` file in the project root
+2. Replace the deterministic logic in each agent with the commented API call
+3. Parse the `response.choices[0].message.content` into the expected typed output
+
+The framework's Zod schema validates the agent output regardless of whether it comes from AI or local logic — so the pipeline stays safe either way.
 
 ---
 
 ## Industry Support
 
-The UX and SEO agents apply industry-specific defaults for color palette, typography, page strategy, JSON-LD schema type, and gallery content. Supported verticals:
+The UX and SEO agents apply industry-specific defaults for color palette, typography, page strategy, JSON-LD schema type, and gallery content. The Stitch SEO agent uses the same mapping to set the correct `@type` in the generated JSON-LD.
 
 | Industry keyword | Schema.org type | Palette style | Gallery seeds |
 |---|---|---|---|
@@ -308,32 +374,9 @@ Brand colors from `input/project.md` are wired into CSS custom properties applie
 
 The hero background is derived from `ux.heroStyle` — a structured field the UX Agent generates from the palette — so the hero always uses the actual brand gradient rather than defaulting to white.
 
-Gallery images use [picsum.photos](https://picsum.photos) with deterministic seeds for realistic layout previews. Replace the URLs in `site.config.ts` with real photos before going live.
+In the Stitch generator, these same values are embedded directly into each page's generation prompt so Stitch stays constrained to the blueprint's brand.
 
----
-
-## OpenAI Integration
-
-All five agents are structured to support an OpenAI API call but run **fully deterministically** in the default mode — no API key required. The integration point is marked in each agent file:
-
-```typescript
-// OPENAI INTEGRATION POINT:
-//   const response = await openai.chat.completions.create({
-//     model: process.env.OPENAI_MODEL ?? "gpt-4o",
-//     messages: [
-//       { role: "system", content: readPrompt("ux.prompt.md") },
-//       { role: "user", content: JSON.stringify(businessData) },
-//     ],
-//     response_format: { type: "json_object" },
-//   });
-```
-
-To enable AI generation:
-1. Add `OPENAI_API_KEY=sk-...` to a `.env` file in the project root
-2. Replace the deterministic logic in each agent with the commented API call
-3. Parse the `response.choices[0].message.content` into the expected typed output
-
-The framework's Zod schema validates the agent output regardless of whether it comes from AI or local logic — so the pipeline stays safe either way.
+Gallery images use [picsum.photos](https://picsum.photos) in the template generator. The Stitch generator uses Gemini-generated images via Google's CDN. Replace the URLs before going live.
 
 ---
 
@@ -352,6 +395,25 @@ Booking links point to third-party platforms the business already uses (Vagaro, 
 
 ---
 
+## Deployment
+
+Both `output/static-site/` and `output/stitch-site/` are pure static HTML/CSS/JS with no Node.js runtime required. Deploy either folder anywhere:
+
+```bash
+# AWS S3 + CloudFront
+aws s3 sync output/stitch-site/ s3://your-bucket --delete
+
+# Netlify
+netlify deploy --prod --dir output/stitch-site
+
+# Vercel
+vercel --prebuilt output/stitch-site
+
+# GitHub Pages — copy contents into your gh-pages branch
+```
+
+---
+
 ## Repository Structure
 
 ```
@@ -366,18 +428,27 @@ stitchfy/
 │
 ├── framework/
 │   ├── orchestrator/
-│   │   ├── orchestrator.ts       ← Pipeline driver (9 steps)
-│   │   ├── agent-runner.ts       ← Runs each agent, handles errors
+│   │   ├── orchestrator.ts       ← Blueprint pipeline driver (9 steps)
+│   │   ├── agent-runner.ts       ← Runs each blueprint agent, handles errors
 │   │   └── workflow-state.ts     ← Shared state passed between agents
 │   ├── agents/
-│   │   ├── intake.agent.ts       ← Stage 1: business data extraction
-│   │   ├── ux.agent.ts           ← Stage 2: UX strategy + hero spec
-│   │   ├── seo.agent.ts          ← Stage 3: meta tags + structured data
-│   │   ├── accessibility.agent.ts← Stage 4: WCAG 2.1 AA checklist
-│   │   └── frontend.agent.ts     ← Stage 5: component map + routes
+│   │   ├── intake.agent.ts       ← Blueprint stage 1: business data extraction
+│   │   ├── ux.agent.ts           ← Blueprint stage 2: UX strategy + hero spec
+│   │   ├── seo.agent.ts          ← Blueprint stage 3: meta tags + structured data
+│   │   ├── accessibility.agent.ts← Blueprint stage 4: WCAG 2.1 AA checklist
+│   │   ├── frontend.agent.ts     ← Blueprint stage 5: component map + routes
+│   │   ├── stitch-seo.agent.ts   ← Stitch review: SEO audit + JSON-LD patch
+│   │   ├── stitch-a11y.agent.ts  ← Stitch review: A11y audit + attribute patches
+│   │   └── stitch-html-review.types.ts ← Shared types for review agents
 │   ├── core/
-│   │   ├── site-generator.ts     ← Blueprint → Next.js source code
-│   │   ├── report-generator.ts   ← Static HTML audit reports
+│   │   ├── site-generator.ts     ← Blueprint → Next.js source code (template)
+│   │   ├── stitch-client.ts      ← Google Stitch MCP JSON-RPC 2.0 client
+│   │   ├── stitch-generator.ts   ← Stitch pipeline orchestrator
+│   │   ├── stitch-prompt-builder.ts ← Blueprint → per-page Stitch prompt
+│   │   ├── stitch-post-processor.ts ← Injects SEO meta + base a11y into Stitch HTML
+│   │   ├── stitch-patcher.ts     ← Applies agent patches to HTML string
+│   │   ├── stitch-review-reporter.ts ← Generates stitch-review-report.html
+│   │   ├── report-generator.ts   ← Static HTML audit reports (template generator)
 │   │   ├── markdown-parser.ts    ← Parses input/project.md
 │   │   └── blueprint-writer.ts   ← Writes output/blueprint/*.json
 │   ├── schemas/
@@ -396,17 +467,25 @@ stitchfy/
 │
 ├── scripts/
 │   ├── run-stitchfy.ts           ← Entry point: npm run stitchfy
-│   ├── build-site.ts             ← Entry point: npm run build:site
+│   ├── build-site.ts             ← Entry point: npm run build:site (template)
+│   ├── build-site-stitch.ts      ← Entry point: npm run build:site:stitch
 │   ├── audit-site.ts             ← Entry point: npm run audit
 │   └── validate.ts               ← Entry point: npm run validate
 │
 ├── output/                       ← All generated artifacts (gitignored)
 │   ├── blueprint/
-│   ├── generated-site/
-│   ├── static-site/
+│   ├── generated-site/           ← Next.js source (template generator)
+│   ├── static-site/              ← Deployable HTML (template generator)
+│   ├── stitch-site/              ← Deployable HTML (Stitch generator)
 │   └── reports/
+│       ├── accessibility-report.html
+│       ├── seo-report.html
+│       ├── final-report.html
+│       └── stitch-review-report.html
 │
-├── assets/                       ← Project images and diagrams
+├── examples/
+├── assets/
+├── .env.example                  ← OPENAI_API_KEY + STITCH_API_KEY placeholders
 ├── LICENSE
 ├── NOTICE
 └── package.json
@@ -418,10 +497,11 @@ stitchfy/
 
 1. Fork the repository
 2. Create a feature branch: `git checkout -b feature/my-feature`
-3. Agents live in `framework/agents/` — one file per stage, following the `AgentConfig` interface in `framework/orchestrator/agent-runner.ts`
-4. Add or update the Zod schema in `framework/schemas/blueprint.schema.ts` for any new blueprint fields
-5. Keep TypeScript types in `framework/schemas/blueprint.types.ts` in sync with the Zod schema
-6. Run `npm run typecheck` before submitting a pull request
+3. Blueprint agents live in `framework/agents/` — one file per stage, following the `AgentConfig` interface in `framework/orchestrator/agent-runner.ts`
+4. Stitch review agents live in `framework/agents/stitch-*.agent.ts` — implement `reviewSEO` / `reviewA11y` returning `HtmlReviewResult` from `stitch-html-review.types.ts`
+5. Add or update the Zod schema in `framework/schemas/blueprint.schema.ts` for any new blueprint fields
+6. Keep TypeScript types in `framework/schemas/blueprint.types.ts` in sync with the Zod schema
+7. Run `npm run typecheck` before submitting a pull request
 
 When adding a new component to `site-template/components/`, the site generator picks it up automatically — no additional copy step needed.
 
@@ -435,4 +515,4 @@ Copyright 2024–2025 Devify LLC
 
 ---
 
-*Stitchfy v2.0.0 — Built by [Devify LLC](https://github.com/devifyllc)*
+*Stitchfy v2.1.0 — Built by [Devify LLC](https://github.com/devifyllc)*
