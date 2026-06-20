@@ -13,6 +13,7 @@
     "validate": "tsx scripts/validate.ts",
     "build:site": "tsx scripts/build-site.ts",
     "audit": "tsx scripts/audit-site.ts",
+    "build:site:stitch": "tsx scripts/build-site-stitch.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
