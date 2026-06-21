@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stitch Review Report</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #f8f9fa; color: #1a1a2e; line-height: 1.6; }
+  .header { background: linear-gradient(135deg, #b30069 0%, #7a004a 100%); color: #fff; padding: 2rem 2.5rem; }
+  .header h1 { font-size: 1.6rem; font-weight: 700; }
+  .header p  { font-size: 0.875rem; opacity: .8; margin-top: .25rem; }
+  .summary { display: flex; gap: 1rem; padding: 1.5rem 2.5rem; background: #fff; border-bottom: 1px solid #e5e7eb; flex-wrap: wrap; }
+  .stat { background: #f3f4f6; border-radius: 8px; padding: .75rem 1.25rem; min-width: 130px; text-align: center; }
+  .stat .num { font-size: 1.75rem; font-weight: 700; }
+  .stat .lbl { font-size: .75rem; color: #6b7280; text-transform: uppercase; letter-spacing: .05em; }
+  .stat.green .num { color: #059669; }
+  .stat.red   .num { color: #dc2626; }
+  .stat.amber .num { color: #d97706; }
+  .stat.blue  .num { color: #2563eb; }
+  .content { max-width: 960px; margin: 2rem auto; padding: 0 1.5rem 3rem; }
+  .page-card { background: #fff; border-radius: 10px; border: 1px solid #e5e7eb; margin-bottom: 1.5rem; overflow: hidden; }
+  .page-header { background: #f9fafb; border-bottom: 1px solid #e5e7eb; padding: .9rem 1.25rem; display: flex; align-items: center; justify-content: space-between; }
+  .page-title { font-weight: 700; font-size: 1rem; }
+  .page-route { font-size: .8rem; color: #6b7280; background: #e5e7eb; border-radius: 4px; padding: .15rem .5rem; font-family: monospace; }
+  .page-body { padding: 1.25rem; }
+  .section-label { font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: #6b7280; margin-bottom: .6rem; margin-top: 1rem; }
+  .section-label:first-child { margin-top: 0; }
+  .patch-list, .finding-list { list-style: none; display: flex; flex-direction: column; gap: .4rem; }
+  .patch-item { display: flex; align-items: flex-start; gap: .5rem; font-size: .875rem; }
+  .patch-item::before { content: "✓"; color: #059669; font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+  .patch-skipped::before { content: "–"; color: #9ca3af; }
+  .finding-item { border-radius: 6px; padding: .6rem .9rem; font-size: .875rem; border-left: 4px solid; }
+  .finding-error   { background: #fef2f2; border-color: #dc2626; }
+  .finding-warning { background: #fffbeb; border-color: #d97706; }
+  .finding-info    { background: #eff6ff; border-color: #2563eb; }
+  .badge { display: inline-block; border-radius: 4px; padding: .15rem .45rem; font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; margin-right: .4rem; }
+  .badge-error   { background: #fee2e2; color: #b91c1c; }
+  .badge-warning { background: #fef3c7; color: #92400e; }
+  .badge-info    { background: #dbeafe; color: #1e40af; }
+  .badge-seo  { background: #f3e8ff; color: #7c3aed; }
+  .badge-a11y { background: #ecfdf5; color: #065f46; }
+  .rec { margin-top: .3rem; font-size: .8rem; color: #4b5563; }
+  .empty { color: #9ca3af; font-size: .875rem; font-style: italic; }
+  .disclaimer { margin-top: 2rem; padding: 1rem 1.25rem; background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; font-size: .8rem; color: #6b7280; }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>Stitchfy · Stitch Review Report</h1>
+  <p>Generated 6/20/2026, 6:11:29 PM · 4 page(s) reviewed</p>
+</div>
+<div class="summary">
+  <div class="stat green"><div class="num">25</div><div class="lbl">Auto-patched</div></div>
+  <div class="stat red">  <div class="num">5</div>  <div class="lbl">Errors</div></div>
+  <div class="stat amber"><div class="num">5</div><div class="lbl">Warnings</div></div>
+  <div class="stat blue"> <div class="num">4</div>   <div class="lbl">Info</div></div>
+</div>
+<div class="content">
+<div class="page-card">
+  <div class="page-header">
+    <span class="page-title">home</span>
+    <span class="page-route">/</span>
+  </div>
+  <div class="page-body">
+    <div class="section-label">Auto-patched (7)</div>
+    <ul class="patch-list"><li class="patch-item">JSON-LD: fix @type (BeautySalon), url, and opening hours format</li><li class="patch-item">Convert data-alt to alt on all &lt;img&gt; elements (WCAG 1.1.1)</li><li class="patch-item">Add aria-label=&quot;Main navigation&quot; to unlabelled &lt;nav&gt; (WCAG 1.3.6)</li><li class="patch-item">Add aria-label to mobile menu button (WCAG 4.1.2)</li><li class="patch-item">Add aria-hidden=&quot;true&quot; to decorative icon &quot;location_on&quot; (WCAG 1.1.1)</li><li class="patch-item">Add aria-hidden=&quot;true&quot; to decorative icon &quot;arrow_forward&quot; (WCAG 1.1.1)</li><li class="patch-item">Add aria-hidden=&quot;true&quot; to decorative icon &quot;menu&quot; (WCAG 1.1.1)</li></ul>
+    <div class="section-label">Manual review required (5)</div>
+    <div class="finding-item finding-error">
+  <span class="badge badge-error">error</span>
+  <span class="badge badge-seo">seo</span>
+  <strong>SEO: og:image missing</strong><br>
+  No og:image meta tag found. Social sharing previews will have no image.
+  <div class="rec">→ Add &lt;meta property=&quot;og:image&quot; content=&quot;https://yourdomain.com/og-image.jpg&quot;&gt; in the blueprint's openGraph config.</div>
+</div><div class="finding-item finding-error">
+  <span class="badge badge-error">error</span>
+  <span class="badge badge-seo">seo</span>
+  <strong>SEO: meta description is internal blueprint text</strong><br>
+  Meta description appears to be the page's internal purpose field: &quot;Welcome to Glow &amp;amp; Go Beauty Bar. Convert visitors to bookings; showcase bran...&quot;
+  <div class="rec">→ Replace with a consumer-facing description (50–160 chars) before deploying. Update seo.pageMeta in the blueprint.</div>
+</div><div class="finding-item finding-warning">
+  <span class="badge badge-warning">warning</span>
+  <span class="badge badge-seo">seo</span>
+  <strong>SEO: title too long</strong><br>
+  Page title is 68 chars. Google truncates at ~60 in SERPs.
+  <div class="rec">→ Shorten the title in the blueprint's seo.pageMeta for this page.</div>
+</div><div class="finding-item finding-warning">
+  <span class="badge badge-warning">warning</span>
+  <span class="badge badge-seo">seo</span>
+  <strong>SEO: canonical URL is relative</strong><br>
+  Canonical link is set to &quot;/&quot; (relative). Search engines expect an absolute URL.
+  <div class="rec">→ Set openGraph.url in the blueprint (e.g. https://glowandgobar.com) before deploying.</div>
+</div><div class="finding-item finding-info">
+  <span class="badge badge-info">info</span>
+  <span class="badge badge-accessibility">accessibility</span>
+  <strong>WCAG 1.3.1: footer navigation landmark</strong><br>
+  Footer contains links but no &lt;nav&gt; landmark. Keyboard and AT users cannot jump to footer nav.
+  <div class="rec">→ Wrap footer links in &lt;nav aria-label=&quot;Footer navigation&quot;&gt;. This is a structural change — not auto-patched.</div>
+</div>
+  </div>
+</div>
+<div class="page-card">
+  <div class="page-header">
+    <span class="page-title">services-pricing</span>
+    <span class="page-route">/services-pricing</span>
+  </div>
+  <div class="page-body">
+    <div class="section-label">Auto-patched (7)</div>
+    <ul class="patch-list"><li class="patch-item">Convert data-alt to alt on all &lt;img&gt; elements (WCAG 1.1.1)</li><li class="patch-item">Add aria-label=&quot;Main navigation&quot; to unlabelled &lt;nav&gt; (WCAG 1.3.6)</li><li class="patch-item">Add aria-label to mobile menu button (WCAG 4.1.2)</li><li class="patch-item">Add aria-hidden=&quot;true&quot; to decorative icon &quot;location_on&quot; (WCAG 1.1.1)</li><li class="patch-item">Add aria-hidden=&quot;true&quot; to decorative icon &quot;schedule&quot; (WCAG 1.1.1)</li><li class="patch-item">Add aria-hidden=&quot;true&quot; to decorative icon &quot;arrow_forward&quot; (WCAG 1.1.1)</li><li class="patch-item">Add aria-hidden=&quot;true&quot; to decorative icon &quot;menu&quot; (WCAG 1.1.1)</li></ul>
+    <div class="section-label">Manual review required (3)</div>
+    <div class="finding-item finding-error">
+  <span class="badge badge-error">error</span>
+  <span class="badge badge-seo">seo</span>
+  <strong>SEO: og:image missing</strong><br>
+  No og:image meta tag found. Social sharing previews will have no image.
+  <div class="rec">→ Add &lt;meta property=&quot;og:image&quot; content=&quot;https://yourdomain.com/og-image.jpg&quot;&gt; in the blueprint's openGraph config.</div>
+</div><div class="finding-item finding-warning">
+  <span class="badge badge-warning">warning</span>
+  <span class="badge badge-seo">seo</span>
+  <strong>SEO: canonical URL is relative</strong><br>
+  Canonical link is set to &quot;/&quot; (relative). Search engines expect an absolute URL.
+  <div class="rec">→ Set openGraph.url in the blueprint (e.g. https://glowandgobar.com) before deploying.</div>
+</div><div class="finding-item finding-info">
+  <span class="badge badge-info">info</span>
+  <span class="badge badge-accessibility">accessibility</span>
+  <strong>WCAG 1.3.1: footer navigation landmark</strong><br>
+  Footer contains links but no &lt;nav&gt; landmark. Keyboard and AT users cannot jump to footer nav.
+  <div class="rec">→ Wrap footer links in &lt;nav aria-label=&quot;Footer navigation&quot;&gt;. This is a structural change — not auto-patched.</div>
+</div>
+  </div>
+</div>
+<div class="page-card">
+  <div class="page-header">
+    <span class="page-title">book-now</span>
+    <span class="page-route">/book-now</span>
+  </div>
+  <div class="page-body">
+    <div class="section-label">Auto-patched (7)</div>
+    <ul class="patch-list"><li class="patch-item">Add aria-label=&quot;Main navigation&quot; to unlabelled &lt;nav&gt; (WCAG 1.3.6)</li><li class="patch-item">Add aria-label to mobile menu button (WCAG 4.1.2)</li><li class="patch-item">Add aria-hidden=&quot;true&quot; to decorative icon &quot;location_on&quot; (WCAG 1.1.1)</li><li class="patch-item">Add aria-hidden=&quot;true&quot; to decorative icon &quot;schedule&quot; (WCAG 1.1.1)</li><li class="patch-item">Add aria-hidden=&quot;true&quot; to decorative icon &quot;arrow_forward&quot; (WCAG 1.1.1)</li><li class="patch-item">Add aria-hidden=&quot;true&quot; to decorative icon &quot;phone&quot; (WCAG 1.1.1)</li><li class="patch-item">Add aria-hidden=&quot;true&quot; to decorative icon &quot;menu&quot; (WCAG 1.1.1)</li></ul>
+    <div class="section-label">Manual review required (4)</div>
+    <div class="finding-item finding-error">
+  <span class="badge badge-error">error</span>
+  <span class="badge badge-seo">seo</span>
+  <strong>SEO: og:image missing</strong><br>
+  No og:image meta tag found. Social sharing previews will have no image.
+  <div class="rec">→ Add &lt;meta property=&quot;og:image&quot; content=&quot;https://yourdomain.com/og-image.jpg&quot;&gt; in the blueprint's openGraph config.</div>
+</div><div class="finding-item finding-warning">
+  <span class="badge badge-warning">warning</span>
+  <span class="badge badge-seo">seo</span>
+  <strong>SEO: canonical URL is relative</strong><br>
+  Canonical link is set to &quot;/&quot; (relative). Search engines expect an absolute URL.
+  <div class="rec">→ Set openGraph.url in the blueprint (e.g. https://glowandgobar.com) before deploying.</div>
+</div><div class="finding-item finding-warning">
+  <span class="badge badge-warning">warning</span>
+  <span class="badge badge-accessibility">accessibility</span>
+  <strong>WCAG 2.4.7: focus visible</strong><br>
+  Found 3 uses of focus:outline-none. One (the menu button) is auto-patched. Others may suppress focus indicators.
+  <div class="rec">→ Search for focus:outline-none in the page and replace with focus:ring-* utilities.</div>
+</div><div class="finding-item finding-info">
+  <span class="badge badge-info">info</span>
+  <span class="badge badge-accessibility">accessibility</span>
+  <strong>WCAG 1.3.1: footer navigation landmark</strong><br>
+  Footer contains links but no &lt;nav&gt; landmark. Keyboard and AT users cannot jump to footer nav.
+  <div class="rec">→ Wrap footer links in &lt;nav aria-label=&quot;Footer navigation&quot;&gt;. This is a structural change — not auto-patched.</div>
+</div>
+  </div>
+</div>
+<div class="page-card">
+  <div class="page-header">
+    <span class="page-title">contact</span>
+    <span class="page-route">/contact</span>
+  </div>
+  <div class="page-body">
+    <div class="section-label">Auto-patched (4)</div>
+    <ul class="patch-list"><li class="patch-item">Add aria-label=&quot;Main navigation&quot; to unlabelled &lt;nav&gt; (WCAG 1.3.6)</li><li class="patch-item">Add aria-label to mobile menu button (WCAG 4.1.2)</li><li class="patch-item">Add aria-hidden=&quot;true&quot; to decorative icon &quot;location_on&quot; (WCAG 1.1.1)</li><li class="patch-item">Add aria-hidden=&quot;true&quot; to decorative icon &quot;menu&quot; (WCAG 1.1.1)</li></ul>
+    <div class="section-label">Manual review required (2)</div>
+    <div class="finding-item finding-error">
+  <span class="badge badge-error">error</span>
+  <span class="badge badge-seo">seo</span>
+  <strong>SEO: og:image missing</strong><br>
+  No og:image meta tag found. Social sharing previews will have no image.
+  <div class="rec">→ Add &lt;meta property=&quot;og:image&quot; content=&quot;https://yourdomain.com/og-image.jpg&quot;&gt; in the blueprint's openGraph config.</div>
+</div><div class="finding-item finding-info">
+  <span class="badge badge-info">info</span>
+  <span class="badge badge-accessibility">accessibility</span>
+  <strong>WCAG 1.3.1: footer navigation landmark</strong><br>
+  Footer contains links but no &lt;nav&gt; landmark. Keyboard and AT users cannot jump to footer nav.
+  <div class="rec">→ Wrap footer links in &lt;nav aria-label=&quot;Footer navigation&quot;&gt;. This is a structural change — not auto-patched.</div>
+</div>
+  </div>
+</div>
+<div class="disclaimer">
+  <strong>Note:</strong> Auto-patches are attribute-level only (aria-label, alt, aria-hidden, JSON-LD rewrite).
+  No structural changes were made. Findings marked <em>error</em> or <em>warning</em> require human review
+  before deploying to production. This report does not constitute a full WCAG or legal compliance audit.
+</div>
+</div>
+</body>
+</html>

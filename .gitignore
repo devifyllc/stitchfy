@@ -109,6 +109,8 @@ output/generated-site/**
 !output/generated-site/.gitkeep
 output/static-site/**
 !output/static-site/.gitkeep
+output/stitch-site/**
+!output/stitch-site/.gitkeep
 output/reports/*.md
 output/reports/*.json
 !output/reports/.gitkeep

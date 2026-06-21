@@ -1,6 +1,6 @@
 {
   "name": "stitchfy",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "AI-powered Markdown-to-static-website framework for small and mid-sized businesses",
   "license": "Apache-2.0",
   "author": "Devify LLC",
@@ -12,7 +12,10 @@
     "stitchfy": "tsx scripts/run-stitchfy.ts",
     "validate": "tsx scripts/validate.ts",
     "build:site": "tsx scripts/build-site.ts",
+    "build:site:stitch": "tsx scripts/build-site-stitch.ts",
     "audit": "tsx scripts/audit-site.ts",
+    "audit:stitch": "tsx scripts/audit-site.ts --dir stitch",
+    "audit:both": "tsx scripts/audit-site.ts --dir both",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

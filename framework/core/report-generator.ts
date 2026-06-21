@@ -37,13 +37,16 @@ export interface ReportData {
 
 // ─── Entry points ─────────────────────────────────────────────────────────────
 
-export function generateReports(data: ReportData, outputDir: string): void {
+/**
+ * @param prefix  Optional filename prefix, e.g. "stitch-" → stitch-accessibility-report.html
+ */
+export function generateReports(data: ReportData, outputDir: string, prefix = ""): void {
   const reportsDir = path.join(outputDir, "reports");
   fs.mkdirSync(reportsDir, { recursive: true });
 
-  fs.writeFileSync(path.join(reportsDir, "accessibility-report.html"), generateAccessibilityReport(data));
-  fs.writeFileSync(path.join(reportsDir, "seo-report.html"), generateSEOReport(data));
-  fs.writeFileSync(path.join(reportsDir, "final-report.html"), generateFinalReport(data));
+  fs.writeFileSync(path.join(reportsDir, `${prefix}accessibility-report.html`), generateAccessibilityReport(data));
+  fs.writeFileSync(path.join(reportsDir, `${prefix}seo-report.html`), generateSEOReport(data));
+  fs.writeFileSync(path.join(reportsDir, `${prefix}final-report.html`), generateFinalReport(data));
 }
 
 // ─── Static HTML analysis ──────────────────────────────────────────────────────
