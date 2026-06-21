@@ -12,8 +12,10 @@
     "stitchfy": "tsx scripts/run-stitchfy.ts",
     "validate": "tsx scripts/validate.ts",
     "build:site": "tsx scripts/build-site.ts",
-    "audit": "tsx scripts/audit-site.ts",
     "build:site:stitch": "tsx scripts/build-site-stitch.ts",
+    "audit": "tsx scripts/audit-site.ts",
+    "audit:stitch": "tsx scripts/audit-site.ts --dir stitch",
+    "audit:both": "tsx scripts/audit-site.ts --dir both",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

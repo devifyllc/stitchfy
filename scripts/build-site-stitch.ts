@@ -2,17 +2,12 @@
 /**
  * build-site-stitch — Generates a static website via Google Stitch MCP.
  *
- * Unlike build-site (which uses template-based code generation), this script
- * sends each page through the Stitch AI design pipeline and assembles the
- * resulting HTML into a deployable site.
- *
  * Steps:
- *   1. Read output/blueprint/website-blueprint.v1.json (or --blueprint path)
- *   2. Create a Stitch project for this business
- *   3. Generate one AI screen per blueprint page (uses STITCH_MODEL, default: GEMINI_3_PRO)
- *   4. Call build_site — maps all screens to routes, returns full HTML per page
- *   5. Post-process — inject SEO meta tags, JSON-LD, skip link, lang attribute
- *   6. Write output/stitch-site/{route}/index.html for every page
+ *   1. Read blueprint
+ *   2. Generate pages via Stitch (create project → screens → get HTML →
+ *      post-process → SEO/A11y agent review → patch → write)
+ *   3. Run general HTML audit on output/stitch-site/ → stitch-*.html reports
+ *   4. Done
  *
  * Requirements:
  *   STITCH_API_KEY must be set in .env or the environment.
@@ -20,24 +15,27 @@
  * Usage:
  *   npm run build:site:stitch
  *   npm run build:site:stitch -- --blueprint path/to/blueprint.json
+ *   npm run build:site:stitch -- --no-audit   (skip step 3)
  *   STITCH_MODEL=GEMINI_3_FLASH npm run build:site:stitch
  */
 
 import * as fs from "fs";
 import * as path from "path";
 import { generateWithStitch } from "../framework/core/stitch-generator.js";
+import { runAudit } from "./audit-site.js";
 import type { WebsiteBlueprint } from "../framework/schemas/blueprint.types.js";
 
-// Load .env if present (Node 18 does not auto-load .env)
 loadDotEnv(path.resolve(".env"));
 
 const args = process.argv.slice(2);
-const getBlueprintPath = (): string => {
-  const i = args.indexOf("--blueprint");
-  return i !== -1 && args[i + 1]
-    ? path.resolve(args[i + 1])
-    : path.resolve("output/blueprint/website-blueprint.v1.json");
-};
+
+function getArg(flag: string): string | undefined {
+  const i = args.indexOf(flag);
+  return i !== -1 && args[i + 1] ? args[i + 1] : undefined;
+}
+
+const blueprintPath = path.resolve(getArg("--blueprint") ?? "output/blueprint/website-blueprint.v1.json");
+const skipAudit     = args.includes("--no-audit");
 
 const DIVIDER = "━".repeat(52);
 
@@ -49,13 +47,13 @@ function warn(msg: string) { console.warn(`  ⚠  ${msg}`); }
 function fail(msg: string) { console.error(`  ✗  ${msg}`); }
 
 async function main() {
+  const TOTAL = skipAudit ? 3 : 4;
+
   console.log(`\n${DIVIDER}`);
   console.log("  Stitchfy v2 — Build with Google Stitch");
   console.log(DIVIDER);
 
-  const blueprintPath = getBlueprintPath();
-  const outputDir     = path.resolve("output/stitch-site");
-  const TOTAL         = 3;
+  const outputDir = path.resolve("output/stitch-site");
 
   // ── Step 1: Read blueprint ──────────────────────────────────────────────────
   step(1, TOTAL, "Reading blueprint");
@@ -74,12 +72,9 @@ async function main() {
     process.exit(1);
   }
 
-  ok(
-    `Blueprint loaded — ${blueprint.pages.length} pages` +
-    ` | ${blueprint.business.name} | ${blueprint.business.industry}`
-  );
+  ok(`Blueprint loaded — ${blueprint.pages.length} pages | ${blueprint.business.name} | ${blueprint.business.industry}`);
   console.log(`  Output: ${outputDir}`);
-  console.log(`  Model:  ${process.env.STITCH_MODEL ?? "GEMINI_3_PRO"}`);
+  console.log(`  Model:  ${process.env.STITCH_MODEL ?? "GEMINI_3_1_PRO"}`);
 
   if (!process.env.STITCH_API_KEY) {
     fail("STITCH_API_KEY is not set.");
@@ -91,11 +86,7 @@ async function main() {
   step(2, TOTAL, `Generating ${blueprint.pages.length} page(s) via Stitch MCP`);
   console.log("  (Each page goes through Gemini — this may take 30–90 seconds per page)\n");
 
-  const result = await generateWithStitch(
-    blueprint,
-    outputDir,
-    (msg) => console.log(`  ${msg}`)
-  );
+  const result = await generateWithStitch(blueprint, outputDir, (msg) => console.log(`  ${msg}`));
 
   for (const e of result.errors)   fail(e);
   for (const w of result.warnings) warn(w);
@@ -107,20 +98,47 @@ async function main() {
 
   ok(`${result.pagesGenerated} page(s) written to output/stitch-site/`);
   ok(`Stitch project ID: ${result.projectId}`);
-  if (result.reportPath) ok(`Review report: ${result.reportPath}`);
+  if (result.reportPath) ok(`Inline review report: ${path.relative(process.cwd(), result.reportPath)}`);
 
-  // ── Step 3: Done ────────────────────────────────────────────────────────────
-  step(3, TOTAL, "Done");
+  // ── Step 3: General HTML audit ──────────────────────────────────────────────
+  if (!skipAudit) {
+    step(3, TOTAL, "Running general HTML audit on output/stitch-site/");
+
+    const auditResult = await runAudit(
+      blueprint,
+      outputDir,
+      path.resolve("output"),
+      "stitch-",
+      (msg) => console.log(`  ${msg}`)
+    );
+
+    for (const r of auditResult.reportsWritten) ok(r);
+
+    if (auditResult.passCount + auditResult.warnCount + auditResult.failCount > 0) {
+      ok(`HTML checks: ${auditResult.passCount} passed, ${auditResult.warnCount} warnings, ${auditResult.failCount} failures`);
+    }
+    if (auditResult.failCount > 0) {
+      warn(`${auditResult.failCount} check(s) failed — review output/reports/stitch-accessibility-report.html`);
+    }
+  }
+
+  // ── Step 4: Done ────────────────────────────────────────────────────────────
+  step(TOTAL, TOTAL, "Done");
 
   console.log(`\n${DIVIDER}`);
   console.log("  Stitch site ready at output/stitch-site/");
   console.log("  Open output/stitch-site/index.html to preview locally.");
-  console.log('  Run "npm run audit" to check accessibility and SEO.');
+  console.log("  Reports → output/reports/");
+  console.log("    → stitch-review-report.html      (inline agent review)");
+  if (!skipAudit) {
+    console.log("    → stitch-accessibility-report.html (general HTML audit)");
+    console.log("    → stitch-seo-report.html            (general SEO audit)");
+    console.log("    → stitch-final-report.html          (pipeline summary)");
+  }
   console.log(`${DIVIDER}\n`);
 }
 
 // ─── Minimal .env loader ──────────────────────────────────────────────────────
-// Keeps the script self-contained without requiring dotenv as a dependency.
 
 function loadDotEnv(envPath: string) {
   if (!fs.existsSync(envPath)) return;
@@ -132,9 +150,7 @@ function loadDotEnv(envPath: string) {
     if (eq === -1) continue;
     const key = line.slice(0, eq).trim();
     const val = line.slice(eq + 1).trim().replace(/^["']|["']$/g, "");
-    if (key && !(key in process.env)) {
-      process.env[key] = val;
-    }
+    if (key && !(key in process.env)) process.env[key] = val;
   }
 }
 
