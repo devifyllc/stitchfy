@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Accessibility Report — Glow &amp; Go Beauty Bar</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body { font-family: system-ui, -apple-system, sans-serif; margin: 0; color: #1a1a1a; background: #f8f8f6; line-height: 1.55; font-size: 15px; }
+    .report-header { background: #2c2c2c; color: #fff; padding: 2rem 2.5rem; }
+    .report-header h1 { font-size: 1.75rem; margin-bottom: 0.25rem; }
+    .report-header .business { font-size: 1.1rem; opacity: 0.75; margin-bottom: 1rem; }
+    .report-header .meta { font-size: 0.8rem; opacity: 0.5; display: flex; gap: 2rem; flex-wrap: wrap; }
+    main { max-width: 1100px; margin: 0 auto; padding: 2rem 2.5rem; }
+    h2 { font-size: 1.2rem; margin: 2.5rem 0 0.75rem; border-bottom: 2px solid #eee; padding-bottom: 0.4rem; color: #2c2c2c; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; font-size: 0.875rem; }
+    th { background: #2c2c2c; color: #fff; padding: 0.6rem 0.75rem; text-align: left; font-weight: 600; }
+    td { padding: 0.5rem 0.75rem; border-bottom: 1px solid #eee; vertical-align: top; }
+    tr:nth-child(even) td { background: #fafafa; }
+    code { font-family: monospace; background: #f0f0f0; padding: 0.1em 0.3em; border-radius: 3px; font-size: 0.85em; }
+    ul, ol { padding-left: 1.5rem; margin-bottom: 1rem; }
+    li { margin-bottom: 0.4rem; line-height: 1.5; }
+    .cards { display: flex; flex-wrap: wrap; gap: 1rem; margin: 1rem 0 2rem; }
+    .card { background: #fff; border: 1px solid #e5e5e5; border-radius: 8px; padding: 1rem 1.5rem; min-width: 160px; flex: 1; }
+    .card-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; opacity: 0.5; margin-bottom: 0.25rem; }
+    .card-value { font-size: 1.05rem; font-weight: 700; }
+    .disclaimer { background: #fff9e6; border-left: 4px solid #f0c040; padding: 1rem 1.25rem; margin: 1.5rem 0; border-radius: 0 6px 6px 0; font-size: 0.9rem; }
+    .note { font-size: 0.85rem; opacity: 0.6; font-style: italic; margin-bottom: 0.5rem; }
+    .badge { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; color: #fff; }
+    footer { text-align: center; padding: 2rem; font-size: 0.8rem; opacity: 0.5; border-top: 1px solid #eee; margin-top: 3rem; }
+    a { color: #C4847A; }
+  </style>
+</head>
+<body>
+
+    <div class="report-header">
+  <h1>Accessibility Report</h1>
+  <p class="business">Glow &amp; Go Beauty Bar</p>
+  <div class="meta">
+    <span>Generated: Jun 21, 2026, 3:00 AM</span>
+    <span>Framework: Stitchfy v2</span>
+    <span>Blueprint: output/blueprint/website-blueprint.v1.json</span>
+  </div>
+</div>
+<main>
+
+    <div class="disclaimer">
+      <strong>Disclaimer:</strong> Stitchfy completed an automated and structured
+      accessibility-oriented review against the framework checklist. This does not
+      constitute legal certification. ADA compliance for any specific deployment
+      requires independent legal counsel.
+    </div>
+
+    <div class="cards">
+      <div class="card">
+    <div class="card-label">Target Standard</div>
+    <div class="card-value" style="">WCAG 2.1 Level AA</div>
+  </div>
+      <div class="card">
+    <div class="card-label">Pages Reviewed</div>
+    <div class="card-value" style="">4</div>
+  </div>
+      <div class="card">
+    <div class="card-label">Checklist Items</div>
+    <div class="card-value" style="">30</div>
+  </div>
+      <div class="card">
+    <div class="card-label">HTML Checks Passed</div>
+    <div class="card-value" style="">41</div>
+  </div>
+      <div class="card">
+    <div class="card-label">Warnings</div>
+    <div class="card-value" style="">7</div>
+  </div>
+      <div class="card">
+    <div class="card-label">Status</div>
+    <div class="card-value" style="color: #c0392b;">⚠ Review needed</div>
+  </div>
+    </div>
+
+    <h2>Framework Checklist (from blueprint)</h2>
+    <p class="note">These checks are derived from the accessibility blueprint. Static HTML checks below verify implementation.</p>
+    <table>
+      <thead><tr><th>Rule</th><th>Description</th><th>Priority</th><th>Status</th></tr></thead>
+      <tbody><tr>
+        <td><code>skip-link</code></td>
+        <td>Skip to main content link is the first focusable element on every page</td>
+        <td><span class="badge" style="background:#c0392b">must</span></td>
+        <td><span class="badge" style="background:#7f8c8d">— SKIP</span></td>
+      </tr>
+<tr>
+        <td><code>lang-attribute</code></td>
+        <td>HTML &lt;html&gt; element has a valid lang attribute (e.g., lang='en')</td>
+        <td><span class="badge" style="background:#c0392b">must</span></td>
+        <td><span class="badge" style="background:#7f8c8d">— SKIP</span></td>
+      </tr>
+<tr>
+        <td><code>page-title</code></td>
+        <td>Each page has a unique, descriptive &lt;title&gt; element</td>
+        <td><span class="badge" style="background:#c0392b">must</span></td>
+        <td><span class="badge" style="background:#7f8c8d">— SKIP</span></td>
+      </tr>
+<tr>
+        <td><code>heading-order</code></td>
+        <td>Headings are used in order (H1 → H2 → H3) — no levels skipped</td>
+        <td><span class="badge" style="background:#c0392b">must</span></td>
+        <td><span class="badge" style="background:#7f8c8d">— SKIP</span></td>
+      </tr>
+<tr>
+        <td><code>one-h1</code></td>
+        <td>Each page has exactly one H1 element</td>
+        <td><span class="badge" style="background:#c0392b">must</span></td>
+        <td><span class="badge" style="background:#7f8c8d">— SKIP</span></td>
+      </tr>
+<tr>
+        <td><code>color-contrast-normal</code></td>
+        <td>Normal text achieves a minimum 4.5:1 contrast ratio (WCAG AA)</td>
+        <td><span class="badge" style="background:#c0392b">must</span></td>
+        <td><span class="badge" style="background:#7f8c8d">— SKIP</span></td>
+      </tr>
+<tr>
+        <td><code>color-contrast-large</code></td>
+        <td>Large text (18pt+ or 14pt+ bold) achieves a minimum 3:1 contrast ratio</td>
+        <td><span class="badge" style="background:#c0392b">must</span></td>
+        <td><span class="badge" style="background:#7f8c8d">— SKIP</span></td>
+      </tr>
+<tr>
+        <td><code>image-alt-text</code></td>
+        <td>All informational images have descriptive alt text; decorative images use alt=''</td>
+        <td><span class="badge" style="background:#c0392b">must</span></td>
+        <td><span class="badge" style="background:#7f8c8d">— SKIP</span></td>
+      </tr>
+<tr>
+        <td><code>interactive-accessible</code></td>
+        <td>All interactive elements (links, buttons) are operable via keyboard</td>
+        <td><span class="badge" style="background:#c0392b">must</span></td>
+        <td><span class="badge" style="background:#7f8c8d">— SKIP</span></td>
+      </tr>
+<tr>
+        <td><code>focus-visible</code></td>
+        <td>Keyboard focus state is clearly visible — min 3px outline, not removed with outline:none</td>
+        <td><span class="badge" style="background:#c0392b">must</span></td>
+        <td><span class="badge" style="background:#7f8c8d">— SKIP</span></td>
+      </tr>
+<tr>
+        <td><code>link-purpose</code></td>
+        <td>Link text describes the destination — no 'click here' or 'read more' without context</td>
+        <td><span class="badge" style="background:#c0392b">must</span></td>
+        <td><span class="badge" style="background:#7f8c8d">— SKIP</span></td>
+      </tr>
+<tr>
+        <td><code>button-accessible-name</code></td>
+        <td>All buttons have an accessible name (text content or aria-label)</td>
+        <td><span class="badge" style="background:#c0392b">must</span></td>
+        <td><span class="badge" style="background:#7f8c8d">— SKIP</span></td>
+      </tr>
+<tr>
+        <td><code>phone-tel-link</code></td>
+        <td>Phone numbers are wrapped in &lt;a href='tel:...'&gt; for mobile users</td>
+        <td><span class="badge" style="background:#c0392b">must</span></td>
+        <td><span class="badge" style="background:#7f8c8d">— SKIP</span></td>
+      </tr>
+<tr>
+        <td><code>address-element</code></td>
+        <td>Physical addresses use the &lt;address&gt; semantic element</td>
+        <td><span class="badge" style="background:#e67e22">should</span></td>
+        <td><span class="badge" style="background:#7f8c8d">— SKIP</span></td>
+      </tr>
+<tr>
+        <td><code>landmark-banner</code></td>
+        <td>Page has a &lt;header role='banner'&gt; landmark</td>
+        <td><span class="badge" style="background:#c0392b">must</span></td>
+        <td><span class="badge" style="background:#7f8c8d">— SKIP</span></td>
+      </tr>
+<tr>
+        <td><code>landmark-navigation</code></td>
+        <td>Page has a &lt;nav aria-label='...''&gt; landmark</td>
+        <td><span class="badge" style="background:#c0392b">must</span></td>
+        <td><span class="badge" style="background:#7f8c8d">— SKIP</span></td>
+      </tr>
+<tr>
+        <td><code>landmark-main</code></td>
+        <td>Page has a &lt;main id='main-content'&gt; landmark</td>
+        <td><span class="badge" style="background:#c0392b">must</span></td>
+        <td><span class="badge" style="background:#7f8c8d">— SKIP</span></td>
+      </tr>
+<tr>
+        <td><code>landmark-contentinfo</code></td>
+        <td>Page has a &lt;footer role='contentinfo'&gt; landmark</td>
+        <td><span class="badge" style="background:#c0392b">must</span></td>
+        <td><span class="badge" style="background:#7f8c8d">— SKIP</span></td>
+      </tr>
+<tr>
+        <td><code>list-semantic</code></td>
+        <td>Navigation and service lists use &lt;ul&gt;/&lt;ol&gt; with &lt;li&gt; elements</td>
+        <td><span class="badge" style="background:#c0392b">must</span></td>
+        <td><span class="badge" style="background:#7f8c8d">— SKIP</span></td>
+      </tr>
+<tr>
+        <td><code>reduced-motion</code></td>
+        <td>@media (prefers-reduced-motion) disables or reduces all animations and transitions</td>
+        <td><span class="badge" style="background:#e67e22">should</span></td>
+        <td><span class="badge" style="background:#7f8c8d">— SKIP</span></td>
+      </tr>
+<tr>
+        <td><code>touch-target-size</code></td>
+        <td>Interactive elements are at least 44×44px on touch devices</td>
+        <td><span class="badge" style="background:#e67e22">should</span></td>
+        <td><span class="badge" style="background:#7f8c8d">— SKIP</span></td>
+      </tr>
+<tr>
+        <td><code>no-auto-play</code></td>
+        <td>No audio or video autoplays — user must initiate all media</td>
+        <td><span class="badge" style="background:#c0392b">must</span></td>
+        <td><span class="badge" style="background:#7f8c8d">— SKIP</span></td>
+      </tr>
+<tr>
+        <td><code>viewport-zoom</code></td>
+        <td>Page does not disable user pinch-zoom (no user-scalable=no in viewport meta)</td>
+        <td><span class="badge" style="background:#c0392b">must</span></td>
+        <td><span class="badge" style="background:#7f8c8d">— SKIP</span></td>
+      </tr>
+<tr>
+        <td><code>text-resize</code></td>
+        <td>Content remains accessible and readable when text is resized to 200% in browser</td>
+        <td><span class="badge" style="background:#c0392b">must</span></td>
+        <td><span class="badge" style="background:#7f8c8d">— SKIP</span></td>
+      </tr>
+<tr>
+        <td><code>form-label-visible</code></td>
+        <td>All form inputs have a visible &lt;label&gt; — not placeholder-only labels</td>
+        <td><span class="badge" style="background:#c0392b">must</span></td>
+        <td><span class="badge" style="background:#7f8c8d">— SKIP</span></td>
+      </tr>
+<tr>
+        <td><code>form-label-linked</code></td>
+        <td>Labels are linked to inputs via matching for/id or wrapping &lt;label&gt;</td>
+        <td><span class="badge" style="background:#c0392b">must</span></td>
+        <td><span class="badge" style="background:#7f8c8d">— SKIP</span></td>
+      </tr>
+<tr>
+        <td><code>form-error-message</code></td>
+        <td>Validation errors are programmatically associated with the failing field via aria-describedby</td>
+        <td><span class="badge" style="background:#c0392b">must</span></td>
+        <td><span class="badge" style="background:#7f8c8d">— SKIP</span></td>
+      </tr>
+<tr>
+        <td><code>form-required-marked</code></td>
+        <td>Required fields are marked with aria-required='true' and a visible indicator</td>
+        <td><span class="badge" style="background:#c0392b">must</span></td>
+        <td><span class="badge" style="background:#7f8c8d">— SKIP</span></td>
+      </tr>
+<tr>
+        <td><code>gallery-alt-descriptive</code></td>
+        <td>Gallery images have service-specific alt text describing the treatment and result — not file names</td>
+        <td><span class="badge" style="background:#c0392b">must</span></td>
+        <td><span class="badge" style="background:#7f8c8d">— SKIP</span></td>
+      </tr>
+<tr>
+        <td><code>gallery-filter-accessible</code></td>
+        <td>Gallery filter buttons announce their active state via aria-pressed or aria-selected</td>
+        <td><span class="badge" style="background:#c0392b">must</span></td>
+        <td><span class="badge" style="background:#7f8c8d">— SKIP</span></td>
+      </tr></tbody>
+    </table>
+
+    <h2>Static HTML Analysis </h2>
+    <table>
+      <thead><tr><th>Page</th><th>Rule</th><th>Description</th><th>Status</th><th>Detail</th></tr></thead>
+      <tbody><tr>
+          <td>Home</td>
+          <td><code>lang-attribute</code></td>
+          <td>HTML lang attribute present</td>
+          <td><span class="badge" style="background:#27ae60">✓ PASS</span></td>
+          <td style="opacity:0.7; font-size:0.85rem"></td>
+        </tr>
+<tr>
+          <td>Home</td>
+          <td><code>page-title</code></td>
+          <td>Page has a descriptive title</td>
+          <td><span class="badge" style="background:#27ae60">✓ PASS</span></td>
+          <td style="opacity:0.7; font-size:0.85rem">&quot;Glow &amp;amp; Go Beauty Bar | Beauty Salon / Blowout Bar in Miami Beach, FL&quot;</td>
+        </tr>
+<tr>
+          <td>Home</td>
+          <td><code>meta-description</code></td>
+          <td>Meta description present</td>
+          <td><span class="badge" style="background:#27ae60">✓ PASS</span></td>
+          <td style="opacity:0.7; font-size:0.85rem">Check that content is non-empty and ≤ 160 characters</td>
+        </tr>
+<tr>
+          <td>Home</td>
+          <td><code>one-h1</code></td>
+          <td>Page has exactly one H1</td>
+          <td><span class="badge" style="background:#27ae60">✓ PASS</span></td>
+          <td style="opacity:0.7; font-size:0.85rem">Found 1 H1 element</td>
+        </tr>
+<tr>
+          <td>Home</td>
+          <td><code>skip-link</code></td>
+          <td>Skip-to-content link targets #main-content</td>
+          <td><span class="badge" style="background:#27ae60">✓ PASS</span></td>
+          <td style="opacity:0.7; font-size:0.85rem"></td>
+        </tr>
+<tr>
+          <td>Home</td>
+          <td><code>landmark-main</code></td>
+          <td>&lt;main id='main-content'&gt; landmark present</td>
+          <td><span class="badge" style="background:#27ae60">✓ PASS</span></td>
+          <td style="opacity:0.7; font-size:0.85rem"></td>
+        </tr>
+<tr>
+          <td>Home</td>
+          <td><code>landmark-banner</code></td>
+          <td>&lt;header role='banner'&gt; present</td>
+          <td><span class="badge" style="background:#c0392b">✗ FAIL</span></td>
+          <td style="opacity:0.7; font-size:0.85rem"></td>
+        </tr>
+<tr>
+          <td>Home</td>
+          <td><code>landmark-contentinfo</code></td>
+          <td>&lt;footer role='contentinfo'&gt; present</td>
+          <td><span class="badge" style="background:#c0392b">✗ FAIL</span></td>
+          <td style="opacity:0.7; font-size:0.85rem"></td>
+        </tr>
+<tr>
+          <td>Home</td>
+          <td><code>landmark-navigation</code></td>
+          <td>&lt;nav&gt; has aria-label</td>
+          <td><span class="badge" style="background:#27ae60">✓ PASS</span></td>
+          <td style="opacity:0.7; font-size:0.85rem"></td>
+        </tr>
+<tr>
+          <td>Home</td>
+          <td><code>image-alt-text</code></td>
+          <td>All &lt;img&gt; elements have alt attributes</td>
+          <td><span class="badge" style="background:#27ae60">✓ PASS</span></td>
+          <td style="opacity:0.7; font-size:0.85rem"></td>
+        </tr>
+<tr>
+          <td>Home</td>
+          <td><code>phone-tel-link</code></td>
+          <td>Phone numbers wrapped in tel: links</td>
+          <td><span class="badge" style="background:#e67e22">⚠ WARN</span></td>
+          <td style="opacity:0.7; font-size:0.85rem">2 phone number(s), 0 tel: link(s)</td>
+        </tr>
+<tr>
+          <td>Home</td>
+          <td><code>address-element</code></td>
+          <td>&lt;address&gt; element used for physical address</td>
+          <td><span class="badge" style="background:#e67e22">⚠ WARN</span></td>
+          <td style="opacity:0.7; font-size:0.85rem">Use &lt;address&gt; for physical location blocks</td>
+        </tr>
+<tr>
+          <td>Home</td>
+          <td><code>focus-visible</code></td>
+          <td>Focus outline not suppressed without replacement</td>
+          <td><span class="badge" style="background:#27ae60">✓ PASS</span></td>
+          <td style="opacity:0.7; font-size:0.85rem"></td>
+        </tr>
+<tr>
+          <td>Home</td>
+          <td><code>canonical</code></td>
+          <td>Canonical link tag present</td>
+          <td><span class="badge" style="background:#27ae60">✓ PASS</span></td>
+          <td style="opacity:0.7; font-size:0.85rem"></td>
+        </tr>
+<tr>
+          <td>Services &amp; Pricing</td>
+          <td><code>lang-attribute</code></td>
+          <td>HTML lang attribute present</td>
+          <td><span class="badge" style="background:#27ae60">✓ PASS</span></td>
+          <td style="opacity:0.7; font-size:0.85rem"></td>
+        </tr>
+<tr>
+          <td>Services &amp; Pricing</td>
+          <td><code>page-title</code></td>
+          <td>Page has a descriptive title</td>
+          <td><span class="badge" style="background:#27ae60">✓ PASS</span></td>
+          <td style="opacity:0.7; font-size:0.85rem">&quot;Services &amp;amp; Pricing | Glow &amp;amp; Go Beauty Bar&quot;</td>
+        </tr>
+<tr>
+          <td>Services &amp; Pricing</td>
+          <td><code>meta-description</code></td>
+          <td>Meta description present</td>
+          <td><span class="badge" style="background:#27ae60">✓ PASS</span></td>
+          <td style="opacity:0.7; font-size:0.85rem">Check that content is non-empty and ≤ 160 characters</td>
+        </tr>
+<tr>
+          <td>Services &amp; Pricing</td>
+          <td><code>one-h1</code></td>
+          <td>Page has exactly one H1</td>
+          <td><span class="badge" style="background:#27ae60">✓ PASS</span></td>
+          <td style="opacity:0.7; font-size:0.85rem">Found 1 H1 element</td>
+        </tr>
+<tr>
+          <td>Services &amp; Pricing</td>
+          <td><code>skip-link</code></td>
+          <td>Skip-to-content link targets #main-content</td>
+          <td><span class="badge" style="background:#27ae60">✓ PASS</span></td>
+          <td style="opacity:0.7; font-size:0.85rem"></td>
+        </tr>
+<tr>
+          <td>Services &amp; Pricing</td>
+          <td><code>landmark-main</code></td>
+          <td>&lt;main id='main-content'&gt; landmark present</td>
+          <td><span class="badge" style="background:#27ae60">✓ PASS</span></td>
+          <td style="opacity:0.7; font-size:0.85rem"></td>
+        </tr>
+<tr>
+          <td>Services &amp; Pricing</td>
+          <td><code>landmark-banner</code></td>
+          <td>&lt;header role='banner'&gt; present</td>
+          <td><span class="badge" style="background:#c0392b">✗ FAIL</span></td>
+          <td style="opacity:0.7; font-size:0.85rem"></td>
+        </tr>
+<tr>
+          <td>Services &amp; Pricing</td>
+          <td><code>landmark-contentinfo</code></td>
+          <td>&lt;footer role='contentinfo'&gt; present</td>
+          <td><span class="badge" style="background:#c0392b">✗ FAIL</span></td>
+          <td style="opacity:0.7; font-size:0.85rem"></td>
+        </tr>
+<tr>
+          <td>Services &amp; Pricing</td>
+          <td><code>landmark-navigation</code></td>
+          <td>&lt;nav&gt; has aria-label</td>
+          <td><span class="badge" style="background:#27ae60">✓ PASS</span></td>
+          <td style="opacity:0.7; font-size:0.85rem"></td>
+        </tr>
+<tr>
+          <td>Services &amp; Pricing</td>
+          <td><code>image-alt-text</code></td>
+          <td>All &lt;img&gt; elements have alt attributes</td>
+          <td><span class="badge" style="background:#27ae60">✓ PASS</span></td>
+          <td style="opacity:0.7; font-size:0.85rem"></td>
+        </tr>
+<tr>
+          <td>Services &amp; Pricing</td>
+          <td><code>phone-tel-link</code></td>
+          <td>Phone numbers wrapped in tel: links</td>
+          <td><span class="badge" style="background:#e67e22">⚠ WARN</span></td>
+          <td style="opacity:0.7; font-size:0.85rem">2 phone number(s), 0 tel: link(s)</td>
+        </tr>
+<tr>
+          <td>Services &amp; Pricing</td>
+          <td><code>address-element</code></td>
+          <td>&lt;address&gt; element used for physical address</td>
+          <td><span class="badge" style="background:#e67e22">⚠ WARN</span></td>
+          <td style="opacity:0.7; font-size:0.85rem">Use &lt;address&gt; for physical location blocks</td>
+        </tr>
+<tr>
+          <td>Services &amp; Pricing</td>
+          <td><code>focus-visible</code></td>
+          <td>Focus outline not suppressed without replacement</td>
+          <td><span class="badge" style="background:#27ae60">✓ PASS</span></td>
+          <td style="opacity:0.7; font-size:0.85rem"></td>
+        </tr>
+<tr>
+          <td>Services &amp; Pricing</td>
+          <td><code>canonical</code></td>
+          <td>Canonical link tag present</td>
+          <td><span class="badge" style="background:#27ae60">✓ PASS</span></td>
+          <td style="opacity:0.7; font-size:0.85rem"></td>
+        </tr>
+<tr>
+          <td>Book Now</td>
+          <td><code>lang-attribute</code></td>
+          <td>HTML lang attribute present</td>
+          <td><span class="badge" style="background:#27ae60">✓ PASS</span></td>
+          <td style="opacity:0.7; font-size:0.85rem"></td>
+        </tr>
+<tr>
+          <td>Book Now</td>
+          <td><code>page-title</code></td>
+          <td>Page has a descriptive title</td>
+          <td><span class="badge" style="background:#27ae60">✓ PASS</span></td>
+          <td style="opacity:0.7; font-size:0.85rem">&quot;Book Now | Glow &amp;amp; Go Beauty Bar&quot;</td>
+        </tr>
+<tr>
+          <td>Book Now</td>
+          <td><code>meta-description</code></td>
+          <td>Meta description present</td>
+          <td><span class="badge" style="background:#27ae60">✓ PASS</span></td>
+          <td style="opacity:0.7; font-size:0.85rem">Check that content is non-empty and ≤ 160 characters</td>
+        </tr>
+<tr>
+          <td>Book Now</td>
+          <td><code>one-h1</code></td>
+          <td>Page has exactly one H1</td>
+          <td><span class="badge" style="background:#27ae60">✓ PASS</span></td>
+          <td style="opacity:0.7; font-size:0.85rem">Found 1 H1 element</td>
+        </tr>
+<tr>
+          <td>Book Now</td>
+          <td><code>skip-link</code></td>
+          <td>Skip-to-content link targets #main-content</td>
+          <td><span class="badge" style="background:#27ae60">✓ PASS</span></td>
+          <td style="opacity:0.7; font-size:0.85rem"></td>
+        </tr>
+<tr>
+          <td>Book Now</td>
+          <td><code>landmark-main</code></td>
+          <td>&lt;main id='main-content'&gt; landmark present</td>
+          <td><span class="badge" style="background:#27ae60">✓ PASS</span></td>
+          <td style="opacity:0.7; font-size:0.85rem"></td>
+        </tr>
+<tr>
+          <td>Book Now</td>
+          <td><code>landmark-banner</code></td>
+          <td>&lt;header role='banner'&gt; present</td>
+          <td><span class="badge" style="background:#c0392b">✗ FAIL</span></td>
+          <td style="opacity:0.7; font-size:0.85rem"></td>
+        </tr>
+<tr>
+          <td>Book Now</td>
+          <td><code>landmark-contentinfo</code></td>
+          <td>&lt;footer role='contentinfo'&gt; present</td>
+          <td><span class="badge" style="background:#c0392b">✗ FAIL</span></td>
+          <td style="opacity:0.7; font-size:0.85rem"></td>
+        </tr>
+<tr>
+          <td>Book Now</td>
+          <td><code>landmark-navigation</code></td>
+          <td>&lt;nav&gt; has aria-label</td>
+          <td><span class="badge" style="background:#e67e22">⚠ WARN</span></td>
+          <td style="opacity:0.7; font-size:0.85rem"></td>
+        </tr>
+<tr>
+          <td>Book Now</td>
+          <td><code>image-alt-text</code></td>
+          <td>All &lt;img&gt; elements have alt attributes</td>
+          <td><span class="badge" style="background:#27ae60">✓ PASS</span></td>
+          <td style="opacity:0.7; font-size:0.85rem"></td>
+        </tr>
+<tr>
+          <td>Book Now</td>
+          <td><code>phone-tel-link</code></td>
+          <td>Phone numbers wrapped in tel: links</td>
+          <td><span class="badge" style="background:#27ae60">✓ PASS</span></td>
+          <td style="opacity:0.7; font-size:0.85rem">2 phone number(s), 2 tel: link(s)</td>
+        </tr>
+<tr>
+          <td>Book Now</td>
+          <td><code>address-element</code></td>
+          <td>&lt;address&gt; element used for physical address</td>
+          <td><span class="badge" style="background:#e67e22">⚠ WARN</span></td>
+          <td style="opacity:0.7; font-size:0.85rem">Use &lt;address&gt; for physical location blocks</td>
+        </tr>
+<tr>
+          <td>Book Now</td>
+          <td><code>focus-visible</code></td>
+          <td>Focus outline not suppressed without replacement</td>
+          <td><span class="badge" style="background:#27ae60">✓ PASS</span></td>
+          <td style="opacity:0.7; font-size:0.85rem"></td>
+        </tr>
+<tr>
+          <td>Book Now</td>
+          <td><code>canonical</code></td>
+          <td>Canonical link tag present</td>
+          <td><span class="badge" style="background:#27ae60">✓ PASS</span></td>
+          <td style="opacity:0.7; font-size:0.85rem"></td>
+        </tr>
+<tr>
+          <td>Contact</td>
+          <td><code>lang-attribute</code></td>
+          <td>HTML lang attribute present</td>
+          <td><span class="badge" style="background:#27ae60">✓ PASS</span></td>
+          <td style="opacity:0.7; font-size:0.85rem"></td>
+        </tr>
+<tr>
+          <td>Contact</td>
+          <td><code>page-title</code></td>
+          <td>Page has a descriptive title</td>
+          <td><span class="badge" style="background:#27ae60">✓ PASS</span></td>
+          <td style="opacity:0.7; font-size:0.85rem">&quot;Contact | Glow &amp;amp; Go Beauty Bar&quot;</td>
+        </tr>
+<tr>
+          <td>Contact</td>
+          <td><code>meta-description</code></td>
+          <td>Meta description present</td>
+          <td><span class="badge" style="background:#27ae60">✓ PASS</span></td>
+          <td style="opacity:0.7; font-size:0.85rem">Check that content is non-empty and ≤ 160 characters</td>
+        </tr>
+<tr>
+          <td>Contact</td>
+          <td><code>one-h1</code></td>
+          <td>Page has exactly one H1</td>
+          <td><span class="badge" style="background:#27ae60">✓ PASS</span></td>
+          <td style="opacity:0.7; font-size:0.85rem">Found 1 H1 element</td>
+        </tr>
+<tr>
+          <td>Contact</td>
+          <td><code>skip-link</code></td>
+          <td>Skip-to-content link targets #main-content</td>
+          <td><span class="badge" style="background:#27ae60">✓ PASS</span></td>
+          <td style="opacity:0.7; font-size:0.85rem"></td>
+        </tr>
+<tr>
+          <td>Contact</td>
+          <td><code>landmark-main</code></td>
+          <td>&lt;main id='main-content'&gt; landmark present</td>
+          <td><span class="badge" style="background:#27ae60">✓ PASS</span></td>
+          <td style="opacity:0.7; font-size:0.85rem"></td>
+        </tr>
+<tr>
+          <td>Contact</td>
+          <td><code>landmark-banner</code></td>
+          <td>&lt;header role='banner'&gt; present</td>
+          <td><span class="badge" style="background:#c0392b">✗ FAIL</span></td>
+          <td style="opacity:0.7; font-size:0.85rem"></td>
+        </tr>
+<tr>
+          <td>Contact</td>
+          <td><code>landmark-contentinfo</code></td>
+          <td>&lt;footer role='contentinfo'&gt; present</td>
+          <td><span class="badge" style="background:#c0392b">✗ FAIL</span></td>
+          <td style="opacity:0.7; font-size:0.85rem"></td>
+        </tr>
+<tr>
+          <td>Contact</td>
+          <td><code>landmark-navigation</code></td>
+          <td>&lt;nav&gt; has aria-label</td>
+          <td><span class="badge" style="background:#27ae60">✓ PASS</span></td>
+          <td style="opacity:0.7; font-size:0.85rem"></td>
+        </tr>
+<tr>
+          <td>Contact</td>
+          <td><code>image-alt-text</code></td>
+          <td>All &lt;img&gt; elements have alt attributes</td>
+          <td><span class="badge" style="background:#27ae60">✓ PASS</span></td>
+          <td style="opacity:0.7; font-size:0.85rem"></td>
+        </tr>
+<tr>
+          <td>Contact</td>
+          <td><code>phone-tel-link</code></td>
+          <td>Phone numbers wrapped in tel: links</td>
+          <td><span class="badge" style="background:#27ae60">✓ PASS</span></td>
+          <td style="opacity:0.7; font-size:0.85rem">2 phone number(s), 2 tel: link(s)</td>
+        </tr>
+<tr>
+          <td>Contact</td>
+          <td><code>address-element</code></td>
+          <td>&lt;address&gt; element used for physical address</td>
+          <td><span class="badge" style="background:#e67e22">⚠ WARN</span></td>
+          <td style="opacity:0.7; font-size:0.85rem">Use &lt;address&gt; for physical location blocks</td>
+        </tr>
+<tr>
+          <td>Contact</td>
+          <td><code>focus-visible</code></td>
+          <td>Focus outline not suppressed without replacement</td>
+          <td><span class="badge" style="background:#27ae60">✓ PASS</span></td>
+          <td style="opacity:0.7; font-size:0.85rem"></td>
+        </tr>
+<tr>
+          <td>Contact</td>
+          <td><code>canonical</code></td>
+          <td>Canonical link tag present</td>
+          <td><span class="badge" style="background:#27ae60">✓ PASS</span></td>
+          <td style="opacity:0.7; font-size:0.85rem"></td>
+        </tr></tbody>
+    </table>
+
+    <h2>Pages Reviewed</h2>
+    <table>
+      <thead><tr><th>Page</th><th>Path</th><th>Results</th></tr></thead>
+      <tbody><tr>
+          <td><a href="/">Home</a></td>
+          <td><code>/</code></td>
+          <td><span class="badge" style="background:#27ae60">✓ PASS</span> 10 &nbsp; <span class="badge" style="background:#e67e22">⚠ WARN</span> 2 &nbsp; <span class="badge" style="background:#c0392b">✗ FAIL</span> 2</td>
+        </tr>
+<tr>
+          <td><a href="/services-pricing">Services &amp; Pricing</a></td>
+          <td><code>/services-pricing</code></td>
+          <td><span class="badge" style="background:#27ae60">✓ PASS</span> 10 &nbsp; <span class="badge" style="background:#e67e22">⚠ WARN</span> 2 &nbsp; <span class="badge" style="background:#c0392b">✗ FAIL</span> 2</td>
+        </tr>
+<tr>
+          <td><a href="/book-now">Book Now</a></td>
+          <td><code>/book-now</code></td>
+          <td><span class="badge" style="background:#27ae60">✓ PASS</span> 10 &nbsp; <span class="badge" style="background:#e67e22">⚠ WARN</span> 2 &nbsp; <span class="badge" style="background:#c0392b">✗ FAIL</span> 2</td>
+        </tr>
+<tr>
+          <td><a href="/contact">Contact</a></td>
+          <td><code>/contact</code></td>
+          <td><span class="badge" style="background:#27ae60">✓ PASS</span> 11 &nbsp; <span class="badge" style="background:#e67e22">⚠ WARN</span> 1 &nbsp; <span class="badge" style="background:#c0392b">✗ FAIL</span> 2</td>
+        </tr></tbody>
+    </table>
+
+    <h2>Lighthouse</h2>
+    <p class="note">Lighthouse scores were not generated in this run. To run Lighthouse: install <code>lighthouse</code> globally, serve <code>output/static-site/</code> locally, and run <code>lighthouse http://localhost:PORT --output html</code>.</p>
+    <p>Blueprint targets: Accessibility ≥ 95, Performance ≥ 90</p>
+  
+<footer>
+  <p>Generated by Stitchfy v2 · Apache-2.0 · Devify LLC</p>
+  <p>Lighthouse scores were not generated in this run.</p>
+</footer>
+</body>
+</html>

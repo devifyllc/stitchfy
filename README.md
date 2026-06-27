@@ -46,13 +46,17 @@ npm install
 cp examples/beauty-salon.md input/project.md
 # (edit input/project.md with the real business details)
 
-# 3. Generate the blueprint
+# 3. Generate the blueprint — no API key required
+#    The five blueprint agents run deterministically by default.
+#    An OpenAI key is optional and only needed if you replace the
+#    deterministic logic with the AI calls (see OpenAI Integration below).
 npm run stitchfy
 
 # 4a. Generate website — template-based (no API key required)
 npm run build:site
 
-# 4b. Generate website — AI-designed via Google Stitch (requires STITCH_API_KEY)
+# 4b. Generate website — AI-designed via Google Stitch (only STITCH_API_KEY required)
+#    No OpenAI key needed for this path.
 npm run build:site:stitch
 
 # 5. Audit accessibility and SEO
@@ -60,6 +64,11 @@ npm run audit
 ```
 
 Open `output/static-site/index.html` (template) or `output/stitch-site/index.html` (Stitch) in any browser.
+
+> **Which generator should I use?**
+> - **No API key?** Use `npm run build:site` (template-based, always works).
+> - **Have a `STITCH_API_KEY`?** Use `npm run build:site:stitch` for AI-generated layouts — no OpenAI key needed.
+> - **Have an `OPENAI_API_KEY`?** See the [OpenAI Integration](#openai-integration) section — this enables AI-driven blueprints, not a different site generator.
 
 ---
 
@@ -258,6 +267,8 @@ Stitchfy integrates with [Google Stitch](https://stitch.google.com) as an altern
 
 ### Setup
 
+`STITCH_API_KEY` is the **only** API key required for this flow. The blueprint pipeline (`npm run stitchfy`) runs deterministically with no AI calls, so no OpenAI key is needed.
+
 ```bash
 # Add to your .env file
 STITCH_API_KEY=your-key-here
@@ -320,6 +331,8 @@ All patches are **attribute-level only** — no structural changes, no content e
 ---
 
 ## OpenAI Integration
+
+> **Scope:** OpenAI is only used for the **blueprint pipeline** (the five agents that produce `website-blueprint.v1.json`). It has no role in the template generator or the Google Stitch generator. You do not need an OpenAI key to generate a website via either generator.
 
 All five blueprint agents are structured to support an OpenAI API call but run **fully deterministically** in the default mode — no API key required. The integration point is marked in each agent file:
 
