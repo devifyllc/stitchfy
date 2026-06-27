@@ -229,7 +229,13 @@ function countFiles(dir: string): number {
   return count;
 }
 
-main().catch((e) => {
-  console.error("Fatal:", e);
-  process.exit(1);
-});
+// Only run main() when this file is the direct entry point, not when imported.
+const isDirectEntry = process.argv[1]?.endsWith("audit-site.ts") ||
+                      process.argv[1]?.endsWith("audit-site.js");
+
+if (isDirectEntry) {
+  main().catch((e) => {
+    console.error("Fatal:", e);
+    process.exit(1);
+  });
+}
