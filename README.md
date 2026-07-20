@@ -1,6 +1,6 @@
 # Stitchfy v2
 
-**Turn a plain Markdown file into a production-ready static website — in minutes.**
+**Turn a plain Markdown file into a production-ready static website in minutes.**
 
 [![Version](https://img.shields.io/badge/version-2.1.0-brightgreen.svg)](package.json)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
@@ -11,26 +11,26 @@
 
 ## What is Stitchfy?
 
-Stitchfy is an open-source, AI-assisted code generation framework that takes a single Markdown file describing a business and produces a fully structured, accessible, SEO-optimized static website — deployable to any static host with no server required.
+Stitchfy is an open-source, AI-assisted code generation framework that takes a single Markdown file describing a business and produces a fully structured, accessible, SEO-optimized static website, deployable to any static host with no server required.
 
 You describe the business in plain language. Stitchfy runs a pipeline of specialized agents that each handle a distinct concern (intake, UX strategy, SEO, accessibility, frontend assembly), then generates a complete static site and exports it as HTML/CSS/JS.
 
-**Who it's built for:** Developers and agencies building websites for small and mid-sized local businesses — beauty salons, nail studios, massage spas, medical clinics, dental offices, restaurants, and similar service providers.
+**Who it's built for:** Developers and agencies building websites for small and mid-sized local businesses: beauty salons, nail studios, massage spas, medical clinics, dental offices, restaurants, and similar service providers.
 
 ---
 
 ## The Problem It Solves
 
-Building a professional website for a local business involves repetitive work: establishing page structure, writing meta tags, ensuring WCAG compliance, setting up routing, wiring navigation, and applying brand colors — all before a single line of content is written.
+Building a professional website for a local business involves repetitive work: establishing page structure, writing meta tags, ensuring WCAG compliance, setting up routing, wiring navigation, and applying brand colors, all before a single line of content is written.
 
 Stitchfy encodes that professional knowledge into a pipeline. Each agent applies best practices for its domain so you don't have to rediscover them for every client:
 
 - The UX Agent decides page hierarchy and hero strategy based on industry type
 - The SEO Agent writes structured data (JSON-LD), Open Graph tags, and per-page meta descriptions
-- The Accessibility Agent enforces WCAG 2.1 AA requirements — skip links, landmarks, keyboard navigation, color contrast, ARIA
+- The Accessibility Agent enforces WCAG 2.1 AA requirements: skip links, landmarks, keyboard navigation, color contrast, ARIA
 - The Frontend Agent assembles everything into a validated blueprint that drives real code generation
 
-The output is a complete static site with pre-built components and an HTML audit report — all from one Markdown file.
+The output is a complete static site with pre-built components and an HTML audit report, all from one Markdown file.
 
 ---
 
@@ -46,16 +46,16 @@ npm install
 cp examples/beauty-salon.md input/project.md
 # (edit input/project.md with the real business details)
 
-# 3. Generate the blueprint — no API key required
+# 3. Generate the blueprint: no API key required
 #    The five blueprint agents run deterministically by default.
 #    An OpenAI key is optional and only needed if you replace the
 #    deterministic logic with the AI calls (see OpenAI Integration below).
 npm run stitchfy
 
-# 4a. Generate website — template-based (no API key required)
+# 4a. Generate website: template-based (no API key required)
 npm run build:site
 
-# 4b. Generate website — AI-designed via Google Stitch (only STITCH_API_KEY required)
+# 4b. Generate website: AI-designed via Google Stitch (only STITCH_API_KEY required)
 #    No OpenAI key needed for this path.
 npm run build:site:stitch
 
@@ -67,14 +67,14 @@ Open `output/static-site/index.html` (template) or `output/stitch-site/index.htm
 
 > **Which generator should I use?**
 > - **No API key?** Use `npm run build:site` (template-based, always works).
-> - **Have a `STITCH_API_KEY`?** Use `npm run build:site:stitch` for AI-generated layouts — no OpenAI key needed.
-> - **Have an `OPENAI_API_KEY`?** See the [OpenAI Integration](#openai-integration) section — this enables AI-driven blueprints, not a different site generator.
+> - **Have a `STITCH_API_KEY`?** Use `npm run build:site:stitch` for AI-generated layouts. No OpenAI key needed.
+> - **Have an `OPENAI_API_KEY`?** See the [OpenAI Integration](#openai-integration) section. This enables AI-driven blueprints, not a different site generator.
 
 ---
 
 ## How It Works
 
-### Stage 1 — Blueprint pipeline (shared by both generators)
+### Stage 1: Blueprint pipeline (shared by both generators)
 
 ```
 input/project.md
@@ -114,7 +114,7 @@ input/project.md
 output/blueprint/website-blueprint.v1.json   ← Validated, machine-readable spec
 ```
 
-### Stage 2 — Code generation (choose one)
+### Stage 2: Code generation (choose one)
 
 ```
 output/blueprint/website-blueprint.v1.json
@@ -183,7 +183,7 @@ Create `input/project.md` with the following sections. All sections are optional
 
 ## Location
 - Address: 1234 Main St, Suite 1, City, ST 00000
-- Neighborhood: Optional — neighborhood name helps local SEO
+- Neighborhood: Optional (helps local SEO)
 
 ## Contact Information
 - Phone: (555) 555-0100
@@ -234,7 +234,7 @@ See the `examples/` directory for complete working inputs: `beauty-salon.md`, `m
 | Section | Content |
 |---|---|
 | `project` | Schema version, generation timestamp, source file, framework version |
-| `business` | All extracted business data — hours, services, contact, socials, booking |
+| `business` | All extracted business data: hours, services, contact, socials, booking |
 | `pages` | Page definitions with purpose, sections, CTAs, and component hints |
 | `ux` | Color palette, typography, navigation, header/footer config, hero visual spec |
 | `seo` | Site title, per-page meta, JSON-LD fields, Open Graph values |
@@ -244,7 +244,7 @@ See the `examples/` directory for complete working inputs: `beauty-salon.md`, `m
 
 ### Template site (`output/static-site/`)
 
-Generated by `npm run build:site`. A Next.js 14 App Router project built from 12 pre-built accessible React components in `site-template/components/`. Pure HTML/CSS/JS export — no Node.js runtime required.
+Generated by `npm run build:site`. A Next.js 14 App Router project built from 12 pre-built accessible React components in `site-template/components/`. Pure HTML/CSS/JS export. No Node.js runtime required.
 
 ### Stitch site (`output/stitch-site/`)
 
@@ -314,18 +314,18 @@ After Stitch generates HTML, two agents run on each page before it is written to
 - Patches: converts `data-alt` → `alt` on all `<img>` elements, adds `aria-label` to unlabelled `<nav>`, adds `aria-label="Open menu"` to the icon-only mobile menu button, replaces `focus:outline-none` with a visible focus ring, adds `role="img"` and `aria-label` to star rating groups, adds `aria-hidden="true"` to decorative material icons
 - Flags: footer links without a `<nav>` landmark, any remaining images without alt text, multiple `focus:outline-none` occurrences
 
-All patches are **attribute-level only** — no structural changes, no content edits. The review report shows exactly what was patched automatically and what requires human review before deploying.
+All patches are **attribute-level only**: no structural changes, no content edits. The review report shows exactly what was patched automatically and what requires human review before deploying.
 
-### Template vs. Stitch — choosing a generator
+### Template vs. Stitch: choosing a generator
 
 | | Template (`build:site`) | Stitch (`build:site:stitch`) |
 |---|---|---|
 | API key required | No | Yes (STITCH_API_KEY) |
-| Visual quality | Consistent, predictable | Higher — AI-generated layouts |
-| Control | Full | Partial — Stitch decides visual detail |
+| Visual quality | Consistent, predictable | Higher: AI-generated layouts |
+| Control | Full | Partial: Stitch decides visual detail |
 | Speed | Fast (no network calls) | Slower (~30–90s per page) |
 | Offline use | Yes | No |
-| Deterministic output | Yes | No — reruns differ |
+| Deterministic output | Yes | No: reruns differ |
 | Post-generation review | Via `npm run audit` | Built-in (agents run automatically) |
 
 ---
@@ -334,7 +334,7 @@ All patches are **attribute-level only** — no structural changes, no content e
 
 > **Scope:** OpenAI is only used for the **blueprint pipeline** (the five agents that produce `website-blueprint.v1.json`). It has no role in the template generator or the Google Stitch generator. You do not need an OpenAI key to generate a website via either generator.
 
-All five blueprint agents are structured to support an OpenAI API call but run **fully deterministically** in the default mode — no API key required. The integration point is marked in each agent file:
+All five blueprint agents are structured to support an OpenAI API call but run **fully deterministically** in the default mode: no API key required. The integration point is marked in each agent file:
 
 ```typescript
 // OPENAI INTEGRATION POINT:
@@ -353,7 +353,7 @@ To enable AI generation:
 2. Replace the deterministic logic in each agent with the commented API call
 3. Parse the `response.choices[0].message.content` into the expected typed output
 
-The framework's Zod schema validates the agent output regardless of whether it comes from AI or local logic — so the pipeline stays safe either way.
+The framework's Zod schema validates the agent output regardless of whether it comes from AI or local logic, so the pipeline stays safe either way.
 
 ---
 
@@ -376,16 +376,16 @@ The UX and SEO agents apply industry-specific defaults for color palette, typogr
 Brand colors from `input/project.md` are wired into CSS custom properties applied across the entire site:
 
 ```css
---color-primary      /* main brand color — buttons, accents */
+--color-primary      /* main brand color: buttons, accents */
 --color-secondary    /* background tone */
---color-accent       /* highlight color — hover states, badges */
+--color-accent       /* highlight color: hover states, badges */
 --color-text         /* body text */
 --color-border       /* subtle dividers and card borders */
 --font-heading       /* heading typeface (Google Fonts, loaded via <link>) */
 --font-body          /* body typeface */
 ```
 
-The hero background is derived from `ux.heroStyle` — a structured field the UX Agent generates from the palette — so the hero always uses the actual brand gradient rather than defaulting to white.
+The hero background is derived from `ux.heroStyle` (a structured field the UX Agent generates from the palette), so the hero always uses the actual brand gradient rather than defaulting to white.
 
 In the Stitch generator, these same values are embedded directly into each page's generation prompt so Stitch stays constrained to the blueprint's brand.
 
@@ -404,7 +404,7 @@ By design, Stitchfy generates **informational static websites only**. The follow
 - CRM or email marketing integrations
 - HIPAA-grade forms or protected health information handling
 
-Booking links point to third-party platforms the business already uses (Vagaro, Mindbody, OpenTable, etc.). Stitchfy generates the page that links out — not the booking engine itself.
+Booking links point to third-party platforms the business already uses (Vagaro, Mindbody, OpenTable, etc.). Stitchfy generates the page that links out, not the booking engine itself.
 
 ---
 
@@ -422,7 +422,7 @@ netlify deploy --prod --dir output/stitch-site
 # Vercel
 vercel --prebuilt output/stitch-site
 
-# GitHub Pages — copy contents into your gh-pages branch
+# GitHub Pages: copy contents into your gh-pages branch
 ```
 
 ---
@@ -510,22 +510,22 @@ stitchfy/
 
 1. Fork the repository
 2. Create a feature branch: `git checkout -b feature/my-feature`
-3. Blueprint agents live in `framework/agents/` — one file per stage, following the `AgentConfig` interface in `framework/orchestrator/agent-runner.ts`
-4. Stitch review agents live in `framework/agents/stitch-*.agent.ts` — implement `reviewSEO` / `reviewA11y` returning `HtmlReviewResult` from `stitch-html-review.types.ts`
+3. Blueprint agents live in `framework/agents/`: one file per stage, following the `AgentConfig` interface in `framework/orchestrator/agent-runner.ts`
+4. Stitch review agents live in `framework/agents/stitch-*.agent.ts`: implement `reviewSEO` / `reviewA11y` returning `HtmlReviewResult` from `stitch-html-review.types.ts`
 5. Add or update the Zod schema in `framework/schemas/blueprint.schema.ts` for any new blueprint fields
 6. Keep TypeScript types in `framework/schemas/blueprint.types.ts` in sync with the Zod schema
 7. Run `npm run typecheck` before submitting a pull request
 
-When adding a new component to `site-template/components/`, the site generator picks it up automatically — no additional copy step needed.
+When adding a new component to `site-template/components/`, the site generator picks it up automatically. No additional copy step needed.
 
 ---
 
 ## License
 
-Apache License 2.0 — see [LICENSE](LICENSE) and [NOTICE](NOTICE) for full terms.
+Apache License 2.0: see [LICENSE](LICENSE) and [NOTICE](NOTICE) for full terms.
 
 Copyright 2024–2025 Devify LLC
 
 ---
 
-*Stitchfy v2.1.0 — Built by [Devify LLC](https://github.com/devifyllc)*
+*Stitchfy v2.1.0, built by [Devify LLC](https://github.com/devifyllc)*
