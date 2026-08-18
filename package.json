@@ -10,6 +10,7 @@
   },
   "scripts": {
     "stitchfy": "tsx scripts/run-stitchfy.ts",
+    "solution": "tsx scripts/run-solution.ts",
     "validate": "tsx scripts/validate.ts",
     "build:site": "tsx scripts/build-site.ts",
     "build:site:stitch": "tsx scripts/build-site-stitch.ts",

@@ -427,6 +427,19 @@ vercel --prebuilt output/stitch-site
 
 ---
 
+## Architecture Evolution
+
+Stitchfy is evolving from a website-only generator into an extensible
+solution-engineering framework: website generation becomes one capability
+among several (workflow automation, AI agents, integrations, cloud,
+security/governance, observability, legacy modernization), selected via a
+capability registry rather than hardcoded into the pipeline. The website
+pipeline documented above is unchanged and keeps working exactly as
+described. See [docs/architecture/ARCHITECTURE.md](docs/architecture/ARCHITECTURE.md)
+and [docs/architecture/ROADMAP.md](docs/architecture/ROADMAP.md) for details.
+
+---
+
 ## Repository Structure
 
 ```

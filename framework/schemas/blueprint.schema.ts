@@ -33,8 +33,8 @@ const BusinessSchema = z.object({
   serviceAreas: z.array(z.string()),
   phone: z.string(),
   email: z.string(),
-  operatingHours: z.record(z.string()),
-  socialLinks: z.record(z.string()),
+  operatingHours: z.record(z.string(), z.string()),
+  socialLinks: z.record(z.string(), z.string()),
   booking: z.string(),
   services: z.array(z.string()),
   complianceFlags: z.array(z.string()),
@@ -84,7 +84,7 @@ const NavItemSchema = z.object({
 // This replaces the previous pattern of burying visual intent in prose componentHints strings.
 const HeroStyleSchema = z.object({
   backgroundType: z.enum(["solid", "gradient", "image"], {
-    errorMap: () => ({ message: "ux.heroStyle.backgroundType must be 'solid', 'gradient', or 'image'" }),
+    message: "ux.heroStyle.backgroundType must be 'solid', 'gradient', or 'image'",
   }),
   backgroundColor: z.string().optional(),
   gradientFrom: z.string().optional(),
@@ -136,7 +136,7 @@ const SEOSchema = z.object({
   h2Rules: z.array(z.string()),
   localSeo: z.array(z.string()),
   structuredDataRecommendations: z.array(z.string()),
-  openGraph: z.record(z.string()),
+  openGraph: z.record(z.string(), z.string()),
   imageAltTextRequirements: z.array(z.string()),
   internalLinking: z.array(z.string()),
   indexabilityRules: z.array(z.string()),
@@ -183,8 +183,8 @@ const FrontendSchema = z.object({
   renderingMode: z.string().min(1, "frontend.renderingMode is required"),
   componentMap: z.array(ComponentMapEntrySchema),
   routes: z.array(RouteSchema),
-  assets: z.record(z.string()),
-  forms: z.record(z.string()),
+  assets: z.record(z.string(), z.string()),
+  forms: z.record(z.string(), z.string()),
   externalIntegrations: z.array(z.string()),
   unsupportedFeatures: z.array(z.string()),
   implementationNotes: z.array(z.string()),
@@ -194,7 +194,7 @@ const FrontendSchema = z.object({
 
 const QASchema = z.object({
   expectedReports: z.array(z.string()),
-  lighthouseTargets: z.record(z.number()),
+  lighthouseTargets: z.record(z.string(), z.number()),
   accessibilityChecks: z.array(z.string()),
   seoChecks: z.array(z.string()),
   knownLimitations: z.array(z.string()),
@@ -226,7 +226,7 @@ export function validateBlueprint(data: unknown): ValidationResult {
 
   const errors = result.error.issues.map((issue) => {
     const path = issue.path.join(".");
-    const section = issue.path[0] ?? "root";
+    const section = String(issue.path[0] ?? "root");
     return `[${section}] ${path ? `${path}: ` : ""}${issue.message}`;
   });
 

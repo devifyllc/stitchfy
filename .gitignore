@@ -115,6 +115,14 @@ output/reports/*.md
 output/reports/*.json
 !output/reports/.gitkeep
 
+# Solution pipeline output (Phase 0 architecture foundation)
+output/context/*.json
+!output/context/.gitkeep
+output/blueprints/*.json
+!output/blueprints/.gitkeep
+output/artifacts/**
+!output/artifacts/.gitkeep
+
 # Next.js
 .next/
 next-env.d.ts
