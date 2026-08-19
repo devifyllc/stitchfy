@@ -1,41 +1,202 @@
-export interface RestApiIntegration {
-  id: string;
-  name: string;
-  baseUrl: string;
-  authMechanism: string;
-}
+/**
+ * Phase 4 — replaces the Phase 0 vendor-coupled model (RestApiIntegration.
+ * baseUrl, WebhookIntegration.targetUrl, ...) with IntegrationDefinition: a
+ * generic, vendor-neutral domain model. REST/webhook are optional
+ * *specializations* attached to an IntegrationDefinition only when the
+ * source evidence actually supports them — never the top-level model.
+ *
+ * The one rule that matters more than any field shape: unknown information
+ * stays unknown. Nothing here is ever set to fill a field — see
+ * docs/architecture/ARCHITECTURE.md "Integration Architecture".
+ */
 
-export interface WebhookIntegration {
-  id: string;
-  name: string;
-  event: string;
-  targetUrl: string;
-}
+import type { EvidenceReference } from "../../../core/contracts/evidence.js";
+import type { InformationGap } from "../../../discovery/gaps/information-gap.types.js";
+import type { ImplementationArtifact } from "../../../core/contracts/artifact.js";
 
-export interface SaasIntegration {
+// ─── Phase 4 planning (integrations.planner.ts) ────────────────────────────
+
+export interface IntegrationCandidate {
   id: string;
-  provider: string;
+  sourceSystemId?: string;
+  targetSystemId?: string;
   purpose: string;
+  relatedWorkflowIds: string[];
+  relatedProcessIds: string[];
+  relatedRequirementIds: string[];
+  /** The DiscoveryResult.integrationNeeds entries merged into this candidate (source of `.details` for technical extraction). */
+  sourceIntegrationNeedIds: string[];
+  evidenceRefs: EvidenceReference[];
 }
 
-export interface DataMapping {
-  sourceField: string;
-  targetField: string;
-  transform?: string;
+export interface IntegrationPlan {
+  integrationNeedIds: string[];
+  workflowIds: string[];
+  processIds: string[];
+  requirementIds: string[];
+  systemIds: string[];
+  candidates: IntegrationCandidate[];
+  informationGaps: string[];
+  assumptions: string[];
 }
 
-export interface RetryPolicy {
-  maxAttempts: number;
-  backoffStrategy: string;
+// ─── IntegrationDefinition and its parts ───────────────────────────────────
+
+export type IntegrationDirection = "inbound" | "outbound" | "bidirectional" | "unknown";
+
+export type IntegrationInteractionPattern =
+  | "request-response"
+  | "webhook"
+  | "event"
+  | "batch"
+  | "file-transfer"
+  | "database"
+  | "manual"
+  | "unknown";
+
+export type IntegrationProtocol = "http" | "https" | "websocket" | "sftp" | "jdbc" | "messaging" | "unknown";
+
+export type IntegrationOperationType =
+  | "read"
+  | "create"
+  | "update"
+  | "delete"
+  | "notify"
+  | "synchronize"
+  | "submit"
+  | "unknown";
+
+export interface IntegrationOperation {
+  id: string;
+  name: string;
+  description: string;
+  type: IntegrationOperationType;
+  requestContractId?: string;
+  responseContractId?: string;
+  evidenceRefs: EvidenceReference[];
 }
 
+export interface DataContractField {
+  name: string;
+  type?: string;
+  required?: boolean;
+  source?: string;
+}
+
+export type DataContractDirection = "request" | "response" | "event" | "file" | "unknown";
+export type DataSensitivity = "public" | "internal" | "confidential" | "restricted" | "unknown";
+
+export interface DataContract {
+  id: string;
+  name: string;
+  direction: DataContractDirection;
+  fields: DataContractField[];
+  sensitivity: DataSensitivity;
+  evidenceRefs: EvidenceReference[];
+}
+
+export type AuthenticationMechanism = "api-key" | "oauth2" | "basic" | "mtls" | "service-account" | "none" | "unknown";
+
+export interface AuthenticationRequirement {
+  mechanism: AuthenticationMechanism;
+  notes?: string[];
+  evidenceRefs?: EvidenceReference[];
+}
+
+export interface ReliabilityRequirements {
+  retryRequired: boolean | "unknown";
+  idempotencyRequired: boolean | "unknown";
+  timeoutRequired: boolean | "unknown";
+  orderingRequired?: boolean | "unknown";
+  notes: string[];
+}
+
+export type IntegrationFailureHandling = "retry" | "human-review" | "fail" | "ignore" | "unknown";
+
+export interface IntegrationFailureScenario {
+  id: string;
+  condition: string;
+  handling: IntegrationFailureHandling;
+  evidenceRefs: EvidenceReference[];
+}
+
+export interface IntegrationSecurityRequirements {
+  encryptionInTransit: boolean | "unknown";
+  containsSensitiveData: boolean | "unknown";
+  secretsRequired: boolean | "unknown";
+  auditRequired: boolean | "unknown";
+}
+
+// ─── Specializations — only attached when evidence supports them ──────────
+
+export interface RestOperation {
+  method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
+  path?: string;
+  description?: string;
+}
+
+/** Nested directly on IntegrationDefinition (1:1) rather than a separate integrationId-backed object — same information, no redundant cross-reference layer. */
+export interface RestContract {
+  baseUrl?: string;
+  operations: RestOperation[];
+}
+
+export interface WebhookContract {
+  eventName?: string;
+  /** "unknown" is preferred over guessing when the source doesn't say which way the webhook flows. */
+  direction: "incoming" | "outgoing" | "unknown";
+  targetUrl?: string;
+  payloadContractId?: string;
+}
+
+export type IntegrationStatus = "draft" | "needs-review" | "complete";
+
+export interface IntegrationDefinition {
+  id: string;
+  name: string;
+  version: string;
+
+  sourceSystemId?: string;
+  targetSystemId?: string;
+
+  purpose: string;
+  direction: IntegrationDirection;
+  interactionPattern: IntegrationInteractionPattern;
+  protocol: IntegrationProtocol;
+
+  operations: IntegrationOperation[];
+  dataContracts: DataContract[];
+
+  authentication?: AuthenticationRequirement;
+  reliability: ReliabilityRequirements;
+  failureScenarios: IntegrationFailureScenario[];
+  security: IntegrationSecurityRequirements;
+
+  restContract?: RestContract;
+  webhookContract?: WebhookContract;
+
+  relatedWorkflowIds: string[];
+  relatedProcessIds: string[];
+  relatedRequirementIds: string[];
+
+  /** New gaps surfaced by generation itself, reusing InformationGap — never merged back into DiscoveryResult. */
+  informationGaps: InformationGap[];
+  evidenceRefs: EvidenceReference[];
+
+  status: IntegrationStatus;
+  statusReasons: string[];
+}
+
+/**
+ * `implemented: true` means Stitchfy generated and validated one or more
+ * vendor-neutral integration specifications — never that Stitchfy
+ * connected to or exchanged data with an external system (same
+ * distinction established by Workflow Automation in Phase 3).
+ */
 export interface IntegrationsSection {
   implemented: boolean;
-  restApis: RestApiIntegration[];
-  webhooks: WebhookIntegration[];
-  saasIntegrations: SaasIntegration[];
-  dataMappings: DataMapping[];
-  retryPolicy?: RetryPolicy;
-  errorHandling: string[];
+  plan?: IntegrationPlan;
+  integrations: IntegrationDefinition[];
+  artifacts: ImplementationArtifact[];
   notes: string[];
 }

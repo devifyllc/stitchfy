@@ -62,3 +62,33 @@ export function makeIdGenerator(prefix: string): () => string {
 export function stripListPrefix(line: string): string {
   return line.replace(/^[-*]\s+/, "").replace(/^\d+\.\s+/, "").trim();
 }
+
+// ─── Deterministic keyword-overlap (not semantic/fuzzy matching) ──────────
+// Used to decide whether two freeform text fields describe the same thing
+// (e.g. a discovered automation candidate and a business process step, or
+// two integration-need descriptions naming the same interaction) — a plain
+// string operation, not an ML/embedding similarity check. First used by
+// workflow-definition.generator.ts (Phase 3); reused by the Integrations
+// capability (Phase 4) for candidate deduplication.
+
+const SIGNIFICANT_WORD_STOPWORDS = new Set([
+  "with", "from", "that", "this", "have", "been", "were", "will", "your",
+  "when", "then", "than", "into", "onto", "upon", "also", "their", "about",
+]);
+
+export function significantWords(text: string): Set<string> {
+  return new Set(
+    text
+      .toLowerCase()
+      .replace(/[^a-z0-9\s]/g, " ")
+      .split(/\s+/)
+      .filter((w) => w.length >= 4 && !SIGNIFICANT_WORD_STOPWORDS.has(w))
+      .map((w) => w.slice(0, 6))
+  );
+}
+
+export function sharesSignificantWord(a: string, b: string): boolean {
+  const wordsA = significantWords(a);
+  for (const w of significantWords(b)) if (wordsA.has(w)) return true;
+  return false;
+}

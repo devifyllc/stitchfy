@@ -27,7 +27,7 @@ import type { BusinessProcess } from "../../../discovery/processes/business-proc
 import type { BusinessActor } from "../../../discovery/actors/business-actor.types.js";
 import type { SystemInventoryItem } from "../../../discovery/systems/system-inventory.types.js";
 import type { InformationGap } from "../../../discovery/gaps/information-gap.types.js";
-import { makeIdGenerator } from "../../../discovery/shared/section-lookup.js";
+import { makeIdGenerator, sharesSignificantWord } from "../../../discovery/shared/section-lookup.js";
 import type {
   WorkflowAutomationPlan,
   HumanTouchpoint,
@@ -57,28 +57,6 @@ const CHANNEL_PATTERNS: Array<{ pattern: RegExp; channel: WorkflowNotificationCh
   { pattern: /\bsms\b|text message/i, channel: "sms" },
   { pattern: /\bpush\b/i, channel: "push" },
 ];
-
-const STOPWORDS = new Set([
-  "with", "from", "that", "this", "have", "been", "were", "will", "your",
-  "when", "then", "than", "into", "onto", "upon", "also", "their", "about",
-]);
-
-function significantWords(text: string): Set<string> {
-  return new Set(
-    text
-      .toLowerCase()
-      .replace(/[^a-z0-9\s]/g, " ")
-      .split(/\s+/)
-      .filter((w) => w.length >= 4 && !STOPWORDS.has(w))
-      .map((w) => w.slice(0, 6))
-  );
-}
-
-function sharesSignificantWord(a: string, b: string): boolean {
-  const wordsA = significantWords(a);
-  for (const w of significantWords(b)) if (wordsA.has(w)) return true;
-  return false;
-}
 
 function findMentionedActor(text: string, actors: BusinessActor[]): BusinessActor | undefined {
   const lower = text.toLowerCase();

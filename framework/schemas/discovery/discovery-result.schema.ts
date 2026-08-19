@@ -73,6 +73,7 @@ export const IntegrationNeedSchema = z.object({
   id: z.string().min(1),
   description: z.string().min(1),
   relatedSystemIds: z.array(z.string()),
+  details: z.record(z.string(), z.string()).optional(),
   metadata: DiscoveryMetadataSchema,
 });
 

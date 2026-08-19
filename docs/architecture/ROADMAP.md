@@ -149,15 +149,58 @@ Phase-3-specific):
   `Date.now()`-based, confined to the artifact wrapper — documented, not
   fixed, per task item 24).
 
-## Phase 4 — Integration Architecture
+## Phase 4 — Integration Architecture and Contract Specification ✅ done
 
-- Real REST/webhook/SaaS integration derivation from
-  `WorkflowExternalSystem`/`IntegrationNeed` (now structured, per Phases 1
-  and 3) instead of flat `BusinessContext.integrations` strings.
-- First real `IntegrationProvider` implementation
-  (`framework/providers/integrations/`).
-- API payload/contract design for the external systems Phase 3
-  deliberately left unspecified (`WorkflowExternalSystem.interactionType`).
+Selection migrated off legacy keyword matching; generation, validation, and
+artifacts are now real (see ARCHITECTURE.md "Integration Architecture" for
+the full design).
+
+- `IntegrationDefinition` (`framework/capabilities/integrations/schemas/integrations.types.ts`)
+  — vendor-neutral: direction, interaction pattern, protocol, operations,
+  data contracts, authentication, reliability, security, optional REST/
+  webhook specializations, workflow-scoped information gaps, evidence, and
+  a deterministic `draft | needs-review | complete` status. Replaces the
+  Phase 0 `RestApiIntegration`/`WebhookIntegration`/`SaasIntegration` model.
+- `integrations.assessor.ts` — structured signals only
+  (`DiscoveryResult.integrationNeeds`, multi-system processes, requirement/
+  outcome text naming a real discovered system) since `WorkflowDefinition`
+  isn't available at planning time; `execute()` separately enriches with
+  Workflow Automation's sibling output once available.
+- `integrations.planner.ts` — `IntegrationPlan` with deduplicated
+  candidates (same keyword-overlap technique as Phase 3, now shared via
+  `framework/discovery/shared/section-lookup.ts`); deterministic
+  source/target resolution from sentence position when two systems are
+  named together.
+- `generators/integration-definition.generator.ts` — deterministic regex
+  classification only over explicitly captured text; everything defaults
+  to `"unknown"` otherwise. `IntegrationNeed.details` (Phase 1, additive)
+  is where that explicit text comes from.
+- `validators/integration-definition.validator.ts` — referential
+  integrity, same-system-boundary rejection, evidence presence, operation↔
+  contract integrity, plus `detectDuplicateIntegrations()`.
+- `generators/integration-artifact.generator.ts` — JSON + Markdown (with
+  Mermaid) always; an OpenAPI 3.x artifact only when an explicit method+path
+  exists.
+- Third example, `examples/solution/api-integration.md` — explicit REST
+  method/endpoint/auth, contrasting the appointment/invoice examples'
+  `needs-review` status with a `complete` one where nothing is unknown.
+- `tests/integration-generation.test.ts` — the 16 scenarios from the Phase
+  4 task (53 tests total passing across all four suites).
+
+**Still deferred — Phase 4.5 — Provider / Export Adapter Implementation:**
+
+- Real vendor clients (Google Calendar, QuickBooks, WhatsApp, Stripe,
+  Salesforce, ...) — none exist; no HTTP call is made anywhere in this
+  codebase.
+- OAuth2/API-key flows, credential/secret storage.
+- Concrete exporters translating a validated `IntegrationDefinition` into a
+  vendor's actual API shape (beyond the generic OpenAPI artifact already
+  generated when justified).
+- Actual HTTP calls, webhook receivers, retries, message brokers, or any
+  integration runtime.
+- Multi-integration source/target disambiguation when more than two
+  systems are named in one description (today's sentence-position
+  convention only handles exactly two).
 
 ## Phase 5 — AI Agent Architecture
 

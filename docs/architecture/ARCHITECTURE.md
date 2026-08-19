@@ -541,6 +541,152 @@ the JSON/Markdown artifacts described above. This keeps `domain model ≠
 vendor implementation` (task item 28) — the same separation
 `framework/providers/` already establishes for LLM/design/cloud providers.
 
+## Integration Architecture (Phase 4)
+
+Phase 0's `integrations` model (`RestApiIntegration.baseUrl`,
+`WebhookIntegration.targetUrl`, `SaasIntegration.provider`, ...) assumed
+implementation details Discovery rarely knows. Phase 4 replaces it with a
+generic `IntegrationDefinition` and migrates selection off keyword
+matching, following the exact assess → plan → generate → validate →
+artifact shape Phase 3 established for workflows:
+
+```
+DiscoveryResult → CapabilityAssessment → IntegrationPlan → IntegrationDefinition[]
+     → validation → ImplementationArtifact[] (JSON + Markdown + optional OpenAPI)
+```
+
+### Why assessment can't see WorkflowDefinition — and why that's fine
+
+The `"planning"` stage computes every capability's assessment in one pass,
+*before* any capability executes (Phase 1.5) — so `assessIntegrations()`
+only ever sees `DiscoveryResult`: `integrationNeeds`, a process spanning
+≥2 systems, a requirement typed `"integration"`, or an `"automation"`-typed
+requirement/`DesiredOutcome` whose text names a real discovered system
+(never a fixed keyword list — always cross-referenced against actual
+`SystemInventoryItem` names). `WorkflowDefinition[]` doesn't exist until
+Workflow Automation's `execute()` runs, during the later `"capabilities"`
+stage. `default-capabilities.ts` already registers `workflow-automation`
+before `integrations` — unchanged — so by the time Integrations'
+`execute()` runs, workflow output is available in
+`context.capabilityResults`, and is read there purely to **enrich**
+`relatedWorkflowIds`/`operations`. The selection decision itself stays a
+single, order-independent computation. This is a capability reading a
+sibling's output — not the orchestrator or registry special-casing
+anything; both stay exactly as generic as Phase 1.5 left them.
+
+### `EvidenceReference` stays Discovery-only
+
+Per its own contract, `EvidenceReference` only ever points at a
+`DiscoveryResult` entity. `WorkflowDefinition` isn't one, so cross-references
+to it use the dedicated `IntegrationDefinition.relatedWorkflowIds: string[]`
+field instead — no change to `framework/core/contracts/evidence.ts` was
+needed.
+
+### Capturing explicit technical detail without inventing a shortcut
+
+Neither example initially had anywhere to state "REST over HTTPS" or
+"POST /v1/orders" — Discovery's `IntegrationNeed` was a single description
+string. Rather than have Phase 4 parse raw Markdown (forbidden — task item
+5), `IntegrationNeed` (Phase 1) gained one additive field:
+`details?: Record<string,string>`. `integration-needs.extractor.ts` reads a
+block under `## Integrations` the same way `processes.extractor.ts` already
+reads multi-line process blocks: a plain bullet with no follow-up lines
+stays exactly as before (`details: undefined` — the two existing examples'
+`"Google Calendar sync"` / `"QuickBooks sync"` entries are unaffected).
+A bullet followed by `Label: Value` lines (`Integration method: REST over
+HTTPS`, `Endpoint: POST /v1/orders`, `Authentication: API key`) captures
+them verbatim. This is Phase 1's entire job here — *capture what's
+literally there, infer nothing*. Phase 4's generator then runs deterministic
+regex extraction only over those captured strings:
+`/rest/i`+`https?` → protocol; `/^(GET|POST|PUT|PATCH|DELETE)\s+(\/\S+)/i`
+→ method+path preserved verbatim; `/api.?key/i`/`/oauth ?2/i`/`/\bbasic\b/i`/
+`/mtls/i`/`/service account/i` → auth mechanism. No field is ever set unless
+its exact source string is found — see `examples/solution/api-integration.md`
+for the one example that supplies this detail, versus the appointment/
+invoice examples that don't.
+
+### Source vs. target resolution
+
+A description naming exactly one discovered system only resolves
+`targetSystemId` — the internal source stays `undefined` (task item 9),
+which is the normal case for both the appointment ("Google Calendar
+sync") and invoice ("QuickBooks sync") examples. A description naming two
+systems resolves them by **sentence position**: the first-named system is
+`sourceSystemId`, the last-named is `targetSystemId` ("The Order Management
+application sends orders to the Fulfillment API" → source: Order
+Management, target: Fulfillment API) — a deterministic convention, not a
+verb-parsing guess.
+
+### Deduplication
+
+Candidates are seeded only from explicit `DiscoveryResult.integrationNeeds`
+— a system merely appearing in a multi-system process is supporting
+evidence that *enriches* a candidate, never enough to spawn one on its own
+(task item 4). Candidates naming the same resolved target system are merged
+when their purpose text shares a significant keyword — `sharesSignificantWord()`,
+originally written for Phase 3's step-classification overlay, now lives in
+`framework/discovery/shared/section-lookup.ts` and is reused by both
+capabilities rather than duplicated.
+
+### Operations, not `WorkflowStep.systemIds`
+
+Verified empirically (again, as in Phase 3): no step in the generated
+example workflows has `systemIds` populated. Operations are instead derived
+by scanning a relevant workflow's steps for the *target system's name*
+appearing in the step's description text, then classifying the operation
+type from a small deterministic verb-stem table
+(`check/retrieve/receive/read/get`→`read`, `create/add/enter`→`create`,
+`sync/synchron`→`synchronize`, `notif`→`notify`, `submit/send`→`submit`,
+`update/modify`→`update`, `delete/remove`→`delete`, else `unknown`). No
+operation is fabricated when no workflow is available or no step names the
+system.
+
+### Data contracts — representation, not invention
+
+An explicit "Expected response: Order identifier and accepted status" is
+split on `,`/`and` into two `DataContractField`s named exactly as written
+("Order identifier", "accepted status") — never decomposed into invented
+technical field names like `orderId`/`status`. `type`/`required` are never
+set. `sensitivity` stays `"unknown"` unless discovery has independently
+classified sensitive data (`DataEntity.sensitive`) — and even then, if a
+blocking customer-data gap already exists in `DiscoveryResult.informationGaps`,
+a new integration-level gap *references* it by id rather than silently
+resolving it (task item 13 — see the appointment example's Google Calendar
+integration, which cites gap `GAP-002` directly).
+
+### REST/webhook specializations
+
+`restContract`/`webhookContract` nest directly on `IntegrationDefinition`
+(1:1) rather than the task sketch's separate `integrationId`-backed
+objects — same information, no redundant cross-reference layer. An OpenAPI
+3.x artifact (deterministic JSON, no external library) is generated only
+when `restContract` has ≥1 operation with both `method` and `path` known —
+true only for `examples/solution/api-integration.md`. A SaaS-categorized
+system never implies a REST pattern on its own (task item 26) — `Google
+Calendar` is `category: "saas"` (Phase 1) and still gets
+`interactionPattern: "unknown"` in the appointment example, precisely
+because nothing states the mechanism.
+
+### `IntegrationsSection` reshaped
+
+Same precedent as Phase 3: `restApis`/`webhooks`/`saasIntegrations`/
+`dataMappings`/`retryPolicy`/`errorHandling` (Phase 0, always empty,
+nothing else read them) are replaced by `plan?`/`integrations`/`artifacts`/
+`notes`.
+
+### Future provider/export architecture (Phase 4.5)
+
+`IntegrationDefinition` stays a pure domain model. A future phase could add
+exporters — e.g. a generic REST/OpenAPI exporter, or vendor-specific ones
+for Google Calendar / QuickBooks / Salesforce / a custom API — each
+translating a validated `IntegrationDefinition` into that target's format,
+behind the existing `Provider<TConfig, TClient>` contract
+(`framework/core/contracts/provider.ts`, unchanged) or a thin
+`IntegrationProvider` specialization if one becomes genuinely necessary.
+None exist yet — no HTTP call, OAuth flow, or credential store is anywhere
+in this codebase. This keeps `domain model ≠ vendor implementation`, same
+as Phase 3's workflow exporter note.
+
 ## Adaptation from the literal proposed folder tree
 
 The originally proposed structure gives every capability 4-5 subfolders
@@ -624,5 +770,23 @@ loop: any `CapabilityExecutionResult.output.artifacts` array (duck-typed,
 no capability-ID branching) is written via the new
 `framework/core/artifact-writer.ts`. `framework/orchestrator/orchestrator.ts`
 (website pipeline) was not touched.
+
+**Phase 4** reshaped `IntegrationsSection` the same way (Phase 0's
+`restApis`/`webhooks`/`saasIntegrations`/`dataMappings`/`retryPolicy`/
+`errorHandling` → `plan?`/`integrations`/`artifacts`/`notes`). The one
+Phase 1 discovery file touched: `IntegrationNeed` gained an additive,
+optional `details?: Record<string,string>` field (see "Integration
+Architecture" above) — existing single-line `## Integrations` entries are
+unaffected (`details` stays `undefined`), verified against the existing
+appointment/invoice examples. `workflow-definition.generator.ts`'s local
+`significantWords`/`sharesSignificantWord` helpers moved to the shared
+`framework/discovery/shared/section-lookup.ts` (Phase 4 needed the same
+technique for candidate deduplication) — a pure refactor, same behavior,
+now used by both capabilities instead of duplicated.
+`framework/orchestrator/{orchestrator.ts,solution-orchestrator.ts}`,
+`framework/core/registry/*`, and `framework/core/registry/capability-registry.ts`
+were **not** touched — Integrations reads Workflow Automation's sibling
+output directly (see above), so no orchestration change was needed for
+cross-capability data to flow.
 
 See `docs/architecture/ROADMAP.md` for what comes next.
