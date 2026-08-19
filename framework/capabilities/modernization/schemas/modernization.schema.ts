@@ -264,10 +264,192 @@ const ImplementationArtifactSchema = z.object({
   generatedAt: z.string().min(1),
 });
 
+// ─── Phase 8.5B — Modernization Exporters ──────────────────────────────────
+
+const ModernizationReadinessReasonSchema = z.object({
+  code: z.string().min(1),
+  description: z.string().min(1),
+  severity: z.enum(["info", "warning", "blocking"]),
+  architectureRefs: z.array(ArchitectureReferenceSchema),
+  evidenceRefs: z.array(CodebaseEvidenceReferenceSchema).optional(),
+});
+
+const ModernizationExportReadinessSchema = z.object({
+  modernizationCandidateId: z.string().min(1),
+  exporterId: z.string().min(1),
+  status: z.enum(["ready", "needs-review", "blocked", "unsupported"]),
+  reasons: z.array(ModernizationReadinessReasonSchema),
+  preservationRequirementIds: z.array(z.string()),
+  validationRequirementIds: z.array(z.string()),
+  informationGapIds: z.array(z.string()),
+  codebaseFactIds: z.array(z.string()),
+  conflictIds: z.array(z.string()),
+});
+
+const ModernizationStateSummarySchema = z.object({
+  runtime: z.string().optional(),
+  frameworks: z.array(z.string()),
+  packaging: z.string().optional(),
+  notes: z.array(z.string()),
+});
+
+const MigrationRecipeStepSchema = z.object({
+  id: z.string().min(1),
+  category: z.enum(["build", "dependency", "configuration", "source", "runtime", "packaging", "validation", "deployment", "manual-review"]),
+  description: z.string().min(1),
+  changeProposalIds: z.array(z.string()),
+  prerequisiteIds: z.array(z.string()),
+  preservationRequirementIds: z.array(z.string()),
+  validationRequirementIds: z.array(z.string()),
+  evidenceRefs: z.array(CodebaseEvidenceReferenceSchema),
+  confidence: z.enum(["explicit", "derived", "requires-review"]),
+});
+
+const MigrationRecipeSchema = z.object({
+  id: z.string().min(1),
+  modernizationCandidateId: z.string().min(1),
+  systemId: z.string().min(1),
+  strategy: ModernizationStrategySchema,
+  currentState: ModernizationStateSummarySchema,
+  targetState: ModernizationStateSummarySchema,
+  steps: z.array(MigrationRecipeStepSchema),
+  preservationRequirementIds: z.array(z.string()),
+  validationRequirementIds: z.array(z.string()),
+  informationGapIds: z.array(z.string()),
+  evidenceRefs: z.array(CodebaseEvidenceReferenceSchema),
+  status: z.enum(["draft", "needs-review", "ready"]),
+});
+
+const DependencyCoordinateSchema = z.object({
+  group: z.string().optional(),
+  name: z.string().min(1),
+  version: z.string().optional(),
+});
+
+const DependencyChangeProposalSchema = z.object({
+  id: z.string().min(1),
+  dependencyFactId: z.string().optional(),
+  action: z.enum(["retain", "remove", "replace", "add", "review"]),
+  currentDependency: DependencyCoordinateSchema.optional(),
+  proposedDependency: DependencyCoordinateSchema.optional(),
+  reason: z.string().min(1),
+  evidenceRefs: z.array(CodebaseEvidenceReferenceSchema),
+  status: z.enum(["proposed", "needs-review", "blocked"]),
+});
+
+const ConfigurationChangeProposalSchema = z.object({
+  id: z.string().min(1),
+  filePath: z.string().min(1),
+  configurationType: z.string().min(1),
+  action: z.enum(["retain", "review", "remove", "replace", "add"]),
+  description: z.string().min(1),
+  targetConfiguration: z.string().optional(),
+  evidenceRefs: z.array(CodebaseEvidenceReferenceSchema),
+  status: z.enum(["proposed", "needs-review", "blocked"]),
+});
+
+const BuildChangeProposalSchema = z.object({
+  id: z.string().min(1),
+  buildSystem: z.enum(["maven", "npm", "unknown"]),
+  filePath: z.string().min(1),
+  action: z.enum(["review", "modify", "retain"]),
+  description: z.string().min(1),
+  evidenceRefs: z.array(CodebaseEvidenceReferenceSchema),
+  status: z.enum(["proposed", "needs-review"]),
+});
+
+const SourceTransformationCandidateSchema = z.object({
+  id: z.string().min(1),
+  filePath: z.string().min(1),
+  symbol: z.string().optional(),
+  category: z.enum(["namespace", "runtime-api", "framework-api", "server-specific-api", "configuration-reference", "unknown"]),
+  observedState: z.string().min(1),
+  proposedDirection: z.string().optional(),
+  evidenceRefs: z.array(CodebaseEvidenceReferenceSchema),
+  status: z.enum(["review", "candidate", "blocked"]),
+});
+
+const ManualReviewItemSchema = z.object({
+  id: z.string().min(1),
+  topic: z.string().min(1),
+  description: z.string().min(1),
+  affectedFiles: z.array(z.string()),
+  reason: z.string().min(1),
+  evidenceRefs: z.array(CodebaseEvidenceReferenceSchema),
+});
+
+const TransformationProposalSetSchema = z.object({
+  candidateId: z.string().min(1),
+  dependencyChanges: z.array(DependencyChangeProposalSchema),
+  configurationChanges: z.array(ConfigurationChangeProposalSchema),
+  buildChanges: z.array(BuildChangeProposalSchema),
+  sourceCandidates: z.array(SourceTransformationCandidateSchema),
+  manualReviews: z.array(ManualReviewItemSchema),
+  evidenceRefs: z.array(CodebaseEvidenceReferenceSchema),
+});
+
+const TestImpactAreaSchema = z.object({
+  id: z.string().min(1),
+  category: z.enum(["build", "startup", "business-behavior", "integration", "data", "security", "runtime", "configuration", "observability", "deployment"]),
+  description: z.string().min(1),
+  affectedArchitectureRefs: z.array(ArchitectureReferenceSchema),
+  affectedFiles: z.array(z.string()),
+  expectedBehavior: z.string().optional(),
+  evidenceRefs: z.array(CodebaseEvidenceReferenceSchema),
+});
+
+const TestImpactSpecificationSchema = z.object({
+  id: z.string().min(1),
+  modernizationCandidateId: z.string().min(1),
+  testAreas: z.array(TestImpactAreaSchema),
+  preservationRequirementIds: z.array(z.string()),
+  migrationValidationRequirementIds: z.array(z.string()),
+  informationGapIds: z.array(z.string()),
+  evidenceRefs: z.array(CodebaseEvidenceReferenceSchema),
+});
+
+const MigrationValidationGateSchema = z.object({
+  id: z.string().min(1),
+  name: z.string().min(1),
+  description: z.string().min(1),
+  testImpactAreaIds: z.array(z.string()),
+  status: z.enum(["unresolved", "defined"]),
+});
+
+const MigrationValidationPlanSchema = z.object({
+  candidateId: z.string().min(1),
+  existingValidationRequirementIds: z.array(z.string()),
+  testImpactSpecificationId: z.string().min(1),
+  validationGates: z.array(MigrationValidationGateSchema),
+  unresolvedCriteria: z.array(z.string()),
+});
+
+const GeneratedModernizationFileSchema = z.object({
+  path: z.string().min(1),
+  role: z.enum(["recipe", "dependency-plan", "configuration-plan", "source-review", "test-impact", "validation-plan", "manifest"]),
+  format: z.enum(["json", "markdown"]),
+  content: z.string().optional(),
+});
+
+const ModernizationExportBundleSchema = z.object({
+  id: z.string().min(1),
+  candidateId: z.string().min(1),
+  exporterId: z.string().min(1),
+  readiness: ModernizationExportReadinessSchema,
+  recipe: MigrationRecipeSchema,
+  transformations: TransformationProposalSetSchema,
+  testImpact: TestImpactSpecificationSchema,
+  validationPlan: MigrationValidationPlanSchema,
+  files: z.array(GeneratedModernizationFileSchema),
+  artifacts: z.array(ImplementationArtifactSchema),
+  notes: z.array(z.string()),
+});
+
 export const ModernizationSectionSchema = z.object({
   implemented: z.boolean(),
   plan: ModernizationPlanSchema.optional(),
   architecture: ModernizationArchitectureSchema,
   artifacts: z.array(ImplementationArtifactSchema),
   notes: z.array(z.string()),
+  exports: z.array(ModernizationExportBundleSchema).optional(),
 });

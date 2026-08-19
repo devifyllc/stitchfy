@@ -8,6 +8,8 @@
  *   npm run solution
  *   npm run solution -- --input path/to/project.md
  *   npm run solution -- --input path/to/project.md --output path/to/output
+ *   npm run solution -- --input spec.md --codebase ../repo --system-id SYS-001
+ *   npm run solution -- --input spec.md --codebase ../repo --system-id SYS-001 --modernization-export generic-java-replatform
  */
 
 import path from "path";
@@ -32,6 +34,7 @@ async function main() {
   const codebaseArg = getOptionalArg("--codebase");
   const codebasePath = codebaseArg ? path.resolve(codebaseArg) : undefined;
   const codebaseSystemId = getOptionalArg("--system-id");
+  const modernizationExportTarget = getOptionalArg("--modernization-export");
 
   const validation = validateInput(inputPath);
   for (const w of validation.warnings) console.warn(`  ⚠  ${w}`);
@@ -41,7 +44,7 @@ async function main() {
   }
 
   try {
-    const context = await runSolutionPipeline(inputPath, outputDir, codebasePath, codebaseSystemId);
+    const context = await runSolutionPipeline(inputPath, outputDir, codebasePath, codebaseSystemId, modernizationExportTarget);
     process.exit(context.stage === "complete" ? 0 : 1);
   } catch (err) {
     console.error("Fatal error:", err);

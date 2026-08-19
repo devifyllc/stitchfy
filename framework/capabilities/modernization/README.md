@@ -76,4 +76,25 @@ Key boundaries, all enforced by construction, not by a runtime filter:
 - **Mapping to a system is always explicit.** Enrichment only ever applies to the one `SystemInventoryItem.id` passed via `--system-id` — never inferred from a repository folder, Maven `artifactId`, or npm package name. A missing or non-matching id applies no enrichment at all (never a silent remap).
 - **Disagreement is surfaced, never resolved automatically.** When Discovery and the repository disagree on the same fact (e.g. a stated Java version vs. the POM's compiler source level), Modernization records a `CodebaseEvidenceConflict{resolution: "unresolved"}` rather than picking a side.
 
-See `docs/architecture/CODEBASE_ANALYSIS.md` for the full analyzer/scanner/evidence model, and `docs/architecture/ROADMAP.md` for **Phase 8.5B — Modernization Recipe & Transformation Export Adapters** (not implemented here).
+See `docs/architecture/CODEBASE_ANALYSIS.md` for the full analyzer/scanner/evidence model.
+
+## Phase 8.5B — Modernization Exporters
+
+Three questions, three phases:
+
+```text
+Phase 8:    Should this system change, and how?           (architecture decision)
+Phase 8.5A: What repository facts can Stitchfy prove?      (evidence)
+Phase 8.5B: Given an approved strategy and proven facts,   (implementation-oriented proposals,
+            what should engineers review?                  never applied automatically)
+```
+
+`framework/capabilities/modernization/exporters/` (full design in `docs/architecture/MODERNIZATION_EXPORTERS.md`) converts an already-reviewed `ModernizationArchitecture` + `CodebaseAnalysisResult` into a `ModernizationExportBundle` — a migration recipe, dependency/configuration/build change proposals, source transformation candidates, a test-impact specification, and a validation plan. The same boundaries as Phase 8.5A, enforced by construction:
+
+- **The exporter never makes the modernization decision.** `supports()` requires an *explicit* `replatform` strategy already present in `ModernizationArchitecture` — the strategy is never re-derived, and `MigrationCandidate.strategyOptions` is verified unchanged before/after every export.
+- **No target version or technology is ever invented.** `WebSphere → Tomcat` does not establish a Servlet API version, a Tomcat version, or a Spring/Hibernate/Java version — all stay unresolved unless the architecture states them explicitly. No Maven Central/npm registry/CVE/EOL lookup exists.
+- **`javax` → `jakarta` requires explicit target evidence.** Mixed or `javax`-only namespace evidence alone produces a review candidate, never an automatic replacement proposal.
+- **Export requires explicit user intent** (`--modernization-export <target>`) — unlike every other capability, nothing here runs automatically just because a `CodebaseAnalysisResult` exists.
+- **The analyzed repository is never written to** — every output goes under `output/artifacts/modernization/exporters/`, verified byte-identical before/after via the same fixture-hash strategy Phase 8.5A established.
+
+See `docs/architecture/ROADMAP.md` for **Phase 8.5C — Reviewed Source Transformation / Patch Generation** (not implemented here).

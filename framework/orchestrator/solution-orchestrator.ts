@@ -39,6 +39,8 @@ import type { ImplementationArtifact } from "../core/contracts/artifact.js";
 import { generateIntegrationExports } from "../capabilities/integrations/exporters/generate-integration-exports.js";
 import { runCodebaseAnalysis } from "../analysis/codebase/codebase-analysis.js";
 import { buildCodebaseAnalysisArtifacts } from "../analysis/codebase/generators/codebase-analysis-artifact.generator.js";
+import { generateModernizationExports } from "../capabilities/modernization/exporters/generate-modernization-exports.js";
+import type { ModernizationSection } from "../capabilities/modernization/schemas/modernization.types.js";
 
 const DIVIDER = "━".repeat(52);
 
@@ -88,7 +90,8 @@ export async function runSolutionPipeline(
   inputPath: string,
   outputDir: string,
   codebasePath?: string,
-  codebaseSystemId?: string
+  codebaseSystemId?: string,
+  modernizationExportTarget?: string
 ): Promise<SolutionContext> {
   console.log(`\n${DIVIDER}`);
   console.log("  Stitchfy — Solution Pipeline (Phase 0)");
@@ -245,6 +248,27 @@ export async function runSolutionPipeline(
     integrationsSection.notes.push(...exportNotes);
     if (exportBundles.length > 0) {
       ok(`Integration exports: generated ${exportBundles.length} bundle(s).`);
+    }
+  }
+
+  // Modernization export generation (Phase 8.5B) requires EXPLICIT user intent
+  // (--modernization-export) — never automatic, unlike every capability above.
+  // Plain --codebase/--system-id (no export flag) performs analysis/enrichment
+  // only. See docs/architecture/MODERNIZATION_EXPORTERS.md "Review boundary".
+  const modernizationSection = context.solutionBlueprint.modernization as ModernizationSection | undefined;
+  if (modernizationExportTarget && context.codebaseAnalysis && context.codebaseSystemId && modernizationSection) {
+    const { bundles, artifacts: exportArtifacts, notes: exportNotes } = await generateModernizationExports(
+      modernizationSection.architecture,
+      context.codebaseAnalysis,
+      context.codebaseSystemId,
+      modernizationExportTarget
+    );
+    modernizationSection.exports = bundles;
+    modernizationSection.artifacts.push(...exportArtifacts);
+    modernizationSection.notes.push(...exportNotes);
+    for (const note of exportNotes) console.log(`  ·  ${note}`);
+    if (bundles.length > 0) {
+      ok(`Modernization exports: generated ${bundles.length} bundle(s) via "${modernizationExportTarget}".`);
     }
   }
 

@@ -26,6 +26,7 @@ import type { RiskAssessment } from "../../../planning/risk-assessment/risk-asse
 import type { ImplementationArtifact } from "../../../core/contracts/artifact.js";
 import type { ModernizationDriver } from "../../../discovery/modernization/modernization-need.types.js";
 import type { CodebaseEvidenceReference } from "../../../analysis/codebase/contracts/codebase-evidence.types.js";
+import type { ModernizationExportBundle } from "../exporters/exporter.types.js";
 
 // ─── Planning (modernization.planner.ts) ───────────────────────────────────
 
@@ -353,4 +354,6 @@ export interface ModernizationSection {
   architecture: ModernizationArchitecture;
   artifacts: ImplementationArtifact[];
   notes: string[];
+  /** Phase 8.5B — populated only when an explicit `--modernization-export <target>` was requested (never automatic). */
+  exports?: ModernizationExportBundle[];
 }

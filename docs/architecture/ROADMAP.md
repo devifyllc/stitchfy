@@ -717,16 +717,82 @@ system. See `docs/architecture/CODEBASE_ANALYSIS.md` for the full design.
 - Any code-transformation or migration-recipe generation — deferred to
   Phase 8.5B.
 
-## Phase 8.5B — Modernization Recipe & Transformation Export Adapters
+## Phase 8.5B — Modernization Recipe & Transformation Export Adapters ✅ done
 
 Mirrors the Exporter/Provider pattern established across Phases 5.5A/6.5/7C,
-applied to Modernization. May eventually consume `ModernizationArchitecture`
-`+` `CodebaseAnalysisResult` together to generate a migration recipe,
-dependency-change plan, configuration-change plan, code-transformation
-scaffolding, and test-impact specification. Not implemented. A deliberate
-review boundary sits between codebase analysis and any transformation
-output — `CodebaseAnalysisResult → architecture/human review → Modernization
-Export Adapter` — Phase 8.5B is not assumed automatic.
+applied to Modernization: consumes `ModernizationArchitecture` +
+`CodebaseAnalysisResult` together to generate a migration recipe,
+dependency/configuration/build change proposals, source transformation
+candidates, a test-impact specification, and a validation plan — never a
+source-mutating transformer, never applied automatically. See
+`docs/architecture/MODERNIZATION_EXPORTERS.md` for the full design.
+
+- `ModernizationExporter`/`ModernizationExporterRegistry`
+  (`framework/capabilities/modernization/exporters/`) — detection lives in
+  each exporter's own `supports()`; `candidate` threaded through explicitly
+  (an invited adaptation of the task's own `(architecture, codebase)`-only
+  sketch, since export generation is scoped per `MigrationCandidate`).
+- `ModernizationExportReadiness` (`ready`/`needs-review`/`blocked`/`unsupported`,
+  no numeric score) — an unresolved `CodebaseEvidenceConflict` concerning the
+  migrated runtime blocks; an unversioned explicit target or an unresolved
+  dependency version lowers to `needs-review`.
+- First concrete exporter: **`generic-java-replatform`** — supports a
+  candidate only with an explicit Phase 8 `replatform` strategy, a proven
+  Java codebase, and a real runtime `ModernizationDelta`; reasons generically
+  from `ModernizationDelta`/`RuntimeFact`/`FrameworkFact`/`ConfigurationFact`/
+  `CodeDependencyFact` — no `if (target === "Tomcat")` branching anywhere in
+  orchestration. Acceptance fixture: WebSphere → Tomcat (explicit target
+  preserved verbatim, no version/config/cloud/container/database invented,
+  `javax` stays `javax` without explicit Jakarta target evidence).
+- `MigrationRecipe`/`MigrationRecipeStep`, `TransformationProposalSet`
+  (`DependencyChangeProposal`/`ConfigurationChangeProposal`/
+  `BuildChangeProposal`/`SourceTransformationCandidate`/`ManualReviewItem`),
+  `TestImpactSpecification`/`MigrationValidationPlan` — every proposal
+  defaults to `retain`/`review`; `remove`/`replace` never appear without
+  deterministic evidence (the shipped exporter never emits `remove` at all).
+- `validateModernizationExportBundle()` — referential integrity, no
+  absolute paths, no credential literals, target-version provenance (any
+  concrete version must trace to a real `ModernizationDelta`), manifest
+  self-consistency.
+- CLI: `--modernization-export <target>` (explicit intent required — plain
+  `--codebase`/`--system-id` stays analysis/enrichment-only, no automatic
+  export). Single integrated `npm run solution` command, no separate script.
+- `tests/modernization-exporters.test.ts` (new) — 288 tests passing total,
+  including strategy/architecture/codebase-input immutability, no-repository-
+  write (byte-identical fixture), no `child_process`/network imports, no
+  fabricated versions/technologies/numeric criteria.
+- A deliberate review boundary sits between codebase analysis and any
+  transformation output — `CodebaseAnalysisResult → architecture/human
+  review → Modernization Export Adapter → human/engineering review` — Phase
+  8.5B is not assumed automatic, and Phase 8.5C was not automatically begun.
+
+**Still deferred, intentionally:**
+
+- No `SourceTransformer` of any kind — no patch/diff generation, no file
+  writes to the analyzed repository.
+- No build/test execution against the analyzed repository.
+- No Maven Central/npm registry/CVE/EOL/vendor-compatibility lookups.
+- No Gradle analyzer addition (kept out of scope per task item 112).
+- No multi-exporter auto-selection — an explicit, single `--modernization-export`
+  target is required.
+
+## Phase 8.5C — Reviewed Source Transformation / Patch Generation
+
+```text
+ModernizationExportBundle
+        ↓
+Human approval
+        ↓
+SourceTransformationPlan
+        ↓
+Patch Generator
+        ↓
+reviewable unified diff
+```
+
+Not implemented. Even Phase 8.5C should not necessarily apply patches
+automatically — a human-approval gate remains between a proposal and any
+generated diff.
 
 ## Phase 9 — Reference Implementations
 
