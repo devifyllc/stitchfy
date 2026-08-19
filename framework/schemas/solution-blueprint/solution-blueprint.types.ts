@@ -27,8 +27,8 @@ import type { AIAgentsSection } from "../../capabilities/ai-agents/schemas/ai-ag
 import type { IntegrationsSection } from "../../capabilities/integrations/schemas/integrations.types.js";
 import type { CloudArchitectureSection } from "../../capabilities/cloud/schemas/cloud.types.js";
 import type {
-  SecuritySection,
-  GovernanceSection,
+  SecurityArchitecture,
+  GovernancePlan,
 } from "../../capabilities/security-governance/schemas/security-governance.types.js";
 import type { ObservabilitySection } from "../../capabilities/observability/schemas/observability.types.js";
 import type { ModernizationSection } from "../../capabilities/modernization/schemas/modernization.types.js";
@@ -65,8 +65,8 @@ export interface SolutionBlueprint {
   integrations?: IntegrationsSection;
   automation?: WorkflowAutomationSection;
   ai?: AIAgentsSection;
-  security?: SecuritySection;
-  governance?: GovernanceSection;
+  security?: SecurityArchitecture;
+  governance?: GovernancePlan;
   observability?: ObservabilitySection;
   /** Addition beyond the base field list — see ARCHITECTURE.md "Adaptation". */
   modernization?: ModernizationSection;

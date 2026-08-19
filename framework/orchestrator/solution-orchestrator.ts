@@ -18,7 +18,7 @@ import * as path from "path";
 import { parseMarkdown } from "../core/markdown-parser.js";
 import { createSolutionContext, type SolutionContext } from "../core/contracts/context.js";
 import type { SolutionBlueprint } from "../schemas/solution-blueprint/solution-blueprint.types.js";
-import type { SecuritySection, GovernanceSection } from "../capabilities/security-governance/schemas/security-governance.types.js";
+import type { SecurityArchitecture, GovernancePlan } from "../capabilities/security-governance/schemas/security-governance.types.js";
 import type { CapabilityExecutionResult } from "../schemas/capability/capability-result.types.js";
 import { businessDiscoveryAgent } from "../discovery/business/business-discovery.agent.js";
 import { deriveBusinessContext } from "../discovery/discovery-result.types.js";
@@ -66,9 +66,10 @@ function mergeCapabilityOutput(blueprint: Partial<SolutionBlueprint>, result: Ca
   if (result.status !== "executed" || result.output === undefined) return;
 
   if (result.capabilityId === "security-governance") {
-    const output = result.output as { security: SecuritySection; governance: GovernanceSection };
+    const output = result.output as { security: SecurityArchitecture; governance: GovernancePlan };
     blueprint.security = output.security;
     blueprint.governance = output.governance;
+    blueprint.risks = output.security.risks;
     return;
   }
 
@@ -196,7 +197,10 @@ export async function runSolutionPipeline(inputPath: string, outputDir: string):
     }
   }
 
-  context.solutionBlueprint.risks = assessRisks(context);
+  // security-governance (if it ran) already populated real risks via
+  // mergeCapabilityOutput above — assessRisks() is only the deterministic
+  // empty-array fallback for when it didn't.
+  context.solutionBlueprint.risks = context.solutionBlueprint.risks ?? assessRisks(context);
 
   // ── Implementation artifacts ─────────────────────────────────────────────
   // Any capability output may carry an `artifacts` array (see

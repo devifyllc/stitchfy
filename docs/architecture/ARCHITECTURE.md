@@ -687,6 +687,153 @@ None exist yet — no HTTP call, OAuth flow, or credential store is anywhere
 in this codebase. This keeps `domain model ≠ vendor implementation`, same
 as Phase 3's workflow exporter note.
 
+## Security, Governance and Risk Architecture (Phase 5)
+
+Phase 0's `security-governance` model was a skeleton returning empty
+string-array sections; Phase 5 makes it the third fully-generated
+capability, and the first cross-cutting one — it *inspects* both of the
+other two generated capabilities' output rather than producing its own
+independent artifact from Discovery alone:
+
+```
+DiscoveryResult + WorkflowDefinition[] + IntegrationDefinition[]
+     → security-architecture.generator.ts → SecurityArchitecture (incl. RiskAssessment[])
+     → governance-plan.generator.ts       → GovernancePlan
+     → security-architecture.validator.ts → referential integrity, evidence-required checks
+     → security-artifact.generator.ts     → ImplementationArtifact[] (JSON + Markdown ×3)
+```
+
+### No new orchestration mechanism
+
+Phase 4 already solved "a downstream capability needs an upstream sibling's
+already-generated output": `execute()` (which runs during the later
+`"capabilities"` stage, after assessment) reads
+`context.capabilityResults.find(r => r.capabilityId === "...")`. Phase 5
+reuses that exact pattern for *two* siblings — `workflow-automation` and
+`integrations` — instead of one. `default-capabilities.ts`'s registration
+order already places `security-governance` after both (unchanged), so no
+`dependsOn`/`executionOrder`/`capabilityPhase` field was introduced. That
+would only become worth adding if a future capability needed an ordering
+guarantee the static registration order can't express — e.g. two
+capabilities that both need to read each other's output, which no current
+capability does.
+
+Like Integrations, `assessSecurityGovernance()` only ever sees
+`DiscoveryResult` — sensitive `DataEntity`s, a `security-governance`-tagged
+Discovery gap, constraints typed `security`/`regulatory`/`data`,
+requirements typed `security`, and (as a weaker, supporting-only signal)
+business-rule text matching a small access/audit/retention/approval/
+authentication pattern. Unlike every other assessor, a blocking gap here
+never sets `status: "blocked"` — this capability's entire purpose is to
+surface unresolved security-relevant facts, so a blocking gap is exactly
+the kind of thing it should report *on*, not be prevented from running
+because of.
+
+### `ArchitectureReference` vs. `EvidenceReference`
+
+`EvidenceReference` (Phase 1.5) answers "why was this decision made?" —
+it points at a `DiscoveryResult` entity. Security requirements, risks, and
+governance controls also need to answer a second, different question:
+"what part of the *generated* solution does this apply to?" — a workflow,
+a workflow step, an integration, a data contract. Conflating the two would
+make it ambiguous which question either one is answering, so Phase 5 adds
+a second, parallel contract, `framework/core/contracts/architecture-reference.ts`:
+`{entityType: "workflow"|"workflow-step"|"integration"|"system"|
+"data-contract"|"process"|"requirement"|"approval"; entityId}`. One
+additive fix rides along: `EvidenceReference`'s `entityType` union never
+included `"data-entity"` (a real Phase 1 entity) — added now since
+data-protection requirements need to cite it.
+
+### Trust boundary classification uses only what Phase 1 already classified
+
+`classifyBoundary()` never invents network topology (no VPC/DMZ/public/
+private/internet — those aren't in the enum at all): `targetSystemId`
+unset → `"unknown"`; target system `category` is `"saas"`/`"cloud-service"`
+→ `"third-party"`; otherwise `"external"`. A boundary is only generated
+per `IntegrationDefinition` — no boundary is invented for a system that
+merely appears in Discovery without a real integration crossing it.
+
+### Authentication is consumed, never re-derived
+
+`buildIntegrationDerivedRequirements()` reads
+`IntegrationDefinition.authentication.mechanism` verbatim into the
+generated secrets requirement's description (`"mechanism: api-key"`,
+never silently upgraded to `"mechanism: OAuth2"` or downgraded to
+`"unknown"`). A `mechanism` of `"unknown"` or `"none"` produces no secrets
+requirement at all — Phase 4 already decided there was nothing concrete
+to protect. Identity and authorization stay independent signals in
+`buildIdentityAccess()`: `IDENTITY_PATTERN` (sign-in/log-in/authenticate/
+credential language) and `AUTHORIZATION_PATTERN` (only...may, authorize,
+permission, role, "must not be visible") are matched separately against
+the same business-rule/constraint text — an identity match never spawns
+an authorization requirement, or vice versa.
+
+### Risk vs. information gap
+
+An unresolved fact alone — "the authentication provider hasn't been
+selected" — stays purely an `InformationGapReference`; Phase 5 never
+promotes a bare unknown into a risk. A `RiskAssessment` is only generated
+for an identified adverse *condition*: a known, non-`"none"` authentication
+mechanism (credential-exposure risk — the credentials exist and need
+protecting, regardless of what the mechanism is), or sensitive/unresolved
+data crossing an external/third-party trust boundary (privacy risk).
+Every risk's `likelihood`/`impact` is `"unknown"` — nothing here computes
+or guesses a numeric score or a likelihood×impact matrix; `treatment`
+(`mitigate`/`accept`/`avoid`/`transfer`/`review`) is chosen deterministically
+per risk category, not inferred from a severity calculation that doesn't
+exist.
+
+### Compliance stays restrained
+
+`ComplianceConsideration.status` is `"explicit"` only on an exact,
+case-insensitive match of a known framework *name* (PCI DSS, HIPAA, SOC 2,
+GDPR, CCPA, COPPA, PIPEDA, ISO 27001, HITECH) against already-structured
+text (`businessRules`/`constraints`/`requirements`/`desiredOutcomes`
+descriptions — never raw Markdown). `"potential"` only fires when *both* a
+blocking "Customer data" gap or a sensitive `DataEntity` exists, *and* at
+least one trust boundary is external/third-party — and even then, no
+specific framework is ever assigned, only a generic privacy-review
+rationale describing the actual matched boundary classification(s) (not a
+hardcoded phrase — the rationale text is built from the real
+classification so it can never claim "third-party" when the evidence says
+"external").
+
+### Human oversight and audit reuse the existing HITL model
+
+`buildHumanOversightRequirements()` and `governance-plan.generator.ts`'s
+`buildHumanOversight()` both derive from the same source Phase 3 already
+generates — `WorkflowApproval` — rather than introducing a second,
+competing approval model. `SecurityArchitecture` holds the security view
+(a `SecurityRequirement` with `domain: "human-oversight"`); `GovernancePlan`
+holds the governance-control view (`GovernanceApprovalControl`, cross-
+referencing the same workflow/approval ids) — two projections of one piece
+of evidence, never duplicated data. `AuditRequirement`s are generated once,
+in `security-architecture.generator.ts`, and `GovernancePlan.auditRequirements`
+reuses the identical array rather than regenerating it.
+
+### `implemented: true` — what it does and doesn't mean
+
+Same discipline as Phase 3/4: `implemented: true` means Stitchfy generated
+and validated a security/governance architecture for the currently known
+solution. It does **not** mean the resulting system is secure, compliant,
+certified, penetration-tested, or production-ready. Every generated
+artifact repeats this disclaimer verbatim. Language throughout stays
+restrained — "security requirement," "consideration," "requires review/
+implementation" — and never asserts "secure," "compliant," or "certified"
+as an affirmative claim about the solution itself.
+
+### Future provider/governance architecture
+
+No real IAM, secrets manager, encryption configuration, or compliance
+product integration exists anywhere in this module — `SecurityRequirement`/
+`DataProtectionRequirement`/`GovernancePolicy` stay pure domain models,
+same `domain model ≠ vendor implementation` line Phase 3/4 already drew.
+AI Agent governance (tool-invocation policies, prompt governance, agent
+memory audit) is deliberately out of scope here too — the `SecurityDomain`/
+`GovernanceApprovalControl` shapes are generic enough to extend to an
+AI Agent's actions once that capability exists (Phase 6), but nothing
+AI-Agent-specific is implemented yet.
+
 ## Adaptation from the literal proposed folder tree
 
 The originally proposed structure gives every capability 4-5 subfolders

@@ -1,82 +1,136 @@
 /**
- * Security & Governance capability — placeholder. Produces both the
- * `security` and `governance` SolutionBlueprint sections from one capability
- * module (see schemas/security-governance.types.ts). See
- * docs/architecture/ROADMAP.md Phase 6.
+ * Security & Governance capability — migrated off legacy keyword matching
+ * (Phase 5). supports()/assess() delegate to the same
+ * assessSecurityGovernance() — one source of truth for selection.
+ * execute() reads both Workflow Automation's and Integrations' sibling
+ * output (registry order is unchanged — both already run before this
+ * capability) to build an evidence-backed SecurityArchitecture/
+ * GovernancePlan. `implemented: true` means Stitchfy generated and
+ * validated a security/governance architecture for the currently known
+ * solution — never that the resulting system is secure, compliant,
+ * certified, or production-ready.
  */
 
 import type { StitchfyCapability } from "../../core/contracts/capability.js";
 import type { SolutionContext } from "../../core/contracts/context.js";
 import type { ValidationResult } from "../../schemas/common/validation-result.js";
-import { validationOk } from "../../schemas/common/validation-result.js";
-import { matchesKeywords } from "../../planning/capability-selector/capability-selector.js";
+import { validationOk, validationFail } from "../../schemas/common/validation-result.js";
+import type { CapabilityAssessment } from "../../planning/capability-assessment/capability-assessment.types.js";
+import { assessSecurityGovernance, SECURITY_GOVERNANCE_CAPABILITY_ID } from "./security-governance.assessor.js";
+import { buildSecurityArchitecture } from "./generators/security-architecture.generator.js";
+import { buildGovernancePlan } from "./generators/governance-plan.generator.js";
+import { buildSecurityGovernanceArtifacts } from "./generators/security-artifact.generator.js";
+import { validateSecurityArchitecture, validateGovernancePlan } from "./validators/security-architecture.validator.js";
 import type { SecurityGovernanceOutput } from "./schemas/security-governance.types.js";
-
-const CAPABILITY_ID = "security-governance";
-const KEYWORDS = [
-  "secure",
-  "security",
-  "compliance",
-  "pii",
-  "gdpr",
-  "hipaa",
-  "authentication",
-  "login",
-  "audit",
-];
-
-interface PlanInput {
-  matchedOn: string;
-}
+import type { WorkflowAutomationSection, WorkflowDefinition } from "../workflow-automation/schemas/workflow-automation.types.js";
+import type { IntegrationsSection, IntegrationDefinition } from "../integrations/schemas/integrations.types.js";
 
 function supports(context: SolutionContext): boolean {
-  const text = [
-    ...(context.businessContext?.businessRules ?? []),
-    ...(context.businessContext?.constraints ?? []),
-    ...(context.businessContext?.data ?? []),
-  ].join(" ");
-  return matchesKeywords(text, KEYWORDS);
+  const assessment = assessSecurityGovernance(context);
+  return assessment.status === "recommended" || assessment.status === "needs-review";
 }
 
-async function plan(_context: SolutionContext): Promise<PlanInput> {
-  return { matchedOn: KEYWORDS.join(", ") };
+function assess(context: SolutionContext): CapabilityAssessment {
+  return assessSecurityGovernance(context);
 }
 
-async function execute(input: PlanInput, _context: SolutionContext): Promise<SecurityGovernanceOutput> {
-  const note = `Capability selected (matched keywords: ${input.matchedOn}) but not yet implemented — see docs/architecture/ROADMAP.md Phase 6.`;
-  return {
-    security: {
-      implemented: false,
-      authentication: [],
-      authorization: [],
-      secretsManagement: [],
-      encryption: [],
-      piiHandling: [],
-      dataClassification: [],
-      notes: [note],
-    },
-    governance: {
-      implemented: false,
-      auditability: [],
-      responsibleAI: [],
-      humanOversight: [],
-      policies: [],
-      notes: [note],
-    },
-  };
+async function plan(context: SolutionContext): Promise<CapabilityAssessment> {
+  return assessSecurityGovernance(context);
+}
+
+function siblingOutput<T>(context: SolutionContext, capabilityId: string): T | undefined {
+  return context.capabilityResults.find((r) => r.capabilityId === capabilityId)?.output as T | undefined;
+}
+
+async function execute(
+  assessment: CapabilityAssessment,
+  context: SolutionContext
+): Promise<SecurityGovernanceOutput> {
+  const discovery = context.discoveryResult;
+
+  const notes: string[] = [
+    `Status: ${assessment.status} (confidence: ${assessment.confidence}, method: ${assessment.method}).`,
+    ...assessment.reasons.map((r) => r.description),
+  ];
+
+  const emptyOutput = (security: SecurityGovernanceOutput["security"], governance: SecurityGovernanceOutput["governance"]): SecurityGovernanceOutput => ({
+    implemented: false,
+    security,
+    governance,
+    artifacts: [],
+    notes,
+  });
+
+  if (!discovery) {
+    notes.push("No discovery result available to analyze.");
+    return emptyOutput(
+      {
+        version: "1.0",
+        requirements: [],
+        trustBoundaries: [],
+        dataProtection: [],
+        identityAccess: [],
+        integrationSecurity: [],
+        auditRequirements: [],
+        risks: [],
+        informationGaps: [],
+        evidenceRefs: [],
+        status: "draft",
+        statusReasons: ["no discovery result available"],
+      },
+      { policies: [], humanOversight: [], auditRequirements: [], decisionControls: [], complianceConsiderations: [], informationGaps: [], status: "draft" }
+    );
+  }
+
+  const workflowOutput = siblingOutput<WorkflowAutomationSection>(context, "workflow-automation");
+  const integrationsOutput = siblingOutput<IntegrationsSection>(context, "integrations");
+  const workflows: WorkflowDefinition[] = workflowOutput?.workflows ?? [];
+  const integrations: IntegrationDefinition[] = integrationsOutput?.integrations ?? [];
+
+  if (workflows.length > 0) notes.push(`Analyzed ${workflows.length} Workflow Automation workflow(s).`);
+  if (integrations.length > 0) notes.push(`Analyzed ${integrations.length} Integration(s).`);
+
+  const security = buildSecurityArchitecture(discovery, workflows, integrations);
+  const governance = buildGovernancePlan(discovery, workflows, security);
+
+  const securityValidation = validateSecurityArchitecture(security, discovery, workflows, integrations);
+  const governanceValidation = validateGovernancePlan(governance, workflows);
+
+  if (!securityValidation.ok || !governanceValidation.ok) {
+    notes.push(
+      `Validation failed: ${[...securityValidation.issues, ...governanceValidation.issues]
+        .filter((i) => i.severity === "error")
+        .map((i) => i.message)
+        .join("; ")}`
+    );
+    return emptyOutput(security, governance);
+  }
+
+  const artifacts = buildSecurityGovernanceArtifacts(security, governance, discovery, workflows);
+
+  notes.push(
+    "Generated and validated a vendor-neutral security/governance architecture. This means Stitchfy can produce and " +
+      "validate the specification — not that the system is secure, compliant, certified, or production-ready."
+  );
+
+  return { implemented: true, security, governance, artifacts, notes };
 }
 
 async function validate(
   output: SecurityGovernanceOutput
 ): Promise<ValidationResult<SecurityGovernanceOutput>> {
+  if (output.implemented && output.artifacts.length === 0) {
+    return validationFail(["implemented is true but no artifacts were produced"]);
+  }
   return validationOk(output);
 }
 
-export const securityGovernanceCapability: StitchfyCapability<PlanInput, SecurityGovernanceOutput> = {
-  id: CAPABILITY_ID,
+export const securityGovernanceCapability: StitchfyCapability<CapabilityAssessment, SecurityGovernanceOutput> = {
+  id: SECURITY_GOVERNANCE_CAPABILITY_ID,
   name: "Security & Governance",
-  version: "0.1.0",
+  version: "0.2.0",
   supports,
+  assess,
   plan,
   execute,
   validate,

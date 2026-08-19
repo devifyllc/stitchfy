@@ -4,6 +4,10 @@
  * framework/schemas/discovery/discovery-result.schema.ts: piece schemas
  * exported individually and composed, so solution-blueprint.schema.ts can
  * reuse SolutionPlanSchema for the new optional `planning` field.
+ *
+ * Also home to ArchitectureReferenceSchema (Phase 5) — a distinct reference
+ * primitive from EvidenceReference (see framework/core/contracts/architecture-reference.ts)
+ * kept alongside it since both are cross-capability reference contracts.
  */
 
 import { z } from "zod";
@@ -21,9 +25,15 @@ export const EvidenceReferenceSchema = z.object({
     "integration",
     "information-gap",
     "actor",
+    "data-entity",
   ]),
   entityId: z.string().min(1),
   description: z.string().optional(),
+});
+
+export const ArchitectureReferenceSchema = z.object({
+  entityType: z.enum(["workflow", "workflow-step", "integration", "system", "data-contract", "process", "requirement", "approval"]),
+  entityId: z.string().min(1),
 });
 
 export const AssessmentReasonSchema = z.object({

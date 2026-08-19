@@ -11,9 +11,10 @@ import { AIAgentsSectionSchema } from "../../capabilities/ai-agents/schemas/ai-a
 import { IntegrationsSectionSchema } from "../../capabilities/integrations/schemas/integrations.schema.js";
 import { CloudArchitectureSectionSchema } from "../../capabilities/cloud/schemas/cloud.schema.js";
 import {
-  SecuritySectionSchema,
-  GovernanceSectionSchema,
+  SecurityArchitectureSchema,
+  GovernancePlanSchema,
 } from "../../capabilities/security-governance/schemas/security-governance.schema.js";
+import { RiskAssessmentSchema } from "../../planning/risk-assessment/risk-assessment.schema.js";
 import { ObservabilitySectionSchema } from "../../capabilities/observability/schemas/observability.schema.js";
 import { ModernizationSectionSchema } from "../../capabilities/modernization/schemas/modernization.schema.js";
 import { BusinessContextSchema } from "../business-context/business-context.schema.js";
@@ -67,14 +68,6 @@ const ImplementationArtifactSchema = z.object({
   generatedAt: z.string().min(1),
 });
 
-const RiskAssessmentSchema = z.object({
-  id: z.string().min(1),
-  capabilityId: z.string().optional(),
-  description: z.string().min(1),
-  level: z.enum(["low", "medium", "high", "critical"]),
-  mitigation: z.string().optional(),
-});
-
 // ─── deployment / qa ────────────────────────────────────────────────────────
 
 const DeploymentInfoSchema = z.object({
@@ -107,8 +100,8 @@ export const SolutionBlueprintSchema = z.object({
   integrations: IntegrationsSectionSchema.optional(),
   automation: WorkflowAutomationSectionSchema.optional(),
   ai: AIAgentsSectionSchema.optional(),
-  security: SecuritySectionSchema.optional(),
-  governance: GovernanceSectionSchema.optional(),
+  security: SecurityArchitectureSchema.optional(),
+  governance: GovernancePlanSchema.optional(),
   observability: ObservabilitySectionSchema.optional(),
   modernization: ModernizationSectionSchema.optional(),
   deployment: DeploymentInfoSchema.optional(),

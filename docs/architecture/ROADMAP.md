@@ -187,7 +187,7 @@ the full design).
 - `tests/integration-generation.test.ts` — the 16 scenarios from the Phase
   4 task (53 tests total passing across all four suites).
 
-**Still deferred — Phase 4.5 — Provider / Export Adapter Implementation:**
+**Still deferred — see Phase 5.5 below:**
 
 - Real vendor clients (Google Calendar, QuickBooks, WhatsApp, Stripe,
   Salesforce, ...) — none exist; no HTTP call is made anywhere in this
@@ -202,21 +202,113 @@ the full design).
   systems are named in one description (today's sentence-position
   convention only handles exactly two).
 
-## Phase 5 — AI Agent Architecture
+## Phase 5 — Security, Governance and Risk Architecture ✅ done
+
+The third fully-generated capability, and the first cross-cutting one:
+`security-governance` now inspects the already-generated
+`WorkflowDefinition[]`/`IntegrationDefinition[]` (not raw Markdown) rather
+than only `DiscoveryResult`, deliberately brought forward before any real
+provider/exporter implementation — see ARCHITECTURE.md "Security,
+Governance and Risk Architecture" for the full design, and rationale for
+why provider-specific, increasingly executable artifacts should only be
+generated after security, data-protection, auditability, and governance
+requirements can be represented explicitly.
+
+- `SecurityArchitecture` (`framework/capabilities/security-governance/schemas/security-governance.types.ts`)
+  — requirements (identity/authorization/data-protection/secrets/
+  integration/audit/privacy/human-oversight/unknown domains), trust
+  boundaries, data protection requirements, integration security rollups,
+  audit requirements, real `RiskAssessment[]`, referenced/new information
+  gaps, and a deterministic `draft | needs-review | complete` status.
+  Replaces the Phase 0 skeleton.
+- `GovernancePlan` — human oversight controls, decision controls (one per
+  significant workflow decision), policies (one per `BusinessRule`),
+  explicit-vs-potential `ComplianceConsideration`s, reused audit
+  requirements.
+- `RiskAssessment` (`framework/planning/risk-assessment/risk-assessment.types.ts`)
+  evolved from the Phase 0 placeholder (never populated by anything real)
+  to a real model: category, `likelihood`/`impact` as
+  `low|medium|high|"unknown"` (never a numeric score), treatment, related
+  architecture references, evidence references, status.
+- `ArchitectureReference` (`framework/core/contracts/architecture-reference.ts`)
+  — new, distinct from `EvidenceReference`: answers "what part of the
+  generated architecture" rather than "why was this decided."
+- `security-governance.assessor.ts` — structured Discovery-only signals
+  (sensitive data entities, security-tagged gaps, security/regulatory/data
+  constraints, security-typed requirements, governance-language business
+  rules); never blocked by its own blocking gaps, since surfacing them is
+  the point.
+- `generators/security-architecture.generator.ts` +
+  `generators/governance-plan.generator.ts` — cross-capability generation
+  reading `context.capabilityResults` for workflow-automation and
+  integrations output, reusing the exact sibling-output pattern Phase 4
+  introduced (no new `dependsOn`/`executionOrder` mechanism needed — the
+  existing registration order already provides it).
+- `validators/security-architecture.validator.ts` — referential integrity,
+  same-system-boundary rejection, evidence-required checks for
+  `SecurityRequirement`/`RiskAssessment`, workflow/approval/decision
+  reference checks for governance controls.
+- `generators/security-artifact.generator.ts` — 6 artifacts
+  (`security-architecture.json/.md`, `risk-register.json/.md`,
+  `governance-plan.json/.md`) under `output/artifacts/security-governance/`,
+  each repeating the `implemented: true` disclaimer verbatim.
+- Fourth example, `examples/solution/customer-data-workflow.md` —
+  identity/authorization/human-approval-governance/audit/unresolved-
+  auth-provider-gap generation, selectable without the literal words
+  "security"/"governance"/"cybersecurity" appearing anywhere in it.
+- `tests/security-governance.test.ts` — the scenarios from the Phase 5
+  task (sensitive-data risk, unknown classification, authentication
+  preservation, unknown auth, identity/authorization separation, vendor-
+  neutral secrets language, trust boundary classification, no invented
+  topology, human oversight, audit, compliance restraint, explicit
+  compliance, risk without a fabricated score, unknown likelihood, risk-
+  vs-gap distinction, referential integrity, cross-capability dependency,
+  artifacts, traceability, backward compatibility).
+
+**Still deferred, intentionally:**
+
+- No real IAM, secrets manager, or encryption configuration — domain
+  models only.
+- No AI Agent governance instantiation (only structural extensibility —
+  `SecurityDomain`/`GovernanceApprovalControl` are generic enough to cover
+  an AI Agent's actions once that capability exists).
+- No orchestrator restructuring beyond capabilities reading
+  `context.capabilityResults` for sibling output — `orchestrator.ts` (the
+  website pipeline) stays untouched.
+
+## Phase 5.5 — Integration Provider / Export Adapters
+
+Formalizes what Phase 4's "Still deferred" section already scoped out —
+now placed after Security & Governance rather than immediately after
+Integrations, since provider-specific, increasingly executable artifacts
+should be generated only once security, data-protection, auditability, and
+governance requirements can be represented explicitly for whatever they'd
+be built on top of.
+
+- Real vendor clients (Google Calendar, QuickBooks, WhatsApp, Stripe,
+  Salesforce, ...) — none exist; no HTTP call is made anywhere in this
+  codebase.
+- OAuth2/API-key flows, credential/secret storage, token refresh.
+- Concrete exporters translating a validated `IntegrationDefinition` into a
+  vendor's actual API shape (beyond the generic OpenAPI artifact already
+  generated when justified).
+- Actual HTTP calls, webhook receivers/runtime, retries, message brokers.
+- Real IAM configuration, cloud security groups, WAF rules, or any concrete
+  encryption configuration — `SecurityRequirement`/`DataProtectionRequirement`
+  stay pure domain models until this phase.
+- Multi-integration source/target disambiguation when more than two
+  systems are named in one description.
+
+## Phase 6 — AI Agent Architecture
 
 - Real `AIAgentDefinition` generation: tool specs, memory strategy,
   guardrails, confidence/risk thresholds.
 - Wire `humanApproval` generation into `framework/governance/approvals`
   end-to-end (not just the type).
-
-## Phase 6 — Security / Governance
-
-- Real `security-governance.capability.ts` output derived from
-  `DiscoveryResult.businessRules`/`constraints`/`dataEntities` (using
-  `dataEntities[].sensitive`, already computed in Phase 1) plus the existing
-  `detectComplianceFlags`-style pattern from `intake.agent.ts`.
-- Real `RiskAssessment[]` in `planning/risk-assessment/risk-assessment.ts`
-  instead of an empty stub.
+- AI Agent-specific governance controls built on top of Phase 5's generic
+  `SecurityDomain`/`GovernanceApprovalControl` extensibility (tool-
+  invocation policies, prompt governance, agent memory audit) — none of
+  which are implemented yet.
 
 ## Phase 7 — Cloud / Observability
 

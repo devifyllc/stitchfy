@@ -22,7 +22,9 @@ export type EvidenceEntityType =
   | "business-rule"
   | "integration"
   | "information-gap"
-  | "actor";
+  | "actor"
+  /** Added Phase 5 — a real DiscoveryResult entity (Phase 1) that data-protection requirements need to cite; missed in the original Phase 1.5 union. */
+  | "data-entity";
 
 export interface EvidenceReference {
   entityType: EvidenceEntityType;
