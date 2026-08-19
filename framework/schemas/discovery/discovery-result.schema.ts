@@ -105,6 +105,7 @@ export const RequirementItemSchema = z.object({
   relatedGoalIds: z.array(z.string()),
   relatedPainPointIds: z.array(z.string()),
   relatedProcessIds: z.array(z.string()),
+  relatedOutcomeIds: z.array(z.string()),
   acceptanceCriteria: z.array(z.string()),
   metadata: DiscoveryMetadataSchema,
 });

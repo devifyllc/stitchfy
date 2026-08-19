@@ -27,6 +27,7 @@ import {
   InformationGapSchema,
   TraceabilityLinkSchema,
 } from "../discovery/discovery-result.schema.js";
+import { CapabilityAssessmentSchema, SolutionPlanSchema } from "../planning/planning.schema.js";
 
 // ─── project (reused shape from blueprint.schema.ts, kept local since that
 // file doesn't export its ProjectSchema) ───────────────────────────────────
@@ -53,6 +54,7 @@ const CapabilityExecutionResultSchema = z.object({
   error: z.string().optional(),
   durationMs: z.number().optional(),
   output: z.unknown().optional(),
+  assessment: CapabilityAssessmentSchema.optional(),
 });
 
 const ImplementationArtifactSchema = z.object({
@@ -99,6 +101,7 @@ export const SolutionBlueprintSchema = z.object({
   businessRules: z.array(BusinessRuleSchema).optional(),
   informationGaps: z.array(InformationGapSchema).optional(),
   traceability: z.array(TraceabilityLinkSchema).optional(),
+  planning: SolutionPlanSchema.optional(),
   capabilities: z.array(CapabilityExecutionResultSchema).optional(),
   architecture: CloudArchitectureSectionSchema.optional(),
   integrations: IntegrationsSectionSchema.optional(),

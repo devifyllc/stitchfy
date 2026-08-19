@@ -7,11 +7,9 @@
  * Capability/Decision end of the chain is populated later by
  * solution-orchestrator.ts (SolutionBlueprint.capabilities), not here.
  *
- * Requirements derived from a DesiredOutcome (rather than an explicit
- * Requirements section) don't yet produce a "derived-from" link back to
- * that outcome — RequirementItem has no relatedOutcomeIds field in Phase 1
- * (see ARCHITECTURE.md Phase 1.5) — so this only links what's traceable
- * through relatedGoalIds/relatedPainPointIds/relatedProcessIds today.
+ * Phase 1.5: RequirementItem.relatedOutcomeIds (populated deterministically
+ * by requirements.extractor.ts for derived requirements) now produces a
+ * "derived-from" link back to the DesiredOutcome that produced it.
  */
 
 import type { RequirementItem } from "../requirements/requirement.types.js";
@@ -33,6 +31,9 @@ export function extractTraceabilityLinks(
     }
     for (const processId of req.relatedProcessIds) {
       links.push({ fromId: req.id, toId: processId, relationship: "depends-on" });
+    }
+    for (const outcomeId of req.relatedOutcomeIds) {
+      links.push({ fromId: req.id, toId: outcomeId, relationship: "derived-from" });
     }
   }
 

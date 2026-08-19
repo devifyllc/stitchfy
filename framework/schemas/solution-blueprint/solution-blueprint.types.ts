@@ -34,6 +34,7 @@ import type { ObservabilitySection } from "../../capabilities/observability/sche
 import type { ModernizationSection } from "../../capabilities/modernization/schemas/modernization.types.js";
 import type { ImplementationArtifact } from "../../core/contracts/artifact.js";
 import type { RiskAssessment } from "../../planning/risk-assessment/risk-assessment.types.js";
+import type { SolutionPlan } from "../../planning/capability-assessment/solution-plan.types.js";
 
 export interface DeploymentInfo {
   environments: string[];
@@ -57,6 +58,8 @@ export interface SolutionBlueprint {
   businessRules?: BusinessRule[];
   informationGaps?: InformationGap[];
   traceability?: TraceabilityLink[];
+  /** Explainable capability selection — see docs/architecture/ARCHITECTURE.md "Solution Planning". */
+  planning?: SolutionPlan;
   capabilities?: CapabilityExecutionResult[];
   architecture?: CloudArchitectureSection;
   integrations?: IntegrationsSection;

@@ -50,13 +50,16 @@ export function extractRequirements(parsed: ParsedProject, desiredOutcomes: Desi
       relatedGoalIds: [],
       relatedPainPointIds: [],
       relatedProcessIds: [],
+      relatedOutcomeIds: [],
       acceptanceCriteria: [],
       metadata: explicitMetadata("requirements", description),
     }));
   }
 
   // No explicit Requirements section — derive one requirement per desired
-  // outcome rather than leaving the array empty.
+  // outcome rather than leaving the array empty. relatedOutcomeIds is the
+  // deterministic link back to the outcome that produced it (no fuzzy
+  // matching needed — the outcome object is already in scope here).
   return desiredOutcomes.map((outcome) => ({
     id: nextId(),
     description: `Support: ${outcome.description}`,
@@ -65,6 +68,7 @@ export function extractRequirements(parsed: ParsedProject, desiredOutcomes: Desi
     relatedGoalIds: outcome.relatedGoalIds,
     relatedPainPointIds: [],
     relatedProcessIds: [],
+    relatedOutcomeIds: [outcome.id],
     acceptanceCriteria: [],
     metadata: derivedMetadata("desired-outcomes", outcome.description, 0.5),
   }));

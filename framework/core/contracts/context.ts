@@ -13,6 +13,8 @@ import type { BusinessContext } from "../../discovery/business/business-context.
 import type { DiscoveryResult } from "../../discovery/discovery-result.types.js";
 import type { SolutionBlueprint } from "../../schemas/solution-blueprint/solution-blueprint.types.js";
 import type { CapabilityExecutionResult } from "../../schemas/capability/capability-result.types.js";
+import type { CapabilityAssessment } from "../../planning/capability-assessment/capability-assessment.types.js";
+import type { SolutionPlan } from "../../planning/capability-assessment/solution-plan.types.js";
 
 export type SolutionStage =
   | "idle"
@@ -40,6 +42,9 @@ export interface SolutionContext {
    * docs/architecture/ARCHITECTURE.md "Capability Selection Evolution".
    */
   discoveryResult?: DiscoveryResult;
+  /** Populated once, during the "planning" stage, before any capability executes. */
+  capabilityAssessments?: CapabilityAssessment[];
+  solutionPlan?: SolutionPlan;
   solutionBlueprint: Partial<SolutionBlueprint>;
   capabilityResults: CapabilityExecutionResult[];
   stage: SolutionStage;

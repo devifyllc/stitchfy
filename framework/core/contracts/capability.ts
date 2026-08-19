@@ -9,6 +9,7 @@
 
 import type { SolutionContext } from "./context.js";
 import type { ValidationResult } from "../../schemas/common/validation-result.js";
+import type { CapabilityAssessment } from "../../planning/capability-assessment/capability-assessment.types.js";
 
 export interface StitchfyCapability<TInput = unknown, TOutput = unknown> {
   id: string;
@@ -17,6 +18,16 @@ export interface StitchfyCapability<TInput = unknown, TOutput = unknown> {
 
   /** Whether this capability is relevant given the current SolutionContext. */
   supports(context: SolutionContext): boolean;
+
+  /**
+   * Optional structured, explainable assessment (see
+   * framework/planning/capability-assessment/). A capability that
+   * implements this should have supports() delegate to it — one source of
+   * truth for selection rules. Capabilities without assess() fall back to
+   * legacyKeywordAssessment() wrapping their supports() boolean; see
+   * framework/planning/capability-assessment/assess-capabilities.ts.
+   */
+  assess?(context: SolutionContext): CapabilityAssessment;
 
   /** Derive the input this capability needs to execute. */
   plan(context: SolutionContext): Promise<TInput>;

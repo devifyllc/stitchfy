@@ -3,6 +3,11 @@
  * the original sketch in favor of `metadata: DiscoveryMetadata` alone —
  * `metadata.sources` already carries provenance, so a second string field
  * would just duplicate it (see ARCHITECTURE.md "Discovery Model").
+ *
+ * Phase 1.5: added `relatedOutcomeIds` so a requirement derived from a
+ * DesiredOutcome (see requirements.extractor.ts) keeps a deterministic link
+ * back to it — no fuzzy matching, the extractor already knows which outcome
+ * produced the requirement.
  */
 
 import type { DiscoveryMetadata } from "../../core/contracts/provenance.js";
@@ -26,6 +31,7 @@ export interface RequirementItem {
   relatedGoalIds: string[];
   relatedPainPointIds: string[];
   relatedProcessIds: string[];
+  relatedOutcomeIds: string[];
   acceptanceCriteria: string[];
   metadata: DiscoveryMetadata;
 }

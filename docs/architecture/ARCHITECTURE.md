@@ -271,20 +271,139 @@ untestable code path is worse than documenting the seam.
 
 ### Capability selection evolution
 
-Item 13 of the Phase 1 task: capability `supports()` still only does
-keyword matching (Phase 0, unchanged) — no capability was modified in
-Phase 1. `SolutionContext.discoveryResult` makes the richer signals
-available for when that changes:
+Item 13 of the Phase 1 task documented this as a table of *future* signals;
+Phase 1.5 (below) actually migrated the first row. Current state:
 
-| Capability | Phase 0 signal (today) | Phase 1+ structured signal (future) |
+| Capability | Selection method | Structured signal |
 |---|---|---|
-| `workflow-automation` | keywords in goals/processes/painPoints | `process.manualSteps.length > 0 && process.automationCandidates.length > 0` |
-| `ai-agents` | keywords in goals/desiredOutcomes | an `AIAgentDefinition`-shaped need inferred from `process.manualSteps` + `actors` |
-| `integrations` | keywords in integrations/existingSystems | `integrationNeeds.length > 0` or `systems.some(s => s.category === "saas")` |
-| `cloud` | keywords in existingSystems/constraints | `systems.some(s => s.category === "legacy" \|\| s.criticality === "high")` |
-| `security-governance` | keywords in businessRules/constraints/data | `dataEntities.some(d => d.sensitive)` or a `blocking` information gap tagged `security-governance` |
-| `observability` | keywords in constraints/existingSystems | `systems.some(s => s.criticality === "high")` |
-| `modernization` | keywords in existingSystems/painPoints | `systems.some(s => s.category === "legacy")` |
+| `workflow-automation` | **structured** (Phase 1.5) | `process.automationCandidates`/`manualSteps`, requirement `type`, outcome language — see "Solution Planning" below |
+| `ai-agents` | legacy-keyword | future: an `AIAgentDefinition`-shaped need inferred from `process.manualSteps` + `actors` |
+| `integrations` | legacy-keyword | future: `integrationNeeds.length > 0` or `systems.some(s => s.category === "saas")` |
+| `cloud` | legacy-keyword | future: `systems.some(s => s.category === "legacy" \|\| s.criticality === "high")` |
+| `security-governance` | legacy-keyword | future: `dataEntities.some(d => d.sensitive)` or a `blocking` information gap tagged `security-governance` |
+| `observability` | legacy-keyword | future: `systems.some(s => s.criticality === "high")` |
+| `modernization` | legacy-keyword | future: `systems.some(s => s.category === "legacy")` |
+| `website` | legacy-keyword (`supports()` always `true`) | not planned to migrate — website has no "not applicable" case |
+
+## Solution Planning (Phase 1.5)
+
+Phase 0's `supports(context): boolean` answers "should this run?" with no
+explanation. Phase 1.5 adds an explainable layer on top, additively:
+
+```
+DiscoveryResult → CapabilityAssessment[] → SolutionPlan → SolutionBlueprint.planning
+```
+
+### CapabilityAssessment
+
+`framework/planning/capability-assessment/capability-assessment.types.ts` —
+`status` (`recommended | not-recommended | needs-review | blocked`),
+`confidence` (`low | medium | high`), a list of `AssessmentReason`s (each
+carrying `EvidenceReference[]` — see `framework/core/contracts/evidence.ts`
+— pointing at real `DiscoveryResult` entity ids), `related*Ids` for quick
+cross-referencing, and `method` (`structured | legacy-keyword |
+explicit-request`). Deliberately no numeric score: `status`/`confidence`
+are derived from how many independent, named signal categories fired (see
+`workflow-automation.assessor.ts`), never a weighted sum.
+
+### The `assess()` contract
+
+`StitchfyCapability.assess?(context): CapabilityAssessment` was added as an
+**optional** method — `supports(context): boolean` is unchanged and remains
+what `capability-runner.ts` actually gates execution on.
+`framework/planning/capability-assessment/assess-capabilities.ts` provides
+the generic bridge:
+
+```ts
+function assessCapability(capability, context) {
+  return capability.assess?.(context) ?? legacyKeywordAssessment(capability, context);
+}
+```
+
+`legacyKeywordAssessment()` wraps a capability's existing `supports()`
+boolean into a `CapabilityAssessment` tagged `method: "legacy-keyword"` —
+this is *not* a second selection mechanism, it's a label on the exact same
+boolean `capability-runner.ts` already used. Zero capability-ID branching
+lives in the registry or orchestrator (task item 19) — `assessAllCapabilities()`
+just calls `assessCapability()` for every registered capability.
+
+### Workflow Automation: the first structured capability
+
+`framework/capabilities/workflow-automation/workflow-automation.assessor.ts`
+reads `context.discoveryResult` directly — no keyword search against
+flattened `BusinessContext` text. Its signals:
+
+- **Process** (purely structural — array-length checks, no text matching):
+  `automationCandidates.length > 0`, `manualSteps.length > 0` (strong);
+  `systemIds.length >= 2`, `actorIds.length >= 2` (supporting).
+- **Requirement**: `type === "automation"` (strong); `type === "integration" | "operational"` (supporting).
+- **Outcome**: `DesiredOutcome.description` matched against an
+  automation-language pattern — scoped to that one already-structured
+  field, not a markdown-wide search.
+
+Any `InformationGap` that is both `blocking` and tagged
+`relatedCapabilityIds: ["workflow-automation"]` forces `status: "blocked"` —
+an unrelated gap (e.g. one tagged only `security-governance`, like the
+appointment example's customer-data gap) never blocks workflow automation
+(task item 14). Otherwise: ≥1 strong signal → `recommended`; only
+supporting signals → `needs-review`; nothing → `not-recommended`
+(confidence `high` either way when there's no ambiguity).
+
+`workflow-automation.capability.ts`'s `supports()` calls the exact same
+`assessWorkflowAutomation()` its `assess()` calls and checks `status` — one
+function, multiple call sites, one set of rules.
+
+### WorkflowAutomationPlan and human-in-the-loop
+
+`workflow-automation.planner.ts` turns a `recommended`/`needs-review`
+assessment into a `WorkflowAutomationPlan` (`processIds`, `requirementIds`,
+`systemIds`, `automationCandidates`, `humanTouchpoints`, `integrationNeeds`,
+`informationGaps`, `assumptions`) — architectural only, no external system
+is contacted. `humanTouchpoints` are found by matching
+`approv|manual review|human (review|approval|control)|escalat|exception`
+against `DesiredOutcome`/`RequirementItem` descriptions (structured fields,
+not raw markdown) and building a real `HumanApprovalRequest` via the
+existing `createApprovalRequest()` (`framework/governance/approvals/human-approval.types.ts`)
+— reused, not reimplemented. `approverRole` is only set when a
+`BusinessActor.role` substring is actually found in the matched text;
+otherwise it stays a generic `"designated approver"` rather than guessing a
+specific person or role.
+
+### SolutionPlan
+
+`framework/planning/capability-assessment/solution-plan.ts`'s
+`buildSolutionPlan()` is a pure function: one `SolutionDecision` per
+assessment (`recommended→selected`, `needs-review→deferred`,
+`not-recommended→not-selected`, `blocked→blocked`),
+`selectedCapabilities` = the same set whose `supports()` would return
+`true`, `unresolvedGaps` = every currently-blocking `InformationGap` id
+(Phase 1.5 resolves none of them — this list is just honest about what's
+still open). Computed once, in the `"planning"` stage of
+`solution-orchestrator.ts`, *before* `capability-runner.ts` runs any
+capability — `SolutionContext.capabilityAssessments`/`.solutionPlan` carry
+it forward; `capability-runner.ts` looks the assessment up rather than
+recomputing selection logic, and attaches it to
+`CapabilityExecutionResult.assessment` for auditability.
+
+### Planning report
+
+`framework/reports/render-solution-plan-report.ts` renders
+`output/reports/solution-plan.md` directly from the already-computed
+`SolutionPlan`/`DiscoveryResult` — no decision is recomputed in the report
+layer (task item 16). `SolutionBlueprint.planning?: SolutionPlan` carries
+the same data into the JSON artifact, additively (`schemaVersion` stays
+`"1.0"`).
+
+### Requirement → Outcome traceability
+
+`RequirementItem.relatedOutcomeIds` (new) lets a requirement derived from a
+`DesiredOutcome` keep a deterministic `"derived-from"` link back to it — the
+extractor already has the outcome object in scope when it derives the
+requirement, so this needed no correlation logic, just recording what was
+already known. Requirement↔process correlation was **not** added — the
+codebase has no deterministic way to know that today, and task item 13 is
+explicit that fabricating one would be worse than leaving
+`relatedProcessIds: []`.
 
 ## Adaptation from the literal proposed folder tree
 
@@ -341,6 +460,20 @@ through instead of the flat `BusinessContext`. `SolutionBlueprint` stays
 `schemaVersion: "1.0"` throughout — every new/changed field is optional or
 was already unused elsewhere, so nothing reading known v1 fields breaks.
 `framework/orchestrator/orchestrator.ts` (the website pipeline) was not
+touched.
+
+**Phase 1.5** added the assessment/planning layer purely additively:
+`StitchfyCapability.assess?()` is optional and every existing capability
+compiles unchanged; only `workflow-automation.capability.ts` was rewritten
+(its `plan()`/`execute()` input type changed from a local `PlanInput` to
+`CapabilityAssessment` — an internal detail, not part of the public
+contract). One small dedup cleanup while touching this area:
+`ai-agents.schema.ts`'s local `HumanApprovalRequestSchema` was replaced with
+an import from the new `framework/schemas/common/human-approval.schema.ts`,
+which `workflow-automation.schema.ts` also uses — same shape, defined once.
+`SolutionBlueprint` stays `schemaVersion: "1.0"` — `planning` is optional
+and `actors`'s type already changed to `BusinessActor` in Phase 1, so
+nothing new breaks. `framework/orchestrator/orchestrator.ts` was not
 touched.
 
 See `docs/architecture/ROADMAP.md` for what comes next.

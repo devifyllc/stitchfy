@@ -1,4 +1,31 @@
 import { z } from "zod";
+import { EvidenceReferenceSchema } from "../../../schemas/planning/planning.schema.js";
+import { HumanApprovalRequestSchema } from "../../../schemas/common/human-approval.schema.js";
+
+const AutomationCandidateSchema = z.object({
+  description: z.string().min(1),
+  processId: z.string().min(1),
+  evidenceRefs: z.array(EvidenceReferenceSchema),
+});
+
+const HumanTouchpointSchema = z.object({
+  id: z.string().min(1),
+  trigger: z.string().min(1),
+  reason: z.string().min(1),
+  approval: HumanApprovalRequestSchema,
+  evidenceRefs: z.array(EvidenceReferenceSchema),
+});
+
+const WorkflowAutomationPlanSchema = z.object({
+  processIds: z.array(z.string()),
+  requirementIds: z.array(z.string()),
+  systemIds: z.array(z.string()),
+  automationCandidates: z.array(AutomationCandidateSchema),
+  humanTouchpoints: z.array(HumanTouchpointSchema),
+  integrationNeeds: z.array(z.string()),
+  informationGaps: z.array(z.string()),
+  assumptions: z.array(z.string()),
+});
 
 const WorkflowTriggerSchema = z.object({
   id: z.string().min(1),
@@ -27,6 +54,7 @@ const WorkflowApprovalSchema = z.object({
 
 export const WorkflowAutomationSectionSchema = z.object({
   implemented: z.boolean(),
+  plan: WorkflowAutomationPlanSchema.optional(),
   triggers: z.array(WorkflowTriggerSchema),
   steps: z.array(WorkflowStepSchema),
   decisions: z.array(WorkflowDecisionSchema),

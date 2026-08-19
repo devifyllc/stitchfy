@@ -1,20 +1,10 @@
 import { z } from "zod";
+import { HumanApprovalRequestSchema } from "../../../schemas/common/human-approval.schema.js";
 
 const AIAgentToolSchema = z.object({
   name: z.string().min(1),
   description: z.string(),
   inputSchema: z.record(z.string(), z.unknown()).optional(),
-});
-
-const HumanApprovalRequestSchema = z.object({
-  id: z.string().min(1),
-  approvalRequired: z.boolean(),
-  approverRole: z.string().min(1),
-  reason: z.string(),
-  riskLevel: z.enum(["low", "medium", "high", "critical"]),
-  decision: z.enum(["pending", "approved", "rejected"]),
-  timestamp: z.string().min(1),
-  comments: z.string().optional(),
 });
 
 const AIAgentDefinitionSchema = z.object({

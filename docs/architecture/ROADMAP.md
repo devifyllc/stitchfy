@@ -52,22 +52,50 @@
 - Capability `supports()` heuristics were **not** changed — see Phase 1.5
   and ARCHITECTURE.md "Capability Selection Evolution".
 
-## Phase 1.5 — Solution Planning and Traceability
+## Phase 1.5 — Explainable Solution Planning and Capability Selection ✅ done
 
-Deliberately deferred out of Phase 1:
+- `CapabilityAssessment` / `AssessmentReason` / `EvidenceReference`
+  (`framework/planning/capability-assessment/`, `framework/core/contracts/evidence.ts`)
+  — explainable, evidence-backed, no numeric score.
+- `StitchfyCapability.assess?()` added additively; `supports()` unchanged in
+  signature and still what `capability-runner.ts` gates execution on.
+  Capabilities without `assess()` fall back to `legacyKeywordAssessment()`
+  (tagged `method: "legacy-keyword"`) — zero capability-ID branching in the
+  registry or orchestrator.
+- **Workflow Automation** is the first capability with real structured
+  `assess()`/`plan()`/`execute()` (`workflow-automation.assessor.ts` +
+  `.planner.ts`) — reads `DiscoveryResult.processes/requirements/desiredOutcomes/informationGaps`
+  directly; `supports()` delegates to the same assessor (one source of
+  truth). The other 7 capabilities are unchanged (still legacy-keyword).
+- `SolutionPlan` / `SolutionDecision`
+  (`framework/planning/capability-assessment/solution-plan.ts`) — a pure
+  function from assessments to decisions; new `"planning"` stage in
+  `solution-orchestrator.ts` runs it once, before any capability executes.
+- `RequirementItem.relatedOutcomeIds` — a derived requirement now keeps a
+  deterministic `"derived-from"` link back to the `DesiredOutcome` that
+  produced it (no fuzzy matching needed; the extractor already had the
+  outcome in scope).
+- `SolutionBlueprint.planning?: SolutionPlan` (additive, `schemaVersion`
+  stays `"1.0"`); `WorkflowAutomationSection.plan?: WorkflowAutomationPlan`.
+- `output/reports/solution-plan.md` — human-readable, rendered directly from
+  the already-computed `SolutionPlan`/`DiscoveryResult` (task item 16 — no
+  decision is recomputed in the report layer).
+- `tests/planning.test.ts` — the 9 scenarios from the Phase 1.5 task
+  (selection, no-keyword-dependency, explainability, referential integrity,
+  derived traceability, legacy/website compatibility, no-false-positive,
+  HITL).
 
-- Requirement ↔ process correlation (`RequirementItem.relatedProcessIds` is
-  always `[]` today; no fuzzy matching was attempted).
-- A `relatedOutcomeIds`-style field so a derived requirement traces back to
-  the `DesiredOutcome` it came from with a `"derived-from"` link.
+**Still deferred** (unchanged from the original Phase 1.5 scope, intentionally):
+
+- Requirement ↔ process correlation beyond explicit shared ids
+  (`RequirementItem.relatedProcessIds` stays `[]` — no fuzzy matching).
 - Constraint cross-referencing to processes/requirements.
 - Actually wiring an LLM enrichment call behind `framework/providers/llm/`
   (the extension point is typed/documented, not implemented).
 - An interactive gap-resolution flow (`InformationGap` is data-only today).
-- Updating any capability's `supports()` to read `SolutionContext.discoveryResult`
-  instead of `businessContext` keyword matching (see the evolution table in
-  ARCHITECTURE.md) — first candidate to actually do this should be whichever
-  capability is picked for Phase 3+.
+- Migrating any of the other 7 capabilities to `assess()` — see the
+  evolution table in ARCHITECTURE.md; the next one to migrate is whichever
+  capability Phase 3+ actually implements.
 
 ## Phase 2 — Website Capability Migration
 
@@ -79,11 +107,17 @@ Deliberately deferred out of Phase 1:
 
 ## Phase 3 — Workflow Automation
 
-- Real `triggers`/`steps`/`decisions`/`approvals` derivation from
-  `DiscoveryResult.processes` (now structured, per Phase 1) instead of the
-  flat `BusinessContext.processes` string list.
-- First real use of `framework/governance/approvals` from a capability
-  output (workflow approval steps).
+Selection and planning are already real as of Phase 1.5
+(`workflow-automation.assessor.ts`/`.planner.ts`,
+`WorkflowAutomationSection.plan`, `HumanTouchpoint` via
+`framework/governance/approvals`). What's still `implemented: false` and
+left for this phase:
+
+- Real `triggers`/`steps`/`decisions`/`approvals` (the legacy
+  `WorkflowAutomationSection` fields, distinct from `.plan`) derived from
+  `WorkflowAutomationPlan.automationCandidates`/`humanTouchpoints`.
+- Turning `AutomationCandidate`/`HumanTouchpoint` into actual generated
+  implementation artifacts, not just a plan.
 
 ## Phase 4 — Integration Architecture
 

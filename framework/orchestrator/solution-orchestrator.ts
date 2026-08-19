@@ -24,11 +24,16 @@ import { businessDiscoveryAgent } from "../discovery/business/business-discovery
 import { deriveBusinessContext } from "../discovery/discovery-result.types.js";
 import { draftSolutionBlueprint } from "../planning/solution-architect/solution-architect.js";
 import { assessRisks } from "../planning/risk-assessment/risk-assessment.js";
+import { assessAllCapabilities } from "../planning/capability-assessment/assess-capabilities.js";
+import { buildSolutionPlan } from "../planning/capability-assessment/solution-plan.js";
 import { createDefaultRegistry } from "../core/registry/default-capabilities.js";
 import { runCapability } from "./capability-runner.js";
 import { writeBusinessContextArtifact } from "../core/business-context-writer.js";
 import { writeSolutionBlueprintArtifact } from "../core/solution-blueprint-writer.js";
+import { renderSolutionPlanReport, writeSolutionPlanReport } from "../reports/render-solution-plan-report.js";
+import { logAuditEvent } from "../governance/audit/audit-logger.js";
 import type { ProjectMeta } from "../schemas/blueprint.types.js";
+import type { WorkflowAutomationSection } from "../capabilities/workflow-automation/schemas/workflow-automation.types.js";
 
 const DIVIDER = "━".repeat(52);
 
@@ -119,6 +124,11 @@ export async function runSolutionPipeline(inputPath: string, outputDir: string):
   }
 
   // ── Planning ─────────────────────────────────────────────────────────────
+  // Assess every registered capability BEFORE any of them execute — this is
+  // what makes selection explainable: the decision is made and recorded
+  // once, up front, not discovered implicitly as a side effect of running
+  // capability-runner.ts (see docs/architecture/ARCHITECTURE.md "Solution
+  // Planning").
   context.stage = "planning";
   const project: ProjectMeta = {
     schemaVersion: "1.0",
@@ -128,9 +138,46 @@ export async function runSolutionPipeline(inputPath: string, outputDir: string):
   };
   context.solutionBlueprint = draftSolutionBlueprint(project, discoveryResult);
 
+  const registry = createDefaultRegistry();
+  const assessments = assessAllCapabilities(registry, context);
+  context.capabilityAssessments = assessments;
+
+  const solutionPlan = buildSolutionPlan(assessments, discoveryResult);
+  context.solutionPlan = solutionPlan;
+  context.solutionBlueprint.planning = solutionPlan;
+
+  for (const assessment of assessments) {
+    logAuditEvent({
+      actor: "capability-assessor",
+      action: "capability.assessed",
+      capabilityId: assessment.capabilityId,
+      details: {
+        status: assessment.status,
+        confidence: assessment.confidence,
+        method: assessment.method,
+        reasonCodes: assessment.reasons.map((r) => r.code),
+      },
+    });
+  }
+  for (const decision of solutionPlan.decisions) {
+    logAuditEvent({
+      actor: "solution-planner",
+      action: "capability.decision",
+      capabilityId: decision.capabilityId,
+      details: { decision: decision.decision },
+    });
+  }
+
+  ok(
+    `Planning: ${solutionPlan.selectedCapabilities.length}/${assessments.length} capabilities selected ` +
+      `(${solutionPlan.unresolvedGaps.length} unresolved blocking gap(s))`
+  );
+  for (const assessment of assessments) {
+    console.log(`  ·  ${assessment.capabilityId}: ${assessment.status} (${assessment.confidence}, ${assessment.method})`);
+  }
+
   // ── Capabilities ─────────────────────────────────────────────────────────
   context.stage = "capabilities";
-  const registry = createDefaultRegistry();
 
   for (const capability of registry.getAll()) {
     const result = await runCapability(capability, context);
@@ -148,6 +195,18 @@ export async function runSolutionPipeline(inputPath: string, outputDir: string):
   }
 
   context.solutionBlueprint.risks = assessRisks(context);
+
+  // ── Planning report ──────────────────────────────────────────────────────
+  const workflowAutomationOutput = context.solutionBlueprint.automation as WorkflowAutomationSection | undefined;
+  const reportMarkdown = renderSolutionPlanReport({
+    discoveryResult,
+    solutionPlan,
+    workflowAutomationPlan: workflowAutomationOutput?.plan,
+  });
+  const reportWrite = writeSolutionPlanReport(reportMarkdown, outputDir);
+  if (reportWrite.ok) {
+    ok(`${reportWrite.filePath}`);
+  }
 
   // ── Validation + write ───────────────────────────────────────────────────
   context.stage = "validation";
