@@ -1459,6 +1459,136 @@ CloudWatch/Datadog artifacts, and separate Runtime Providers for actual
 provisioning/telemetry APIs) — mirroring the Exporter-vs-Provider boundary
 Phases 5.5A/6.5 already established. Neither is implemented here.
 
+## Legacy Modernization Assessment and Migration Strategy Architecture (Phase 8)
+
+Replaces the Phase 0 unstructured model (`{systemInventory, dependencies,
+applications, integrations, technicalDebt, migrationCandidates` with a
+free-form `recommendedStrategy: string`, `migrationStrategies,
+recommendations}` all as `string[]`) with a vendor-neutral, evidence-backed
+`ModernizationArchitecture`. Modernization answers **"should this system
+change, and if so how"** — never assumes legacy = replace/rewrite/cloud/
+microservices/containerization. A system may be assessed and **retained**.
+This phase does not rewrite application code, scan source repositories,
+migrate databases, or deploy replacement systems.
+
+### `ModernizationNeed` — a deliberate aggregate, not a per-bullet atom
+
+Unlike `DeploymentNeed` (Phase 7B), the task's own interface
+(`systemIds, drivers, desiredOutcomes, preservationNeeds, constraints`) is
+one consolidated record, not a per-bullet entity. `modernization-needs.extractor.ts`
+recognizes 12 heading aliases ("Modernization/Migration Requirements",
+"Legacy Systems", "Legacy Application", "Modernization/Migration Goals",
+"Target State Requirements", "Modernization Drivers", "Technical Debt",
+"Legacy/Migration Constraints", "Preservation Requirements"), partitioned
+into 6 semantic buckets, and produces exactly one `ModernizationNeed` per
+document — never split per system, since nothing in the source text
+reliably distinguishes multiple concurrent modernization efforts. Like
+Cloud's `deployment-needs.extractor.ts`, it deliberately does not use the
+shared `findSection()` helper — it collects from every matching heading
+present, not just the first.
+
+### The "mentioned in a preservation bullet" trap — a real bug caught during verification
+
+The first implementation resolved `ModernizationNeed.systemIds` from text
+across *all* 12 headings, including preservation-language bullets. This
+meant "existing integration behavior with the Integration Gateway must
+remain compatible" — a preservation *constraint* on the Order Portal's own
+modernization — incorrectly promoted the Integration Gateway itself into a
+migration candidate. Fixed by scoping `systemIds` resolution to
+`desiredOutcomes` text only. This generalizes task item 66's "Legacy app →
+Salesforce does not imply Salesforce should be modernized" restraint beyond
+just external SaaS systems: a system named only as something that must stay
+compatible is not evidence that system itself needs modernizing.
+
+### Selection signals — legacy-category alone is supporting-only
+
+`modernizationNeeds.length > 0` or explicit modernization/migration
+terminology in structured requirement/constraint/business-rule text are
+**strong** signals. A `SystemInventoryItem` explicitly classified
+`category: "legacy"` is **supporting-only** — it alone reaches
+`needs-review` at low confidence, never `recommended`, and never selects a
+specific migration strategy by itself (task item 64). Since Phase 1's
+`systems.extractor.ts` had no code path that ever produced `category:
+"legacy"` before this phase (a dead enum value) and never looked at
+`purpose` text, one small, additive pattern (`/\blegacy\b/i`, checked
+against `name + purpose`) was added ahead of the existing category
+patterns so this signal is real, not theoretical.
+
+### Strategy classification — every enum value reachable only via an explicit pattern
+
+`ModernizationStrategy` (`retain|retire|replace|rehost|replatform|refactor|
+rearchitect|encapsulate|unknown`) is populated entirely from a keyword/
+pattern table — never from "legacy"/"monolith"/"old" language alone. An
+explicit "move the application from WebSphere to Tomcat" produces
+`replatform` plus a `ModernizationDelta` with the target technology
+preserved verbatim; explicit `rewrite`/`from scratch` → `replace`; explicit
+`retire`/`decommission` → `retire`; and so on. When modernization intent
+exists but no pattern matches, exactly **one** fallback `{strategy:
+"unknown", status: "needs-review"}` option is produced — never a
+speculative menu of alternatives (no rewrite bias, no microservices bias,
+no cloud bias).
+
+### Dependencies, preservation, and target-state — consuming, never re-deriving
+
+`SystemDependency` is derived only from real `IntegrationDefinition`s where
+both `sourceSystemId`/`targetSystemId` resolve — direction/protocol/
+interaction-pattern reused verbatim. `PreservationRequirement` — the core
+Phase 8 concept, answering "what must not be accidentally lost" — cross-
+references real `SecurityRequirement`/`OperationalObjective` ids only when
+they apply to an in-scope system's actual integration, via a small additive
+`relatedSecurityRequirementIds`/`relatedObservabilityObjectiveIds` field
+pair that keeps the established "evidenceRefs always points at Discovery,
+cross-capability ids live in a dedicated field" convention from
+`CloudSecurityMapping`/`CloudObservabilityMapping` (Phase 7B).
+`TargetStateRequirement` references real `CloudArchitecture` deployment
+units by name-match and real `SecurityArchitecture`/`ObservabilityArchitecture`
+requirements — never a duplicate of `PreservationRequirement`, never a
+fabricated provider/service/database.
+
+### Risks — two deterministic rules, not a checklist
+
+`RiskAssessment.category` gained one additive value, `"modernization"`.
+Modernization risks are generated from exactly two evidence-required rules:
+a shared-database dependency (≥2 dependencies targeting the same database
+system) and an explicit coexistence window — never a checklist of every
+possible migration risk (task item 43). `InformationGap` stays distinct
+from `Risk`: a single, ownership-unclear database dependency is a gap; two
+or more real dependents sharing one database is a risk.
+
+### No fake schedule, no fake sequence
+
+`ModernizationWorkstream.sequence`/`prerequisiteIds` are never populated
+without explicit sequencing evidence — dependency direction alone never
+determines migration order (task item 53). Neither target example produces
+any; the roadmap artifact says so explicitly rather than inventing an order.
+
+### An unrelated bug caught along the way
+
+`observability.capability.ts`'s `validate()` only checked `signals.length`/
+`metricRequirements.length`, not `healthRequirements.length`, so an
+architecture with only health requirements — exactly what this phase's Java
+modernization example produces via Security & Governance's trust-boundary
+requirements — was incorrectly flagged `implemented: true` with "no
+observability architecture was produced." Fixed with the missing check; no
+generated architecture changed, only the validation gate's correctness.
+
+### `implemented: true` — what it does and doesn't mean
+
+Means Stitchfy generated and validated a legacy-modernization assessment
+and migration-strategy architecture from currently known evidence. It does
+**not** mean application code was analyzed, code was migrated, dependencies
+were upgraded, databases were converted, tests passed, production behavior
+was preserved, a target system was deployed, or migration risk was
+eliminated. Every generated artifact repeats this verbatim.
+
+### Future work
+
+`docs/architecture/ROADMAP.md`'s **Phase 8.5 — Codebase Analysis and
+Modernization Export Adapters** covers repository inventory, dependency-
+manifest/framework-version discovery, build analysis, source-code
+dependency analysis, migration recipe generation, and code-transformation
+scaffolding — none of it implemented here.
+
 ## Adaptation from the literal proposed folder tree
 
 The originally proposed structure gives every capability 4-5 subfolders

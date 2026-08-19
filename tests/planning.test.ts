@@ -21,7 +21,6 @@ import { buildSolutionPlan } from "../framework/planning/capability-assessment/s
 import { assessWorkflowAutomation } from "../framework/capabilities/workflow-automation/workflow-automation.assessor.js";
 import { buildWorkflowAutomationPlan } from "../framework/capabilities/workflow-automation/workflow-automation.planner.js";
 import { workflowAutomationCapability } from "../framework/capabilities/workflow-automation/workflow-automation.capability.js";
-import { modernizationCapability } from "../framework/capabilities/modernization/modernization.capability.js";
 import { websiteCapability } from "../framework/capabilities/website/website.capability.js";
 
 const REPO_ROOT = process.cwd();
@@ -168,15 +167,15 @@ describe("Derived requirement traceability", () => {
 });
 
 describe("Legacy compatibility", () => {
-  test("an unmigrated capability (modernization) still works via legacyKeywordAssessment", async () => {
+  test("the last unmigrated capability (website) still works via legacyKeywordAssessment", async () => {
     const context = await makeContext(appointmentMarkdown);
-    assert.equal(modernizationCapability.assess, undefined);
+    assert.equal(websiteCapability.assess, undefined);
 
-    const assessment = assessCapability(modernizationCapability, context);
+    const assessment = assessCapability(websiteCapability, context);
     assert.equal(assessment.method, "legacy-keyword");
-    assert.equal(assessment.status === "recommended", modernizationCapability.supports(context));
+    assert.equal(assessment.status === "recommended", websiteCapability.supports(context));
 
-    const direct = legacyKeywordAssessment(modernizationCapability, context);
+    const direct = legacyKeywordAssessment(websiteCapability, context);
     assert.equal(direct.status, assessment.status);
   });
 });

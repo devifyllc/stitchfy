@@ -149,6 +149,34 @@ export const DeploymentNeedSchema = z.object({
   metadata: DiscoveryMetadataSchema,
 });
 
+// ─── modernization needs ────────────────────────────────────────────────────
+
+export const ModernizationNeedSchema = z.object({
+  id: z.string().min(1),
+  systemIds: z.array(z.string()),
+  drivers: z.array(
+    z.enum([
+      "maintainability",
+      "supportability",
+      "reliability",
+      "security",
+      "integration",
+      "delivery-speed",
+      "scalability",
+      "operational-cost",
+      "technical-debt",
+      "platform-lifecycle",
+      "business-change",
+      "unknown",
+    ])
+  ),
+  desiredOutcomes: z.array(z.string()),
+  preservationNeeds: z.array(z.string()),
+  constraints: z.array(z.string()),
+  technicalDebtSignals: z.array(z.string()),
+  metadata: DiscoveryMetadataSchema,
+});
+
 // ─── requirements ────────────────────────────────────────────────────────────
 
 export const RequirementItemSchema = z.object({
@@ -245,4 +273,5 @@ export const DiscoveryResultSchema = z.object({
   traceability: z.array(TraceabilityLinkSchema),
   aiAgentNeeds: z.array(AIAgentNeedSchema),
   deploymentNeeds: z.array(DeploymentNeedSchema),
+  modernizationNeeds: z.array(ModernizationNeedSchema),
 });

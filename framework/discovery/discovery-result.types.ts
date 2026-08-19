@@ -25,6 +25,7 @@ import type { InformationGap } from "./gaps/information-gap.types.js";
 import type { TraceabilityLink } from "./traceability/traceability.types.js";
 import type { AIAgentNeed } from "./ai-agents/ai-agent-need.types.js";
 import type { DeploymentNeed } from "./cloud/deployment-need.types.js";
+import type { ModernizationNeed } from "./modernization/modernization-need.types.js";
 
 export interface DiscoveryResult {
   businessName: string;
@@ -46,6 +47,8 @@ export interface DiscoveryResult {
   aiAgentNeeds: AIAgentNeed[];
   /** Phase 7B — explicit deployment/runtime/operational requirements, only from a dedicated section (never inferred from incidental "AWS"/"server"/"cloud" mentions elsewhere). */
   deploymentNeeds: DeploymentNeed[];
+  /** Phase 8 — a single aggregate modernization/migration need, only from 12 dedicated section headings (never inferred from incidental "old"/"legacy"/"modern" mentions elsewhere). */
+  modernizationNeeds: ModernizationNeed[];
 }
 
 /**

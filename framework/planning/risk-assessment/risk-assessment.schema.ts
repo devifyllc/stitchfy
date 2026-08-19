@@ -3,7 +3,7 @@ import { EvidenceReferenceSchema, ArchitectureReferenceSchema } from "../../sche
 
 export const RiskAssessmentSchema = z.object({
   id: z.string().min(1),
-  category: z.enum(["security", "privacy", "operational", "integration", "data", "governance"]),
+  category: z.enum(["security", "privacy", "operational", "integration", "data", "governance", "modernization"]),
   description: z.string().min(1),
   likelihood: z.enum(["low", "medium", "high", "unknown"]),
   impact: z.enum(["low", "medium", "high", "unknown"]),

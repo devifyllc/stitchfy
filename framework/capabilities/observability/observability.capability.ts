@@ -143,7 +143,7 @@ function emptyGovernancePlan(): SecurityGovernanceOutput["governance"] {
 }
 
 async function validate(output: ObservabilitySection): Promise<ValidationResult<ObservabilitySection>> {
-  if (output.implemented && output.architecture.signals.length === 0 && output.architecture.metricRequirements.length === 0) {
+  if (output.implemented && output.architecture.signals.length === 0 && output.architecture.metricRequirements.length === 0 && output.architecture.healthRequirements.length === 0) {
     return validationFail(["implemented is true but no observability architecture was produced"]);
   }
   return validationOk(output);

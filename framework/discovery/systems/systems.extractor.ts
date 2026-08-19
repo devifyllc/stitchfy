@@ -5,7 +5,12 @@ import type { SystemCategory, SystemInventoryItem } from "./system-inventory.typ
 
 // Deterministic keyword → category classification, same precedent as
 // intake.agent.ts's detectComplianceFlags. Never guesses `technology`.
+// "legacy" is checked first, against name+purpose combined (every other
+// pattern only ever looked at `name`) — Phase 8 needs a real, explicit
+// "legacy" classification signal (e.g. "Category: legacy application" in the
+// source text), which nothing produced before this addition.
 const CATEGORY_PATTERNS: Array<{ pattern: RegExp; category: SystemCategory }> = [
+  { pattern: /\blegacy\b/i, category: "legacy" },
   { pattern: /calendar|crm|whatsapp|instagram|facebook|mailchimp|slack|notion/i, category: "saas" },
   { pattern: /spreadsheet|excel|sheets/i, category: "spreadsheet" },
   { pattern: /\bphone\b|in[- ]person|manual|paper/i, category: "manual" },
@@ -14,8 +19,11 @@ const CATEGORY_PATTERNS: Array<{ pattern: RegExp; category: SystemCategory }> = 
   { pattern: /\bapi\b/i, category: "api" },
 ];
 
-function classifyCategory(name: string): SystemCategory {
-  for (const { pattern, category } of CATEGORY_PATTERNS) {
+function classifyCategory(name: string, purpose = ""): SystemCategory {
+  const legacyText = `${name} ${purpose}`;
+  const legacyMatch = CATEGORY_PATTERNS[0];
+  if (legacyMatch.pattern.test(legacyText)) return legacyMatch.category;
+  for (const { pattern, category } of CATEGORY_PATTERNS.slice(1)) {
     if (pattern.test(name)) return category;
   }
   return "unknown";
@@ -34,7 +42,7 @@ export function extractSystems(
     items.push({
       id: nextId(),
       name,
-      category: classifyCategory(name),
+      category: classifyCategory(name, purpose),
       purpose,
       integrations: [],
       dataHandled: [],

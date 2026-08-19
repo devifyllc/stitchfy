@@ -28,7 +28,9 @@ export type EvidenceEntityType =
   /** Added Phase 6 — a real DiscoveryResult entity (AIAgentNeed) that AI agent architecture needs to cite. */
   | "ai-agent-need"
   /** Added Phase 7B — a real DiscoveryResult entity (DeploymentNeed) that Cloud architecture needs to cite. */
-  | "deployment-need";
+  | "deployment-need"
+  /** Added Phase 8 — a real DiscoveryResult entity (ModernizationNeed) that Legacy Modernization architecture needs to cite. */
+  | "modernization-need";
 
 export interface EvidenceReference {
   entityType: EvidenceEntityType;

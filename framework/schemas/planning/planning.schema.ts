@@ -28,6 +28,7 @@ export const EvidenceReferenceSchema = z.object({
     "data-entity",
     "ai-agent-need",
     "deployment-need",
+    "modernization-need",
   ]),
   entityId: z.string().min(1),
   description: z.string().optional(),

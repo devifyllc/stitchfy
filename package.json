@@ -18,7 +18,7 @@
     "audit:stitch": "tsx scripts/audit-site.ts --dir stitch",
     "audit:both": "tsx scripts/audit-site.ts --dir both",
     "typecheck": "tsc --noEmit",
-    "test": "tsx --test tests/discovery.test.ts tests/planning.test.ts tests/workflow-generation.test.ts tests/integration-generation.test.ts tests/security-governance.test.ts tests/integration-export.test.ts tests/ai-agent-generation.test.ts tests/observability-generation.test.ts tests/cloud-generation.test.ts"
+    "test": "tsx --test tests/discovery.test.ts tests/planning.test.ts tests/workflow-generation.test.ts tests/integration-generation.test.ts tests/security-governance.test.ts tests/integration-export.test.ts tests/ai-agent-generation.test.ts tests/observability-generation.test.ts tests/cloud-generation.test.ts tests/modernization-generation.test.ts"
   },
   "dependencies": {
     "next": "^14.2.0",

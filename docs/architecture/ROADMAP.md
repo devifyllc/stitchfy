@@ -605,11 +605,81 @@ Not implemented.
   actual provisioning/telemetry/configuration APIs — no real provider exists
   yet, same as Phase 5.5B/6.5's runtime sides.
 
-## Phase 8 — Legacy Modernization
+## Phase 8 — Legacy Modernization Assessment and Migration Strategy ✅ done
 
-- Real system inventory + migration-candidate derivation.
-- First use of `SystemInventoryItem` populated from actual discovery input
-  rather than manual/empty.
+The eighth and last fully-generated capability, and the last cross-cutting
+one: inspects `IntegrationDefinition[]`, `SecurityArchitecture`,
+`ObservabilityArchitecture`, and `CloudArchitecture` — every other real
+capability's output — and produces a vendor-neutral modernization
+assessment and migration-strategy specification. Replaces the Phase 0
+unstructured model (`{systemInventory, dependencies, applications,
+integrations, technicalDebt, migrationCandidates` with a free-form
+`recommendedStrategy: string`, `migrationStrategies, recommendations}` all
+as `string[]`). See `docs/architecture/ARCHITECTURE.md` "Legacy
+Modernization Assessment and Migration Strategy Architecture (Phase 8)" for
+the full design, including the aggregate-need scoping bug caught and fixed
+during this phase's own verification.
+
+- `ModernizationNeed` (`framework/discovery/modernization/`) — a new
+  Discovery entity, one aggregate per document, extracted from 12 dedicated
+  section-heading aliases only.
+- `ModernizationArchitecture` (`framework/capabilities/modernization/schemas/`)
+  — `SystemModernizationProfile`, `SystemDependency`, `TechnicalDebtItem`,
+  `PreservationRequirement`, `ModernizationSeam`, `MigrationConstraint`,
+  `MigrationCandidate`/`ModernizationStrategyOption`, `ModernizationDelta`,
+  `TargetStateRequirement`, `MigrationValidationRequirement`,
+  `ModernizationRoadmap`/`ModernizationWorkstream` — every one evidence-
+  backed, no provider/service/database/microservices/rewrite ever selected
+  unless explicitly stated.
+- `modernization.assessor.ts`/`.planner.ts` — structured selection where an
+  explicitly `category: "legacy"` system is supporting-only (never
+  `recommended` on its own, never selects a strategy).
+- `generators/modernization-profile.generator.ts` + `migration-strategy.generator.ts`
+  + `modernization-roadmap.generator.ts` + `modernization-architecture.generator.ts`
+  — current-state profiles/dependencies/technical-debt/preservation/seams,
+  future-state strategy classification (every `ModernizationStrategy` enum
+  value reachable only via an explicit keyword/pattern, never from
+  "legacy"/"monolith"/"old" language), target-state requirements referencing
+  Cloud/Security/Observability without duplicating them, two deterministic
+  risk rules (shared-database, coexistence), and materially-gated
+  information gaps.
+- `validators/modernization.validator.ts` — referential integrity,
+  **candidate scope** (a system can never become a migration candidate
+  without appearing in a real `ModernizationNeed.systemIds`), strategy/
+  target-technology/lifecycle/technical-debt provenance.
+- New examples — `examples/solution/legacy-java-modernization.md` (Order
+  Portal, explicit WebSphere→Tomcat replatform, coexistence, 3 preservation
+  requirements, 2 real dependencies) and `examples/solution/legacy-operations-assessment.md`
+  (spreadsheet + desktop app + manual exchange, no replacement chosen —
+  proving Stitchfy never fabricates a strategy when only intent is
+  evidenced). All 6 pre-existing restraint examples re-verified to stay
+  `not-recommended`.
+- One small, justified additive change to Phase 1's `systems.extractor.ts`:
+  a new `/\blegacy\b/i` category pattern (checked against `name + purpose`)
+  so `category: "legacy"` — previously a dead enum value — becomes a real,
+  usable signal.
+- `tests/modernization-generation.test.ts` (new) — 230 tests passing total.
+
+**Still deferred, intentionally:**
+
+- No source-code/repository analysis, no external lifecycle/CVE lookup, no
+  code generation (Java/Spring/Dockerfiles/Terraform/Kubernetes/migration
+  scripts), no database migration, no deployment of replacement systems.
+- No fake implementation schedule (no dates/durations/quarters) and no fake
+  migration sequencing — dependency direction alone never determines order.
+
+## Phase 8.5 — Codebase Analysis and Modernization Export Adapters
+
+Mirrors the Exporter/Provider pattern established across Phases 5.5A/6.5/7C,
+applied to Modernization. Not implemented.
+
+- **Codebase analyzers**: Maven/Gradle/npm/Java-source/.NET-project/Python-
+  dependency/container-image analyzers producing real dependency-manifest
+  and framework/version facts — no repository cloning, commit inspection,
+  or source-file parsing exists yet.
+- **Modernization export adapters**: `ModernizationArchitecture` → migration
+  recipe generation, code-transformation scaffolding, test-impact analysis
+  — no real generation exists yet.
 
 ## Phase 9 — Reference Implementations
 

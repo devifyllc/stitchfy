@@ -10,7 +10,7 @@
 import type { EvidenceReference } from "../../core/contracts/evidence.js";
 import type { ArchitectureReference } from "../../core/contracts/architecture-reference.js";
 
-export type RiskCategory = "security" | "privacy" | "operational" | "integration" | "data" | "governance";
+export type RiskCategory = "security" | "privacy" | "operational" | "integration" | "data" | "governance" | "modernization";
 export type RiskLikelihood = "low" | "medium" | "high" | "unknown";
 export type RiskImpact = "low" | "medium" | "high" | "unknown";
 export type RiskTreatment = "mitigate" | "accept" | "avoid" | "transfer" | "review";
