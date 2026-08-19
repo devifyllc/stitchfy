@@ -21,6 +21,7 @@ import type { SolutionBlueprint } from "../schemas/solution-blueprint/solution-b
 import type { SecuritySection, GovernanceSection } from "../capabilities/security-governance/schemas/security-governance.types.js";
 import type { CapabilityExecutionResult } from "../schemas/capability/capability-result.types.js";
 import { businessDiscoveryAgent } from "../discovery/business/business-discovery.agent.js";
+import { deriveBusinessContext } from "../discovery/discovery-result.types.js";
 import { draftSolutionBlueprint } from "../planning/solution-architect/solution-architect.js";
 import { assessRisks } from "../planning/risk-assessment/risk-assessment.js";
 import { createDefaultRegistry } from "../core/registry/default-capabilities.js";
@@ -90,14 +91,27 @@ export async function runSolutionPipeline(inputPath: string, outputDir: string):
 
   // ── Business discovery ──────────────────────────────────────────────────
   context.stage = "discovery";
-  const businessContext = await businessDiscoveryAgent.run({ parsed });
-  context.businessContext = businessContext;
-  ok(`Business discovery: ${businessContext.businessName} (${businessContext.industry || "unknown industry"})`);
-  if (businessContext.missingInformation.length > 0) {
-    warn(`Missing info: ${businessContext.missingInformation.join(", ")}`);
+  const discoveryResult = await businessDiscoveryAgent.run({ parsed });
+  context.discoveryResult = discoveryResult;
+  context.businessContext = deriveBusinessContext(discoveryResult);
+
+  ok(`Business discovery: ${discoveryResult.businessName} (${discoveryResult.industry || "unknown industry"})`);
+  ok(
+    `Extracted: ${discoveryResult.goals.length} goals, ${discoveryResult.actors.length} actors, ` +
+      `${discoveryResult.processes.length} processes, ${discoveryResult.requirements.length} requirements, ` +
+      `${discoveryResult.systems.length} systems, ${discoveryResult.constraints.length} constraints, ` +
+      `${discoveryResult.businessRules.length} business rules`
+  );
+  ok(`Traceability: ${discoveryResult.traceability.length} links`);
+  if (discoveryResult.informationGaps.length > 0) {
+    warn(
+      `Information gaps: ${discoveryResult.informationGaps.length} (${discoveryResult.informationGaps
+        .filter((g) => g.blocking)
+        .length} blocking)`
+    );
   }
 
-  const contextWrite = writeBusinessContextArtifact(businessContext, outputDir);
+  const contextWrite = writeBusinessContextArtifact(discoveryResult, outputDir);
   if (contextWrite.ok) {
     ok(`${contextWrite.filePath} (${contextWrite.sizeKb} KB)`);
   } else {
@@ -112,7 +126,7 @@ export async function runSolutionPipeline(inputPath: string, outputDir: string):
     sourceFile: path.basename(inputPath),
     frameworkVersion: "0.1.0-solution",
   };
-  context.solutionBlueprint = draftSolutionBlueprint(project, businessContext);
+  context.solutionBlueprint = draftSolutionBlueprint(project, discoveryResult);
 
   // ── Capabilities ─────────────────────────────────────────────────────────
   context.stage = "capabilities";

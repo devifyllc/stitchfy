@@ -17,14 +17,57 @@
   alongside the untouched `orchestrator.ts` + `npm run stitchfy`.
 - `docs/architecture/ARCHITECTURE.md` (this roadmap's companion).
 
-## Phase 1 — Business Discovery
+## Phase 1 — Business Discovery ✅ done
 
-- Replace the heading-lookup heuristic in `business-discovery.agent.ts` with
-  richer extraction (multi-section goals/pain-points, confidence scoring).
-- Populate `framework/discovery/{processes,systems,constraints,requirements}/`
-  from real input instead of leaving them as empty typed arrays.
-- Add an OPENAI INTEGRATION POINT to business discovery, matching the
-  existing blueprint agents' pattern.
+- `DiscoveryResult` (`framework/discovery/discovery-result.types.ts`) as the
+  new source of truth; `BusinessContext` kept shape-compatible as a derived
+  projection (`deriveBusinessContext`) so Phase 0's 7 keyword-matching
+  capabilities needed zero edits.
+- Provenance (`framework/core/contracts/provenance.ts`:
+  `SourceReference`/`DiscoveryMetadata`) on every discovery entity —
+  explicit vs. deterministically-derived is always distinguishable; nothing
+  is silently presented as a fact it isn't.
+- Real, deterministic extraction for goals, pain points, desired outcomes,
+  actors, business processes (a general blank-line/label-chunk parser —
+  `processes.extractor.ts`), requirements (explicit-section-or-derived),
+  system inventory (deterministic category classification, never-guessed
+  technology), constraints, business rules, data entities, and integration
+  needs. `framework/discovery/{processes,systems,constraints,requirements}/`
+  are no longer empty stubs.
+- `InformationGap` model + deterministic gap detection
+  (`information-gaps.extractor.ts`), including a data-sensitivity gap when
+  customer data is mentioned without an explicit Data section.
+- `TraceabilityLink` model + extraction from relation IDs already present on
+  typed objects (`traceability.extractor.ts`) — zero dangling links,
+  covered by tests.
+- `SolutionBlueprint.{requirements,processes,actors,systems,constraints}`
+  are now populated from real discovery output; added optional
+  `businessRules`/`informationGaps`/`traceability` fields (schemaVersion
+  stays "1.0" — purely additive).
+- New example `examples/solution/appointment-business.md` + `npm run test`
+  (Node's built-in test runner) covering the 8 scenarios from the Phase 1
+  task — see `tests/discovery.test.ts`.
+- LLM enrichment extension point documented (ARCHITECTURE.md), not wired to
+  a call site — see Phase 1.5.
+- Capability `supports()` heuristics were **not** changed — see Phase 1.5
+  and ARCHITECTURE.md "Capability Selection Evolution".
+
+## Phase 1.5 — Solution Planning and Traceability
+
+Deliberately deferred out of Phase 1:
+
+- Requirement ↔ process correlation (`RequirementItem.relatedProcessIds` is
+  always `[]` today; no fuzzy matching was attempted).
+- A `relatedOutcomeIds`-style field so a derived requirement traces back to
+  the `DesiredOutcome` it came from with a `"derived-from"` link.
+- Constraint cross-referencing to processes/requirements.
+- Actually wiring an LLM enrichment call behind `framework/providers/llm/`
+  (the extension point is typed/documented, not implemented).
+- An interactive gap-resolution flow (`InformationGap` is data-only today).
+- Updating any capability's `supports()` to read `SolutionContext.discoveryResult`
+  instead of `businessContext` keyword matching (see the evolution table in
+  ARCHITECTURE.md) — first candidate to actually do this should be whichever
+  capability is picked for Phase 3+.
 
 ## Phase 2 — Website Capability Migration
 
@@ -37,7 +80,8 @@
 ## Phase 3 — Workflow Automation
 
 - Real `triggers`/`steps`/`decisions`/`approvals` derivation from
-  `BusinessContext.processes`.
+  `DiscoveryResult.processes` (now structured, per Phase 1) instead of the
+  flat `BusinessContext.processes` string list.
 - First real use of `framework/governance/approvals` from a capability
   output (workflow approval steps).
 
@@ -58,7 +102,8 @@
 ## Phase 6 — Security / Governance
 
 - Real `security-governance.capability.ts` output derived from
-  `BusinessContext.businessRules`/`constraints`/`data` plus the existing
+  `DiscoveryResult.businessRules`/`constraints`/`dataEntities` (using
+  `dataEntities[].sensitive`, already computed in Phase 1) plus the existing
   `detectComplianceFlags`-style pattern from `intake.agent.ts`.
 - Real `RiskAssessment[]` in `planning/risk-assessment/risk-assessment.ts`
   instead of an empty stub.

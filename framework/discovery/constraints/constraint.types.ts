@@ -1,11 +1,25 @@
 /**
- * TODO: no extraction agent yet — populated manually or derived from
- * BusinessContext.constraints by a future discovery agent.
+ * Evolved in Phase 1: `category` renamed `type`, enum expanded per the
+ * Phase 1 spec (security/operational/data/integration/unknown added).
  */
-export type ConstraintCategory = "budget" | "timeline" | "technical" | "regulatory" | "organizational";
+
+import type { DiscoveryMetadata } from "../../core/contracts/provenance.js";
+
+export type ConstraintType =
+  | "technical"
+  | "business"
+  | "regulatory"
+  | "security"
+  | "budget"
+  | "timeline"
+  | "operational"
+  | "data"
+  | "integration"
+  | "unknown";
 
 export interface Constraint {
   id: string;
-  category: ConstraintCategory;
+  type: ConstraintType;
   description: string;
+  metadata: DiscoveryMetadata;
 }

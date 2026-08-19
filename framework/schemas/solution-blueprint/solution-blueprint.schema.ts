@@ -16,6 +16,17 @@ import {
 } from "../../capabilities/security-governance/schemas/security-governance.schema.js";
 import { ObservabilitySectionSchema } from "../../capabilities/observability/schemas/observability.schema.js";
 import { ModernizationSectionSchema } from "../../capabilities/modernization/schemas/modernization.schema.js";
+import { BusinessContextSchema } from "../business-context/business-context.schema.js";
+import {
+  RequirementItemSchema,
+  BusinessProcessSchema,
+  BusinessActorSchema,
+  SystemInventoryItemSchema,
+  ConstraintSchema,
+  BusinessRuleSchema,
+  InformationGapSchema,
+  TraceabilityLinkSchema,
+} from "../discovery/discovery-result.schema.js";
 
 // ─── project (reused shape from blueprint.schema.ts, kept local since that
 // file doesn't export its ProjectSchema) ───────────────────────────────────
@@ -27,62 +38,9 @@ const ProjectSchema = z.object({
   frameworkVersion: z.string().min(1),
 });
 
-// ─── business (BusinessContext) ────────────────────────────────────────────
-
-const BusinessContextSchema = z.object({
-  businessName: z.string().min(1, "business.businessName is required"),
-  industry: z.string(),
-  goals: z.array(z.string()),
-  users: z.array(z.string()),
-  processes: z.array(z.string()),
-  painPoints: z.array(z.string()),
-  existingSystems: z.array(z.string()),
-  businessRules: z.array(z.string()),
-  integrations: z.array(z.string()),
-  data: z.array(z.string()),
-  constraints: z.array(z.string()),
-  desiredOutcomes: z.array(z.string()),
-  missingInformation: z.array(z.string()),
-});
-
-// ─── requirements / processes / actors / systems / constraints ────────────
-
-const RequirementItemSchema = z.object({
-  id: z.string().min(1),
-  description: z.string().min(1),
-  priority: z.enum(["must", "should", "could", "wont"]),
-  source: z.string(),
-});
-
-const BusinessProcessSchema = z.object({
-  id: z.string().min(1),
-  name: z.string().min(1),
-  description: z.string(),
-  actors: z.array(z.string()),
-  steps: z.array(z.string()),
-  painPoints: z.array(z.string()),
-});
-
-const ActorSchema = z.object({
-  id: z.string().min(1),
-  role: z.string().min(1),
-  description: z.string(),
-});
-
-const SystemInventoryItemSchema = z.object({
-  id: z.string().min(1),
-  name: z.string().min(1),
-  type: z.string(),
-  vendor: z.string().optional(),
-  criticality: z.enum(["low", "medium", "high"]),
-  integrations: z.array(z.string()),
-});
-
-const ConstraintSchema = z.object({
-  id: z.string().min(1),
-  category: z.enum(["budget", "timeline", "technical", "regulatory", "organizational"]),
-  description: z.string().min(1),
-});
+// ─── requirements / processes / actors / systems / constraints are the
+// Phase 1 discovery schemas, imported above and reused as-is — see
+// framework/schemas/discovery/discovery-result.schema.ts ───────────────────
 
 // ─── capabilities / artifacts / risks ──────────────────────────────────────
 
@@ -135,9 +93,12 @@ export const SolutionBlueprintSchema = z.object({
   business: BusinessContextSchema,
   requirements: z.array(RequirementItemSchema).optional(),
   processes: z.array(BusinessProcessSchema).optional(),
-  actors: z.array(ActorSchema).optional(),
+  actors: z.array(BusinessActorSchema).optional(),
   systems: z.array(SystemInventoryItemSchema).optional(),
   constraints: z.array(ConstraintSchema).optional(),
+  businessRules: z.array(BusinessRuleSchema).optional(),
+  informationGaps: z.array(InformationGapSchema).optional(),
+  traceability: z.array(TraceabilityLinkSchema).optional(),
   capabilities: z.array(CapabilityExecutionResultSchema).optional(),
   architecture: CloudArchitectureSectionSchema.optional(),
   integrations: IntegrationsSectionSchema.optional(),

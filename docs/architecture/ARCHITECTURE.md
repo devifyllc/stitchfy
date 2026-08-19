@@ -151,6 +151,141 @@ via a small `Record<capabilityId, sectionKey>` lookup table plus one
 explicit branch for the two-field `security-governance` capability — never
 a growing switch statement.
 
+## Discovery Model (Phase 1)
+
+Phase 0 left `framework/discovery/{processes,systems,constraints,requirements}/`
+as empty typed stubs and `BusinessContext` as flat string arrays. Phase 1
+replaces that with real, deterministic, provenance-tracked extraction.
+
+### Source of truth
+
+`DiscoveryResult` (`framework/discovery/discovery-result.types.ts`) is what
+Business Discovery actually produces — typed, ID-bearing entities for goals,
+pain points, desired outcomes, actors, processes, requirements, systems,
+integration needs, data entities, constraints, business rules, information
+gaps, and traceability links.
+
+`BusinessContext` (`framework/discovery/business/business-context.types.ts`)
+is **unchanged in shape** from Phase 0 and is now a *derived projection*,
+computed once by `deriveBusinessContext(result)`. This is deliberate: the 7
+keyword-matching capabilities added in Phase 0 already read
+`context.businessContext?.goals`, `.processes`, `.painPoints`, etc. as plain
+`string[]` — keeping `BusinessContext`'s shape frozen means zero edits to
+those capability files, while `SolutionContext` gains an additional
+`discoveryResult?: DiscoveryResult` field carrying the full richer model for
+whichever future capability wants it (see "Capability Selection Evolution"
+below). `output/context/business-context.json` now serializes the full
+`DiscoveryResult`; `SolutionBlueprint.business` keeps the compact projection.
+`SolutionBlueprint.{requirements,processes,actors,systems,constraints,
+businessRules,informationGaps,traceability}` are populated directly from the
+same `DiscoveryResult`'s arrays — no independent re-extraction, no
+duplicated logic between the two output files.
+
+### Explicit vs. inferred information
+
+Every rich discovery object carries one `metadata: DiscoveryMetadata` field
+(`framework/core/contracts/provenance.ts`):
+
+```ts
+interface SourceReference {
+  sourceType: "input" | "derived" | "user" | "system";
+  section?: string;
+  text?: string;
+}
+
+interface DiscoveryMetadata {
+  confidence: number;   // 0–1
+  sources: SourceReference[];
+  inferred: boolean;
+}
+```
+
+`sourceType` records *how* a value was obtained; `inferred` separately flags
+*AI* involvement. In Phase 1, everything is deterministic — `inferred` is
+always `false` — but the field exists so that when an LLM enrichment step is
+wired in (see below), its output is structurally distinguishable from an
+explicit fact rather than silently merged in as one. The one deliberate
+simplification from the task's per-field sketch: a single `metadata` field
+replaces scattered `source`/`confidence` fields, applied consistently across
+every entity — see e.g. `RequirementItem`, which dropped a redundant flat
+`source: string` in favor of `metadata.sources`.
+
+Two concrete `sourceType` distinctions worth calling out:
+
+- A business rule or pain point mentioned *inside* a process's own labeled
+  sub-section (e.g. "Business rules:" within a "Business Processes" block)
+  is still `"input"` — the user wrote it, just in a different location than
+  a dedicated top-level section. See `makeProcessBusinessRule`,
+  `makeProcessPainPoint`, `makeProcessActor`, `makeProcessSystem`.
+- A requirement is `"derived"` only when there's no explicit `## Requirements`
+  section at all and it was synthesized from a `DesiredOutcome`
+  (`requirements.extractor.ts`) — confidence 0.5, never presented as
+  equivalent to an explicit requirement.
+
+### Traceability
+
+`TraceabilityLink { fromId, toId, relationship }`
+(`framework/discovery/traceability/traceability.types.ts`) — deliberately
+not a graph database. `traceability.extractor.ts` builds links only from
+relation IDs *already stored* on typed objects
+(`RequirementItem.relatedGoalIds/relatedPainPointIds`,
+`BusinessProcess.actorIds/systemIds/painPointIds/businessRuleIds`) — no
+fuzzy or semantic matching, so every link is explainable back to an explicit
+field. This instantiates the chain `Source → Goal/PainPoint → Requirement →
+Process → Capability → Decision/Artifact` for the Requirement/Process half;
+the Capability/Decision half is populated separately by
+`solution-orchestrator.ts` into `SolutionBlueprint.capabilities`.
+
+Not yet linked in Phase 1 (see Phase 1.5 in the roadmap): a requirement
+derived from a `DesiredOutcome` doesn't produce a `"derived-from"` link back
+to that outcome (`RequirementItem` has no `relatedOutcomeIds` field yet),
+and constraints aren't cross-referenced to anything.
+
+### Information gaps
+
+`InformationGap` (`framework/discovery/gaps/information-gap.types.ts`) is
+how Stitchfy represents "I don't know this yet" as data instead of silently
+leaving an array empty. `information-gaps.extractor.ts` raises one whenever
+a category came back empty (goals, actors, pain points, systems,
+constraints, business rules, or an all-derived requirements list), plus one
+higher-signal check: if a process or pain point's text mentions recording
+customer/personal information but no `## Data` section exists, it raises a
+`high` importance, `blocking: true` gap tagged
+`relatedCapabilityIds: ["security-governance"]` — mirroring the task's own
+worked example, generalized via keyword match rather than hardcoded to one
+document. No interactive questionnaire is implemented; gaps are just typed
+output for now.
+
+### LLM enrichment extension point
+
+Not wired in Phase 1 — deliberately. The conceptual pipeline is
+deterministic discovery → structured `DiscoveryResult` → optional LLM
+enrichment → `DiscoveryResultSchema` validation → final result, matching the
+existing OPENAI INTEGRATION POINT convention already used by the website
+blueprint agents (`framework/agents/intake.agent.ts` etc.) and the
+`Provider<TConfig, TClient>` contract (`framework/providers/llm/openai-provider.ts`).
+Any future LLM-produced field must pass `DiscoveryResultSchema` and be
+marked `metadata.inferred: true` — never merged in as if it were explicit
+input. No stub call site was added for this in Phase 1 since an unused,
+untestable code path is worse than documenting the seam.
+
+### Capability selection evolution
+
+Item 13 of the Phase 1 task: capability `supports()` still only does
+keyword matching (Phase 0, unchanged) — no capability was modified in
+Phase 1. `SolutionContext.discoveryResult` makes the richer signals
+available for when that changes:
+
+| Capability | Phase 0 signal (today) | Phase 1+ structured signal (future) |
+|---|---|---|
+| `workflow-automation` | keywords in goals/processes/painPoints | `process.manualSteps.length > 0 && process.automationCandidates.length > 0` |
+| `ai-agents` | keywords in goals/desiredOutcomes | an `AIAgentDefinition`-shaped need inferred from `process.manualSteps` + `actors` |
+| `integrations` | keywords in integrations/existingSystems | `integrationNeeds.length > 0` or `systems.some(s => s.category === "saas")` |
+| `cloud` | keywords in existingSystems/constraints | `systems.some(s => s.category === "legacy" \|\| s.criticality === "high")` |
+| `security-governance` | keywords in businessRules/constraints/data | `dataEntities.some(d => d.sensitive)` or a `blocking` information gap tagged `security-governance` |
+| `observability` | keywords in constraints/existingSystems | `systems.some(s => s.criticality === "high")` |
+| `modernization` | keywords in existingSystems/painPoints | `systems.some(s => s.category === "legacy")` |
+
 ## Adaptation from the literal proposed folder tree
 
 The originally proposed structure gives every capability 4-5 subfolders
@@ -191,5 +326,21 @@ The only changes to pre-existing files are:
 - `package.json` — added the `solution` script.
 - `.gitignore` — added ignore rules for the 3 new output directories.
 - `README.md` — added one short section pointing here.
+
+**Phase 1** touched only discovery-adjacent, additive files: the Phase 0
+placeholder `Actor` type in `solution-blueprint.types.ts` was replaced by
+the richer `BusinessActor` (it was unused anywhere else — verified before
+removing it); `solution-blueprint.schema.ts` now imports its
+requirement/process/actor/system/constraint schemas from the new
+`framework/schemas/discovery/discovery-result.schema.ts` instead of
+redefining them locally (also fixes a pre-existing Phase 0 duplication of
+`BusinessContextSchema`); `business-context-writer.ts`,
+`solution-architect.ts`, `solution-orchestrator.ts`, and
+`core/contracts/context.ts` were updated to thread `DiscoveryResult`
+through instead of the flat `BusinessContext`. `SolutionBlueprint` stays
+`schemaVersion: "1.0"` throughout — every new/changed field is optional or
+was already unused elsewhere, so nothing reading known v1 fields breaks.
+`framework/orchestrator/orchestrator.ts` (the website pipeline) was not
+touched.
 
 See `docs/architecture/ROADMAP.md` for what comes next.

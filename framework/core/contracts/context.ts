@@ -10,6 +10,7 @@
 
 import type { ParsedProject } from "../markdown-parser.js";
 import type { BusinessContext } from "../../discovery/business/business-context.types.js";
+import type { DiscoveryResult } from "../../discovery/discovery-result.types.js";
 import type { SolutionBlueprint } from "../../schemas/solution-blueprint/solution-blueprint.types.js";
 import type { CapabilityExecutionResult } from "../../schemas/capability/capability-result.types.js";
 
@@ -31,6 +32,14 @@ export interface SolutionContext {
   markdown: string;
   parsed: ParsedProject;
   businessContext?: BusinessContext;
+  /**
+   * The full Phase 1 discovery output (goals/processes/systems/gaps/
+   * traceability, etc.) — available so a future capability's supports()
+   * can read structured signals instead of only businessContext's flat
+   * string arrays. Not read by any capability yet; see
+   * docs/architecture/ARCHITECTURE.md "Capability Selection Evolution".
+   */
+  discoveryResult?: DiscoveryResult;
   solutionBlueprint: Partial<SolutionBlueprint>;
   capabilityResults: CapabilityExecutionResult[];
   stage: SolutionStage;
