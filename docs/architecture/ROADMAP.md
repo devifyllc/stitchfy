@@ -353,16 +353,95 @@ Exporter/Provider boundary.
 - Multi-integration source/target disambiguation when more than two
   systems are named in one description.
 
-## Phase 6 — AI Agent Architecture
+## Phase 6 — AI Agent Architecture and Governed Tool Specification ✅ done
 
-- Real `AIAgentDefinition` generation: tool specs, memory strategy,
-  guardrails, confidence/risk thresholds.
-- Wire `humanApproval` generation into `framework/governance/approvals`
-  end-to-end (not just the type).
-- AI Agent-specific governance controls built on top of Phase 5's generic
-  `SecurityDomain`/`GovernanceApprovalControl` extensibility (tool-
-  invocation policies, prompt governance, agent memory audit) — none of
-  which are implemented yet.
+The fourth fully-generated capability — identifies when a business need
+genuinely benefits from an AI Agent (never merely "automation") and
+generates a minimal, vendor-neutral, governed agent architecture from the
+same validated `WorkflowDefinition[]`/`IntegrationDefinition[]` every other
+capability trusts. See `docs/architecture/ARCHITECTURE.md` "AI Agent
+Architecture and Governed Tool Specification" for the full design,
+including the execution-ordering change and two real matching bugs caught
+and fixed during this phase's own verification.
+
+- `AIAgentNeed` (`framework/discovery/ai-agents/`) — a new Discovery entity
+  captured only from a dedicated "AI Agent Needs" section; never inferred
+  from generic automation/workflow/integration language.
+- `default-capabilities.ts` reordered: ai-agents now registers after
+  integrations (previously right after workflow-automation) — a pure
+  reordering, no new dependency mechanism, mirroring how Phase 4/5.5A
+  already solved the same class of problem.
+- `AIAgentDefinition` v1 (`framework/capabilities/ai-agents/schemas/`) —
+  replaces the Phase 0 model's mandatory `modelProvider`/`model`/
+  `confidenceThreshold: number`/`riskThreshold: string` with a vendor-
+  neutral, unknown-preserving model: `AIModelRequirements` (provider/model
+  optional, never chosen by the architecture), `AIAgentToolSpecification`
+  (derived only from a real `IntegrationOperation`/`WorkflowStep`),
+  `AIAgentPermission` (requires independent grant-language evidence beyond
+  tool derivation), `AIAgentMemoryStrategy` (never defaults to persistent),
+  `AIAgentGuardrail` (from real prohibitions, never generic filler),
+  `AIConfidencePolicy`/`AIAgentRiskPolicy` (no fabricated numeric
+  threshold), `AIAgentHumanOversight` (wraps the existing
+  `HumanApprovalRequest`, never a competing approval domain).
+- `ai-agents.assessor.ts`/`.planner.ts` — structured selection; one
+  `AIAgentCandidate` per `AIAgentNeed` by default, with no multi-agent
+  splitting logic implemented (deferred and documented, not half-built) —
+  directly enforces "prefer the minimum number of agents necessary."
+- `generators/ai-agent-definition.generator.ts` — tools/permissions/memory/
+  guardrails/autonomy/escalation, all evidence-derived; `sharesSpecificWord()`
+  (a stricter local variant of Phase 3/4's `sharesSignificantWord()`) plus
+  per-need dynamic "background word" exclusion, fixing two real
+  false-positive tool-matching bugs caught during verification.
+- `generators/ai-agent-artifact.generator.ts` — per-agent + aggregate JSON/
+  Markdown, tool catalog, Mermaid diagram, under
+  `output/artifacts/ai-agents/`.
+- `validators/ai-agent-definition.validator.ts` — referential integrity,
+  no-invented-permission/tool/confidence, no orphan tools, tool-name
+  collision detection (reuses Phase 5.5A's `detectIdentifierCollisions()`).
+- `createApprovalRequest()` (`framework/governance/approvals/`) gained
+  additive, optional `id`/`timestamp` overrides — zero change to Phase 3's
+  existing call sites.
+- Security & Governance additively consumes `AIAgentDefinition[]` as a
+  third sibling: `generators/ai-agent-security.generator.ts` (write/notify
+  tools get authorization+audit requirements, read-only tools get none;
+  persistent+sensitive memory gets a data-protection requirement,
+  session-only memory gets none; a security-specific model-provider gap
+  only fires when the agent has a real data surface — a materiality gate),
+  `generators/ai-agent-governance.generator.ts` (`GovernancePlan
+  .aiAgentControls?`, additive/optional).
+  `ArchitectureReference`/`EvidenceReference` gained `"ai-agent"`/`"ai-tool"`
+  and `"ai-agent-need"` respectively.
+- Two new examples: `examples/solution/customer-support-agent.md`
+  (conversational, supervised, session memory, one read-only tool, employee
+  approval preserved for conflicting bookings) and
+  `examples/solution/invoice-triage-agent.md` (assistive, zero tools, zero
+  write permissions, proving AI Agent ≠ autonomous agent). All 5
+  pre-existing examples verified to produce zero false-positive AI Agent
+  selections.
+- `tests/ai-agent-generation.test.ts` (new) + 6 new AI-specific scenarios in
+  `tests/security-governance.test.ts` — 143 tests passing total.
+
+**Still deferred, intentionally:**
+
+- No multi-agent splitting logic (one need → one agent only, by design).
+- No LLM/model-provider call, tool execution, MCP, embeddings, vector
+  storage, or RAG runtime of any kind.
+- No automatic regulatory-framework claims for AI presence alone (reuses
+  Phase 5's exact explicit-framework-name-only compliance model, verified
+  against both new examples).
+
+## Phase 6.5 — AI Agent Export / Runtime Adapters
+
+Mirrors the Exporter-vs-Provider boundary Phase 5.5A already established
+for integrations, applied to AI agents. Not implemented.
+
+- **Export side** (`AIAgentDefinition` → implementation scaffolding):
+  generic tool schema export, MCP server/client definitions,
+  provider-specific agent configuration, application scaffolding — no real
+  generation exists yet.
+- **Runtime side** (`AIAgentDefinition` → executable agent): model
+  invocation, tool execution, memory implementation, telemetry — no real
+  provider exists yet, same as Phase 5.5B for integrations.
 
 ## Phase 7 — Cloud / Observability
 

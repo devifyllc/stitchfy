@@ -19,7 +19,10 @@ export type ArchitectureEntityType =
   | "data-contract"
   | "process"
   | "requirement"
-  | "approval";
+  | "approval"
+  /** Added Phase 6 — the generated AI agent architecture itself. */
+  | "ai-agent"
+  | "ai-tool";
 
 export interface ArchitectureReference {
   entityType: ArchitectureEntityType;

@@ -50,6 +50,7 @@ export const SECTION_CANDIDATES = {
   constraints: ["constraints", "limitations", "restrictions"],
   desiredOutcomes: ["desired outcomes", "outcomes", "success criteria"],
   requirements: ["requirements", "functional requirements", "non-functional requirements"],
+  aiAgentNeeds: ["ai agent needs", "ai agent", "ai assistant", "ai capabilities", "ai requirements"],
 } as const;
 
 /** Stable, deterministic IDs (re-running discovery on the same input yields the same IDs). */

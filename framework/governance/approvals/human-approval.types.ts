@@ -26,14 +26,17 @@ export function createApprovalRequest(input: {
   approverRole: string;
   reason: string;
   riskLevel: RiskLevel;
+  /** Optional deterministic overrides (Phase 6) — omit for the existing Date.now()-based default every pre-existing caller relies on. */
+  id?: string;
+  timestamp?: string;
 }): HumanApprovalRequest {
   return {
-    id: `approval-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+    id: input.id ?? `approval-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
     approvalRequired: true,
     approverRole: input.approverRole,
     reason: input.reason,
     riskLevel: input.riskLevel,
     decision: "pending",
-    timestamp: new Date().toISOString(),
+    timestamp: input.timestamp ?? new Date().toISOString(),
   };
 }

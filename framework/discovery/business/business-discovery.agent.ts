@@ -40,6 +40,7 @@ import { extractProcesses } from "../processes/processes.extractor.js";
 import { extractRequirements } from "../requirements/requirements.extractor.js";
 import { extractInformationGaps } from "../gaps/information-gaps.extractor.js";
 import { extractTraceabilityLinks } from "../traceability/traceability.extractor.js";
+import { extractAIAgentNeeds } from "../ai-agents/ai-agent-needs.extractor.js";
 
 export interface BusinessDiscoveryInput {
   parsed: ParsedProject;
@@ -90,6 +91,7 @@ async function run(input: BusinessDiscoveryInput): Promise<DiscoveryResult> {
   const allBusinessRules = [...businessRules, ...processResult.additionalBusinessRules];
 
   const requirements = extractRequirements(parsed, desiredOutcomes);
+  const aiAgentNeeds = extractAIAgentNeeds(parsed, allActors);
 
   const withoutGapsAndTraceability = {
     businessName,
@@ -105,6 +107,7 @@ async function run(input: BusinessDiscoveryInput): Promise<DiscoveryResult> {
     dataEntities,
     constraints,
     businessRules: allBusinessRules,
+    aiAgentNeeds,
   };
 
   const informationGaps = extractInformationGaps(withoutGapsAndTraceability);

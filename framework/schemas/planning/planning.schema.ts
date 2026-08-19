@@ -26,13 +26,25 @@ export const EvidenceReferenceSchema = z.object({
     "information-gap",
     "actor",
     "data-entity",
+    "ai-agent-need",
   ]),
   entityId: z.string().min(1),
   description: z.string().optional(),
 });
 
 export const ArchitectureReferenceSchema = z.object({
-  entityType: z.enum(["workflow", "workflow-step", "integration", "system", "data-contract", "process", "requirement", "approval"]),
+  entityType: z.enum([
+    "workflow",
+    "workflow-step",
+    "integration",
+    "system",
+    "data-contract",
+    "process",
+    "requirement",
+    "approval",
+    "ai-agent",
+    "ai-tool",
+  ]),
   entityId: z.string().min(1),
 });
 

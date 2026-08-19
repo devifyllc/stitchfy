@@ -192,6 +192,23 @@ export interface ComplianceConsideration {
 
 export type GovernancePlanStatus = "draft" | "needs-review" | "complete";
 
+/**
+ * Phase 6 — AI-agent-specific governance controls (task item 33). Consumes
+ * AIAgentDefinition[] as-is; never regenerates agent architecture, never a
+ * competing approval domain (cross-references the agent's own human
+ * oversight entries, which already wrap the existing HumanApprovalRequest).
+ */
+export type AIAgentGovernanceControlType = "tool-invocation" | "human-approval" | "decision" | "memory" | "output-review" | "scope";
+
+export interface AIAgentGovernanceControl {
+  id: string;
+  agentId: string;
+  type: AIAgentGovernanceControlType;
+  description: string;
+  appliesTo: ArchitectureReference[];
+  evidenceRefs: EvidenceReference[];
+}
+
 export interface GovernancePlan {
   policies: GovernancePolicy[];
   humanOversight: GovernanceApprovalControl[];
@@ -199,6 +216,8 @@ export interface GovernancePlan {
   decisionControls: DecisionControl[];
   complianceConsiderations: ComplianceConsideration[];
   informationGaps: string[];
+  /** Additive Phase 6 field — undefined when no AI agent architecture exists yet. */
+  aiAgentControls?: AIAgentGovernanceControl[];
   status: GovernancePlanStatus;
 }
 

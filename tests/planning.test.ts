@@ -21,7 +21,7 @@ import { buildSolutionPlan } from "../framework/planning/capability-assessment/s
 import { assessWorkflowAutomation } from "../framework/capabilities/workflow-automation/workflow-automation.assessor.js";
 import { buildWorkflowAutomationPlan } from "../framework/capabilities/workflow-automation/workflow-automation.planner.js";
 import { workflowAutomationCapability } from "../framework/capabilities/workflow-automation/workflow-automation.capability.js";
-import { aiAgentsCapability } from "../framework/capabilities/ai-agents/ai-agents.capability.js";
+import { cloudCapability } from "../framework/capabilities/cloud/cloud.capability.js";
 import { websiteCapability } from "../framework/capabilities/website/website.capability.js";
 
 const REPO_ROOT = process.cwd();
@@ -168,15 +168,15 @@ describe("Derived requirement traceability", () => {
 });
 
 describe("Legacy compatibility", () => {
-  test("an unmigrated capability (ai-agents) still works via legacyKeywordAssessment", async () => {
+  test("an unmigrated capability (cloud) still works via legacyKeywordAssessment", async () => {
     const context = await makeContext(appointmentMarkdown);
-    assert.equal(aiAgentsCapability.assess, undefined);
+    assert.equal(cloudCapability.assess, undefined);
 
-    const assessment = assessCapability(aiAgentsCapability, context);
+    const assessment = assessCapability(cloudCapability, context);
     assert.equal(assessment.method, "legacy-keyword");
-    assert.equal(assessment.status === "recommended", aiAgentsCapability.supports(context));
+    assert.equal(assessment.status === "recommended", cloudCapability.supports(context));
 
-    const direct = legacyKeywordAssessment(aiAgentsCapability, context);
+    const direct = legacyKeywordAssessment(cloudCapability, context);
     assert.equal(direct.status, assessment.status);
   });
 });

@@ -96,12 +96,41 @@ export const BusinessProcessSchema = z.object({
   metadata: DiscoveryMetadataSchema,
 });
 
+// ─── AI agent needs ──────────────────────────────────────────────────────────
+
+export const AIAgentNeedSchema = z.object({
+  id: z.string().min(1),
+  name: z.string().min(1),
+  purpose: z.string().min(1),
+  actorIds: z.array(z.string()),
+  tasks: z.array(z.string()),
+  relatedProcessIds: z.array(z.string()),
+  relatedRequirementIds: z.array(z.string()),
+  relatedOutcomeIds: z.array(z.string()),
+  desiredCapabilities: z.array(
+    z.enum([
+      "conversation",
+      "generation",
+      "summarization",
+      "classification",
+      "extraction",
+      "decision-support",
+      "tool-use",
+      "retrieval",
+      "orchestration",
+      "unknown",
+    ])
+  ),
+  humanOversightRequired: z.union([z.boolean(), z.literal("unknown")]),
+  metadata: DiscoveryMetadataSchema,
+});
+
 // ─── requirements ────────────────────────────────────────────────────────────
 
 export const RequirementItemSchema = z.object({
   id: z.string().min(1),
   description: z.string().min(1),
-  type: z.enum(["functional", "non-functional", "integration", "security", "automation", "data", "operational"]),
+  type: z.enum(["functional", "non-functional", "integration", "security", "automation", "data", "operational", "ai"]),
   priority: z.enum(["must", "should", "could", "wont"]),
   relatedGoalIds: z.array(z.string()),
   relatedPainPointIds: z.array(z.string()),
@@ -190,4 +219,5 @@ export const DiscoveryResultSchema = z.object({
   businessRules: z.array(BusinessRuleSchema),
   informationGaps: z.array(InformationGapSchema),
   traceability: z.array(TraceabilityLinkSchema),
+  aiAgentNeeds: z.array(AIAgentNeedSchema),
 });

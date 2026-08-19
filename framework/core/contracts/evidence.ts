@@ -24,7 +24,9 @@ export type EvidenceEntityType =
   | "information-gap"
   | "actor"
   /** Added Phase 5 — a real DiscoveryResult entity (Phase 1) that data-protection requirements need to cite; missed in the original Phase 1.5 union. */
-  | "data-entity";
+  | "data-entity"
+  /** Added Phase 6 — a real DiscoveryResult entity (AIAgentNeed) that AI agent architecture needs to cite. */
+  | "ai-agent-need";
 
 export interface EvidenceReference {
   entityType: EvidenceEntityType;

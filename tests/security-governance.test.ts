@@ -32,6 +32,9 @@ import { buildGovernancePlan } from "../framework/capabilities/security-governan
 import { buildSecurityGovernanceArtifacts } from "../framework/capabilities/security-governance/generators/security-artifact.generator.js";
 import { validateSecurityArchitecture, validateGovernancePlan } from "../framework/capabilities/security-governance/validators/security-architecture.validator.js";
 import { securityGovernanceCapability } from "../framework/capabilities/security-governance/security-governance.capability.js";
+import { buildAIAgentSecurityRequirements } from "../framework/capabilities/security-governance/generators/ai-agent-security.generator.js";
+import { buildAIAgentGovernanceControls } from "../framework/capabilities/security-governance/generators/ai-agent-governance.generator.js";
+import type { AIAgentDefinition } from "../framework/capabilities/ai-agents/schemas/ai-agents.types.js";
 import { websiteCapability } from "../framework/capabilities/website/website.capability.js";
 
 const REPO_ROOT = process.cwd();
@@ -82,6 +85,8 @@ const appointmentMarkdown = fs.readFileSync(path.join(REPO_ROOT, "examples/solut
 const invoiceMarkdown = fs.readFileSync(path.join(REPO_ROOT, "examples/solution/invoice-approval.md"), "utf-8");
 const apiMarkdown = fs.readFileSync(path.join(REPO_ROOT, "examples/solution/api-integration.md"), "utf-8");
 const customerDataMarkdown = fs.readFileSync(path.join(REPO_ROOT, "examples/solution/customer-data-workflow.md"), "utf-8");
+const customerSupportAgentMarkdown = fs.readFileSync(path.join(REPO_ROOT, "examples/solution/customer-support-agent.md"), "utf-8");
+const invoiceTriageAgentMarkdown = fs.readFileSync(path.join(REPO_ROOT, "examples/solution/invoice-triage-agent.md"), "utf-8");
 const allExamples = [appointmentMarkdown, invoiceMarkdown, apiMarkdown, customerDataMarkdown];
 
 describe("Structured capability selection", () => {
@@ -429,6 +434,150 @@ describe("Traceability", () => {
       for (const ref of allRefs) {
         assert.ok(knownIds.has(ref.entityId), `${ref.entityType}/${ref.entityId} not found`);
       }
+    }
+  });
+});
+
+// ─── Phase 6 — AI-agent-specific security/governance consumption ───────────
+// Unit-tests the pure buildAIAgentSecurityRequirements()/
+// buildAIAgentGovernanceControls() functions directly against hand-built
+// AIAgentDefinition fixtures — simpler and more targeted than engineering a
+// markdown example to hit exact discovery-classification outcomes for a
+// side-effecting tool + persistent sensitive memory, neither of which the
+// two real Phase 6 examples happen to produce.
+
+function makeMinimalAgent(overrides: Partial<AIAgentDefinition> = {}): AIAgentDefinition {
+  return {
+    id: "AIAGENT-TEST",
+    name: "Test Agent",
+    version: "1.0",
+    purpose: "Test purpose",
+    interactionMode: "task",
+    autonomy: "unknown",
+    modelRequirements: { capabilities: [], structuredOutputRequired: "unknown", toolUseRequired: "unknown", evidenceRefs: [] },
+    tools: [],
+    inputContracts: [],
+    outputContracts: [],
+    memory: { mode: "unknown", dataEntityIds: [], dataContractIds: [], containsSensitiveData: "unknown", evidenceRefs: [] },
+    permissions: [],
+    guardrails: [],
+    humanOversight: [],
+    confidencePolicy: { mode: "not-specified", evidenceRefs: [] },
+    riskPolicy: { requireHumanReviewFor: [], evidenceRefs: [] },
+    escalationPolicy: [],
+    relatedNeedIds: ["AINEED-TEST"],
+    relatedProcessIds: [],
+    relatedWorkflowIds: [],
+    relatedIntegrationIds: [],
+    relatedRequirementIds: [],
+    informationGaps: [],
+    evidenceRefs: [{ entityType: "ai-agent-need", entityId: "AINEED-TEST", description: "test" }],
+    status: "complete",
+    statusReasons: [],
+    ...overrides,
+  };
+}
+
+describe("AI tool security — side-effecting tool", () => {
+  test("a write tool can receive an applicable security requirement and governance control", () => {
+    const agent = makeMinimalAgent({
+      tools: [
+        {
+          id: "AITOOL-TEST",
+          name: "Create Ticket",
+          description: "Creates a support ticket",
+          kind: "integration-operation",
+          sideEffect: "write",
+          integrationId: "INT-001",
+          integrationOperationId: "OP-001",
+          inputContractIds: [],
+          outputContractIds: [],
+          approvalRequired: "unknown",
+          evidenceRefs: [{ entityType: "ai-agent-need", entityId: "AINEED-TEST", description: "test" }],
+        },
+      ],
+    });
+
+    const { requirements, risks } = buildAIAgentSecurityRequirements([agent]);
+    assert.ok(requirements.some((r) => r.domain === "authorization" && r.appliesTo.some((ref) => ref.entityType === "ai-tool" && ref.entityId === "AITOOL-TEST")));
+    assert.ok(requirements.some((r) => r.domain === "audit"));
+    assert.ok(risks.some((r) => r.relatedArchitectureRefs.some((ref) => ref.entityType === "ai-tool" && ref.entityId === "AITOOL-TEST")));
+
+    const controls = buildAIAgentGovernanceControls([agent]);
+    assert.ok(controls.some((c) => c.type === "tool-invocation" && c.agentId === agent.id));
+  });
+});
+
+describe("AI tool security — read-only restraint", () => {
+  test("a read-only tool never receives a write-control requirement", () => {
+    const agent = makeMinimalAgent({
+      tools: [
+        {
+          id: "AITOOL-READ",
+          name: "Check Availability",
+          description: "Reads calendar availability",
+          kind: "integration-operation",
+          sideEffect: "read",
+          integrationId: "INT-001",
+          integrationOperationId: "OP-001",
+          inputContractIds: [],
+          outputContractIds: [],
+          approvalRequired: false,
+          evidenceRefs: [{ entityType: "ai-agent-need", entityId: "AINEED-TEST", description: "test" }],
+        },
+      ],
+    });
+
+    const { requirements, risks } = buildAIAgentSecurityRequirements([agent]);
+    assert.deepEqual(requirements, []);
+    assert.deepEqual(risks, []);
+  });
+});
+
+describe("AI memory security — session restraint", () => {
+  test("session-only memory never generates a persistent-storage/data-protection requirement", () => {
+    const agent = makeMinimalAgent({
+      memory: { mode: "session", dataEntityIds: [], dataContractIds: [], containsSensitiveData: false, evidenceRefs: [] },
+    });
+    const { requirements } = buildAIAgentSecurityRequirements([agent]);
+    assert.deepEqual(requirements.filter((r) => r.domain === "data-protection"), []);
+  });
+});
+
+describe("AI memory security — sensitive persistent memory", () => {
+  test("explicit persistent memory with possible sensitive data generates a data-protection review requirement", () => {
+    const agent = makeMinimalAgent({
+      memory: { mode: "persistent", dataEntityIds: ["DATA-001"], dataContractIds: [], containsSensitiveData: true, evidenceRefs: [{ entityType: "data-entity", entityId: "DATA-001", description: "Customer profile" }] },
+    });
+    const { requirements } = buildAIAgentSecurityRequirements([agent]);
+    assert.ok(requirements.some((r) => r.domain === "data-protection"));
+  });
+});
+
+describe("AI model provider gap — materiality gate", () => {
+  test("an unknown provider creates a gap only when the agent has a real data surface, not unconditionally", () => {
+    const noDataSurfaceAgent = makeMinimalAgent({
+      memory: { mode: "session", dataEntityIds: [], dataContractIds: [], containsSensitiveData: false, evidenceRefs: [] },
+    });
+    const withDataSurfaceAgent = makeMinimalAgent({
+      id: "AIAGENT-TEST-2",
+      memory: { mode: "session", dataEntityIds: [], dataContractIds: [], containsSensitiveData: "unknown", evidenceRefs: [] },
+    });
+
+    const noGap = buildAIAgentSecurityRequirements([noDataSurfaceAgent]);
+    const withGap = buildAIAgentSecurityRequirements([withDataSurfaceAgent]);
+
+    assert.deepEqual(noGap.informationGaps, []);
+    assert.ok(withGap.informationGaps.some((g) => g.topic === "AI provider data handling"));
+  });
+});
+
+describe("AI architecture compliance restraint", () => {
+  test("AI agent presence alone never generates an explicit regulatory-framework claim", async () => {
+    for (const markdown of [customerSupportAgentMarkdown, invoiceTriageAgentMarkdown]) {
+      const { governance } = await generateSecurityGovernance(markdown);
+      const explicit = governance.complianceConsiderations.filter((c) => c.status === "explicit");
+      assert.deepEqual(explicit, []);
     }
   });
 });

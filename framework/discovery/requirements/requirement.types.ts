@@ -19,7 +19,9 @@ export type RequirementType =
   | "security"
   | "automation"
   | "data"
-  | "operational";
+  | "operational"
+  /** Phase 6 — explicit AI terminology only (never "automat"/"workflow"/"integrat"). */
+  | "ai";
 
 export type RequirementPriority = "must" | "should" | "could" | "wont";
 

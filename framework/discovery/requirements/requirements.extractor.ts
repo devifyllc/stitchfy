@@ -14,6 +14,7 @@ import type { DesiredOutcome } from "../business/desired-outcome.types.js";
 import type { RequirementItem, RequirementPriority, RequirementType } from "./requirement.types.js";
 
 const TYPE_PATTERNS: Array<{ pattern: RegExp; type: RequirementType }> = [
+  { pattern: /\bai\b|artificial intelligence|\bchatbot\b|\bassistant\b|\bllm\b|large language model|generative ai/i, type: "ai" },
   { pattern: /secur|encrypt|auth|password/i, type: "security" },
   { pattern: /integrat|api|webhook|sync/i, type: "integration" },
   { pattern: /automat/i, type: "automation" },

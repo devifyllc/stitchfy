@@ -23,6 +23,7 @@ import type { DataEntity } from "./data/data-entity.types.js";
 import type { IntegrationNeed } from "./integrations/integration-need.types.js";
 import type { InformationGap } from "./gaps/information-gap.types.js";
 import type { TraceabilityLink } from "./traceability/traceability.types.js";
+import type { AIAgentNeed } from "./ai-agents/ai-agent-need.types.js";
 
 export interface DiscoveryResult {
   businessName: string;
@@ -40,6 +41,8 @@ export interface DiscoveryResult {
   businessRules: BusinessRule[];
   informationGaps: InformationGap[];
   traceability: TraceabilityLink[];
+  /** Phase 6 — explicit "why an AI Agent" record, only from a dedicated AI Agent Needs section (never inferred from Automation/Workflow/Integration language). */
+  aiAgentNeeds: AIAgentNeed[];
 }
 
 /**

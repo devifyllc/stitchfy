@@ -19,11 +19,14 @@ import type { CapabilityAssessment } from "../../planning/capability-assessment/
 import { assessSecurityGovernance, SECURITY_GOVERNANCE_CAPABILITY_ID } from "./security-governance.assessor.js";
 import { buildSecurityArchitecture } from "./generators/security-architecture.generator.js";
 import { buildGovernancePlan } from "./generators/governance-plan.generator.js";
+import { buildAIAgentSecurityRequirements } from "./generators/ai-agent-security.generator.js";
+import { buildAIAgentGovernanceControls } from "./generators/ai-agent-governance.generator.js";
 import { buildSecurityGovernanceArtifacts } from "./generators/security-artifact.generator.js";
 import { validateSecurityArchitecture, validateGovernancePlan } from "./validators/security-architecture.validator.js";
 import type { SecurityGovernanceOutput } from "./schemas/security-governance.types.js";
 import type { WorkflowAutomationSection, WorkflowDefinition } from "../workflow-automation/schemas/workflow-automation.types.js";
 import type { IntegrationsSection, IntegrationDefinition } from "../integrations/schemas/integrations.types.js";
+import type { AIAgentsSection, AIAgentDefinition } from "../ai-agents/schemas/ai-agents.types.js";
 
 function supports(context: SolutionContext): boolean {
   const assessment = assessSecurityGovernance(context);
@@ -84,16 +87,39 @@ async function execute(
 
   const workflowOutput = siblingOutput<WorkflowAutomationSection>(context, "workflow-automation");
   const integrationsOutput = siblingOutput<IntegrationsSection>(context, "integrations");
+  const agentsOutput = siblingOutput<AIAgentsSection>(context, "ai-agents");
   const workflows: WorkflowDefinition[] = workflowOutput?.workflows ?? [];
   const integrations: IntegrationDefinition[] = integrationsOutput?.integrations ?? [];
+  const agents: AIAgentDefinition[] = agentsOutput?.agents ?? [];
 
   if (workflows.length > 0) notes.push(`Analyzed ${workflows.length} Workflow Automation workflow(s).`);
   if (integrations.length > 0) notes.push(`Analyzed ${integrations.length} Integration(s).`);
+  if (agents.length > 0) notes.push(`Analyzed ${agents.length} AI Agent architecture specification(s).`);
 
   const security = buildSecurityArchitecture(discovery, workflows, integrations);
   const governance = buildGovernancePlan(discovery, workflows, security);
 
-  const securityValidation = validateSecurityArchitecture(security, discovery, workflows, integrations);
+  // AI agent architecture is consumed, never regenerated (task item 31) —
+  // security-governance now registers after ai-agents, so AIAgentDefinition[]
+  // is already available here, the same sibling-read pattern already used
+  // for workflow-automation/integrations above.
+  if (agents.length > 0) {
+    const agentSecurity = buildAIAgentSecurityRequirements(agents);
+    security.requirements.push(...agentSecurity.requirements);
+    security.risks.push(...agentSecurity.risks);
+    security.informationGaps.push(...agentSecurity.informationGaps);
+    if (
+      (agentSecurity.requirements.some((r) => r.status === "needs-information") || agentSecurity.informationGaps.length > 0) &&
+      security.status === "complete"
+    ) {
+      security.status = "needs-review";
+      security.statusReasons.push("AI agent architecture introduces additional unresolved security considerations");
+    }
+
+    governance.aiAgentControls = buildAIAgentGovernanceControls(agents);
+  }
+
+  const securityValidation = validateSecurityArchitecture(security, discovery, workflows, integrations, agents);
   const governanceValidation = validateGovernancePlan(governance, workflows);
 
   if (!securityValidation.ok || !governanceValidation.ok) {

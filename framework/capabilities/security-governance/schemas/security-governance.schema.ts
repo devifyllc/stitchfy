@@ -122,6 +122,15 @@ const ComplianceConsiderationSchema = z.object({
   evidenceRefs: z.array(EvidenceReferenceSchema),
 });
 
+const AIAgentGovernanceControlSchema = z.object({
+  id: z.string().min(1),
+  agentId: z.string().min(1),
+  type: z.enum(["tool-invocation", "human-approval", "decision", "memory", "output-review", "scope"]),
+  description: z.string().min(1),
+  appliesTo: z.array(ArchitectureReferenceSchema),
+  evidenceRefs: z.array(EvidenceReferenceSchema),
+});
+
 export const GovernancePlanSchema = z.object({
   policies: z.array(GovernancePolicySchema),
   humanOversight: z.array(GovernanceApprovalControlSchema),
@@ -129,6 +138,7 @@ export const GovernancePlanSchema = z.object({
   decisionControls: z.array(DecisionControlSchema),
   complianceConsiderations: z.array(ComplianceConsiderationSchema),
   informationGaps: z.array(z.string()),
+  aiAgentControls: z.array(AIAgentGovernanceControlSchema).optional(),
   status: z.enum(["draft", "needs-review", "complete"]),
 });
 

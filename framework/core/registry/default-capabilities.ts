@@ -19,8 +19,8 @@ export function createDefaultRegistry(): CapabilityRegistry {
   for (const capability of [
     websiteCapability,
     workflowAutomationCapability,
-    aiAgentsCapability,
     integrationsCapability,
+    aiAgentsCapability,
     cloudCapability,
     securityGovernanceCapability,
     observabilityCapability,

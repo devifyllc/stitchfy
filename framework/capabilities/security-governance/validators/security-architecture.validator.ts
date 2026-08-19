@@ -8,6 +8,7 @@
 import type { DiscoveryResult } from "../../../discovery/discovery-result.types.js";
 import type { WorkflowDefinition } from "../../workflow-automation/schemas/workflow-automation.types.js";
 import type { IntegrationDefinition } from "../../integrations/schemas/integrations.types.js";
+import type { AIAgentDefinition } from "../../ai-agents/schemas/ai-agents.types.js";
 import type { SecurityArchitecture, GovernancePlan } from "../schemas/security-governance.types.js";
 
 export interface SecurityValidationIssue {
@@ -37,7 +38,8 @@ export function validateSecurityArchitecture(
   security: SecurityArchitecture,
   discovery: DiscoveryResult,
   workflows: WorkflowDefinition[],
-  integrations: IntegrationDefinition[]
+  integrations: IntegrationDefinition[],
+  agents: AIAgentDefinition[] = []
 ): SecurityValidationResult {
   const issues: SecurityValidationIssue[] = [];
 
@@ -49,6 +51,8 @@ export function validateSecurityArchitecture(
   const dataContractIds = new Set(integrations.flatMap((i) => i.dataContracts.map((c) => c.id)));
   const workflowStepIds = new Set(workflows.flatMap((w) => w.steps.map((s) => s.id)));
   const approvalIds = new Set(workflows.flatMap((w) => w.approvals.map((a) => a.id)));
+  const agentIds = new Set(agents.map((a) => a.id));
+  const toolIds = new Set(agents.flatMap((a) => a.tools.map((t) => t.id)));
 
   issues.push(...checkUniqueIds(security.requirements.map((r) => r.id), "SecurityRequirement"));
   issues.push(...checkUniqueIds(security.trustBoundaries.map((b) => b.id), "TrustBoundary"));
@@ -67,6 +71,8 @@ export function validateSecurityArchitecture(
       process: processIds,
       requirement: new Set(discovery.requirements.map((r) => r.id)),
       approval: approvalIds,
+      "ai-agent": agentIds,
+      "ai-tool": toolIds,
     };
     const set = known[ref.entityType];
     if (set && !set.has(ref.entityId)) {
