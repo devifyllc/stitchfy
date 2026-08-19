@@ -1,0 +1,26 @@
+[
+  {
+    "id": "AITOOL-001",
+    "name": "The system checks Google Calendar for availability",
+    "description": "The system checks Google Calendar for availability",
+    "kind": "integration-operation",
+    "sideEffect": "read",
+    "integrationId": "INT-001",
+    "integrationOperationId": "OP-001",
+    "inputContractIds": [],
+    "outputContractIds": [],
+    "approvalRequired": false,
+    "evidenceRefs": [
+      {
+        "entityType": "ai-agent-need",
+        "entityId": "AINEED-001",
+        "description": "Customers should be able to ask the assistant questions about services and studio policies."
+      },
+      {
+        "entityType": "integration",
+        "entityId": "INTNEED-001",
+        "description": "The booking system checks and reserves availability in Google Calendar."
+      }
+    ]
+  }
+]

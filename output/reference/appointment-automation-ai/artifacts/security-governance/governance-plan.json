@@ -1,0 +1,197 @@
+{
+  "policies": [
+    {
+      "id": "POLICY-001",
+      "description": "Appointments cannot overlap for the same employee",
+      "appliesTo": [
+        {
+          "entityType": "process",
+          "entityId": "PROC-001"
+        }
+      ],
+      "evidenceRefs": [
+        {
+          "entityType": "business-rule",
+          "entityId": "BR-001",
+          "description": "Appointments cannot overlap for the same employee"
+        }
+      ]
+    },
+    {
+      "id": "POLICY-002",
+      "description": "A conflicting appointment request must always be approved by a front-desk employee before confirmation",
+      "appliesTo": [
+        {
+          "entityType": "process",
+          "entityId": "PROC-001"
+        }
+      ],
+      "evidenceRefs": [
+        {
+          "entityType": "business-rule",
+          "entityId": "BR-002",
+          "description": "A conflicting appointment request must always be approved by a front-desk employee before confirmation"
+        }
+      ]
+    }
+  ],
+  "humanOversight": [
+    {
+      "id": "GOVCTRL-001",
+      "description": "Every conflicting request is reviewed and approved by a front-desk employee before confirmation",
+      "workflowId": "WF-001",
+      "approvalId": "APPROVAL-001",
+      "appliesTo": [
+        {
+          "entityType": "workflow",
+          "entityId": "WF-001"
+        },
+        {
+          "entityType": "approval",
+          "entityId": "APPROVAL-001"
+        }
+      ],
+      "evidenceRefs": [
+        {
+          "entityType": "outcome",
+          "entityId": "OUTCOME-002",
+          "description": "Every conflicting request is reviewed and approved by a front-desk employee before confirmation"
+        }
+      ]
+    },
+    {
+      "id": "GOVCTRL-002",
+      "description": "Conflicting appointment requests must always be routed to a front-desk employee for approval before confirmation.",
+      "workflowId": "WF-001",
+      "approvalId": "APPROVAL-002",
+      "appliesTo": [
+        {
+          "entityType": "workflow",
+          "entityId": "WF-001"
+        },
+        {
+          "entityType": "approval",
+          "entityId": "APPROVAL-002"
+        }
+      ],
+      "evidenceRefs": [
+        {
+          "entityType": "requirement",
+          "entityId": "REQ-001",
+          "description": "Conflicting appointment requests must always be routed to a front-desk employee for approval before confirmation."
+        }
+      ]
+    }
+  ],
+  "auditRequirements": [
+    {
+      "id": "AUDIT-001",
+      "description": "Approval decisions for \"Every conflicting request is reviewed and approved by a front-desk employee before confirmation\" should be auditable.",
+      "appliesTo": [
+        {
+          "entityType": "workflow",
+          "entityId": "WF-001"
+        },
+        {
+          "entityType": "approval",
+          "entityId": "APPROVAL-001"
+        }
+      ],
+      "evidenceRefs": [
+        {
+          "entityType": "outcome",
+          "entityId": "OUTCOME-002",
+          "description": "Every conflicting request is reviewed and approved by a front-desk employee before confirmation"
+        }
+      ]
+    },
+    {
+      "id": "AUDIT-002",
+      "description": "Approval decisions for \"Conflicting appointment requests must always be routed to a front-desk employee for approval before confirmation.\" should be auditable.",
+      "appliesTo": [
+        {
+          "entityType": "workflow",
+          "entityId": "WF-001"
+        },
+        {
+          "entityType": "approval",
+          "entityId": "APPROVAL-002"
+        }
+      ],
+      "evidenceRefs": [
+        {
+          "entityType": "requirement",
+          "entityId": "REQ-001",
+          "description": "Conflicting appointment requests must always be routed to a front-desk employee for approval before confirmation."
+        }
+      ]
+    }
+  ],
+  "decisionControls": [
+    {
+      "id": "DECCTRL-001",
+      "description": "The decision \"Every conflicting request is reviewed and approved by a front-desk employee before confirmation\" must remain deterministic and traceable to its source evidence.",
+      "decisionId": "DEC-001",
+      "appliesTo": [
+        {
+          "entityType": "workflow-step",
+          "entityId": "STEP-005"
+        },
+        {
+          "entityType": "workflow",
+          "entityId": "WF-001"
+        }
+      ],
+      "evidenceRefs": [
+        {
+          "entityType": "outcome",
+          "entityId": "OUTCOME-002",
+          "description": "Every conflicting request is reviewed and approved by a front-desk employee before confirmation"
+        }
+      ]
+    },
+    {
+      "id": "DECCTRL-002",
+      "description": "The decision \"Conflicting appointment requests must always be routed to a front-desk employee for approval before confirmation.\" must remain deterministic and traceable to its source evidence.",
+      "decisionId": "DEC-002",
+      "appliesTo": [
+        {
+          "entityType": "workflow-step",
+          "entityId": "STEP-008"
+        },
+        {
+          "entityType": "workflow",
+          "entityId": "WF-001"
+        }
+      ],
+      "evidenceRefs": [
+        {
+          "entityType": "requirement",
+          "entityId": "REQ-001",
+          "description": "Conflicting appointment requests must always be routed to a front-desk employee for approval before confirmation."
+        }
+      ]
+    }
+  ],
+  "complianceConsiderations": [
+    {
+      "id": "COMPLY-001",
+      "status": "potential",
+      "rationale": "Customer or business data may cross a third-party boundary; privacy requirements should be reviewed.",
+      "evidenceRefs": [
+        {
+          "entityType": "data-entity",
+          "entityId": "DATA-001",
+          "description": "Customer name, phone number, and appointment history (personal customer information) collected during booking"
+        }
+      ]
+    }
+  ],
+  "informationGaps": [
+    "WFGAP-001",
+    "INTGAP-001",
+    "INTGAP-002"
+  ],
+  "status": "needs-review",
+  "aiAgentControls": []
+}

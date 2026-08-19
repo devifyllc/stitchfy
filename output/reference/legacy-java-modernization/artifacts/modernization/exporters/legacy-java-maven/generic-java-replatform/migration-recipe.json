@@ -1,0 +1,282 @@
+{
+  "id": "RECIPE-001",
+  "modernizationCandidateId": "CANDIDATE-001",
+  "systemId": "SYS-001",
+  "strategy": "replatform",
+  "currentState": {
+    "runtime": "IBM WebSphere",
+    "frameworks": [
+      "Spring Framework",
+      "Hibernate",
+      "Servlet API (javax)",
+      "JPA (javax)"
+    ],
+    "packaging": "war",
+    "notes": []
+  },
+  "targetState": {
+    "runtime": "Apache Tomcat",
+    "frameworks": [
+      "Spring Framework",
+      "Hibernate",
+      "Servlet API (javax)",
+      "JPA (javax)"
+    ],
+    "packaging": "war",
+    "notes": [
+      "Frameworks not explicitly requiring change are assumed to carry forward pending compatibility review.",
+      "Target runtime \"Apache Tomcat\" version is not specified in the modernization architecture."
+    ]
+  },
+  "steps": [
+    {
+      "id": "STEP-001",
+      "category": "runtime",
+      "description": "Review runtime configuration and dependencies for compatibility with the target runtime (IBM WebSphere → Apache Tomcat).",
+      "changeProposalIds": [],
+      "prerequisiteIds": [],
+      "preservationRequirementIds": [],
+      "validationRequirementIds": [],
+      "evidenceRefs": [
+        {
+          "analyzerId": "java-source",
+          "filePath": "src/main/webapp/WEB-INF/ibm-web-bnd.xml",
+          "evidenceType": "configuration"
+        }
+      ],
+      "confidence": "derived"
+    },
+    {
+      "id": "STEP-002",
+      "category": "configuration",
+      "description": "Review runtime-specific configuration for removal or replacement under the target runtime.",
+      "changeProposalIds": [
+        "CFGCHANGE-001"
+      ],
+      "prerequisiteIds": [],
+      "preservationRequirementIds": [],
+      "validationRequirementIds": [],
+      "evidenceRefs": [
+        {
+          "analyzerId": "java-source",
+          "filePath": "src/main/webapp/WEB-INF/ibm-web-bnd.xml",
+          "evidenceType": "configuration"
+        }
+      ],
+      "confidence": "derived"
+    },
+    {
+      "id": "STEP-003",
+      "category": "dependency",
+      "description": "Review direct dependencies for target-runtime compatibility; no dependency versions have been changed automatically.",
+      "changeProposalIds": [
+        "DEPCHANGE-001",
+        "DEPCHANGE-002",
+        "DEPCHANGE-003",
+        "DEPCHANGE-004",
+        "DEPCHANGE-005"
+      ],
+      "prerequisiteIds": [],
+      "preservationRequirementIds": [],
+      "validationRequirementIds": [],
+      "evidenceRefs": [
+        {
+          "analyzerId": "maven",
+          "filePath": "pom.xml",
+          "line": 27,
+          "symbol": "javax.servlet:javax.servlet-api",
+          "evidenceType": "build-file"
+        },
+        {
+          "analyzerId": "maven",
+          "filePath": "pom.xml",
+          "line": 33,
+          "symbol": "com.example:internal-fixture-lib",
+          "evidenceType": "build-file"
+        },
+        {
+          "analyzerId": "maven",
+          "filePath": "pom.xml",
+          "line": 17,
+          "symbol": "org.springframework:spring-context",
+          "evidenceType": "build-file",
+          "factId": "CODEDEP-001"
+        },
+        {
+          "analyzerId": "maven",
+          "filePath": "pom.xml",
+          "line": 22,
+          "symbol": "org.hibernate:hibernate-core",
+          "evidenceType": "build-file",
+          "factId": "CODEDEP-002"
+        },
+        {
+          "analyzerId": "java-source",
+          "filePath": "src/main/java/com/example/OrderService.java",
+          "line": 4,
+          "symbol": "org.springframework.stereotype.Service",
+          "evidenceType": "source"
+        }
+      ],
+      "confidence": "requires-review"
+    },
+    {
+      "id": "STEP-004",
+      "category": "source",
+      "description": "Review Servlet API usage for target-runtime and namespace compatibility.",
+      "changeProposalIds": [
+        "SRCCHANGE-001"
+      ],
+      "prerequisiteIds": [],
+      "preservationRequirementIds": [],
+      "validationRequirementIds": [],
+      "evidenceRefs": [
+        {
+          "analyzerId": "java-source",
+          "filePath": "src/main/java/com/example/OrderService.java",
+          "line": 2,
+          "symbol": "javax.servlet.http.HttpServletRequest",
+          "evidenceType": "source"
+        }
+      ],
+      "confidence": "requires-review"
+    },
+    {
+      "id": "STEP-005",
+      "category": "validation",
+      "description": "Validate preserved business behavior, integration contracts, and data technology after migration.",
+      "changeProposalIds": [],
+      "prerequisiteIds": [
+        "STEP-001",
+        "STEP-002",
+        "STEP-003",
+        "STEP-004"
+      ],
+      "preservationRequirementIds": [
+        "PRESERVE-001",
+        "PRESERVE-002",
+        "PRESERVE-003"
+      ],
+      "validationRequirementIds": [
+        "VALIDATE-001",
+        "VALIDATE-002",
+        "VALIDATE-003",
+        "VALIDATE-004"
+      ],
+      "evidenceRefs": [],
+      "confidence": "derived"
+    },
+    {
+      "id": "STEP-006",
+      "category": "manual-review",
+      "description": "Complete the manual review items identified for this migration before proceeding.",
+      "changeProposalIds": [],
+      "prerequisiteIds": [],
+      "preservationRequirementIds": [],
+      "validationRequirementIds": [],
+      "evidenceRefs": [
+        {
+          "analyzerId": "java-source",
+          "filePath": "src/main/webapp/WEB-INF/ibm-web-bnd.xml",
+          "evidenceType": "configuration"
+        },
+        {
+          "analyzerId": "maven",
+          "filePath": "pom.xml",
+          "line": 33,
+          "symbol": "com.example:internal-fixture-lib",
+          "evidenceType": "build-file"
+        }
+      ],
+      "confidence": "requires-review"
+    }
+  ],
+  "preservationRequirementIds": [
+    "PRESERVE-001",
+    "PRESERVE-002",
+    "PRESERVE-003"
+  ],
+  "validationRequirementIds": [
+    "VALIDATE-001",
+    "VALIDATE-002",
+    "VALIDATE-003",
+    "VALIDATE-004"
+  ],
+  "informationGapIds": [
+    "MODGAP-001",
+    "MODGAP-002",
+    "MODGAP-003",
+    "MODGAP-004",
+    "MODGAP-005",
+    "MODGAP-006"
+  ],
+  "evidenceRefs": [
+    {
+      "analyzerId": "java-source",
+      "filePath": "src/main/webapp/WEB-INF/ibm-web-bnd.xml",
+      "evidenceType": "configuration"
+    },
+    {
+      "analyzerId": "java-source",
+      "filePath": "src/main/webapp/WEB-INF/ibm-web-bnd.xml",
+      "evidenceType": "configuration"
+    },
+    {
+      "analyzerId": "maven",
+      "filePath": "pom.xml",
+      "line": 27,
+      "symbol": "javax.servlet:javax.servlet-api",
+      "evidenceType": "build-file"
+    },
+    {
+      "analyzerId": "maven",
+      "filePath": "pom.xml",
+      "line": 33,
+      "symbol": "com.example:internal-fixture-lib",
+      "evidenceType": "build-file"
+    },
+    {
+      "analyzerId": "maven",
+      "filePath": "pom.xml",
+      "line": 17,
+      "symbol": "org.springframework:spring-context",
+      "evidenceType": "build-file",
+      "factId": "CODEDEP-001"
+    },
+    {
+      "analyzerId": "maven",
+      "filePath": "pom.xml",
+      "line": 22,
+      "symbol": "org.hibernate:hibernate-core",
+      "evidenceType": "build-file",
+      "factId": "CODEDEP-002"
+    },
+    {
+      "analyzerId": "java-source",
+      "filePath": "src/main/java/com/example/OrderService.java",
+      "line": 4,
+      "symbol": "org.springframework.stereotype.Service",
+      "evidenceType": "source"
+    },
+    {
+      "analyzerId": "java-source",
+      "filePath": "src/main/java/com/example/OrderService.java",
+      "line": 2,
+      "symbol": "javax.servlet.http.HttpServletRequest",
+      "evidenceType": "source"
+    },
+    {
+      "analyzerId": "java-source",
+      "filePath": "src/main/webapp/WEB-INF/ibm-web-bnd.xml",
+      "evidenceType": "configuration"
+    },
+    {
+      "analyzerId": "maven",
+      "filePath": "pom.xml",
+      "line": 33,
+      "symbol": "com.example:internal-fixture-lib",
+      "evidenceType": "build-file"
+    }
+  ],
+  "status": "needs-review"
+}

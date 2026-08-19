@@ -1,0 +1,389 @@
+{
+  "id": "WF-001",
+  "name": "Appointment Booking Workflow",
+  "version": "1.0",
+  "processId": "PROC-001",
+  "triggers": [
+    {
+      "id": "TRIGGER-001",
+      "type": "business-event",
+      "description": "Customer requests an appointment by phone, WhatsApp, or the AI assistant",
+      "evidenceRefs": [
+        {
+          "entityType": "process",
+          "entityId": "PROC-001",
+          "description": "Appointment Booking"
+        }
+      ]
+    }
+  ],
+  "steps": [
+    {
+      "id": "STEP-001",
+      "name": "Customer requests an appointment",
+      "type": "automated-task",
+      "description": "Customer requests an appointment",
+      "evidenceRefs": [
+        {
+          "entityType": "process",
+          "entityId": "PROC-001",
+          "description": "Appointment Booking"
+        },
+        {
+          "entityType": "process",
+          "entityId": "PROC-001",
+          "description": "Online appointment requests"
+        }
+      ]
+    },
+    {
+      "id": "STEP-002",
+      "name": "The system checks Google Calendar for availability",
+      "type": "automated-task",
+      "description": "The system checks Google Calendar for availability",
+      "evidenceRefs": [
+        {
+          "entityType": "process",
+          "entityId": "PROC-001",
+          "description": "Appointment Booking"
+        },
+        {
+          "entityType": "process",
+          "entityId": "PROC-001",
+          "description": "Calendar synchronization"
+        }
+      ]
+    },
+    {
+      "id": "STEP-003",
+      "name": "If the request conflicts with an existing booking, a front-desk employee must review and approve or reject it before it is confirmed",
+      "type": "human-task",
+      "description": "If the request conflicts with an existing booking, a front-desk employee must review and approve or reject it before it is confirmed",
+      "actorIds": [
+        "ACTOR-004"
+      ],
+      "evidenceRefs": [
+        {
+          "entityType": "process",
+          "entityId": "PROC-001",
+          "description": "Appointment Booking"
+        }
+      ]
+    },
+    {
+      "id": "STEP-004",
+      "name": "Confirmed appointments are recorded and a reminder is sent before the appointment",
+      "type": "notification",
+      "description": "Confirmed appointments are recorded and a reminder is sent before the appointment",
+      "evidenceRefs": [
+        {
+          "entityType": "process",
+          "entityId": "PROC-001",
+          "description": "Appointment Booking"
+        }
+      ]
+    },
+    {
+      "id": "STEP-005",
+      "name": "Decision: Every conflicting request is reviewed and approved by a front-desk employee before confirmation",
+      "type": "decision",
+      "description": "Every conflicting request is reviewed and approved by a front-desk employee before confirmation",
+      "evidenceRefs": [
+        {
+          "entityType": "outcome",
+          "entityId": "OUTCOME-002",
+          "description": "Every conflicting request is reviewed and approved by a front-desk employee before confirmation"
+        }
+      ]
+    },
+    {
+      "id": "STEP-006",
+      "name": "Proceed",
+      "type": "automated-task",
+      "description": "Continue without human review.",
+      "evidenceRefs": [
+        {
+          "entityType": "outcome",
+          "entityId": "OUTCOME-002",
+          "description": "Every conflicting request is reviewed and approved by a front-desk employee before confirmation"
+        }
+      ]
+    },
+    {
+      "id": "STEP-007",
+      "name": "Human Review",
+      "type": "human-task",
+      "description": "Desired outcome \"Every conflicting request is reviewed and approved by a front-desk employee before confirmation\" explicitly requires human oversight — preserved rather than automated away.",
+      "evidenceRefs": [
+        {
+          "entityType": "outcome",
+          "entityId": "OUTCOME-002",
+          "description": "Every conflicting request is reviewed and approved by a front-desk employee before confirmation"
+        }
+      ]
+    },
+    {
+      "id": "STEP-008",
+      "name": "Decision: Conflicting appointment requests must always be routed to a front-desk employee for approval before confirmation.",
+      "type": "decision",
+      "description": "Conflicting appointment requests must always be routed to a front-desk employee for approval before confirmation.",
+      "evidenceRefs": [
+        {
+          "entityType": "requirement",
+          "entityId": "REQ-001",
+          "description": "Conflicting appointment requests must always be routed to a front-desk employee for approval before confirmation."
+        }
+      ]
+    },
+    {
+      "id": "STEP-009",
+      "name": "Proceed",
+      "type": "automated-task",
+      "description": "Continue without human review.",
+      "evidenceRefs": [
+        {
+          "entityType": "requirement",
+          "entityId": "REQ-001",
+          "description": "Conflicting appointment requests must always be routed to a front-desk employee for approval before confirmation."
+        }
+      ]
+    },
+    {
+      "id": "STEP-010",
+      "name": "Human Review",
+      "type": "human-task",
+      "description": "Requirement \"Conflicting appointment requests must always be routed to a front-desk employee for approval before confirmation.\" explicitly requires human oversight — preserved rather than automated away.",
+      "evidenceRefs": [
+        {
+          "entityType": "requirement",
+          "entityId": "REQ-001",
+          "description": "Conflicting appointment requests must always be routed to a front-desk employee for approval before confirmation."
+        }
+      ]
+    }
+  ],
+  "transitions": [
+    {
+      "id": "TRANS-001",
+      "fromStepId": "STEP-001",
+      "toStepId": "STEP-002"
+    },
+    {
+      "id": "TRANS-002",
+      "fromStepId": "STEP-002",
+      "toStepId": "STEP-003"
+    },
+    {
+      "id": "TRANS-003",
+      "fromStepId": "STEP-003",
+      "toStepId": "STEP-004"
+    },
+    {
+      "id": "TRANS-004",
+      "fromStepId": "STEP-004",
+      "toStepId": "STEP-005"
+    },
+    {
+      "id": "TRANS-005",
+      "fromStepId": "STEP-005",
+      "toStepId": "STEP-006",
+      "condition": "No: Every conflicting request is reviewed and approved by a front-desk employee before confirmation",
+      "evidenceRefs": [
+        {
+          "entityType": "outcome",
+          "entityId": "OUTCOME-002",
+          "description": "Every conflicting request is reviewed and approved by a front-desk employee before confirmation"
+        }
+      ]
+    },
+    {
+      "id": "TRANS-006",
+      "fromStepId": "STEP-005",
+      "toStepId": "STEP-007",
+      "condition": "Yes: Every conflicting request is reviewed and approved by a front-desk employee before confirmation",
+      "evidenceRefs": [
+        {
+          "entityType": "outcome",
+          "entityId": "OUTCOME-002",
+          "description": "Every conflicting request is reviewed and approved by a front-desk employee before confirmation"
+        }
+      ]
+    },
+    {
+      "id": "TRANS-007",
+      "fromStepId": "STEP-008",
+      "toStepId": "STEP-009",
+      "condition": "No: Conflicting appointment requests must always be routed to a front-desk employee for approval before confirmation.",
+      "evidenceRefs": [
+        {
+          "entityType": "requirement",
+          "entityId": "REQ-001",
+          "description": "Conflicting appointment requests must always be routed to a front-desk employee for approval before confirmation."
+        }
+      ]
+    },
+    {
+      "id": "TRANS-008",
+      "fromStepId": "STEP-008",
+      "toStepId": "STEP-010",
+      "condition": "Yes: Conflicting appointment requests must always be routed to a front-desk employee for approval before confirmation.",
+      "evidenceRefs": [
+        {
+          "entityType": "requirement",
+          "entityId": "REQ-001",
+          "description": "Conflicting appointment requests must always be routed to a front-desk employee for approval before confirmation."
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "DEC-001",
+      "stepId": "STEP-005",
+      "condition": "Every conflicting request is reviewed and approved by a front-desk employee before confirmation",
+      "branches": [
+        {
+          "label": "No",
+          "toStepId": "STEP-006"
+        },
+        {
+          "label": "Yes",
+          "toStepId": "STEP-007"
+        }
+      ],
+      "evidenceRefs": [
+        {
+          "entityType": "outcome",
+          "entityId": "OUTCOME-002",
+          "description": "Every conflicting request is reviewed and approved by a front-desk employee before confirmation"
+        }
+      ]
+    },
+    {
+      "id": "DEC-002",
+      "stepId": "STEP-008",
+      "condition": "Conflicting appointment requests must always be routed to a front-desk employee for approval before confirmation.",
+      "branches": [
+        {
+          "label": "No",
+          "toStepId": "STEP-009"
+        },
+        {
+          "label": "Yes",
+          "toStepId": "STEP-010"
+        }
+      ],
+      "evidenceRefs": [
+        {
+          "entityType": "requirement",
+          "entityId": "REQ-001",
+          "description": "Conflicting appointment requests must always be routed to a front-desk employee for approval before confirmation."
+        }
+      ]
+    }
+  ],
+  "approvals": [
+    {
+      "id": "APPROVAL-001",
+      "stepId": "STEP-007",
+      "approval": {
+        "id": "approval-1787176262505-4r44kt",
+        "approvalRequired": true,
+        "approverRole": "Front-desk employee",
+        "reason": "Every conflicting request is reviewed and approved by a front-desk employee before confirmation",
+        "riskLevel": "medium",
+        "decision": "pending",
+        "timestamp": "2026-08-19T21:51:02.505Z"
+      },
+      "evidenceRefs": [
+        {
+          "entityType": "outcome",
+          "entityId": "OUTCOME-002",
+          "description": "Every conflicting request is reviewed and approved by a front-desk employee before confirmation"
+        }
+      ]
+    },
+    {
+      "id": "APPROVAL-002",
+      "stepId": "STEP-010",
+      "approval": {
+        "id": "approval-1787176262505-naf89c",
+        "approvalRequired": true,
+        "approverRole": "Front-desk employee",
+        "reason": "Conflicting appointment requests must always be routed to a front-desk employee for approval before confirmation.",
+        "riskLevel": "medium",
+        "decision": "pending",
+        "timestamp": "2026-08-19T21:51:02.505Z"
+      },
+      "evidenceRefs": [
+        {
+          "entityType": "requirement",
+          "entityId": "REQ-001",
+          "description": "Conflicting appointment requests must always be routed to a front-desk employee for approval before confirmation."
+        }
+      ]
+    }
+  ],
+  "notifications": [
+    {
+      "id": "NOTIF-001",
+      "description": "Confirmed appointments are recorded and a reminder is sent before the appointment",
+      "channel": "unknown",
+      "evidenceRefs": [
+        {
+          "entityType": "process",
+          "entityId": "PROC-001",
+          "description": "Appointment Booking"
+        }
+      ]
+    }
+  ],
+  "externalSystems": [
+    {
+      "systemId": "SYS-001",
+      "role": "saas system",
+      "interactionType": "integration",
+      "evidenceRefs": [
+        {
+          "entityType": "system",
+          "entityId": "SYS-001",
+          "description": "Google Calendar"
+        }
+      ]
+    },
+    {
+      "systemId": "SYS-002",
+      "role": "saas system",
+      "evidenceRefs": [
+        {
+          "entityType": "system",
+          "entityId": "SYS-002",
+          "description": "WhatsApp"
+        }
+      ]
+    }
+  ],
+  "informationGaps": [
+    {
+      "id": "WFGAP-001",
+      "topic": "Notification channel",
+      "question": "What channel should be used for: \"Confirmed appointments are recorded and a reminder is sent before the appointment\"?",
+      "importance": "medium",
+      "blocking": false,
+      "relatedCapabilityIds": [
+        "workflow-automation"
+      ]
+    }
+  ],
+  "evidenceRefs": [
+    {
+      "entityType": "process",
+      "entityId": "PROC-001",
+      "description": "Appointment Booking"
+    }
+  ],
+  "status": "needs-review",
+  "statusReasons": [
+    "notification channel unknown"
+  ]
+}

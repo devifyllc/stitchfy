@@ -794,10 +794,125 @@ Not implemented. Even Phase 8.5C should not necessarily apply patches
 automatically — a human-approval gate remains between a proposal and any
 generated diff.
 
-## Phase 9 — Reference Implementations
+## Phase 9 — Reference Implementations / End-to-End Reference Solutions ✅ done
 
-- One worked example per non-website capability under `examples/`, and a
-  matching template under `templates/`, once that capability has a real
-  `execute()`.
-- End-to-end docs walkthrough: project.md → solution-blueprint.v1.json →
-  generated artifacts for at least one non-website capability.
+Not a new capability — proof that the seven capabilities plus the two
+export adapters plus codebase analysis already built operate as one
+coherent, traceable framework, via three canonical end-to-end worked
+examples, matching templates, a capability-coverage matrix, semantic
+regression validation, and documentation that accurately separates
+"generates architecture" from "runs software." Preferred user-facing term:
+**"Reference Solution"** — none of the three deploys, runs, or provisions
+anything; see `docs/reference/END_TO_END.md`'s "Artifact taxonomy."
+
+- **Three canonical reference solutions** (`examples/reference/`), each a
+  coherent scenario exercising a real combination of capabilities together
+  rather than one capability in isolation: `appointment-automation-ai.md`
+  (Workflow + Integrations + AI Agents + Security/Governance + Observability,
+  plus Cloud at low confidence via the AI-agent-runtime-hosting signal —
+  not fabricated deployment language), `order-platform.md` (Workflow +
+  Integrations, exported via `generic-rest-typescript` at readiness `ready`
+  + Security/Governance + Observability + Cloud with an unspecified
+  provider), `legacy-java-modernization.md` (Integrations +
+  Security/Governance + Observability + Modernization, enriched with real
+  codebase evidence and exported via `generic-java-replatform` at readiness
+  `needs-review`). Existing `examples/solution/*.md` files are untouched.
+- **Five starter templates** (`templates/solution/`): `business-automation.md`,
+  `ai-assisted-workflow.md`, `api-platform.md`, `cloud-deployment.md`,
+  `legacy-modernization.md` — every heading shown is a real, recognized
+  Stitchfy heading (verified against each discovery extractor's own
+  `SECTION_CANDIDATES`/heading-alias list before being documented), and
+  every bullet distinguishes "fill in if known" from "leave out if
+  unknown." The five old capability-named placeholder READMEs
+  (`templates/{workflow,ai-agent,integration,cloud,modernization}/`) had
+  their stale "once this capability has a real `execute()`" claim
+  corrected — all five now do — and now point here.
+- **`docs/reference/CAPABILITY_MATRIX.md`** — generated from real
+  `npm run solution` runs of all three scenarios, not from capability
+  existence; includes a "notes on non-obvious results" section explaining
+  the AI-agent → Cloud signal and the pre-existing `PRESERVE-003`
+  classification detail.
+- **Semantic golden validation** — `tests/reference/reference-solutions.ts`
+  (a `ReferenceSolutionDefinition[]` manifest with `ReferenceInvariant`
+  closures; test/support infrastructure, never a `SolutionBlueprint`
+  field) + `tests/reference/reference-runner.ts` (shared execution/
+  normalization logic, imported by both the test suite and the validation
+  script). `normalizeReferenceOutput()` strips only documented volatile
+  fields (`generatedAt`, `timestamp`, `startedAt`/`completedAt`,
+  `durationMs`, `ImplementationArtifact.id`/`HumanApproval.id`/
+  `WorkflowState.projectId`'s `Date.now()`-based shapes, and ISO
+  timestamps embedded inside pre-serialized `content` strings) — every
+  other id stays, since it comes from a deterministic `makeIdGenerator()`
+  counter. Golden fixtures (`tests/fixtures/reference-expected/*.json`)
+  are intentionally partial — `assertGoldenSubset()` checks "every key
+  path in the fixture matches," not full deep-equality.
+- **`npm run reference:validate`** (`scripts/reference-validate.ts`) — runs
+  all three scenarios via direct function calls (no subprocess), checks
+  capability selection/artifact existence/invariants/golden subset, and
+  writes `output/reference/reference-validation.md` +
+  `reference-validation.json`. Fully offline; no `STITCH_API_KEY`/
+  `OPENAI_API_KEY` required. Output isolation reuses the **already-existing**
+  `--output <dir>` flag on `npm run solution` — no new CLI flag was added.
+- **`tests/reference-solutions.test.ts`** — per-scenario invariant tests,
+  cross-scenario capability/exporter coverage completeness, codebase-
+  evidence byte-identity + no-strategy-mutation, reproducibility (re-run
+  order-platform, normalized output identical), static no-`child_process`/
+  no-network guards, reference-doc command validity (every `npm run ...`
+  in the new docs resolves to a real `package.json` script), and README
+  framework-positioning invariants.
+- **Documentation**: `docs/reference/END_TO_END.md` (the 8-step pipeline +
+  artifact taxonomy, canonical location for both), `docs/reference/APPOINTMENT_AUTOMATION_AI.md`,
+  `ORDER_PLATFORM.md`, `LEGACY_JAVA_MODERNIZATION.md` (per-scenario
+  walkthroughs with real generated IDs, each stating its explicit runtime
+  boundary), `examples/reference/README.md`, `templates/README.md`.
+- **README repositioning** — no longer opens with "static website
+  generator only"; leads with the solution-engineering framing, keeps the
+  website Quick Start fully intact (renamed, not hidden), adds a Solution
+  Architecture Quick Start, an architecture diagram, a capability status
+  table, and a framework-wide "Specification versus Runtime" section
+  (the old website-only "What This Does NOT Include" is kept as its own
+  subsection). Wording discipline throughout: "generates X," never
+  "automates/runs/deploys/migrates X." No package-version or
+  `SolutionBlueprint` schema-version bump.
+- **331 tests passing** (288 existing + 43 new), zero `framework/**`
+  production-code changes — this phase is purely additive (examples,
+  templates, docs, test infrastructure, one new script, two doc/README
+  edits).
+
+## Architecture Stabilization / Release Candidate Review
+
+A recommended future decision milestone, not started here. Phase 9
+produced enough end-to-end evidence to make these calls; it did not make
+them:
+
+- Is `SolutionBlueprint` stable enough to version (a real `schemaVersion`
+  bump, with a compatibility policy)?
+- Which of the deferred exporters (5.5B, 6.5, 7C, 8.5C) belong in
+  Stitchfy core, and which belong in separate, optional packages?
+- Which runtime providers (if any are ever built) belong in a separate
+  package from the architecture-generation core?
+- Should `development` merge to `main`?
+- Is the old website-only Phase 2 migration still worth doing?
+- Which APIs/contracts (capability interface, exporter interface,
+  `SolutionBlueprint` shape) should be considered public and stable?
+- What backwards-compatibility guarantees should Stitchfy commit to going
+  forward?
+
+## Deferred tracks (unchanged by Phase 9, not automatically started)
+
+- **Phase 5.5B — Runtime Integration Providers** — actually calling a
+  real external system from a generated `IntegrationExportBundle`.
+- **Phase 6.5 — AI Agent Export / Runtime Adapters** — actually invoking a
+  model/provider from a generated `AIAgentDefinition`.
+- **Phase 7C — Cloud / Observability Export & Runtime Provider Adapters** —
+  actually provisioning infrastructure or configuring a monitoring vendor
+  from `CloudArchitecture`/`ObservabilityArchitecture`.
+- **Phase 8.5C — Reviewed Source Transformation / Patch Generation** —
+  turning an approved `ModernizationExportBundle` into a reviewable unified
+  diff (still gated behind human approval even once built — see its own
+  section above).
+
+Phase 9 exists to give the "Architecture Stabilization / Release Candidate
+Review" milestone above enough real, end-to-end evidence to decide which of
+these (if any) become Stitchfy core versus a separate, optional package —
+that decision is explicitly not made in this phase.

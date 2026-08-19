@@ -1,0 +1,42 @@
+{
+  "planning": {
+    "selectedCapabilities": ["website", "workflow-automation", "integrations", "security-governance", "observability", "cloud"]
+  },
+  "automation": {
+    "workflows": [{ "id": "WF-001" }]
+  },
+  "integrations": {
+    "integrations": [
+      {
+        "id": "INT-001",
+        "restContract": {
+          "operations": [{ "method": "POST", "path": "/v1/orders" }]
+        }
+      }
+    ],
+    "exports": [
+      {
+        "exporterId": "generic-rest-typescript",
+        "readiness": { "status": "ready" }
+      }
+    ]
+  },
+  "architecture": {
+    "architecture": {
+      "deploymentUnits": [
+        { "name": "Order API", "responsibility": "solution-managed" },
+        { "name": "Order Processor", "responsibility": "solution-managed" }
+      ],
+      "providerRequirement": { "provider": "unspecified" }
+    }
+  },
+  "security": {
+    "requirements": [{}, {}]
+  },
+  "observability": {
+    "architecture": {
+      "signals": [{}, {}, {}, {}, {}, {}],
+      "alertRequirements": [{}]
+    }
+  }
+}

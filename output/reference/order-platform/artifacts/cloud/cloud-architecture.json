@@ -1,0 +1,366 @@
+{
+  "version": "1.0",
+  "hostingModel": "unknown",
+  "providerRequirement": {
+    "provider": "unspecified",
+    "explicit": false,
+    "evidenceRefs": []
+  },
+  "deploymentUnits": [
+    {
+      "id": "DEPLOYUNIT-001",
+      "name": "Order API",
+      "kind": "api",
+      "responsibility": "solution-managed",
+      "workloadProfile": "request-driven",
+      "sourceArchitectureRefs": [],
+      "runtimeRequirementIds": [
+        "RUNTIME-001"
+      ],
+      "stateRequirementIds": [],
+      "connectivityRequirementIds": [
+        "CONNECT-002"
+      ],
+      "securityRequirementIds": [],
+      "observabilityRequirementIds": [],
+      "evidenceRefs": [
+        {
+          "entityType": "deployment-need",
+          "entityId": "DEPLOY-001",
+          "description": "The solution includes a solution-managed Order API that receives customer order requests."
+        }
+      ]
+    },
+    {
+      "id": "DEPLOYUNIT-002",
+      "name": "Order Processor",
+      "kind": "worker",
+      "responsibility": "solution-managed",
+      "workloadProfile": "background",
+      "sourceArchitectureRefs": [],
+      "runtimeRequirementIds": [
+        "RUNTIME-002"
+      ],
+      "stateRequirementIds": [],
+      "connectivityRequirementIds": [
+        "CONNECT-001",
+        "CONNECT-003"
+      ],
+      "securityRequirementIds": [],
+      "observabilityRequirementIds": [],
+      "evidenceRefs": [
+        {
+          "entityType": "deployment-need",
+          "entityId": "DEPLOY-003",
+          "description": "The solution includes a solution-managed Order Processor that processes accepted orders in the background."
+        }
+      ]
+    }
+  ],
+  "runtimeRequirements": [
+    {
+      "id": "RUNTIME-001",
+      "executionModel": "request-driven",
+      "description": "Runtime for solution-managed component \"Order API\".",
+      "appliesTo": [
+        {
+          "entityType": "deployment-unit",
+          "entityId": "DEPLOYUNIT-001"
+        }
+      ],
+      "evidenceRefs": [
+        {
+          "entityType": "deployment-need",
+          "entityId": "DEPLOY-001",
+          "description": "The solution includes a solution-managed Order API that receives customer order requests."
+        }
+      ]
+    },
+    {
+      "id": "RUNTIME-002",
+      "executionModel": "background",
+      "description": "Runtime for solution-managed component \"Order Processor\".",
+      "appliesTo": [
+        {
+          "entityType": "deployment-unit",
+          "entityId": "DEPLOYUNIT-002"
+        }
+      ],
+      "evidenceRefs": [
+        {
+          "entityType": "deployment-need",
+          "entityId": "DEPLOY-003",
+          "description": "The solution includes a solution-managed Order Processor that processes accepted orders in the background."
+        }
+      ]
+    }
+  ],
+  "stateRequirements": [
+    {
+      "id": "STATE-001",
+      "mode": "durable",
+      "purpose": "Order processing state must persist and survive application restarts.",
+      "appliesTo": [],
+      "dataEntityIds": [],
+      "evidenceRefs": [
+        {
+          "entityType": "deployment-need",
+          "entityId": "DEPLOY-006",
+          "description": "Order processing state must persist and survive application restarts."
+        }
+      ]
+    }
+  ],
+  "persistenceRequirements": [
+    {
+      "id": "PERSIST-001",
+      "purpose": "Order processing state must persist and survive application restarts.",
+      "durability": "durable",
+      "dataEntityIds": [],
+      "consistency": "unknown",
+      "technology": "unspecified",
+      "evidenceRefs": [
+        {
+          "entityType": "deployment-need",
+          "entityId": "DEPLOY-006",
+          "description": "Order processing state must persist and survive application restarts."
+        }
+      ]
+    }
+  ],
+  "connectivityRequirements": [
+    {
+      "id": "CONNECT-001",
+      "source": {
+        "kind": "deployment-unit",
+        "entityId": "DEPLOYUNIT-002",
+        "label": "Order Processor"
+      },
+      "target": {
+        "kind": "external-system",
+        "entityId": "SYS-001",
+        "label": "Fulfillment API"
+      },
+      "direction": "outbound",
+      "exposure": "external",
+      "protocol": "https",
+      "integrationId": "INT-001",
+      "evidenceRefs": [
+        {
+          "entityType": "integration",
+          "entityId": "INTNEED-001",
+          "description": "The Order Processor submits orders to the Fulfillment API."
+        }
+      ]
+    },
+    {
+      "id": "CONNECT-002",
+      "source": {
+        "kind": "actor",
+        "label": "Customer"
+      },
+      "target": {
+        "kind": "deployment-unit",
+        "entityId": "DEPLOYUNIT-001",
+        "label": "Order API"
+      },
+      "direction": "inbound",
+      "exposure": "public",
+      "protocol": "https",
+      "evidenceRefs": [
+        {
+          "entityType": "deployment-need",
+          "entityId": "DEPLOY-002",
+          "description": "The Order API must be publicly reachable over HTTPS."
+        }
+      ]
+    },
+    {
+      "id": "CONNECT-003",
+      "source": {
+        "kind": "actor",
+        "label": "Customer"
+      },
+      "target": {
+        "kind": "deployment-unit",
+        "entityId": "DEPLOYUNIT-002",
+        "label": "Order Processor"
+      },
+      "direction": "inbound",
+      "exposure": "internal",
+      "protocol": "unknown",
+      "evidenceRefs": [
+        {
+          "entityType": "deployment-need",
+          "entityId": "DEPLOY-004",
+          "description": "The Order Processor must not expose a public endpoint."
+        }
+      ]
+    }
+  ],
+  "environmentRequirements": [
+    {
+      "id": "ENV-001",
+      "name": "Test",
+      "purpose": "test",
+      "isolated": true,
+      "evidenceRefs": [
+        {
+          "entityType": "deployment-need",
+          "entityId": "DEPLOY-005",
+          "description": "The business requires separate Test and Production environments."
+        }
+      ]
+    },
+    {
+      "id": "ENV-002",
+      "name": "Production",
+      "purpose": "production",
+      "isolated": true,
+      "evidenceRefs": [
+        {
+          "entityType": "deployment-need",
+          "entityId": "DEPLOY-005",
+          "description": "The business requires separate Test and Production environments."
+        }
+      ]
+    }
+  ],
+  "scalabilityRequirements": [
+    {
+      "id": "SCALE-001",
+      "target": [],
+      "dimension": "concurrency",
+      "requirement": "100 concurrent order submissions",
+      "explicit": true,
+      "evidenceRefs": [
+        {
+          "entityType": "deployment-need",
+          "entityId": "DEPLOY-007",
+          "description": "Production must support at least 100 concurrent order submissions."
+        }
+      ]
+    }
+  ],
+  "resilienceRequirements": [
+    {
+      "id": "RESILIENCE-001",
+      "target": [
+        {
+          "entityType": "integration",
+          "entityId": "INT-001"
+        }
+      ],
+      "concern": "dependency-failure",
+      "description": "The solution must continue accepting new orders when the external Fulfillment API is temporarily unavailable.",
+      "strategy": "unspecified",
+      "evidenceRefs": [
+        {
+          "entityType": "deployment-need",
+          "entityId": "DEPLOY-008",
+          "description": "The solution must continue accepting new orders when the external Fulfillment API is temporarily unavailable."
+        }
+      ]
+    }
+  ],
+  "securityMappings": [
+    {
+      "id": "CLOUDSEC-001",
+      "securityRequirementId": "SECREQ-001",
+      "deploymentUnitIds": [
+        "DEPLOYUNIT-002"
+      ],
+      "connectivityRequirementIds": [
+        "CONNECT-001"
+      ],
+      "stateRequirementIds": [],
+      "evidenceRefs": [
+        {
+          "entityType": "integration",
+          "entityId": "INTNEED-001",
+          "description": "The Order Processor submits orders to the Fulfillment API."
+        }
+      ]
+    },
+    {
+      "id": "CLOUDSEC-002",
+      "securityRequirementId": "SECREQ-002",
+      "deploymentUnitIds": [
+        "DEPLOYUNIT-002"
+      ],
+      "connectivityRequirementIds": [
+        "CONNECT-001"
+      ],
+      "stateRequirementIds": [],
+      "evidenceRefs": [
+        {
+          "entityType": "integration",
+          "entityId": "INTNEED-001",
+          "description": "The Order Processor submits orders to the Fulfillment API."
+        }
+      ]
+    }
+  ],
+  "observabilityMappings": [],
+  "informationGaps": [
+    {
+      "id": "CLOUDGAP-001",
+      "topic": "Cloud provider",
+      "question": "Which provider, if any, is required for hosting this solution?",
+      "importance": "low",
+      "blocking": false,
+      "relatedCapabilityIds": [
+        "cloud"
+      ]
+    },
+    {
+      "id": "CLOUDGAP-002",
+      "topic": "Persistence technology",
+      "question": "What persistence technology should satisfy the identified durable-state requirements?",
+      "importance": "medium",
+      "blocking": false,
+      "relatedCapabilityIds": [
+        "cloud"
+      ]
+    },
+    {
+      "id": "CLOUDGAP-003",
+      "topic": "Deployment strategy",
+      "question": "What deployment strategy is required for solution-managed components?",
+      "importance": "low",
+      "blocking": false,
+      "relatedCapabilityIds": [
+        "cloud"
+      ]
+    }
+  ],
+  "evidenceRefs": [
+    {
+      "entityType": "deployment-need",
+      "entityId": "DEPLOY-001",
+      "description": "The solution includes a solution-managed Order API that receives customer order requests."
+    },
+    {
+      "entityType": "deployment-need",
+      "entityId": "DEPLOY-003",
+      "description": "The solution includes a solution-managed Order Processor that processes accepted orders in the background."
+    },
+    {
+      "entityType": "deployment-need",
+      "entityId": "DEPLOY-001",
+      "description": "The solution includes a solution-managed Order API that receives customer order requests."
+    },
+    {
+      "entityType": "deployment-need",
+      "entityId": "DEPLOY-003",
+      "description": "The solution includes a solution-managed Order Processor that processes accepted orders in the background."
+    }
+  ],
+  "status": "needs-review",
+  "statusReasons": [
+    "cloud provider is unresolved",
+    "persistence technology is unresolved",
+    "deployment strategy is unresolved",
+    "3 unresolved information gap(s)"
+  ]
+}

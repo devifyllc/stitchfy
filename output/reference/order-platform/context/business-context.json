@@ -1,0 +1,621 @@
+{
+  "businessName": "Northwind Order Platform",
+  "industry": "Retail software",
+  "goals": [
+    {
+      "id": "GOAL-001",
+      "description": "Reliably process and forward customer orders to the fulfillment partner",
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "goals",
+            "text": "Reliably process and forward customer orders to the fulfillment partner"
+          }
+        ],
+        "inferred": false
+      }
+    },
+    {
+      "id": "GOAL-002",
+      "description": "Detect and respond to fulfillment submission problems quickly",
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "goals",
+            "text": "Detect and respond to fulfillment submission problems quickly"
+          }
+        ],
+        "inferred": false
+      }
+    },
+    {
+      "id": "GOAL-003",
+      "description": "Keep the platform available to customers even when the fulfillment partner has temporary problems",
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "goals",
+            "text": "Keep the platform available to customers even when the fulfillment partner has temporary problems"
+          }
+        ],
+        "inferred": false
+      }
+    }
+  ],
+  "painPoints": [],
+  "desiredOutcomes": [
+    {
+      "id": "OUTCOME-001",
+      "description": "Order submission problems are detected and addressed quickly",
+      "relatedGoalIds": [],
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "desired-outcomes",
+            "text": "Order submission problems are detected and addressed quickly"
+          }
+        ],
+        "inferred": false
+      }
+    },
+    {
+      "id": "OUTCOME-002",
+      "description": "The platform remains available to customers during fulfillment partner outages",
+      "relatedGoalIds": [],
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "desired-outcomes",
+            "text": "The platform remains available to customers during fulfillment partner outages"
+          }
+        ],
+        "inferred": false
+      }
+    },
+    {
+      "id": "OUTCOME-003",
+      "description": "Fulfillment partner integration remains observable in production",
+      "relatedGoalIds": [],
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "desired-outcomes",
+            "text": "Fulfillment partner integration remains observable in production"
+          }
+        ],
+        "inferred": false
+      }
+    }
+  ],
+  "actors": [
+    {
+      "id": "ACTOR-001",
+      "role": "Customers placing orders",
+      "description": "Customers placing orders",
+      "relatedProcessIds": [],
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "users",
+            "text": "Customers placing orders"
+          }
+        ],
+        "inferred": false
+      }
+    },
+    {
+      "id": "ACTOR-002",
+      "role": "Fulfillment Coordinator",
+      "description": "Fulfillment Coordinator",
+      "relatedProcessIds": [],
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "users",
+            "text": "Fulfillment Coordinator"
+          }
+        ],
+        "inferred": false
+      }
+    },
+    {
+      "id": "ACTOR-003",
+      "role": "Customer",
+      "description": "Customer",
+      "relatedProcessIds": [],
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "business-processes",
+            "text": "Customer"
+          }
+        ],
+        "inferred": false
+      }
+    }
+  ],
+  "processes": [
+    {
+      "id": "PROC-001",
+      "name": "Order Submission",
+      "description": "",
+      "actorIds": [
+        "ACTOR-003",
+        "ACTOR-002"
+      ],
+      "trigger": "A customer submits an order through the Order API",
+      "steps": [
+        "Customer submits an order through the Order API",
+        "The Order Processor validates the order and forwards it to the Fulfillment API",
+        "Fulfillment Coordinator confirms the order was accepted"
+      ],
+      "systemIds": [
+        "SYS-001"
+      ],
+      "inputs": [],
+      "outputs": [],
+      "painPointIds": [],
+      "businessRuleIds": [],
+      "manualSteps": [],
+      "automationCandidates": [],
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "business-processes",
+            "text": "Order Submission"
+          }
+        ],
+        "inferred": false
+      }
+    }
+  ],
+  "requirements": [
+    {
+      "id": "REQ-001",
+      "description": "Every order submission must have a correlation identifier.",
+      "type": "functional",
+      "priority": "must",
+      "relatedGoalIds": [],
+      "relatedPainPointIds": [],
+      "relatedProcessIds": [],
+      "relatedOutcomeIds": [],
+      "acceptanceCriteria": [],
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "requirements",
+            "text": "Every order submission must have a correlation identifier."
+          }
+        ],
+        "inferred": false
+      }
+    },
+    {
+      "id": "REQ-002",
+      "description": "Failed order submissions must be recorded.",
+      "type": "functional",
+      "priority": "must",
+      "relatedGoalIds": [],
+      "relatedPainPointIds": [],
+      "relatedProcessIds": [],
+      "relatedOutcomeIds": [],
+      "acceptanceCriteria": [],
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "requirements",
+            "text": "Failed order submissions must be recorded."
+          }
+        ],
+        "inferred": false
+      }
+    },
+    {
+      "id": "REQ-003",
+      "description": "Operations must be notified after 5 consecutive failed fulfillment submissions.",
+      "type": "functional",
+      "priority": "must",
+      "relatedGoalIds": [],
+      "relatedPainPointIds": [],
+      "relatedProcessIds": [],
+      "relatedOutcomeIds": [],
+      "acceptanceCriteria": [],
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "requirements",
+            "text": "Operations must be notified after 5 consecutive failed fulfillment submissions."
+          }
+        ],
+        "inferred": false
+      }
+    },
+    {
+      "id": "REQ-004",
+      "description": "95% of accepted order submissions should complete within 2 seconds.",
+      "type": "functional",
+      "priority": "should",
+      "relatedGoalIds": [],
+      "relatedPainPointIds": [],
+      "relatedProcessIds": [],
+      "relatedOutcomeIds": [],
+      "acceptanceCriteria": [],
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "requirements",
+            "text": "95% of accepted order submissions should complete within 2 seconds."
+          }
+        ],
+        "inferred": false
+      }
+    },
+    {
+      "id": "REQ-005",
+      "description": "API keys and customer order payloads must not appear in operational logs.",
+      "type": "integration",
+      "priority": "must",
+      "relatedGoalIds": [],
+      "relatedPainPointIds": [],
+      "relatedProcessIds": [],
+      "relatedOutcomeIds": [],
+      "acceptanceCriteria": [],
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "requirements",
+            "text": "API keys and customer order payloads must not appear in operational logs."
+          }
+        ],
+        "inferred": false
+      }
+    },
+    {
+      "id": "REQ-006",
+      "description": "Order-processing audit trails must be retained.",
+      "type": "functional",
+      "priority": "must",
+      "relatedGoalIds": [],
+      "relatedPainPointIds": [],
+      "relatedProcessIds": [],
+      "relatedOutcomeIds": [],
+      "acceptanceCriteria": [],
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "requirements",
+            "text": "Order-processing audit trails must be retained."
+          }
+        ],
+        "inferred": false
+      }
+    }
+  ],
+  "systems": [
+    {
+      "id": "SYS-001",
+      "name": "Fulfillment API",
+      "category": "api",
+      "purpose": "",
+      "integrations": [],
+      "dataHandled": [],
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "existing-systems",
+            "text": "Fulfillment API"
+          }
+        ],
+        "inferred": false
+      }
+    }
+  ],
+  "integrationNeeds": [
+    {
+      "id": "INTNEED-001",
+      "description": "The Order Processor submits orders to the Fulfillment API.",
+      "relatedSystemIds": [
+        "SYS-001"
+      ],
+      "details": {
+        "Integration method": "REST over HTTPS",
+        "Base URL": "https://api.fulfillment.example.test",
+        "Endpoint": "POST /v1/orders",
+        "Authentication": "API key",
+        "Authentication placement": "X-API-Key request header",
+        "Request fields": "orderId (string, required), customerId (string, required), amount (number, required), items (array, required)",
+        "Response fields": "fulfillmentId (string, required), status (string, required)"
+      },
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "integrations",
+            "text": "The Order Processor submits orders to the Fulfillment API."
+          }
+        ],
+        "inferred": false
+      }
+    }
+  ],
+  "dataEntities": [],
+  "constraints": [],
+  "businessRules": [],
+  "informationGaps": [
+    {
+      "id": "GAP-001",
+      "topic": "Pain points",
+      "question": "What current problems is this solution meant to solve?",
+      "importance": "medium",
+      "blocking": false,
+      "relatedCapabilityIds": []
+    },
+    {
+      "id": "GAP-002",
+      "topic": "Constraints",
+      "question": "Are there budget, timeline, regulatory, or technical constraints to account for?",
+      "importance": "low",
+      "blocking": false,
+      "relatedCapabilityIds": []
+    },
+    {
+      "id": "GAP-003",
+      "topic": "Business rules",
+      "question": "Are there rules that must always hold (e.g. no double-booking, approval thresholds)?",
+      "importance": "low",
+      "blocking": false,
+      "relatedCapabilityIds": [
+        "workflow-automation"
+      ]
+    },
+    {
+      "id": "GAP-004",
+      "topic": "Data",
+      "question": "What data does this solution create, store, or rely on?",
+      "importance": "medium",
+      "blocking": false,
+      "relatedCapabilityIds": [
+        "security-governance",
+        "cloud"
+      ]
+    }
+  ],
+  "traceability": [
+    {
+      "fromId": "PROC-001",
+      "toId": "ACTOR-003",
+      "relationship": "performed-by"
+    },
+    {
+      "fromId": "PROC-001",
+      "toId": "ACTOR-002",
+      "relationship": "performed-by"
+    },
+    {
+      "fromId": "PROC-001",
+      "toId": "SYS-001",
+      "relationship": "uses-system"
+    }
+  ],
+  "aiAgentNeeds": [],
+  "deploymentNeeds": [
+    {
+      "id": "DEPLOY-001",
+      "category": "runtime",
+      "description": "The solution includes a solution-managed Order API that receives customer order requests.",
+      "relatedSystemIds": [],
+      "relatedRequirementIds": [],
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "deployment requirements",
+            "text": "The solution includes a solution-managed Order API that receives customer order requests."
+          }
+        ],
+        "inferred": false
+      }
+    },
+    {
+      "id": "DEPLOY-002",
+      "category": "network",
+      "description": "The Order API must be publicly reachable over HTTPS.",
+      "relatedSystemIds": [],
+      "relatedRequirementIds": [],
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "deployment requirements",
+            "text": "The Order API must be publicly reachable over HTTPS."
+          }
+        ],
+        "inferred": false
+      }
+    },
+    {
+      "id": "DEPLOY-003",
+      "category": "runtime",
+      "description": "The solution includes a solution-managed Order Processor that processes accepted orders in the background.",
+      "relatedSystemIds": [],
+      "relatedRequirementIds": [],
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "deployment requirements",
+            "text": "The solution includes a solution-managed Order Processor that processes accepted orders in the background."
+          }
+        ],
+        "inferred": false
+      }
+    },
+    {
+      "id": "DEPLOY-004",
+      "category": "network",
+      "description": "The Order Processor must not expose a public endpoint.",
+      "relatedSystemIds": [],
+      "relatedRequirementIds": [],
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "deployment requirements",
+            "text": "The Order Processor must not expose a public endpoint."
+          }
+        ],
+        "inferred": false
+      }
+    },
+    {
+      "id": "DEPLOY-005",
+      "category": "environment",
+      "description": "The business requires separate Test and Production environments.",
+      "relatedSystemIds": [],
+      "relatedRequirementIds": [],
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "deployment requirements",
+            "text": "The business requires separate Test and Production environments."
+          }
+        ],
+        "inferred": false
+      }
+    },
+    {
+      "id": "DEPLOY-006",
+      "category": "persistence",
+      "description": "Order processing state must persist and survive application restarts.",
+      "relatedSystemIds": [],
+      "relatedRequirementIds": [],
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "deployment requirements",
+            "text": "Order processing state must persist and survive application restarts."
+          }
+        ],
+        "inferred": false
+      }
+    },
+    {
+      "id": "DEPLOY-007",
+      "category": "scalability",
+      "description": "Production must support at least 100 concurrent order submissions.",
+      "relatedSystemIds": [],
+      "relatedRequirementIds": [],
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "deployment requirements",
+            "text": "Production must support at least 100 concurrent order submissions."
+          }
+        ],
+        "inferred": false
+      }
+    },
+    {
+      "id": "DEPLOY-008",
+      "category": "resilience",
+      "description": "The solution must continue accepting new orders when the external Fulfillment API is temporarily unavailable.",
+      "relatedSystemIds": [
+        "SYS-001"
+      ],
+      "relatedRequirementIds": [],
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "deployment requirements",
+            "text": "The solution must continue accepting new orders when the external Fulfillment API is temporarily unavailable."
+          }
+        ],
+        "inferred": false
+      }
+    },
+    {
+      "id": "DEPLOY-009",
+      "category": "hosting",
+      "description": "No cloud provider has been selected.",
+      "relatedSystemIds": [],
+      "relatedRequirementIds": [],
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "deployment requirements",
+            "text": "No cloud provider has been selected."
+          }
+        ],
+        "inferred": false
+      }
+    },
+    {
+      "id": "DEPLOY-010",
+      "category": "persistence",
+      "description": "No database technology has been selected.",
+      "relatedSystemIds": [],
+      "relatedRequirementIds": [],
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "deployment requirements",
+            "text": "No database technology has been selected."
+          }
+        ],
+        "inferred": false
+      }
+    }
+  ],
+  "modernizationNeeds": []
+}

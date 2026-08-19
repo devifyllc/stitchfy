@@ -1,0 +1,242 @@
+[
+  {
+    "id": "SIGNAL-001",
+    "name": "Order Submission Workflow started",
+    "type": "event",
+    "description": "Workflow \"Order Submission Workflow\" started.",
+    "source": {
+      "entityType": "workflow",
+      "entityId": "WF-001"
+    },
+    "attributes": [
+      {
+        "name": "workflowId",
+        "purpose": "correlates events to this workflow",
+        "sensitivity": "internal",
+        "required": true
+      },
+      {
+        "name": "outcome",
+        "purpose": "execution outcome",
+        "sensitivity": "internal",
+        "required": true
+      }
+    ],
+    "sensitivity": "internal",
+    "provenance": "derived",
+    "evidenceRefs": [
+      {
+        "entityType": "process",
+        "entityId": "PROC-001",
+        "description": "Order Submission"
+      }
+    ]
+  },
+  {
+    "id": "SIGNAL-002",
+    "name": "Order Submission Workflow completed",
+    "type": "event",
+    "description": "Workflow \"Order Submission Workflow\" completed.",
+    "source": {
+      "entityType": "workflow",
+      "entityId": "WF-001"
+    },
+    "attributes": [
+      {
+        "name": "workflowId",
+        "purpose": "correlates events to this workflow",
+        "sensitivity": "internal",
+        "required": true
+      },
+      {
+        "name": "outcome",
+        "purpose": "execution outcome",
+        "sensitivity": "internal",
+        "required": true
+      }
+    ],
+    "sensitivity": "internal",
+    "provenance": "derived",
+    "evidenceRefs": [
+      {
+        "entityType": "process",
+        "entityId": "PROC-001",
+        "description": "Order Submission"
+      }
+    ]
+  },
+  {
+    "id": "SIGNAL-003",
+    "name": "Order Submission Workflow failed",
+    "type": "event",
+    "description": "Workflow \"Order Submission Workflow\" failed.",
+    "source": {
+      "entityType": "workflow",
+      "entityId": "WF-001"
+    },
+    "attributes": [
+      {
+        "name": "workflowId",
+        "purpose": "correlates events to this workflow",
+        "sensitivity": "internal",
+        "required": true
+      },
+      {
+        "name": "outcome",
+        "purpose": "execution outcome",
+        "sensitivity": "internal",
+        "required": true
+      }
+    ],
+    "sensitivity": "internal",
+    "provenance": "derived",
+    "evidenceRefs": [
+      {
+        "entityType": "process",
+        "entityId": "PROC-001",
+        "description": "Order Submission"
+      }
+    ]
+  },
+  {
+    "id": "SIGNAL-004",
+    "name": "The Order Processor validates the order and forwards it to the Fulfillment API attempted",
+    "type": "event",
+    "description": "Integration operation \"The Order Processor validates the order and forwards it to the Fulfillment API\" (The Order Processor submits orders to the Fulfillment API.) attempted.",
+    "source": {
+      "entityType": "integration",
+      "entityId": "INT-001"
+    },
+    "attributes": [
+      {
+        "name": "integrationId",
+        "purpose": "correlates to the owning integration",
+        "sensitivity": "internal",
+        "required": true
+      },
+      {
+        "name": "operationId",
+        "purpose": "which operation",
+        "sensitivity": "internal",
+        "required": true
+      },
+      {
+        "name": "outcome",
+        "purpose": "attempt outcome",
+        "sensitivity": "internal",
+        "required": true
+      }
+    ],
+    "sensitivity": "internal",
+    "provenance": "derived",
+    "evidenceRefs": [
+      {
+        "entityType": "integration",
+        "entityId": "INTNEED-001",
+        "description": "The Order Processor submits orders to the Fulfillment API."
+      }
+    ]
+  },
+  {
+    "id": "SIGNAL-005",
+    "name": "The Order Processor validates the order and forwards it to the Fulfillment API succeeded",
+    "type": "event",
+    "description": "Integration operation \"The Order Processor validates the order and forwards it to the Fulfillment API\" (The Order Processor submits orders to the Fulfillment API.) succeeded.",
+    "source": {
+      "entityType": "integration",
+      "entityId": "INT-001"
+    },
+    "attributes": [
+      {
+        "name": "integrationId",
+        "purpose": "correlates to the owning integration",
+        "sensitivity": "internal",
+        "required": true
+      },
+      {
+        "name": "operationId",
+        "purpose": "which operation",
+        "sensitivity": "internal",
+        "required": true
+      },
+      {
+        "name": "outcome",
+        "purpose": "attempt outcome",
+        "sensitivity": "internal",
+        "required": true
+      },
+      {
+        "name": "httpMethod",
+        "purpose": "explicit HTTP method",
+        "sensitivity": "internal",
+        "required": true
+      },
+      {
+        "name": "httpPath",
+        "purpose": "explicit HTTP path",
+        "sensitivity": "internal",
+        "required": true
+      }
+    ],
+    "sensitivity": "internal",
+    "provenance": "derived",
+    "evidenceRefs": [
+      {
+        "entityType": "integration",
+        "entityId": "INTNEED-001",
+        "description": "The Order Processor submits orders to the Fulfillment API."
+      }
+    ]
+  },
+  {
+    "id": "SIGNAL-006",
+    "name": "The Order Processor validates the order and forwards it to the Fulfillment API failed",
+    "type": "event",
+    "description": "Integration operation \"The Order Processor validates the order and forwards it to the Fulfillment API\" (The Order Processor submits orders to the Fulfillment API.) failed.",
+    "source": {
+      "entityType": "integration",
+      "entityId": "INT-001"
+    },
+    "attributes": [
+      {
+        "name": "integrationId",
+        "purpose": "correlates to the owning integration",
+        "sensitivity": "internal",
+        "required": true
+      },
+      {
+        "name": "operationId",
+        "purpose": "which operation",
+        "sensitivity": "internal",
+        "required": true
+      },
+      {
+        "name": "outcome",
+        "purpose": "attempt outcome",
+        "sensitivity": "internal",
+        "required": true
+      },
+      {
+        "name": "httpMethod",
+        "purpose": "explicit HTTP method",
+        "sensitivity": "internal",
+        "required": true
+      },
+      {
+        "name": "httpPath",
+        "purpose": "explicit HTTP path",
+        "sensitivity": "internal",
+        "required": true
+      }
+    ],
+    "sensitivity": "internal",
+    "provenance": "derived",
+    "evidenceRefs": [
+      {
+        "entityType": "integration",
+        "entityId": "INTNEED-001",
+        "description": "The Order Processor submits orders to the Fulfillment API."
+      }
+    ]
+  }
+]

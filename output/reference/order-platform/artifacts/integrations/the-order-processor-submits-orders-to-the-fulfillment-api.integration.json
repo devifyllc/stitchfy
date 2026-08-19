@@ -1,0 +1,170 @@
+{
+  "id": "INT-001",
+  "name": "The Order Processor submits orders to the Fulfillment API.",
+  "version": "1.0",
+  "targetSystemId": "SYS-001",
+  "purpose": "The Order Processor submits orders to the Fulfillment API.",
+  "direction": "unknown",
+  "interactionPattern": "request-response",
+  "protocol": "https",
+  "operations": [
+    {
+      "id": "OP-001",
+      "name": "The Order Processor validates the order and forwards it to the Fulfillment API",
+      "description": "The Order Processor validates the order and forwards it to the Fulfillment API",
+      "type": "unknown",
+      "evidenceRefs": [
+        {
+          "entityType": "integration",
+          "entityId": "INTNEED-001",
+          "description": "The Order Processor submits orders to the Fulfillment API."
+        }
+      ]
+    }
+  ],
+  "dataContracts": [
+    {
+      "id": "CONTRACT-001",
+      "name": "Response",
+      "direction": "response",
+      "fields": [
+        {
+          "name": "fulfillmentId",
+          "type": "string",
+          "required": true,
+          "source": "fulfillmentId (string, required), status (string, required)"
+        },
+        {
+          "name": "status",
+          "type": "string",
+          "required": true,
+          "source": "fulfillmentId (string, required), status (string, required)"
+        }
+      ],
+      "sensitivity": "unknown",
+      "evidenceRefs": [
+        {
+          "entityType": "integration",
+          "entityId": "INTNEED-001",
+          "description": "The Order Processor submits orders to the Fulfillment API."
+        }
+      ]
+    },
+    {
+      "id": "CONTRACT-002",
+      "name": "Request",
+      "direction": "request",
+      "fields": [
+        {
+          "name": "orderId",
+          "type": "string",
+          "required": true,
+          "source": "orderId (string, required), customerId (string, required), amount (number, required), items (array, required)"
+        },
+        {
+          "name": "customerId",
+          "type": "string",
+          "required": true,
+          "source": "orderId (string, required), customerId (string, required), amount (number, required), items (array, required)"
+        },
+        {
+          "name": "amount",
+          "type": "number",
+          "required": true,
+          "source": "orderId (string, required), customerId (string, required), amount (number, required), items (array, required)"
+        },
+        {
+          "name": "items (array, required)",
+          "source": "orderId (string, required), customerId (string, required), amount (number, required), items (array, required)"
+        }
+      ],
+      "sensitivity": "unknown",
+      "evidenceRefs": [
+        {
+          "entityType": "integration",
+          "entityId": "INTNEED-001",
+          "description": "The Order Processor submits orders to the Fulfillment API."
+        }
+      ]
+    }
+  ],
+  "authentication": {
+    "mechanism": "api-key",
+    "placement": {
+      "location": "header",
+      "name": "X-API-Key"
+    },
+    "evidenceRefs": [
+      {
+        "entityType": "integration",
+        "entityId": "INTNEED-001",
+        "description": "The Order Processor submits orders to the Fulfillment API."
+      }
+    ]
+  },
+  "reliability": {
+    "retryRequired": "unknown",
+    "idempotencyRequired": "unknown",
+    "timeoutRequired": "unknown",
+    "orderingRequired": true,
+    "notes": []
+  },
+  "failureScenarios": [],
+  "security": {
+    "encryptionInTransit": true,
+    "containsSensitiveData": "unknown",
+    "secretsRequired": true,
+    "auditRequired": "unknown"
+  },
+  "restContract": {
+    "baseUrl": "https://api.fulfillment.example.test",
+    "operations": [
+      {
+        "method": "POST",
+        "path": "/v1/orders",
+        "description": "REST over HTTPS",
+        "integrationOperationId": "OP-001"
+      }
+    ]
+  },
+  "relatedWorkflowIds": [
+    "WF-001"
+  ],
+  "relatedProcessIds": [],
+  "relatedRequirementIds": [
+    "REQ-005"
+  ],
+  "informationGaps": [
+    {
+      "id": "INTGAP-001",
+      "topic": "Integration source system",
+      "question": "What system will initiate: The Order Processor submits orders to the Fulfillment API.?",
+      "importance": "medium",
+      "blocking": false,
+      "relatedCapabilityIds": [
+        "integrations"
+      ]
+    },
+    {
+      "id": "INTGAP-002",
+      "topic": "Integration failure handling",
+      "question": "What should happen if Fulfillment API is unavailable during \"The Order Processor submits orders to the Fulfillment API.\"?",
+      "importance": "low",
+      "blocking": false,
+      "relatedCapabilityIds": [
+        "integrations"
+      ]
+    }
+  ],
+  "evidenceRefs": [
+    {
+      "entityType": "integration",
+      "entityId": "INTNEED-001",
+      "description": "The Order Processor submits orders to the Fulfillment API."
+    }
+  ],
+  "status": "needs-review",
+  "statusReasons": [
+    "source system unknown"
+  ]
+}

@@ -1,0 +1,479 @@
+{
+  "schemaVersion": "1.0",
+  "repository": {
+    "name": "legacy-java-maven",
+    "rootMarker": "pom.xml",
+    "detectedLanguages": [
+      "Java"
+    ],
+    "buildDescriptors": [
+      "pom.xml"
+    ],
+    "moduleCount": 1,
+    "analyzedFileCount": 5,
+    "ignoredFileCount": 2,
+    "analyzersUsed": [
+      "java-source",
+      "maven",
+      "repository"
+    ]
+  },
+  "buildSystems": [
+    {
+      "id": "BUILDSYS-001",
+      "type": "maven",
+      "descriptorPath": "pom.xml",
+      "moduleId": "MODULE-001",
+      "coordinates": {
+        "group": "com.example",
+        "name": "order-portal",
+        "version": "1.0.0"
+      },
+      "packaging": "war",
+      "compilerSource": "8",
+      "compilerTarget": "8",
+      "pluginCoordinates": [
+        {
+          "group": "org.apache.maven.plugins",
+          "name": "maven-compiler-plugin",
+          "version": "3.8.1"
+        }
+      ],
+      "profiles": [
+        "local"
+      ],
+      "metadata": {
+        "provenance": "observed",
+        "evidenceRefs": [
+          {
+            "analyzerId": "maven",
+            "filePath": "pom.xml",
+            "line": 2,
+            "symbol": "project",
+            "evidenceType": "build-file"
+          }
+        ]
+      }
+    }
+  ],
+  "modules": [
+    {
+      "id": "MODULE-001",
+      "name": "order-portal",
+      "relativePath": "pom.xml",
+      "buildSystemIds": [
+        "BUILDSYS-001"
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "id": "CODEDEP-001",
+      "ecosystem": "maven",
+      "moduleId": "MODULE-001",
+      "group": "org.springframework",
+      "name": "spring-context",
+      "version": "4.3.30.RELEASE",
+      "direct": true,
+      "metadata": {
+        "provenance": "observed",
+        "evidenceRefs": [
+          {
+            "analyzerId": "maven",
+            "filePath": "pom.xml",
+            "line": 17,
+            "symbol": "org.springframework:spring-context",
+            "evidenceType": "build-file"
+          }
+        ]
+      }
+    },
+    {
+      "id": "CODEDEP-002",
+      "ecosystem": "maven",
+      "moduleId": "MODULE-001",
+      "group": "org.hibernate",
+      "name": "hibernate-core",
+      "version": "5.2.18.Final",
+      "direct": true,
+      "metadata": {
+        "provenance": "observed",
+        "evidenceRefs": [
+          {
+            "analyzerId": "maven",
+            "filePath": "pom.xml",
+            "line": 22,
+            "symbol": "org.hibernate:hibernate-core",
+            "evidenceType": "build-file"
+          }
+        ]
+      }
+    },
+    {
+      "id": "CODEDEP-003",
+      "ecosystem": "maven",
+      "moduleId": "MODULE-001",
+      "group": "javax.servlet",
+      "name": "javax.servlet-api",
+      "version": "3.1.0",
+      "scope": "provided",
+      "direct": true,
+      "metadata": {
+        "provenance": "observed",
+        "evidenceRefs": [
+          {
+            "analyzerId": "maven",
+            "filePath": "pom.xml",
+            "line": 27,
+            "symbol": "javax.servlet:javax.servlet-api",
+            "evidenceType": "build-file"
+          }
+        ]
+      }
+    },
+    {
+      "id": "CODEDEP-004",
+      "ecosystem": "maven",
+      "moduleId": "MODULE-001",
+      "group": "com.example",
+      "name": "internal-fixture-lib",
+      "version": "unresolved",
+      "direct": true,
+      "metadata": {
+        "provenance": "observed",
+        "evidenceRefs": [
+          {
+            "analyzerId": "maven",
+            "filePath": "pom.xml",
+            "line": 33,
+            "symbol": "com.example:internal-fixture-lib",
+            "evidenceType": "build-file"
+          }
+        ]
+      }
+    }
+  ],
+  "frameworks": [
+    {
+      "id": "FRAMEWORK-001",
+      "name": "Spring Framework",
+      "version": "4.3.30.RELEASE",
+      "detectionMethod": "dependency",
+      "moduleIds": [
+        "MODULE-001"
+      ],
+      "metadata": {
+        "provenance": "derived",
+        "evidenceRefs": [
+          {
+            "analyzerId": "maven",
+            "filePath": "pom.xml",
+            "line": 17,
+            "symbol": "org.springframework:spring-context",
+            "evidenceType": "build-file",
+            "factId": "CODEDEP-001"
+          }
+        ]
+      }
+    },
+    {
+      "id": "FRAMEWORK-002",
+      "name": "Hibernate",
+      "version": "5.2.18.Final",
+      "detectionMethod": "dependency",
+      "moduleIds": [
+        "MODULE-001"
+      ],
+      "metadata": {
+        "provenance": "derived",
+        "evidenceRefs": [
+          {
+            "analyzerId": "maven",
+            "filePath": "pom.xml",
+            "line": 22,
+            "symbol": "org.hibernate:hibernate-core",
+            "evidenceType": "build-file",
+            "factId": "CODEDEP-002"
+          }
+        ]
+      }
+    },
+    {
+      "id": "FRAMEWORK-003",
+      "name": "Servlet API (javax)",
+      "version": "3.1.0",
+      "detectionMethod": "dependency",
+      "moduleIds": [
+        "MODULE-001"
+      ],
+      "metadata": {
+        "provenance": "derived",
+        "evidenceRefs": [
+          {
+            "analyzerId": "maven",
+            "filePath": "pom.xml",
+            "line": 27,
+            "symbol": "javax.servlet:javax.servlet-api",
+            "evidenceType": "build-file",
+            "factId": "CODEDEP-003"
+          }
+        ]
+      }
+    },
+    {
+      "id": "FRAMEWORK-004",
+      "name": "JPA (javax)",
+      "detectionMethod": "import",
+      "moduleIds": [],
+      "metadata": {
+        "provenance": "derived",
+        "evidenceRefs": [
+          {
+            "analyzerId": "java-source",
+            "filePath": "src/main/java/com/example/OrderRepository.java",
+            "line": 2,
+            "symbol": "javax.persistence.Entity",
+            "evidenceType": "source"
+          },
+          {
+            "analyzerId": "java-source",
+            "filePath": "src/main/java/com/example/OrderRepository.java",
+            "line": 4,
+            "symbol": "javax.persistence.Id",
+            "evidenceType": "source"
+          }
+        ]
+      }
+    },
+    {
+      "id": "FRAMEWORK-005",
+      "name": "Servlet API (javax)",
+      "detectionMethod": "import",
+      "moduleIds": [],
+      "metadata": {
+        "provenance": "derived",
+        "evidenceRefs": [
+          {
+            "analyzerId": "java-source",
+            "filePath": "src/main/java/com/example/OrderService.java",
+            "line": 2,
+            "symbol": "javax.servlet.http.HttpServletRequest",
+            "evidenceType": "source"
+          }
+        ]
+      }
+    },
+    {
+      "id": "FRAMEWORK-006",
+      "name": "Spring Framework",
+      "detectionMethod": "import",
+      "moduleIds": [],
+      "metadata": {
+        "provenance": "derived",
+        "evidenceRefs": [
+          {
+            "analyzerId": "java-source",
+            "filePath": "src/main/java/com/example/OrderService.java",
+            "line": 4,
+            "symbol": "org.springframework.stereotype.Service",
+            "evidenceType": "source"
+          }
+        ]
+      }
+    }
+  ],
+  "runtimes": [
+    {
+      "id": "RUNTIME-001",
+      "type": "java",
+      "version": "8",
+      "detectionMethod": "compiler-config",
+      "metadata": {
+        "provenance": "derived",
+        "evidenceRefs": [
+          {
+            "analyzerId": "maven",
+            "filePath": "pom.xml",
+            "line": 2,
+            "symbol": "maven.compiler.*",
+            "evidenceType": "build-file"
+          }
+        ]
+      }
+    },
+    {
+      "id": "RUNTIME-002",
+      "type": "application-server",
+      "name": "WebSphere",
+      "detectionMethod": "descriptor",
+      "metadata": {
+        "provenance": "observed",
+        "evidenceRefs": [
+          {
+            "analyzerId": "java-source",
+            "filePath": "src/main/webapp/WEB-INF/ibm-web-bnd.xml",
+            "evidenceType": "configuration"
+          }
+        ]
+      }
+    }
+  ],
+  "sourceStructure": [
+    {
+      "id": "SOURCE-001",
+      "packageName": "com.example",
+      "symbolName": "OrderRepository",
+      "symbolKind": "class",
+      "annotations": [
+        "Entity"
+      ],
+      "implements": [
+        "java.io.Serializable"
+      ],
+      "metadata": {
+        "provenance": "observed",
+        "evidenceRefs": [
+          {
+            "analyzerId": "java-source",
+            "filePath": "src/main/java/com/example/OrderRepository.java",
+            "line": 7,
+            "symbol": "OrderRepository",
+            "evidenceType": "source"
+          }
+        ]
+      }
+    },
+    {
+      "id": "SOURCE-002",
+      "packageName": "com.example",
+      "symbolName": "OrderService",
+      "symbolKind": "class",
+      "annotations": [
+        "Service"
+      ],
+      "metadata": {
+        "provenance": "observed",
+        "evidenceRefs": [
+          {
+            "analyzerId": "java-source",
+            "filePath": "src/main/java/com/example/OrderService.java",
+            "line": 7,
+            "symbol": "OrderService",
+            "evidenceType": "source"
+          }
+        ]
+      }
+    }
+  ],
+  "configurationFacts": [
+    {
+      "id": "CONFIGFACT-001",
+      "relativePath": "src/main/resources/application.properties",
+      "kind": "spring-properties"
+    }
+  ],
+  "informationGaps": [],
+  "evidenceRefs": [
+    {
+      "analyzerId": "maven",
+      "filePath": "pom.xml",
+      "line": 2,
+      "symbol": "project",
+      "evidenceType": "build-file"
+    },
+    {
+      "analyzerId": "maven",
+      "filePath": "pom.xml",
+      "line": 17,
+      "symbol": "org.springframework:spring-context",
+      "evidenceType": "build-file"
+    },
+    {
+      "analyzerId": "maven",
+      "filePath": "pom.xml",
+      "line": 22,
+      "symbol": "org.hibernate:hibernate-core",
+      "evidenceType": "build-file"
+    },
+    {
+      "analyzerId": "maven",
+      "filePath": "pom.xml",
+      "line": 27,
+      "symbol": "javax.servlet:javax.servlet-api",
+      "evidenceType": "build-file"
+    },
+    {
+      "analyzerId": "maven",
+      "filePath": "pom.xml",
+      "line": 33,
+      "symbol": "com.example:internal-fixture-lib",
+      "evidenceType": "build-file"
+    },
+    {
+      "analyzerId": "maven",
+      "filePath": "pom.xml",
+      "line": 17,
+      "symbol": "org.springframework:spring-context",
+      "evidenceType": "build-file",
+      "factId": "CODEDEP-001"
+    },
+    {
+      "analyzerId": "maven",
+      "filePath": "pom.xml",
+      "line": 22,
+      "symbol": "org.hibernate:hibernate-core",
+      "evidenceType": "build-file",
+      "factId": "CODEDEP-002"
+    },
+    {
+      "analyzerId": "maven",
+      "filePath": "pom.xml",
+      "line": 27,
+      "symbol": "javax.servlet:javax.servlet-api",
+      "evidenceType": "build-file",
+      "factId": "CODEDEP-003"
+    },
+    {
+      "analyzerId": "java-source",
+      "filePath": "src/main/java/com/example/OrderRepository.java",
+      "line": 2,
+      "symbol": "javax.persistence.Entity",
+      "evidenceType": "source"
+    },
+    {
+      "analyzerId": "java-source",
+      "filePath": "src/main/java/com/example/OrderRepository.java",
+      "line": 4,
+      "symbol": "javax.persistence.Id",
+      "evidenceType": "source"
+    },
+    {
+      "analyzerId": "java-source",
+      "filePath": "src/main/java/com/example/OrderService.java",
+      "line": 2,
+      "symbol": "javax.servlet.http.HttpServletRequest",
+      "evidenceType": "source"
+    },
+    {
+      "analyzerId": "java-source",
+      "filePath": "src/main/java/com/example/OrderService.java",
+      "line": 4,
+      "symbol": "org.springframework.stereotype.Service",
+      "evidenceType": "source"
+    },
+    {
+      "analyzerId": "maven",
+      "filePath": "pom.xml",
+      "line": 2,
+      "symbol": "maven.compiler.*",
+      "evidenceType": "build-file"
+    },
+    {
+      "analyzerId": "java-source",
+      "filePath": "src/main/webapp/WEB-INF/ibm-web-bnd.xml",
+      "evidenceType": "configuration"
+    }
+  ],
+  "diagnostics": [],
+  "status": "complete"
+}

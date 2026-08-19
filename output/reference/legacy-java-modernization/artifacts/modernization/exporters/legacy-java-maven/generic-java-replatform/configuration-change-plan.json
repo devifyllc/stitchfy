@@ -1,0 +1,17 @@
+[
+  {
+    "id": "CFGCHANGE-001",
+    "filePath": "src/main/webapp/WEB-INF/ibm-web-bnd.xml",
+    "configurationType": "application-server-descriptor",
+    "action": "review",
+    "description": "WebSphere-specific configuration requires review for the target runtime.",
+    "evidenceRefs": [
+      {
+        "analyzerId": "java-source",
+        "filePath": "src/main/webapp/WEB-INF/ibm-web-bnd.xml",
+        "evidenceType": "configuration"
+      }
+    ],
+    "status": "needs-review"
+  }
+]

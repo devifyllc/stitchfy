@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "1.0",
+  "integrationId": "INT-001",
+  "integrationVersion": "1.0",
+  "exporterId": "generic-rest-typescript",
+  "exporterVersion": "1.0.0",
+  "readiness": "ready",
+  "generatedFiles": [
+    "client.ts",
+    "types.ts",
+    "config.ts"
+  ],
+  "operationIds": [
+    "OP-001"
+  ],
+  "dataContractIds": [
+    "CONTRACT-001",
+    "CONTRACT-002"
+  ],
+  "securityRequirementIds": [
+    "SECREQ-001",
+    "SECREQ-002"
+  ],
+  "riskIds": [
+    "RISK-001"
+  ],
+  "informationGapIds": [
+    "INTGAP-001",
+    "INTGAP-002"
+  ],
+  "generatedAt": "2026-08-19T21:51:02.992Z"
+}

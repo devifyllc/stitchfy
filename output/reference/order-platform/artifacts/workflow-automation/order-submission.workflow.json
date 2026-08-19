@@ -1,0 +1,109 @@
+{
+  "id": "WF-001",
+  "name": "Order Submission Workflow",
+  "version": "1.0",
+  "processId": "PROC-001",
+  "triggers": [
+    {
+      "id": "TRIGGER-001",
+      "type": "business-event",
+      "description": "A customer submits an order through the Order API",
+      "evidenceRefs": [
+        {
+          "entityType": "process",
+          "entityId": "PROC-001",
+          "description": "Order Submission"
+        }
+      ]
+    }
+  ],
+  "steps": [
+    {
+      "id": "STEP-001",
+      "name": "Customer submits an order through the Order API",
+      "type": "human-task",
+      "description": "Customer submits an order through the Order API",
+      "actorIds": [
+        "ACTOR-003"
+      ],
+      "evidenceRefs": [
+        {
+          "entityType": "process",
+          "entityId": "PROC-001",
+          "description": "Order Submission"
+        }
+      ]
+    },
+    {
+      "id": "STEP-002",
+      "name": "The Order Processor validates the order and forwards it to the Fulfillment API",
+      "type": "external-task",
+      "description": "The Order Processor validates the order and forwards it to the Fulfillment API",
+      "systemIds": [
+        "SYS-001"
+      ],
+      "evidenceRefs": [
+        {
+          "entityType": "process",
+          "entityId": "PROC-001",
+          "description": "Order Submission"
+        }
+      ]
+    },
+    {
+      "id": "STEP-003",
+      "name": "Fulfillment Coordinator confirms the order was accepted",
+      "type": "human-task",
+      "description": "Fulfillment Coordinator confirms the order was accepted",
+      "actorIds": [
+        "ACTOR-002"
+      ],
+      "evidenceRefs": [
+        {
+          "entityType": "process",
+          "entityId": "PROC-001",
+          "description": "Order Submission"
+        }
+      ]
+    }
+  ],
+  "transitions": [
+    {
+      "id": "TRANS-001",
+      "fromStepId": "STEP-001",
+      "toStepId": "STEP-002"
+    },
+    {
+      "id": "TRANS-002",
+      "fromStepId": "STEP-002",
+      "toStepId": "STEP-003"
+    }
+  ],
+  "decisions": [],
+  "approvals": [],
+  "notifications": [],
+  "externalSystems": [
+    {
+      "systemId": "SYS-001",
+      "role": "api system",
+      "interactionType": "integration",
+      "evidenceRefs": [
+        {
+          "entityType": "system",
+          "entityId": "SYS-001",
+          "description": "Fulfillment API"
+        }
+      ]
+    }
+  ],
+  "informationGaps": [],
+  "evidenceRefs": [
+    {
+      "entityType": "process",
+      "entityId": "PROC-001",
+      "description": "Order Submission"
+    }
+  ],
+  "status": "complete",
+  "statusReasons": []
+}

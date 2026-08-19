@@ -1,0 +1,744 @@
+{
+  "project": {
+    "schemaVersion": "1.0",
+    "generatedAt": "2026-08-19T21:51:02.446Z",
+    "sourceFile": "appointment-automation-ai.md",
+    "frameworkVersion": "2.0.0"
+  },
+  "business": {
+    "name": "Riverside Wellness Studio",
+    "industry": "Service business (appointments)",
+    "description": "A small wellness studio that takes appointment requests by phone and WhatsApp, and wants a customer-facing AI assistant to answer routine questions and check availability without bypassing conflict review.",
+    "location": "",
+    "address": "",
+    "serviceAreas": [],
+    "phone": "",
+    "email": "",
+    "operatingHours": {},
+    "socialLinks": {},
+    "booking": "",
+    "services": [],
+    "complianceFlags": [
+      "authentication",
+      "personal-data"
+    ],
+    "missingInformation": [
+      "phone number",
+      "email address",
+      "physical address",
+      "operating hours",
+      "services list"
+    ]
+  },
+  "pages": [
+    {
+      "id": "home",
+      "path": "/",
+      "title": "Home",
+      "purpose": "Introduce the business and drive the primary contact/booking action",
+      "sections": [
+        "Hero",
+        "ServicesGrid",
+        "TestimonialsSection",
+        "CTASection",
+        "ContactSection"
+      ],
+      "primaryCTA": {
+        "label": "Contact Us",
+        "href": "/contact"
+      },
+      "secondaryCTA": {
+        "label": "Our Services",
+        "href": "/services"
+      },
+      "requiredContent": [
+        "Clear value proposition",
+        "Key services",
+        "Contact information"
+      ],
+      "componentHints": [
+        "Clean, professional hero",
+        "Services in card grid"
+      ]
+    },
+    {
+      "id": "services",
+      "path": "/services",
+      "title": "Services",
+      "purpose": "Describe services in detail",
+      "sections": [
+        "ServicesGrid"
+      ],
+      "primaryCTA": {
+        "label": "Get in Touch",
+        "href": "/contact"
+      },
+      "secondaryCTA": null,
+      "requiredContent": [
+        "Service name",
+        "Description"
+      ],
+      "componentHints": []
+    },
+    {
+      "id": "about",
+      "path": "/about",
+      "title": "About",
+      "purpose": "Introduce the business and drive the primary contact/booking action",
+      "sections": [
+        "Hero",
+        "ServicesGrid",
+        "TestimonialsSection",
+        "CTASection",
+        "ContactSection"
+      ],
+      "primaryCTA": {
+        "label": "Contact Us",
+        "href": "/contact"
+      },
+      "secondaryCTA": {
+        "label": "Our Services",
+        "href": "/services"
+      },
+      "requiredContent": [
+        "Clear value proposition",
+        "Key services",
+        "Contact information"
+      ],
+      "componentHints": [
+        "Clean, professional hero",
+        "Services in card grid"
+      ]
+    },
+    {
+      "id": "contact",
+      "path": "/contact",
+      "title": "Contact",
+      "purpose": "Provide all contact information",
+      "sections": [
+        "ContactSection",
+        "HoursBlock"
+      ],
+      "primaryCTA": {
+        "label": "Call Us",
+        "href": "tel:"
+      },
+      "secondaryCTA": null,
+      "requiredContent": [
+        "Phone",
+        "Email",
+        "Address"
+      ],
+      "componentHints": []
+    }
+  ],
+  "ux": {
+    "brandPersonality": [
+      "Professional and approachable",
+      "Clear and trustworthy",
+      "Focused on the client"
+    ],
+    "colorPalette": {
+      "primary": "#2563EB",
+      "secondary": "#F8FAFC",
+      "accent": "#0EA5E9",
+      "text": "#1E293B",
+      "background": "#F8FAFC",
+      "border": "#E2E8F0"
+    },
+    "typography": {
+      "headingFont": "system-ui, sans-serif",
+      "bodyFont": "system-ui, sans-serif",
+      "scaleBase": "16px",
+      "headingWeight": "600"
+    },
+    "layoutGuidelines": [
+      "Mobile-first responsive design — test at 375px, 768px, 1280px breakpoints",
+      "Maximum content width: 1200px, centered with 1.5rem side padding",
+      "Generous whitespace to avoid visual clutter",
+      "Sticky header with visible booking CTA on all pages",
+      "All sections use consistent vertical padding (4rem top/bottom)"
+    ],
+    "navigation": [
+      {
+        "label": "Home",
+        "href": "/"
+      },
+      {
+        "label": "Services",
+        "href": "/services"
+      },
+      {
+        "label": "About",
+        "href": "/about"
+      },
+      {
+        "label": "Contact",
+        "href": "/contact"
+      }
+    ],
+    "header": {
+      "sticky": true,
+      "showPhone": false,
+      "showCTA": true,
+      "ctaLabel": "Book Now",
+      "ctaHref": "/contact"
+    },
+    "footer": {
+      "columns": [
+        "Brand + contact",
+        "Navigation",
+        "Hours"
+      ],
+      "showHours": false,
+      "showSocial": false,
+      "showAddress": false,
+      "legalNote": "© 2026 Riverside Wellness Studio. All rights reserved."
+    },
+    "heroStyle": {
+      "backgroundType": "gradient",
+      "gradientFrom": "#F8FAFC",
+      "gradientTo": "#E2E8F0",
+      "textColor": "#1E293B"
+    },
+    "homepageStrategy": "Lead with a strong hero showcasing Riverside Wellness Studio's primary value proposition. Follow with  as the featured services. Build trust with testimonials before presenting the booking CTA.",
+    "componentStrategy": [
+      "AccessibilitySkipLink: first element in every page",
+      "Header: sticky, includes CTA button",
+      "Hero: used on homepage and About; adapts headline per page",
+      "ServicesGrid: card layout, 3 columns on desktop",
+      "TestimonialsSection: displayed on Home and About",
+      "GallerySection: filterable by category, used on Gallery and Home",
+      "BookingCTA: standalone CTA section with accent background",
+      "HoursBlock: used on Home, Contact, and Services",
+      "ContactSection: used on Contact page; includes phone, email, address",
+      "FAQSection: used on Services and Contact pages",
+      "Footer: consistent across all pages"
+    ],
+    "responsiveBehavior": [
+      "Navigation collapses to hamburger menu at ≤ 768px",
+      "ServicesGrid: 3 columns (desktop) → 2 columns (tablet) → 1 column (mobile)",
+      "GallerySection: masonry grid adapts from 3 to 2 to 1 column",
+      "Hero: font scales with clamp() — no layout shift between breakpoints",
+      "Footer: stacked single column on mobile",
+      "Touch targets: minimum 44x44px for all interactive elements"
+    ],
+    "contentHierarchy": [
+      "H1: Business name + primary service or location (one per page)",
+      "H2: Section headings (Services, About, Contact, etc.)",
+      "H3: Individual service names, team member names, FAQ questions",
+      "Body: Descriptions, hours, address, testimonial text",
+      "CTA: Primary action — always visible; secondary action nearby"
+    ]
+  },
+  "seo": {
+    "siteTitle": "Riverside Wellness Studio | Service business (appointments)",
+    "defaultMetaDescription": "Riverside Wellness Studio — Service business (appointments) in your area. Book online today.",
+    "pageMeta": [
+      {
+        "pageId": "home",
+        "title": "Riverside Wellness Studio | Service business (appointments) in your ar",
+        "description": "Welcome to Riverside Wellness Studio. Introduce the business and drive the primary contact/booking action"
+      },
+      {
+        "pageId": "services",
+        "title": "Services | Riverside Wellness Studio",
+        "description": "Explore all services offered by Riverside Wellness Studio. Describe services in detail"
+      },
+      {
+        "pageId": "about",
+        "title": "About Us | Riverside Wellness Studio",
+        "description": "Learn about the team and philosophy at Riverside Wellness Studio in your area."
+      },
+      {
+        "pageId": "contact",
+        "title": "Contact | Riverside Wellness Studio",
+        "description": "Get in touch with Riverside Wellness Studio. Find our address, phone, and hours."
+      }
+    ],
+    "h1Rules": [
+      "One H1 per page — never more",
+      "H1 format for homepage: \"Riverside Wellness Studio — [Primary Service] in City, ST\"",
+      "H1 for inner pages: describe the page content specifically",
+      "H1 must contain the primary keyword naturally — no keyword stuffing"
+    ],
+    "h2Rules": [
+      "H2s introduce major sections (Services, About, FAQ, etc.)",
+      "Use geo-modified keywords in H2s where natural: 'Haircuts in Austin' not just 'Haircuts'",
+      "H2s should be scannable — describe the section without needing to read the body"
+    ],
+    "localSeo": [
+      "Claim and optimize Google Business Profile for \"Riverside Wellness Studio\"",
+      "NAP consistency: \"Riverside Wellness Studio\" / \"\" / \"\" must be identical everywhere",
+      "Create local citations on Yelp, YellowPages, and Service business (appointments)-specific directories",
+      "Use schema.org LocalBusiness (or sub-type) JSON-LD on every page",
+      "Target geo-modified keywords: \"Service business (appointments) in \", \"best service business (appointments) near me\"",
+      "Embed Google Maps on Contact page (static iframe, no API key needed)",
+      "Encourage Google reviews — display schema-compliant review markup"
+    ],
+    "structuredDataRecommendations": [
+      "Use @type: \"LocalBusiness\" (extends LocalBusiness)",
+      "Include: name, description, address (PostalAddress), telephone, openingHoursSpecification",
+      "Include: url, image, sameAs (social profile URLs)",
+      "Add @type: WebSite with SearchAction for sitelinks search box potential",
+      "Add @type: BreadcrumbList on inner pages",
+      "Add @type: Service for each service listed"
+    ],
+    "openGraph": {
+      "og:type": "website",
+      "og:site_name": "Riverside Wellness Studio",
+      "og:title": "Riverside Wellness Studio | Service business (appointments)",
+      "og:description": "Riverside Wellness Studio — Service business (appointments) in your area. Book online today.",
+      "og:image": "/og-image.jpg",
+      "og:image:width": "1200",
+      "og:image:height": "630",
+      "twitter:card": "summary_large_image",
+      "twitter:title": "Riverside Wellness Studio | Service business (appointments)",
+      "twitter:description": "Riverside Wellness Studio — Service business (appointments) in your area. Book online today."
+    },
+    "imageAltTextRequirements": [
+      "All images must have descriptive alt text — never empty or generic ('image1.jpg')",
+      "For service/gallery images: describe the result + service type (e.g., 'Balayage color treatment — blonde highlights on brunette hair')",
+      "For team photos: include name and role (e.g., 'Sarah M., Senior Stylist at Luxe Beauty Studio')",
+      "For hero/banner images: describe the scene and mood, not just 'hero background'",
+      "Decorative-only images: use alt='' and role='presentation'"
+    ],
+    "internalLinking": [
+      "Every page must link to at least one other page",
+      "Service mentions in body copy should link to the /services page",
+      "All CTAs ('Book Now', 'Contact Us') must link to the correct destination page",
+      "Footer navigation duplicates primary navigation for crawlability",
+      "Add 'You might also like' or related services on inner pages"
+    ],
+    "indexabilityRules": [
+      "robots.txt: allow all — no pages should be blocked for this SMB site",
+      "Generate sitemap.xml at /sitemap.xml listing all pages with <lastmod>",
+      "canonical tags on every page to prevent duplicate content",
+      "No noindex tags unless specifically needed (e.g., /thank-you pages)",
+      "All pages must return HTTP 200 status in the static export"
+    ]
+  },
+  "accessibility": {
+    "targetStandard": "WCAG 2.1 Level AA — accessibility-oriented review against Stitchfy framework checklist (not a legal ADA compliance assessment)",
+    "semanticHtmlRequirements": [
+      "Use HTML5 semantic elements: <header>, <nav>, <main>, <section>, <article>, <footer>, <aside>",
+      "Use <h1>–<h6> for headings only — not for styling purposes",
+      "Use <ul>/<ol> for all lists (navigation, services, social links)",
+      "Use <button> for actions and <a> for navigation — do not swap their semantic roles",
+      "Use <address> for all physical address blocks",
+      "Use <time> for hours with machine-readable datetime attribute",
+      "Use <figure>/<figcaption> for gallery images with captions"
+    ],
+    "landmarkRequirements": [
+      "<header role='banner'> — site header, wraps logo and navigation",
+      "<nav aria-label='Main navigation'> — primary site navigation",
+      "<nav aria-label='Footer navigation'> — secondary nav in footer",
+      "<main id='main-content'> — primary page content (skip link target)",
+      "<footer role='contentinfo'> — site footer",
+      "Each page section is wrapped in <section aria-labelledby='section-heading-id'>"
+    ],
+    "keyboardNavigationRequirements": [
+      "All interactive elements reachable via Tab key in logical DOM order",
+      "Skip to main content link reveals on first Tab keypress",
+      "Navigation menu items navigable with Tab; dropdowns (if any) with Arrow keys",
+      "Modal dialogs (if any) trap focus within the modal while open",
+      "Escape key closes any open modal, dropdown, or overlay",
+      "No keyboard traps — user can always Tab out of any interactive element"
+    ],
+    "colorContrastRequirements": [
+      "Primary color (#2563EB) on white/light backgrounds: verify ≥ 4.5:1 using WebAIM Contrast Checker",
+      "Text on hero overlay/image backgrounds: ensure overlay provides sufficient contrast",
+      "Button text (white on primary color): verify ≥ 4.5:1",
+      "Placeholder text in form inputs: ensure ≥ 4.5:1 (not just 3:1 as older WCAG 1.4.3 allowed)",
+      "Focus ring color must contrast ≥ 3:1 against adjacent background"
+    ],
+    "formLabelRequirements": [
+      "Every form input (<input>, <textarea>, <select>) has an associated <label>",
+      "Labels use for='input-id' and input uses id='input-id' (or label wraps the input)",
+      "Placeholder text supplements labels — it does NOT replace them",
+      "Required fields: add aria-required='true' and a visible * (asterisk) with a legend explaining the marker",
+      "Error states: add aria-invalid='true' and aria-describedby='error-id' pointing to the error message element"
+    ],
+    "imageAltTextRequirements": [
+      "Write alt text for what the image communicates, not just what it depicts",
+      "Informational images: provide descriptive alt text (≤ 125 chars)",
+      "Decorative images: use alt='' — do not describe images that add no information",
+      "Complex images (charts, infographics): provide long description in <figcaption> or adjacent text",
+      "Hero images: if text is overlaid, the alt can be empty (the overlaid text conveys the message)"
+    ],
+    "focusStateRequirements": [
+      "Focus outline must never be removed with CSS outline:none without a replacement indicator",
+      "Replacement focus indicator must be visible and high-contrast (e.g., colored box-shadow)",
+      "Focus indicator minimum size: 3px solid outline, or equivalent CSS box-shadow",
+      "All focus states tested with keyboard navigation — Tab through every page",
+      "Focus must return to triggering element after closing any modal or dialog"
+    ],
+    "ariaGuidelines": [
+      "Do not use ARIA to fix bad HTML — prefer semantic HTML over ARIA roles",
+      "aria-label: use on elements without visible text (icon-only buttons, navigation)",
+      "aria-labelledby: use to associate headings with sections",
+      "aria-describedby: use to associate error messages, hints, or instructions with inputs",
+      "aria-expanded: use on toggle buttons (hamburger menu, accordions)",
+      "aria-current='page': use on the active navigation item",
+      "aria-hidden='true': use on purely decorative icons (SVGs, FontAwesome)",
+      "aria-live: use sparingly for dynamic content updates (form success messages)"
+    ],
+    "reducedMotionGuidelines": [
+      "@media (prefers-reduced-motion: reduce) must disable or substantially reduce all CSS transitions and animations",
+      "Fade-in animations: replace with instant display under prefers-reduced-motion",
+      "Scroll-triggered animations: skip entirely under prefers-reduced-motion",
+      "Auto-advancing carousels (if any): pause under prefers-reduced-motion",
+      "Test reduced-motion behavior in macOS Accessibility → Display → Reduce Motion"
+    ],
+    "qaChecklist": [
+      {
+        "rule": "skip-link",
+        "description": "Skip to main content link is the first focusable element on every page",
+        "priority": "must"
+      },
+      {
+        "rule": "lang-attribute",
+        "description": "HTML <html> element has a valid lang attribute (e.g., lang='en')",
+        "priority": "must"
+      },
+      {
+        "rule": "page-title",
+        "description": "Each page has a unique, descriptive <title> element",
+        "priority": "must"
+      },
+      {
+        "rule": "heading-order",
+        "description": "Headings are used in order (H1 → H2 → H3) — no levels skipped",
+        "priority": "must"
+      },
+      {
+        "rule": "one-h1",
+        "description": "Each page has exactly one H1 element",
+        "priority": "must"
+      },
+      {
+        "rule": "color-contrast-normal",
+        "description": "Normal text achieves a minimum 4.5:1 contrast ratio (WCAG AA)",
+        "priority": "must"
+      },
+      {
+        "rule": "color-contrast-large",
+        "description": "Large text (18pt+ or 14pt+ bold) achieves a minimum 3:1 contrast ratio",
+        "priority": "must"
+      },
+      {
+        "rule": "image-alt-text",
+        "description": "All informational images have descriptive alt text; decorative images use alt=''",
+        "priority": "must"
+      },
+      {
+        "rule": "interactive-accessible",
+        "description": "All interactive elements (links, buttons) are operable via keyboard",
+        "priority": "must"
+      },
+      {
+        "rule": "focus-visible",
+        "description": "Keyboard focus state is clearly visible — min 3px outline, not removed with outline:none",
+        "priority": "must"
+      },
+      {
+        "rule": "link-purpose",
+        "description": "Link text describes the destination — no 'click here' or 'read more' without context",
+        "priority": "must"
+      },
+      {
+        "rule": "button-accessible-name",
+        "description": "All buttons have an accessible name (text content or aria-label)",
+        "priority": "must"
+      },
+      {
+        "rule": "phone-tel-link",
+        "description": "Phone numbers are wrapped in <a href='tel:...'> for mobile users",
+        "priority": "must"
+      },
+      {
+        "rule": "address-element",
+        "description": "Physical addresses use the <address> semantic element",
+        "priority": "should"
+      },
+      {
+        "rule": "landmark-banner",
+        "description": "Page has a <header role='banner'> landmark",
+        "priority": "must"
+      },
+      {
+        "rule": "landmark-navigation",
+        "description": "Page has a <nav aria-label='...''> landmark",
+        "priority": "must"
+      },
+      {
+        "rule": "landmark-main",
+        "description": "Page has a <main id='main-content'> landmark",
+        "priority": "must"
+      },
+      {
+        "rule": "landmark-contentinfo",
+        "description": "Page has a <footer role='contentinfo'> landmark",
+        "priority": "must"
+      },
+      {
+        "rule": "list-semantic",
+        "description": "Navigation and service lists use <ul>/<ol> with <li> elements",
+        "priority": "must"
+      },
+      {
+        "rule": "reduced-motion",
+        "description": "@media (prefers-reduced-motion) disables or reduces all animations and transitions",
+        "priority": "should"
+      },
+      {
+        "rule": "touch-target-size",
+        "description": "Interactive elements are at least 44×44px on touch devices",
+        "priority": "should"
+      },
+      {
+        "rule": "no-auto-play",
+        "description": "No audio or video autoplays — user must initiate all media",
+        "priority": "must"
+      },
+      {
+        "rule": "viewport-zoom",
+        "description": "Page does not disable user pinch-zoom (no user-scalable=no in viewport meta)",
+        "priority": "must"
+      },
+      {
+        "rule": "text-resize",
+        "description": "Content remains accessible and readable when text is resized to 200% in browser",
+        "priority": "must"
+      },
+      {
+        "rule": "form-label-visible",
+        "description": "All form inputs have a visible <label> — not placeholder-only labels",
+        "priority": "must"
+      },
+      {
+        "rule": "form-label-linked",
+        "description": "Labels are linked to inputs via matching for/id or wrapping <label>",
+        "priority": "must"
+      },
+      {
+        "rule": "form-error-message",
+        "description": "Validation errors are programmatically associated with the failing field via aria-describedby",
+        "priority": "must"
+      },
+      {
+        "rule": "form-required-marked",
+        "description": "Required fields are marked with aria-required='true' and a visible indicator",
+        "priority": "must"
+      }
+    ]
+  },
+  "frontend": {
+    "framework": "Next.js 14 (App Router)",
+    "renderingMode": "Static Export — output: 'export' in next.config.ts. Produces pure HTML/CSS/JS. No server runtime required.",
+    "componentMap": [
+      {
+        "component": "Header",
+        "usedIn": [
+          "all"
+        ],
+        "props": [
+          "businessName",
+          "navigation",
+          "showPhone",
+          "phone",
+          "showCTA",
+          "ctaLabel",
+          "ctaHref"
+        ]
+      },
+      {
+        "component": "Footer",
+        "usedIn": [
+          "all"
+        ],
+        "props": [
+          "businessName",
+          "navigation",
+          "contact",
+          "social",
+          "hours",
+          "legalNote"
+        ]
+      },
+      {
+        "component": "AccessibilitySkipLink",
+        "usedIn": [
+          "all"
+        ],
+        "props": []
+      },
+      {
+        "component": "Hero",
+        "usedIn": [
+          "home",
+          "about"
+        ],
+        "props": [
+          "headline",
+          "subheadline",
+          "primaryCta",
+          "secondaryCta",
+          "backgroundImage"
+        ]
+      },
+      {
+        "component": "ServicesGrid",
+        "usedIn": [
+          "home",
+          "services",
+          "about"
+        ],
+        "props": [
+          "heading",
+          "items",
+          "showPrice"
+        ]
+      },
+      {
+        "component": "TestimonialsSection",
+        "usedIn": [
+          "home",
+          "about"
+        ],
+        "props": [
+          "heading",
+          "testimonials"
+        ]
+      },
+      {
+        "component": "CTASection",
+        "usedIn": [
+          "home",
+          "about"
+        ],
+        "props": [
+          "headline",
+          "subheadline",
+          "cta",
+          "variant"
+        ]
+      },
+      {
+        "component": "ContactSection",
+        "usedIn": [
+          "home",
+          "about",
+          "contact"
+        ],
+        "props": [
+          "heading",
+          "contact",
+          "showDisclaimer"
+        ]
+      },
+      {
+        "component": "HoursBlock",
+        "usedIn": [
+          "contact"
+        ],
+        "props": [
+          "heading",
+          "hours"
+        ]
+      }
+    ],
+    "routes": [
+      {
+        "path": "/",
+        "pageId": "home",
+        "file": "app/page.tsx"
+      },
+      {
+        "path": "/services",
+        "pageId": "services",
+        "file": "app/services/page.tsx"
+      },
+      {
+        "path": "/about",
+        "pageId": "about",
+        "file": "app/about/page.tsx"
+      },
+      {
+        "path": "/contact",
+        "pageId": "contact",
+        "file": "app/contact/page.tsx"
+      }
+    ],
+    "assets": {
+      "og-image": "public/og-image.jpg — 1200×630px, < 300KB",
+      "favicon": "public/favicon.ico — 32×32px and 16×16px",
+      "logo-svg": "public/logo.svg — vector logo for header and footer",
+      "placeholder-service": "public/images/service-placeholder.jpg — 800×600px fallback for missing service images"
+    },
+    "forms": {
+      "contact": "General inquiry only — static mailto link or third-party form service (Formspree, etc.). No server-side processing. Includes disclaimer: 'Not for medical advice or emergencies.'"
+    },
+    "externalIntegrations": [
+      "Google Maps embed (static iframe — no API key required)"
+    ],
+    "unsupportedFeatures": [
+      "Real-time booking engine or availability calendar",
+      "Payment processing or e-commerce checkout",
+      "User accounts, registration, or authentication",
+      "Database persistence or backend API routes",
+      "CRM integration (Salesforce, HubSpot, etc.)",
+      "HIPAA-grade forms or electronic health records",
+      "Server-side rendered (SSR) or incremental static regeneration (ISR) pages",
+      "Image optimization via next/image with a remote server (unoptimized: true in static export)"
+    ],
+    "implementationNotes": [
+      "Color palette is defined as CSS custom properties in site-template/app/globals.css — primary: #2563EB",
+      "All pages use Next.js App Router (app/) with generateStaticParams for static generation",
+      "No dynamic routes — all paths are pre-rendered at build time",
+      "Images use <img> with explicit width/height or next/image with unoptimized: true",
+      "Site is deployable to AWS S3, CloudFront, Netlify, Vercel static, or any static host",
+      "Run 'next build' inside output/generated-site/ to export to output/static-site/",
+      "Typography: headings use system-ui, sans-serif, body uses system-ui, sans-serif"
+    ]
+  },
+  "qa": {
+    "expectedReports": [
+      "output/reports/accessibility-report.md",
+      "output/reports/seo-report.md",
+      "output/reports/final-report.md"
+    ],
+    "lighthouseTargets": {
+      "performance": 90,
+      "accessibility": 95,
+      "best-practices": 90,
+      "seo": 95
+    },
+    "accessibilityChecks": [
+      "Run axe-core against all pages in output/static-site/",
+      "Manual keyboard tab-order test: Home, Services, Contact",
+      "Screen reader test with VoiceOver (macOS) or NVDA (Windows)",
+      "Color contrast check: primary button, body text, footer text",
+      "Skip link visible and functional on first Tab keypress",
+      "Contact: form labels linked, required fields marked, error states announced"
+    ],
+    "seoChecks": [
+      "Confirm each page has a unique <title> and <meta name='description'>",
+      "Confirm canonical <link> tag present on every page",
+      "Validate JSON-LD with Google Rich Results Test",
+      "Check sitemap.xml is generated and all pages are listed",
+      "Verify robots.txt does not block any page",
+      "Open Graph tags: validate with LinkedIn / Facebook debugger",
+      "Image alt text: run alt text audit across all pages"
+    ],
+    "knownLimitations": [
+      "Gallery filtering requires JavaScript — with JS disabled, all images are shown (graceful degradation)",
+      "Booking links navigate to an external platform — no on-site confirmation or calendar",
+      "Contact form is a static mailto link — no server-side processing or spam protection",
+      "No real-time availability information",
+      "No account creation, login, or session management",
+      "No payment processing — pricing is informational only",
+      "OpenGraph og:image requires a real image at /public/og-image.jpg (1200×630px) — placeholder used in dev"
+    ]
+  }
+}

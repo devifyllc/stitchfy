@@ -1,5 +1,11 @@
 # Integration Templates
 
-Placeholder. Will hold REST/webhook/SaaS connector templates once
-`framework/capabilities/integrations` has a real `execute()` — see
-`docs/architecture/ROADMAP.md` Phase 4.
+`framework/capabilities/integrations` is now a fully implemented capability
+(see its own `README.md`) — this is no longer a placeholder for a future
+`execute()`.
+
+For a real starter Markdown template, see
+`templates/solution/api-platform.md` (the full `## Integrations` sub-field
+set). For completed worked examples, see
+`examples/solution/rest-export-ready.md` and
+`examples/reference/order-platform.md`.

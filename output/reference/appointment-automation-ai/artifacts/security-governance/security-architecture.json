@@ -1,0 +1,300 @@
+{
+  "version": "1.0",
+  "requirements": [
+    {
+      "id": "SECREQ-001",
+      "domain": "secrets",
+      "description": "Credentials for \"The booking system checks and reserves availability in Google Calendar.\" (mechanism: oauth2) must not be embedded directly in generated application code or static configuration committed to source control.",
+      "priority": "required",
+      "appliesTo": [
+        {
+          "entityType": "integration",
+          "entityId": "INT-001"
+        }
+      ],
+      "evidenceRefs": [
+        {
+          "entityType": "integration",
+          "entityId": "INTNEED-001",
+          "description": "The booking system checks and reserves availability in Google Calendar."
+        }
+      ],
+      "status": "defined"
+    },
+    {
+      "id": "SECREQ-002",
+      "domain": "integration",
+      "description": "Interaction with the system behind \"The booking system checks and reserves availability in Google Calendar.\" crosses a trust boundary; requests and responses should be validated and protection requirements confirmed before implementation.",
+      "priority": "review",
+      "appliesTo": [
+        {
+          "entityType": "integration",
+          "entityId": "INT-001"
+        },
+        {
+          "entityType": "system",
+          "entityId": "SYS-001"
+        }
+      ],
+      "evidenceRefs": [
+        {
+          "entityType": "integration",
+          "entityId": "INTNEED-001",
+          "description": "The booking system checks and reserves availability in Google Calendar."
+        }
+      ],
+      "status": "defined"
+    },
+    {
+      "id": "SECREQ-003",
+      "domain": "human-oversight",
+      "description": "Every conflicting request is reviewed and approved by a front-desk employee before confirmation",
+      "priority": "required",
+      "appliesTo": [
+        {
+          "entityType": "workflow",
+          "entityId": "WF-001"
+        },
+        {
+          "entityType": "approval",
+          "entityId": "APPROVAL-001"
+        }
+      ],
+      "evidenceRefs": [
+        {
+          "entityType": "outcome",
+          "entityId": "OUTCOME-002",
+          "description": "Every conflicting request is reviewed and approved by a front-desk employee before confirmation"
+        }
+      ],
+      "status": "defined"
+    },
+    {
+      "id": "SECREQ-004",
+      "domain": "human-oversight",
+      "description": "Conflicting appointment requests must always be routed to a front-desk employee for approval before confirmation.",
+      "priority": "required",
+      "appliesTo": [
+        {
+          "entityType": "workflow",
+          "entityId": "WF-001"
+        },
+        {
+          "entityType": "approval",
+          "entityId": "APPROVAL-002"
+        }
+      ],
+      "evidenceRefs": [
+        {
+          "entityType": "requirement",
+          "entityId": "REQ-001",
+          "description": "Conflicting appointment requests must always be routed to a front-desk employee for approval before confirmation."
+        }
+      ],
+      "status": "defined"
+    }
+  ],
+  "trustBoundaries": [
+    {
+      "id": "BOUNDARY-001",
+      "targetSystemId": "SYS-001",
+      "integrationId": "INT-001",
+      "classification": "third-party",
+      "dataContractIds": [],
+      "evidenceRefs": [
+        {
+          "entityType": "integration",
+          "entityId": "INTNEED-001",
+          "description": "The booking system checks and reserves availability in Google Calendar."
+        }
+      ]
+    }
+  ],
+  "dataProtection": [
+    {
+      "id": "DATAPROT-001",
+      "dataEntityIds": [
+        "DATA-001"
+      ],
+      "dataContractIds": [],
+      "classification": "confidential",
+      "encryptionInTransit": "unknown",
+      "encryptionAtRest": "unknown",
+      "evidenceRefs": [
+        {
+          "entityType": "data-entity",
+          "entityId": "DATA-001",
+          "description": "Customer name, phone number, and appointment history (personal customer information) collected during booking"
+        }
+      ]
+    }
+  ],
+  "identityAccess": [],
+  "integrationSecurity": [
+    {
+      "integrationId": "INT-001",
+      "relatedSecurityRequirementIds": [
+        "SECREQ-001",
+        "SECREQ-002"
+      ],
+      "evidenceRefs": [
+        {
+          "entityType": "integration",
+          "entityId": "INTNEED-001",
+          "description": "The booking system checks and reserves availability in Google Calendar."
+        }
+      ]
+    }
+  ],
+  "auditRequirements": [
+    {
+      "id": "AUDIT-001",
+      "description": "Approval decisions for \"Every conflicting request is reviewed and approved by a front-desk employee before confirmation\" should be auditable.",
+      "appliesTo": [
+        {
+          "entityType": "workflow",
+          "entityId": "WF-001"
+        },
+        {
+          "entityType": "approval",
+          "entityId": "APPROVAL-001"
+        }
+      ],
+      "evidenceRefs": [
+        {
+          "entityType": "outcome",
+          "entityId": "OUTCOME-002",
+          "description": "Every conflicting request is reviewed and approved by a front-desk employee before confirmation"
+        }
+      ]
+    },
+    {
+      "id": "AUDIT-002",
+      "description": "Approval decisions for \"Conflicting appointment requests must always be routed to a front-desk employee for approval before confirmation.\" should be auditable.",
+      "appliesTo": [
+        {
+          "entityType": "workflow",
+          "entityId": "WF-001"
+        },
+        {
+          "entityType": "approval",
+          "entityId": "APPROVAL-002"
+        }
+      ],
+      "evidenceRefs": [
+        {
+          "entityType": "requirement",
+          "entityId": "REQ-001",
+          "description": "Conflicting appointment requests must always be routed to a front-desk employee for approval before confirmation."
+        }
+      ]
+    }
+  ],
+  "risks": [
+    {
+      "id": "RISK-001",
+      "category": "security",
+      "description": "Credential material for \"The booking system checks and reserves availability in Google Calendar.\" requires protection; improper handling could expose access to the target system.",
+      "likelihood": "unknown",
+      "impact": "unknown",
+      "treatment": "mitigate",
+      "relatedArchitectureRefs": [
+        {
+          "entityType": "integration",
+          "entityId": "INT-001"
+        }
+      ],
+      "evidenceRefs": [
+        {
+          "entityType": "integration",
+          "entityId": "INTNEED-001",
+          "description": "The booking system checks and reserves availability in Google Calendar."
+        }
+      ],
+      "status": "open"
+    },
+    {
+      "id": "RISK-002",
+      "category": "privacy",
+      "description": "Data associated with \"The booking system checks and reserves availability in Google Calendar.\" may cross a third-party boundary while its classification remains unresolved; exposure could result in a privacy issue.",
+      "likelihood": "unknown",
+      "impact": "unknown",
+      "treatment": "review",
+      "relatedArchitectureRefs": [
+        {
+          "entityType": "integration",
+          "entityId": "INT-001"
+        },
+        {
+          "entityType": "system",
+          "entityId": "SYS-001"
+        }
+      ],
+      "evidenceRefs": [
+        {
+          "entityType": "integration",
+          "entityId": "INTNEED-001",
+          "description": "The booking system checks and reserves availability in Google Calendar."
+        }
+      ],
+      "status": "needs-review"
+    }
+  ],
+  "informationGaps": [
+    {
+      "gapId": "WFGAP-001",
+      "topic": "Notification channel",
+      "question": "What channel should be used for: \"Confirmed appointments are recorded and a reminder is sent before the appointment\"?",
+      "isNew": false
+    },
+    {
+      "gapId": "INTGAP-001",
+      "topic": "Integration source system",
+      "question": "What system will initiate: The booking system checks and reserves availability in Google Calendar.?",
+      "isNew": false
+    },
+    {
+      "gapId": "INTGAP-002",
+      "topic": "Integration failure handling",
+      "question": "What should happen if Google Calendar is unavailable during \"The booking system checks and reserves availability in Google Calendar.\"?",
+      "isNew": false
+    },
+    {
+      "gapId": "AISECGAP-001",
+      "topic": "AI provider data handling",
+      "question": "May data handled by agent \"Riverside Wellness Studio Assistant\" be sent to an external AI model provider? No provider has been selected yet.",
+      "isNew": true
+    }
+  ],
+  "evidenceRefs": [
+    {
+      "entityType": "integration",
+      "entityId": "INTNEED-001",
+      "description": "The booking system checks and reserves availability in Google Calendar."
+    },
+    {
+      "entityType": "integration",
+      "entityId": "INTNEED-001",
+      "description": "The booking system checks and reserves availability in Google Calendar."
+    },
+    {
+      "entityType": "integration",
+      "entityId": "INTNEED-001",
+      "description": "The booking system checks and reserves availability in Google Calendar."
+    },
+    {
+      "entityType": "outcome",
+      "entityId": "OUTCOME-002",
+      "description": "Every conflicting request is reviewed and approved by a front-desk employee before confirmation"
+    },
+    {
+      "entityType": "requirement",
+      "entityId": "REQ-001",
+      "description": "Conflicting appointment requests must always be routed to a front-desk employee for approval before confirmation."
+    }
+  ],
+  "status": "needs-review",
+  "statusReasons": [
+    "3 unresolved information gap(s)"
+  ]
+}
