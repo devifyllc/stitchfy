@@ -47,7 +47,7 @@ async function main() {
     const context = await runSolutionPipeline(inputPath, outputDir, codebasePath, codebaseSystemId, modernizationExportTarget);
     process.exit(context.stage === "complete" ? 0 : 1);
   } catch (err) {
-    console.error("Fatal error:", err);
+    console.error("Fatal error:", err instanceof Error ? err.message : err);
     process.exit(1);
   }
 }

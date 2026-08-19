@@ -1,86 +1,129 @@
 {
   "project": {
     "schemaVersion": "1.0",
-    "generatedAt": "2026-08-19T22:48:43.147Z",
-    "sourceFile": "legacy-java-modernization.md",
+    "generatedAt": "2026-08-19T22:48:31.463Z",
+    "sourceFile": "project.md",
     "frameworkVersion": "2.1.0"
   },
   "business": {
-    "name": "Order Portal Modernization",
-    "industry": "Retail software",
-    "description": "An internal order-management application running on an aging application-server platform, integrated with a fulfillment routing gateway and its own order database.",
-    "location": "",
-    "address": "",
-    "serviceAreas": [],
-    "phone": "",
-    "email": "",
-    "operatingHours": {},
-    "socialLinks": {},
-    "booking": "",
-    "services": [],
+    "name": "Luxe Beauty Studio",
+    "industry": "Beauty Salon",
+    "description": "Luxe Beauty Studio is a premium full-service beauty salon in Austin, Texas. We offer hair, nails, and skincare services in a relaxing, modern environment where every client leaves feeling confident and beautiful.",
+    "location": "Austin, TX",
+    "address": "1234 South Congress Avenue, Suite 102, Austin, TX 78704",
+    "serviceAreas": [
+      "Austin, TX"
+    ],
+    "phone": "(512) 555-0190",
+    "email": "hello@luxebeautystudio.com",
+    "operatingHours": {
+      "Monday–Friday": "9:00 AM – 7:00 PM",
+      "Saturday": "9:00 AM – 6:00 PM",
+      "Sunday": "10:00 AM – 4:00 PM",
+      "Note": "Closed on major holidays"
+    },
+    "socialLinks": {
+      "Instagram": "https://instagram.com/luxebeautystudio",
+      "Facebook": "https://facebook.com/luxebeautystudio",
+      "TikTok": "https://tiktok.com/@luxebeautystudio"
+    },
+    "booking": "Walk-ins welcome Monday–Friday; appointment recommended on weekends; Online booking via Vagaro (https://www.vagaro.com/luxebeautystudio); Phone call during business hours",
+    "services": [
+      "Haircuts & Styling",
+      "Color & Balayage",
+      "Blowouts & Deep Treatments",
+      "Manicure & Pedicure",
+      "Gel & Acrylic Nails",
+      "Facials & Skincare Treatments",
+      "Eyebrow Shaping & Tinting",
+      "Lash Extensions"
+    ],
     "complianceFlags": [],
-    "missingInformation": [
-      "phone number",
-      "email address",
-      "physical address",
-      "operating hours",
-      "services list"
-    ]
+    "missingInformation": []
   },
   "pages": [
     {
       "id": "home",
       "path": "/",
       "title": "Home",
-      "purpose": "Introduce the business and drive the primary contact/booking action",
+      "purpose": "Convert visitors to bookings; showcase brand and top services",
       "sections": [
         "Hero",
         "ServicesGrid",
         "TestimonialsSection",
-        "CTASection",
-        "ContactSection"
+        "GallerySection",
+        "BookingCTA",
+        "HoursBlock"
       ],
       "primaryCTA": {
-        "label": "Contact Us",
-        "href": "/contact"
+        "label": "Book Now",
+        "href": "/book"
       },
       "secondaryCTA": {
-        "label": "Our Services",
+        "label": "View Services",
         "href": "/services"
       },
       "requiredContent": [
-        "Clear value proposition",
-        "Key services",
-        "Contact information"
+        "Hero headline and tagline",
+        "Featured services (3–6)",
+        "Client testimonials (3–5)",
+        "Gallery preview (6 images)"
       ],
       "componentHints": [
-        "Clean, professional hero",
-        "Services in card grid"
+        "Full-width hero with brand color overlay",
+        "Services in 3-column grid",
+        "Testimonials in horizontal scroll on mobile"
       ]
     },
     {
       "id": "services",
       "path": "/services",
       "title": "Services",
-      "purpose": "Describe services in detail",
+      "purpose": "Detail all services with descriptions and pricing",
       "sections": [
         "ServicesGrid"
       ],
       "primaryCTA": {
-        "label": "Get in Touch",
-        "href": "/contact"
+        "label": "Book This Service",
+        "href": "/book"
       },
       "secondaryCTA": null,
       "requiredContent": [
         "Service name",
-        "Description"
+        "Description (1–2 sentences)",
+        "Starting price (if available)"
       ],
-      "componentHints": []
+      "componentHints": [
+        "Full-width service cards with pricing",
+        "Group by category if > 8 services"
+      ]
     },
     {
-      "id": "about",
+      "id": "gallery",
+      "path": "/gallery",
+      "title": "Gallery",
+      "purpose": "Showcase before/after and finished work to build confidence",
+      "sections": [
+        "GallerySection"
+      ],
+      "primaryCTA": {
+        "label": "Book Now",
+        "href": "/book"
+      },
+      "secondaryCTA": null,
+      "requiredContent": [
+        "Filterable images by service category",
+        "Alt text for each image"
+      ],
+      "componentHints": [
+        "Masonry or grid layout",
+        "Filter buttons: All / Hair / Nails / Skincare"
+      ]
+    },
+    {
+      "id": "about-us",
       "path": "/about",
-      "title": "About",
+      "title": "About Us",
       "purpose": "Introduce the business and drive the primary contact/booking action",
       "sections": [
         "Hero",
@@ -111,41 +154,76 @@
       "id": "contact",
       "path": "/contact",
       "title": "Contact",
-      "purpose": "Provide all contact information",
+      "purpose": "Provide all contact information and operating hours",
       "sections": [
         "ContactSection",
         "HoursBlock"
       ],
       "primaryCTA": {
-        "label": "Call Us",
-        "href": "tel:"
+        "label": "Book Appointment",
+        "href": "/book"
       },
       "secondaryCTA": null,
       "requiredContent": [
-        "Phone",
-        "Email",
-        "Address"
+        "Phone number (click-to-call)",
+        "Email address",
+        "Physical address",
+        "Operating hours"
       ],
-      "componentHints": []
+      "componentHints": [
+        "Address uses <address> semantic element",
+        "Phone as <a href='tel:'>"
+      ]
+    },
+    {
+      "id": "book-online",
+      "path": "/book",
+      "title": "Book Online",
+      "purpose": "Introduce the business and drive the primary contact/booking action",
+      "sections": [
+        "Hero",
+        "ServicesGrid",
+        "TestimonialsSection",
+        "CTASection",
+        "ContactSection"
+      ],
+      "primaryCTA": {
+        "label": "Contact Us",
+        "href": "/contact"
+      },
+      "secondaryCTA": {
+        "label": "Our Services",
+        "href": "/services"
+      },
+      "requiredContent": [
+        "Clear value proposition",
+        "Key services",
+        "Contact information"
+      ],
+      "componentHints": [
+        "Clean, professional hero",
+        "Services in card grid"
+      ]
     }
   ],
   "ux": {
     "brandPersonality": [
-      "Professional and approachable",
-      "Clear and trustworthy",
-      "Focused on the client"
+      "Warm, welcoming, and luxurious but never pretentious",
+      "Modern and visually polished",
+      "Empowering and confidence-boosting",
+      "Conversational and human — not corporate"
     ],
     "colorPalette": {
-      "primary": "#2563EB",
-      "secondary": "#F8FAFC",
-      "accent": "#0EA5E9",
-      "text": "#1E293B",
-      "background": "#F8FAFC",
-      "border": "#E2E8F0"
+      "primary": "#C4847A",
+      "secondary": "#FAF8F5",
+      "accent": "#C9A96E",
+      "text": "#2C2C2C",
+      "background": "#FAF8F5",
+      "border": "#EDD9D5"
     },
     "typography": {
-      "headingFont": "system-ui, sans-serif",
-      "bodyFont": "system-ui, sans-serif",
+      "headingFont": "'Cormorant Garamond', Georgia, serif",
+      "bodyFont": "'Inter', system-ui, sans-serif",
       "scaleBase": "16px",
       "headingWeight": "600"
     },
@@ -166,20 +244,28 @@
         "href": "/services"
       },
       {
-        "label": "About",
+        "label": "Gallery",
+        "href": "/gallery"
+      },
+      {
+        "label": "About Us",
         "href": "/about"
       },
       {
         "label": "Contact",
         "href": "/contact"
+      },
+      {
+        "label": "Book Online",
+        "href": "/book"
       }
     ],
     "header": {
       "sticky": true,
-      "showPhone": false,
+      "showPhone": true,
       "showCTA": true,
       "ctaLabel": "Book Now",
-      "ctaHref": "/contact"
+      "ctaHref": "/book"
     },
     "footer": {
       "columns": [
@@ -187,18 +273,18 @@
         "Navigation",
         "Hours"
       ],
-      "showHours": false,
-      "showSocial": false,
-      "showAddress": false,
-      "legalNote": "© 2026 Order Portal Modernization. All rights reserved."
+      "showHours": true,
+      "showSocial": true,
+      "showAddress": true,
+      "legalNote": "© 2026 Luxe Beauty Studio. All rights reserved."
     },
     "heroStyle": {
       "backgroundType": "gradient",
-      "gradientFrom": "#F8FAFC",
-      "gradientTo": "#E2E8F0",
-      "textColor": "#1E293B"
+      "gradientFrom": "#FAF8F5",
+      "gradientTo": "#EDD9D5",
+      "textColor": "#2C2C2C"
     },
-    "homepageStrategy": "Lead with a strong hero showcasing Order Portal Modernization's primary value proposition. Follow with  as the featured services. Build trust with testimonials before presenting the booking CTA.",
+    "homepageStrategy": "Lead with a strong hero showcasing Luxe Beauty Studio's primary value proposition. Follow with Haircuts & Styling, Color & Balayage, Blowouts & Deep Treatments as the featured services. Build trust with testimonials before presenting the booking CTA.",
     "componentStrategy": [
       "AccessibilitySkipLink: first element in every page",
       "Header: sticky, includes CTA button",
@@ -229,33 +315,43 @@
     ]
   },
   "seo": {
-    "siteTitle": "Order Portal Modernization | Retail software",
-    "defaultMetaDescription": "Order Portal Modernization — Retail software in your area. Book online today.",
+    "siteTitle": "Luxe Beauty Studio | Beauty Salon in Austin, TX",
+    "defaultMetaDescription": "Beauty Salon in Austin, TX. Luxe Beauty Studio offers Haircuts & Styling, Color & Balayage, Blowouts & Deep Treatments and more. Book online today.",
     "pageMeta": [
       {
         "pageId": "home",
-        "title": "Order Portal Modernization | Retail software in your area",
-        "description": "Welcome to Order Portal Modernization. Introduce the business and drive the primary contact/booking action"
+        "title": "Luxe Beauty Studio | Beauty Salon in Austin, TX",
+        "description": "Welcome to Luxe Beauty Studio. Convert visitors to bookings; showcase brand and top services"
       },
       {
         "pageId": "services",
-        "title": "Services | Order Portal Modernization",
-        "description": "Explore all services offered by Order Portal Modernization. Describe services in detail"
+        "title": "Services | Luxe Beauty Studio",
+        "description": "Explore all services offered by Luxe Beauty Studio. Detail all services with descriptions and pricing"
       },
       {
-        "pageId": "about",
-        "title": "About Us | Order Portal Modernization",
-        "description": "Learn about the team and philosophy at Order Portal Modernization in your area."
+        "pageId": "gallery",
+        "title": "Gallery | Luxe Beauty Studio",
+        "description": "Browse our work at Luxe Beauty Studio. See before-and-after photos and finished results."
+      },
+      {
+        "pageId": "about-us",
+        "title": "About Us | Luxe Beauty Studio",
+        "description": "Learn about the team and philosophy at Luxe Beauty Studio in Austin, TX."
       },
       {
         "pageId": "contact",
-        "title": "Contact | Order Portal Modernization",
-        "description": "Get in touch with Order Portal Modernization. Find our address, phone, and hours."
+        "title": "Contact | Luxe Beauty Studio",
+        "description": "Get in touch with Luxe Beauty Studio. Find our address, phone, and hours."
+      },
+      {
+        "pageId": "book-online",
+        "title": "Book Online | Luxe Beauty Studio",
+        "description": "Book your appointment online at Luxe Beauty Studio. Easy, fast scheduling."
       }
     ],
     "h1Rules": [
       "One H1 per page — never more",
-      "H1 format for homepage: \"Order Portal Modernization — [Primary Service] in City, ST\"",
+      "H1 format for homepage: \"Luxe Beauty Studio — [Primary Service] in Austin, TX\"",
       "H1 for inner pages: describe the page content specifically",
       "H1 must contain the primary keyword naturally — no keyword stuffing"
     ],
@@ -265,33 +361,33 @@
       "H2s should be scannable — describe the section without needing to read the body"
     ],
     "localSeo": [
-      "Claim and optimize Google Business Profile for \"Order Portal Modernization\"",
-      "NAP consistency: \"Order Portal Modernization\" / \"\" / \"\" must be identical everywhere",
-      "Create local citations on Yelp, YellowPages, and Retail software-specific directories",
+      "Claim and optimize Google Business Profile for \"Luxe Beauty Studio\"",
+      "NAP consistency: \"Luxe Beauty Studio\" / \"1234 South Congress Avenue, Suite 102, Austin, TX 78704\" / \"(512) 555-0190\" must be identical everywhere",
+      "Create local citations on Yelp, YellowPages, and Beauty Salon-specific directories",
       "Use schema.org LocalBusiness (or sub-type) JSON-LD on every page",
-      "Target geo-modified keywords: \"Retail software in \", \"best retail software near me\"",
+      "Target geo-modified keywords: \"Beauty Salon in Austin, TX\", \"best beauty salon near me\"",
       "Embed Google Maps on Contact page (static iframe, no API key needed)",
       "Encourage Google reviews — display schema-compliant review markup"
     ],
     "structuredDataRecommendations": [
-      "Use @type: \"LocalBusiness\" (extends LocalBusiness)",
+      "Use @type: \"BeautySalon\" (extends LocalBusiness)",
       "Include: name, description, address (PostalAddress), telephone, openingHoursSpecification",
       "Include: url, image, sameAs (social profile URLs)",
       "Add @type: WebSite with SearchAction for sitelinks search box potential",
       "Add @type: BreadcrumbList on inner pages",
-      "Add @type: Service for each service listed"
+      "Add @type: Service for each of: Haircuts & Styling, Color & Balayage, Blowouts & Deep Treatments"
     ],
     "openGraph": {
       "og:type": "website",
-      "og:site_name": "Order Portal Modernization",
-      "og:title": "Order Portal Modernization | Retail software",
-      "og:description": "Order Portal Modernization — Retail software in your area. Book online today.",
+      "og:site_name": "Luxe Beauty Studio",
+      "og:title": "Luxe Beauty Studio | Beauty Salon in Austin, TX",
+      "og:description": "Beauty Salon in Austin, TX. Luxe Beauty Studio offers Haircuts & Styling, Color & Balayage, Blowouts & Deep Treatments and more. Book online today.",
       "og:image": "/og-image.jpg",
       "og:image:width": "1200",
       "og:image:height": "630",
       "twitter:card": "summary_large_image",
-      "twitter:title": "Order Portal Modernization | Retail software",
-      "twitter:description": "Order Portal Modernization — Retail software in your area. Book online today."
+      "twitter:title": "Luxe Beauty Studio | Beauty Salon in Austin, TX",
+      "twitter:description": "Beauty Salon in Austin, TX. Luxe Beauty Studio offers Haircuts & Styling, Color & Balayage, Blowouts & Deep Treatments and more. Book online today."
     },
     "imageAltTextRequirements": [
       "All images must have descriptive alt text — never empty or generic ('image1.jpg')",
@@ -343,7 +439,7 @@
       "No keyboard traps — user can always Tab out of any interactive element"
     ],
     "colorContrastRequirements": [
-      "Primary color (#2563EB) on white/light backgrounds: verify ≥ 4.5:1 using WebAIM Contrast Checker",
+      "Primary color (#C4847A) on white/light backgrounds: verify ≥ 4.5:1 using WebAIM Contrast Checker",
       "Text on hero overlay/image backgrounds: ensure overlay provides sufficient contrast",
       "Button text (white on primary color): verify ≥ 4.5:1",
       "Placeholder text in form inputs: ensure ≥ 4.5:1 (not just 3:1 as older WCAG 1.4.3 allowed)",
@@ -527,6 +623,16 @@
         "rule": "form-required-marked",
         "description": "Required fields are marked with aria-required='true' and a visible indicator",
         "priority": "must"
+      },
+      {
+        "rule": "gallery-alt-descriptive",
+        "description": "Gallery images have service-specific alt text describing the treatment and result — not file names",
+        "priority": "must"
+      },
+      {
+        "rule": "gallery-filter-accessible",
+        "description": "Gallery filter buttons announce their active state via aria-pressed or aria-selected",
+        "priority": "must"
       }
     ]
   },
@@ -574,7 +680,8 @@
         "component": "Hero",
         "usedIn": [
           "home",
-          "about"
+          "about-us",
+          "book-online"
         ],
         "props": [
           "headline",
@@ -589,7 +696,8 @@
         "usedIn": [
           "home",
           "services",
-          "about"
+          "about-us",
+          "book-online"
         ],
         "props": [
           "heading",
@@ -601,7 +709,8 @@
         "component": "TestimonialsSection",
         "usedIn": [
           "home",
-          "about"
+          "about-us",
+          "book-online"
         ],
         "props": [
           "heading",
@@ -609,10 +718,45 @@
         ]
       },
       {
-        "component": "CTASection",
+        "component": "GallerySection",
         "usedIn": [
           "home",
-          "about"
+          "gallery"
+        ],
+        "props": [
+          "heading",
+          "images",
+          "categories",
+          "filterable"
+        ]
+      },
+      {
+        "component": "BookingCTA",
+        "usedIn": [
+          "home"
+        ],
+        "props": [
+          "headline",
+          "subheadline",
+          "cta"
+        ]
+      },
+      {
+        "component": "HoursBlock",
+        "usedIn": [
+          "home",
+          "contact"
+        ],
+        "props": [
+          "heading",
+          "hours"
+        ]
+      },
+      {
+        "component": "CTASection",
+        "usedIn": [
+          "about-us",
+          "book-online"
         ],
         "props": [
           "headline",
@@ -624,24 +768,14 @@
       {
         "component": "ContactSection",
         "usedIn": [
-          "home",
-          "about",
-          "contact"
+          "about-us",
+          "contact",
+          "book-online"
         ],
         "props": [
           "heading",
           "contact",
           "showDisclaimer"
-        ]
-      },
-      {
-        "component": "HoursBlock",
-        "usedIn": [
-          "contact"
-        ],
-        "props": [
-          "heading",
-          "hours"
         ]
       }
     ],
@@ -657,14 +791,24 @@
         "file": "app/services/page.tsx"
       },
       {
+        "path": "/gallery",
+        "pageId": "gallery",
+        "file": "app/gallery/page.tsx"
+      },
+      {
         "path": "/about",
-        "pageId": "about",
+        "pageId": "about-us",
         "file": "app/about/page.tsx"
       },
       {
         "path": "/contact",
         "pageId": "contact",
         "file": "app/contact/page.tsx"
+      },
+      {
+        "path": "/book",
+        "pageId": "book-online",
+        "file": "app/book/page.tsx"
       }
     ],
     "assets": {
@@ -677,6 +821,8 @@
       "contact": "General inquiry only — static mailto link or third-party form service (Formspree, etc.). No server-side processing. Includes disclaimer: 'Not for medical advice or emergencies.'"
     },
     "externalIntegrations": [
+      "Vagaro booking (external link — no SDK or embed)",
+      "Social media links (external <a> tags — no SDK or embed)",
       "Google Maps embed (static iframe — no API key required)"
     ],
     "unsupportedFeatures": [
@@ -690,13 +836,13 @@
       "Image optimization via next/image with a remote server (unoptimized: true in static export)"
     ],
     "implementationNotes": [
-      "Color palette is defined as CSS custom properties in site-template/app/globals.css — primary: #2563EB",
+      "Color palette is defined as CSS custom properties in site-template/app/globals.css — primary: #C4847A",
       "All pages use Next.js App Router (app/) with generateStaticParams for static generation",
       "No dynamic routes — all paths are pre-rendered at build time",
       "Images use <img> with explicit width/height or next/image with unoptimized: true",
       "Site is deployable to AWS S3, CloudFront, Netlify, Vercel static, or any static host",
       "Run 'next build' inside output/generated-site/ to export to output/static-site/",
-      "Typography: headings use system-ui, sans-serif, body uses system-ui, sans-serif"
+      "Typography: headings use 'Cormorant Garamond', Georgia, serif, body uses 'Inter', system-ui, sans-serif"
     ]
   },
   "qa": {
@@ -717,6 +863,7 @@
       "Screen reader test with VoiceOver (macOS) or NVDA (Windows)",
       "Color contrast check: primary button, body text, footer text",
       "Skip link visible and functional on first Tab keypress",
+      "Gallery: keyboard navigation through filter buttons and images",
       "Contact: form labels linked, required fields marked, error states announced"
     ],
     "seoChecks": [

@@ -26,6 +26,7 @@ import type { AgentConfig } from "../orchestrator/agent-runner.js";
 import type { WorkflowState } from "../orchestrator/workflow-state.js";
 import type { WebsiteBlueprint, BusinessData, ProjectMeta } from "../schemas/blueprint.types.js";
 import { getSection, extractHex } from "../core/markdown-parser.js";
+import { STITCHFY_VERSION, WEBSITE_BLUEPRINT_SCHEMA_VERSION } from "../core/version.js";
 import * as path from "path";
 
 // ─── Compliance flag detection ────────────────────────────────────────────────
@@ -205,10 +206,10 @@ async function run(state: WorkflowState): Promise<Partial<WebsiteBlueprint>> {
   // ── Project meta ──────────────────────────────────────────────────────────
 
   const project: ProjectMeta = {
-    schemaVersion: "1.0",
+    schemaVersion: WEBSITE_BLUEPRINT_SCHEMA_VERSION,
     generatedAt: new Date().toISOString(),
     sourceFile: path.basename(inputPath),
-    frameworkVersion: "2.0.0",
+    frameworkVersion: STITCHFY_VERSION,
   };
 
   console.log(`  ✓  Extracted: ${name} (${industry || "unknown industry"})`);

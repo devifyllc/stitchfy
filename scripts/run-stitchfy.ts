@@ -34,7 +34,7 @@ async function main() {
     const state = await runPipeline(inputPath, outputDir);
     process.exit(state.stage === "complete" ? 0 : 1);
   } catch (err) {
-    console.error("Fatal error:", err);
+    console.error("Fatal error:", err instanceof Error ? err.message : err);
     process.exit(1);
   }
 }

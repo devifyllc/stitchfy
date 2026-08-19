@@ -42,7 +42,7 @@ async function main() {
   const outputDir = path.resolve(getArg("--output") ?? "output");
 
   console.log(`\n${"━".repeat(52)}`);
-  console.log("  Stitchfy — Codebase Analysis (Phase 8.5A)");
+  console.log("  Stitchfy — Codebase Analysis");
   console.log("━".repeat(52));
   console.log(`  Repository: ${repositoryPath}`);
   if (systemId) console.log(`  System:     ${systemId} (standalone tagging only — no modernization solution)`);
@@ -75,7 +75,7 @@ async function main() {
     console.log("━".repeat(52));
     process.exit(0);
   } catch (err) {
-    console.error("Fatal error:", err);
+    console.error("Fatal error:", err instanceof Error ? err.message : err);
     process.exit(1);
   }
 }

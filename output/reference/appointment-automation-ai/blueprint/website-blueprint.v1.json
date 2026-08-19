@@ -1,9 +1,9 @@
 {
   "project": {
     "schemaVersion": "1.0",
-    "generatedAt": "2026-08-19T21:51:02.446Z",
+    "generatedAt": "2026-08-19T22:48:42.553Z",
     "sourceFile": "appointment-automation-ai.md",
-    "frameworkVersion": "2.0.0"
+    "frameworkVersion": "2.1.0"
   },
   "business": {
     "name": "Riverside Wellness Studio",

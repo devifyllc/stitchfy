@@ -1,7 +1,7 @@
 {
   "name": "stitchfy",
   "version": "2.1.0",
-  "description": "AI-powered Markdown-to-static-website framework for small and mid-sized businesses",
+  "description": "Markdown-driven solution-engineering framework for traceable architecture, codebase evidence, and implementation-oriented artifacts",
   "license": "Apache-2.0",
   "author": "Devify LLC",
   "repository": {
@@ -13,6 +13,8 @@
     "solution": "tsx scripts/run-solution.ts",
     "analyze:codebase": "tsx scripts/analyze-codebase.ts",
     "reference:validate": "tsx scripts/reference-validate.ts",
+    "rc:validate": "tsx scripts/rc-validate.ts",
+    "test:contracts": "tsx --test tests/contracts/solution-blueprint-v1.contract.test.ts tests/contracts/versioning.contract.test.ts tests/contracts/cli-contract.test.ts",
     "validate": "tsx scripts/validate.ts",
     "build:site": "tsx scripts/build-site.ts",
     "build:site:stitch": "tsx scripts/build-site-stitch.ts",
@@ -20,7 +22,7 @@
     "audit:stitch": "tsx scripts/audit-site.ts --dir stitch",
     "audit:both": "tsx scripts/audit-site.ts --dir both",
     "typecheck": "tsc --noEmit",
-    "test": "tsx --test tests/discovery.test.ts tests/planning.test.ts tests/workflow-generation.test.ts tests/integration-generation.test.ts tests/security-governance.test.ts tests/integration-export.test.ts tests/ai-agent-generation.test.ts tests/observability-generation.test.ts tests/cloud-generation.test.ts tests/modernization-generation.test.ts tests/codebase-analysis.test.ts tests/modernization-exporters.test.ts tests/reference-solutions.test.ts"
+    "test": "tsx --test tests/discovery.test.ts tests/planning.test.ts tests/workflow-generation.test.ts tests/integration-generation.test.ts tests/security-governance.test.ts tests/integration-export.test.ts tests/ai-agent-generation.test.ts tests/observability-generation.test.ts tests/cloud-generation.test.ts tests/modernization-generation.test.ts tests/codebase-analysis.test.ts tests/modernization-exporters.test.ts tests/reference-solutions.test.ts tests/contracts/solution-blueprint-v1.contract.test.ts tests/contracts/versioning.contract.test.ts tests/contracts/cli-contract.test.ts"
   },
   "dependencies": {
     "next": "^14.2.0",

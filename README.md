@@ -552,6 +552,8 @@ vercel --prebuilt output/stitch-site
 
 Stitchfy began as a website-only generator and evolved into the broader solution-engineering framework described above: website generation became one capability among eight, selected via a capability registry rather than hardcoded into the pipeline. The website pipeline documented earlier in this README is unchanged and keeps working exactly as described. See [docs/architecture/ARCHITECTURE.md](docs/architecture/ARCHITECTURE.md) for the full design rationale and [docs/architecture/ROADMAP.md](docs/architecture/ROADMAP.md) for the phase-by-phase history and what remains deferred.
 
+Stitchfy has completed an Architecture Stabilization / Release Candidate review (RC1): [docs/architecture/PUBLIC_CONTRACTS.md](docs/architecture/PUBLIC_CONTRACTS.md) classifies what's stable vs. experimental, [docs/architecture/COMPATIBILITY.md](docs/architecture/COMPATIBILITY.md) defines the compatibility/deprecation policy, and [docs/architecture/RELEASE_CANDIDATE.md](docs/architecture/RELEASE_CANDIDATE.md) has the full gate-by-gate result.
+
 ### Codebase analysis (advanced)
 
 Legacy Modernization can optionally be enriched with real, read-only, local

@@ -879,26 +879,72 @@ anything; see `docs/reference/END_TO_END.md`'s "Artifact taxonomy."
   templates, docs, test infrastructure, one new script, two doc/README
   edits).
 
-## Architecture Stabilization / Release Candidate Review
+## Architecture Stabilization / Release Candidate Review — RC1 ✅ done
 
-A recommended future decision milestone, not started here. Phase 9
-produced enough end-to-end evidence to make these calls; it did not make
-them:
+The decision milestone Phase 9 recommended. Not a feature phase — no new
+capability, exporter, analyzer, or runtime provider was built. Outcome:
 
-- Is `SolutionBlueprint` stable enough to version (a real `schemaVersion`
-  bump, with a compatibility policy)?
-- Which of the deferred exporters (5.5B, 6.5, 7C, 8.5C) belong in
-  Stitchfy core, and which belong in separate, optional packages?
-- Which runtime providers (if any are ever built) belong in a separate
-  package from the architecture-generation core?
-- Should `development` merge to `main`?
-- Is the old website-only Phase 2 migration still worth doing?
-- Which APIs/contracts (capability interface, exporter interface,
-  `SolutionBlueprint` shape) should be considered public and stable?
-- What backwards-compatibility guarantees should Stitchfy commit to going
-  forward?
+- **Contracts classified** into STABLE/CANDIDATE/EXPERIMENTAL/INTERNAL —
+  `docs/architecture/PUBLIC_CONTRACTS.md`. Nothing is STABLE yet (this is
+  the first formal review); serialization contracts (`SolutionBlueprint`
+  v1, `WebsiteBlueprint` v1, both export manifests, `CodebaseAnalysisResult`)
+  and the 4 documented CLI commands are CANDIDATE; `StitchfyCapability`,
+  `CapabilityRegistry`, both exporter interfaces, `CodebaseAnalyzer`, and
+  the `Provider` family are EXPERIMENTAL.
+- **`SolutionBlueprint` v1 frozen** — `docs/architecture/decisions/ADR-002-solution-blueprint-v1-stability.md`.
+  A full Type/Zod parity audit across all 8 major domains (SolutionBlueprint,
+  Workflow Automation, Integrations, AI Agents, Security & Governance,
+  Observability, Cloud, Modernization) found **zero genuine mismatches** —
+  the shape was already internally consistent going in.
+- **Compatibility/deprecation policy documented** —
+  `docs/architecture/COMPATIBILITY.md`. `SolutionBlueprint.deployment`
+  (already `@deprecated`, already zero producers before this review) is
+  the one applied example; policy covers serialization/enum/CLI evolution
+  and Markdown-vs-JSON contract strength.
+- **Package boundaries decided** (documentation only, no physical
+  restructuring) — `docs/architecture/decisions/ADR-001-package-boundaries.md`
+  (core vs. optional/future) and `ADR-003-runtime-provider-boundary.md`
+  (why runtime providers stay outside core). Both offline exporters
+  (`generic-rest-typescript`, `generic-java-replatform`) stay in core;
+  Phase 5.5B/6.5/7C/8.5C stay out, explicitly, with rationale.
+- **A real, verified stabilization defect found and fixed**: generated
+  `project.frameworkVersion` disagreed with `package.json`'s version in
+  both pipelines (hardcoded `"2.0.0"` and `"0.1.0-solution"` against
+  `package.json`'s `"2.1.0"`) — centralized into `framework/core/version.ts`
+  (`STITCHFY_VERSION`, `SOLUTION_BLUEPRINT_SCHEMA_VERSION`,
+  `WEBSITE_BLUEPRINT_SCHEMA_VERSION`), regression-locked by
+  `tests/contracts/versioning.contract.test.ts`. Two other small,
+  targeted fixes: stale user-visible "(Phase 0)"/"(Phase 8.5A)" console
+  banners removed; the three CLI scripts' fatal-error handlers no longer
+  print a raw stack trace as the primary UX for expected errors (e.g. a
+  missing repository path).
+- **`tests/contracts/`** (new, 26 tests): `solution-blueprint-v1.contract.test.ts`,
+  `versioning.contract.test.ts`, `cli-contract.test.ts` — reuse Phase 9's
+  reference manifest/runner rather than duplicating pipeline logic.
+- **`npm run rc:validate`** (new) composes `typecheck`/`test`/`reference:validate`
+  and writes `output/release/rc-validation.{json,md}`; `npm run stitchfy`/
+  `npm run solution` stay manual gates by design.
+- **`package.json` description corrected** from the stale website-only
+  framing to the current solution-engineering scope; no version bump.
+- **`docs/architecture/RELEASE_CANDIDATE.md`**, **`KNOWN_TECHNICAL_DEBT.md`**,
+  and **`docs/releases/RC1.md`** — the full RC report, a verified (not
+  assumed) tech-debt register distinguishing real defects from deferred
+  scope, and user-facing release notes.
+- **357 tests passing** (331 existing + 26 new contract tests, 1
+  pre-existing environment-appropriate skip). Zero reference-solution
+  golden drift.
+- **RC Result: PASSED.** **Merge recommendation: READY WITH DOCUMENTED
+  CONDITIONS** (human review of the ADRs; a deliberate future decision
+  point before exposing an npm library surface) — see
+  `docs/architecture/RELEASE_CANDIDATE.md` for the full reasoning.
+  **Recommended package version: retain `2.1.0`** — no breaking
+  user-facing contract was introduced. No merge to `main`, no git tag, no
+  npm publish performed by this review — those remain separate, explicitly
+  human-approved actions.
 
-## Deferred tracks (unchanged by Phase 9, not automatically started)
+**Still deferred, intentionally — this review did not begin any of them:**
+
+## Deferred tracks (unchanged by Phase 9 or RC1, not automatically started)
 
 - **Phase 5.5B — Runtime Integration Providers** — actually calling a
   real external system from a generated `IntegrationExportBundle`.

@@ -41,6 +41,7 @@ import { runCodebaseAnalysis } from "../analysis/codebase/codebase-analysis.js";
 import { buildCodebaseAnalysisArtifacts } from "../analysis/codebase/generators/codebase-analysis-artifact.generator.js";
 import { generateModernizationExports } from "../capabilities/modernization/exporters/generate-modernization-exports.js";
 import type { ModernizationSection } from "../capabilities/modernization/schemas/modernization.types.js";
+import { STITCHFY_VERSION, SOLUTION_BLUEPRINT_SCHEMA_VERSION } from "../core/version.js";
 
 const DIVIDER = "━".repeat(52);
 
@@ -94,7 +95,7 @@ export async function runSolutionPipeline(
   modernizationExportTarget?: string
 ): Promise<SolutionContext> {
   console.log(`\n${DIVIDER}`);
-  console.log("  Stitchfy — Solution Pipeline (Phase 0)");
+  console.log("  Stitchfy — Solution Pipeline");
   console.log(DIVIDER);
   console.log(`  Input:  ${inputPath}`);
   console.log(`  Output: ${outputDir}`);
@@ -157,10 +158,10 @@ export async function runSolutionPipeline(
   // Planning").
   context.stage = "planning";
   const project: ProjectMeta = {
-    schemaVersion: "1.0",
+    schemaVersion: SOLUTION_BLUEPRINT_SCHEMA_VERSION,
     generatedAt: new Date().toISOString(),
     sourceFile: path.basename(inputPath),
-    frameworkVersion: "0.1.0-solution",
+    frameworkVersion: STITCHFY_VERSION,
   };
   context.solutionBlueprint = draftSolutionBlueprint(project, discoveryResult);
 
