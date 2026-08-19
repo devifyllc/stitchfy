@@ -13,6 +13,7 @@
 import type { EvidenceReference } from "../../../core/contracts/evidence.js";
 import type { InformationGap } from "../../../discovery/gaps/information-gap.types.js";
 import type { ImplementationArtifact } from "../../../core/contracts/artifact.js";
+import type { IntegrationExportBundle } from "../exporters/exporter.types.js";
 
 // ─── Phase 4 planning (integrations.planner.ts) ────────────────────────────
 
@@ -97,8 +98,21 @@ export interface DataContract {
 
 export type AuthenticationMechanism = "api-key" | "oauth2" | "basic" | "mtls" | "service-account" | "none" | "unknown";
 
+/**
+ * Where a credential is applied (header/query/cookie) — distinct from the
+ * mechanism itself (Phase 5.5A, task item 33): knowing `mechanism: "api-key"`
+ * never implies placement. Only populated when the source explicitly states
+ * it (e.g. "Authentication placement: X-API-Key request header"); never
+ * inferred from the mechanism alone.
+ */
+export interface AuthenticationPlacement {
+  location: "header" | "query" | "cookie" | "unknown";
+  name?: string;
+}
+
 export interface AuthenticationRequirement {
   mechanism: AuthenticationMechanism;
+  placement?: AuthenticationPlacement;
   notes?: string[];
   evidenceRefs?: EvidenceReference[];
 }
@@ -133,6 +147,8 @@ export interface RestOperation {
   method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
   path?: string;
   description?: string;
+  /** Correlates this REST endpoint to the IntegrationOperation it corresponds to — set only when unambiguous (Phase 5.5A, task item 28). */
+  integrationOperationId?: string;
 }
 
 /** Nested directly on IntegrationDefinition (1:1) rather than a separate integrationId-backed object — same information, no redundant cross-reference layer. */
@@ -197,6 +213,16 @@ export interface IntegrationsSection {
   implemented: boolean;
   plan?: IntegrationPlan;
   integrations: IntegrationDefinition[];
+  /**
+   * Implementation-oriented export bundles (Phase 5.5A) — generated from
+   * the validated `integrations` above by a technical-target exporter (see
+   * framework/capabilities/integrations/exporters/). Always present,
+   * possibly empty (same convention as `integrations`/`artifacts`/`notes`,
+   * not `plan?`, which is genuinely absent when there's nothing to plan).
+   * `IntegrationDefinition` stays the architecture; this is generated
+   * scaffolding derived from it — never a replacement for it.
+   */
+  exports: IntegrationExportBundle[];
   artifacts: ImplementationArtifact[];
   notes: string[];
 }

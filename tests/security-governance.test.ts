@@ -357,7 +357,7 @@ describe("Cross-capability dependency", () => {
         capabilityName: "Integrations",
         status: "executed",
         success: true,
-        output: { implemented: true, integrations, artifacts: [], notes: [] } satisfies IntegrationsSection,
+        output: { implemented: true, integrations, exports: [], artifacts: [], notes: [] } satisfies IntegrationsSection,
       }
     );
 

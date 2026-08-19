@@ -11,17 +11,9 @@ import { createArtifact } from "../../../core/contracts/artifact.js";
 import type { ImplementationArtifact } from "../../../core/contracts/artifact.js";
 import type { DiscoveryResult } from "../../../discovery/discovery-result.types.js";
 import type { IntegrationDefinition } from "../schemas/integrations.types.js";
+import { slugify } from "../../../core/slugify.js";
 
 const CAPABILITY_ID = "integrations";
-
-function slugify(text: string): string {
-  return text
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "")
-    .slice(0, 60)
-    .replace(/-+$/g, "");
-}
 
 function buildSystemLookup(discovery: DiscoveryResult): Map<string, string> {
   const lookup = new Map<string, string>();
@@ -165,7 +157,13 @@ function renderMarkdown(integration: IntegrationDefinition, discovery: Discovery
   return lines.join("\n");
 }
 
-function buildOpenApiDocument(integration: IntegrationDefinition): Record<string, unknown> | undefined {
+/**
+ * Exported (Phase 5.5A) so the generic-rest-typescript exporter's manifest/
+ * README generation can check whether an OpenAPI artifact already exists
+ * for this integration and reference its known deterministic path — never
+ * a second competing OpenAPI generator (task item 29: "one source of truth").
+ */
+export function buildOpenApiDocument(integration: IntegrationDefinition): Record<string, unknown> | undefined {
   if (!integration.restContract) return undefined;
   const validOps = integration.restContract.operations.filter((o) => o.method && o.path);
   if (validOps.length === 0) return undefined;

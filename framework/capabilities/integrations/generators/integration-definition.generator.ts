@@ -29,6 +29,7 @@ import type {
   DataContractField,
   AuthenticationMechanism,
   AuthenticationRequirement,
+  AuthenticationPlacement,
   ReliabilityRequirements,
   IntegrationSecurityRequirements,
   RestContract,
@@ -60,6 +61,25 @@ const AUTH_PATTERNS: Array<{ pattern: RegExp; mechanism: AuthenticationMechanism
 
 function classifyAuth(text: string): AuthenticationMechanism {
   return AUTH_PATTERNS.find((p) => p.pattern.test(text))?.mechanism ?? "unknown";
+}
+
+const HEADER_PLACEMENT_PATTERN = /^([A-Za-z0-9-]+)\s+(?:request\s+)?header$/i;
+const QUERY_PLACEMENT_PATTERN = /\bquery\s*(?:string|parameter)?\b/i;
+const COOKIE_PLACEMENT_PATTERN = /\bcookie\b/i;
+
+/**
+ * Preserves an explicit "Authentication placement: X-API-Key request
+ * header" detail line verbatim (Phase 5.5A) — knowing the auth mechanism
+ * (e.g. api-key) never implies where the credential goes (task item 20).
+ * Only fires on this exact detail key; never inferred from the mechanism.
+ */
+function classifyAuthPlacement(text: string | undefined): AuthenticationPlacement | undefined {
+  if (!text) return undefined;
+  const headerMatch = text.trim().match(HEADER_PLACEMENT_PATTERN);
+  if (headerMatch) return { location: "header", name: headerMatch[1] };
+  if (QUERY_PLACEMENT_PATTERN.test(text)) return { location: "query" };
+  if (COOKIE_PLACEMENT_PATTERN.test(text)) return { location: "cookie" };
+  return undefined;
 }
 
 const METHOD_PATH_PATTERN = /\b(GET|POST|PUT|PATCH|DELETE)\s+(\/\S+)/i;
@@ -118,9 +138,71 @@ function operationTypeFromMethod(method: string): IntegrationOperationType {
   }
 }
 
+/**
+ * Splits a comma/"and"-joined field list into individual entries, but never
+ * inside a parenthetical annotation — "externalOrderId (string, required),
+ * amount (number, required)" must stay 2 fields, not 4 (Phase 5.5A: a naive
+ * `text.split(/,| and /i)` would corrupt the new per-field type/required
+ * annotation the moment two annotated fields share one line).
+ */
 function splitDataPoints(text: string): string[] {
-  return text.split(/,| and /i).map((s) => s.trim()).filter((s) => s.length > 0);
+  const entries: string[] = [];
+  let depth = 0;
+  let current = "";
+  let i = 0;
+
+  while (i < text.length) {
+    if (text[i] === "(") depth++;
+    if (text[i] === ")") depth = Math.max(0, depth - 1);
+
+    if (depth === 0 && text[i] === ",") {
+      entries.push(current);
+      current = "";
+      i++;
+      continue;
+    }
+    if (depth === 0 && / and /i.test(text.slice(i, i + 5))) {
+      entries.push(current);
+      current = "";
+      i += 5;
+      continue;
+    }
+    current += text[i];
+    i++;
+  }
+  entries.push(current);
+
+  return entries.map((s) => s.trim()).filter((s) => s.length > 0);
 }
+
+const FIELD_ANNOTATION_PATTERN = /^(.+?)\s*\(([^()]+)\)\s*$/;
+const FIELD_ANNOTATION_BODY_PATTERN = /^(string|number|boolean)\s*,\s*(required|optional)$/i;
+
+/**
+ * Parses an optional "name (type, required|optional)" annotation (Phase
+ * 5.5A — needed so a fully explicit example can reach export readiness
+ * "ready"). A bare name with no parenthetical (every example before this
+ * phase) is unaffected — type/required stay undefined exactly as before.
+ * Never invents a type/requiredness when the annotation isn't present or
+ * doesn't match this exact shape.
+ */
+function parseFieldEntry(raw: string, source: string): DataContractField {
+  const match = raw.match(FIELD_ANNOTATION_PATTERN);
+  if (!match) return { name: raw, source };
+
+  const bodyMatch = match[2].trim().match(FIELD_ANNOTATION_BODY_PATTERN);
+  if (!bodyMatch) return { name: raw, source };
+
+  return {
+    name: match[1].trim(),
+    type: bodyMatch[1].toLowerCase(),
+    required: bodyMatch[2].toLowerCase() === "required",
+    source,
+  };
+}
+
+/** Reused by generic-rest-typescript.readiness.ts (Phase 5.5A) so the export-readiness "unresolved data sensitivity" check can't drift from this gap's actual topic string. */
+export const DATA_SENSITIVITY_GAP_TOPIC = "Integration data sensitivity";
 
 // ─── Sub-builders ───────────────────────────────────────────────────────────
 
@@ -131,25 +213,25 @@ function buildDataContracts(
 ): DataContract[] {
   const contracts: DataContract[] = [];
 
-  const responseText = details["Expected response"] ?? details["Response"];
+  const responseText = details["Response fields"] ?? details["Expected response"] ?? details["Response"];
   if (responseText) {
     contracts.push({
       id: nextContractId(),
       name: "Response",
       direction: "response",
-      fields: splitDataPoints(responseText).map((name): DataContractField => ({ name, source: responseText })),
+      fields: splitDataPoints(responseText).map((entry) => parseFieldEntry(entry, responseText)),
       sensitivity: "unknown",
       evidenceRefs,
     });
   }
 
-  const requestText = details["Request"] ?? details["Payload"] ?? details["Data sent"];
+  const requestText = details["Request fields"] ?? details["Request"] ?? details["Payload"] ?? details["Data sent"];
   if (requestText) {
     contracts.push({
       id: nextContractId(),
       name: "Request",
       direction: "request",
-      fields: splitDataPoints(requestText).map((name): DataContractField => ({ name, source: requestText })),
+      fields: splitDataPoints(requestText).map((entry) => parseFieldEntry(entry, requestText)),
       sensitivity: "unknown",
       evidenceRefs,
     });
@@ -242,7 +324,7 @@ function buildGaps(
   if (customerDataGap) {
     gaps.push({
       id: nextGapId(),
-      topic: "Integration data sensitivity",
+      topic: DATA_SENSITIVITY_GAP_TOPIC,
       question: `What exact data crosses this boundary for "${purpose}"? Discovery's data-sensitivity gap (${customerDataGap.id}) is still unresolved.`,
       importance: "high",
       blocking: false,
@@ -304,7 +386,12 @@ function buildOne(
   const { pattern: interactionPattern, protocol } = classifyInteraction(allText, Boolean(methodPath));
 
   const authMechanism = classifyAuth(details["Authentication"] ?? allText);
-  const authentication: AuthenticationRequirement = { mechanism: authMechanism, evidenceRefs: candidate.evidenceRefs };
+  const authPlacement = classifyAuthPlacement(details["Authentication placement"]);
+  const authentication: AuthenticationRequirement = {
+    mechanism: authMechanism,
+    ...(authPlacement ? { placement: authPlacement } : {}),
+    evidenceRefs: candidate.evidenceRefs,
+  };
 
   const dataContracts = buildDataContracts(details, candidate.evidenceRefs, ids.contract);
 
@@ -319,9 +406,6 @@ function buildOne(
   let operations = workflowOperations;
   let restContract: RestContract | undefined;
   if (methodPath) {
-    restContract = {
-      operations: [{ method: methodPath.method, path: methodPath.path, description: details["Integration method"] ?? candidate.purpose }],
-    };
     if (operations.length === 0) {
       operations = [
         {
@@ -333,6 +417,25 @@ function buildOne(
         },
       ];
     }
+
+    // Correlates the one explicit REST endpoint to the one integration
+    // operation it produced (Phase 5.5A) — only when unambiguous. Phase 4
+    // only ever extracts a single method+path per integration today, so
+    // "exactly one operation" is the honest, non-fuzzy case to link; 0 or
+    // 2+ operations stay uncorrelated rather than guessed (task item 28).
+    const integrationOperationId = operations.length === 1 ? operations[0].id : undefined;
+
+    restContract = {
+      ...(details["Base URL"] ? { baseUrl: details["Base URL"] } : {}),
+      operations: [
+        {
+          method: methodPath.method,
+          path: methodPath.path,
+          description: details["Integration method"] ?? candidate.purpose,
+          ...(integrationOperationId ? { integrationOperationId } : {}),
+        },
+      ],
+    };
   }
 
   let webhookContract: WebhookContract | undefined;

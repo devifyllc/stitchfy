@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { EvidenceReferenceSchema } from "../../../schemas/planning/planning.schema.js";
+import { EvidenceReferenceSchema, ArchitectureReferenceSchema } from "../../../schemas/planning/planning.schema.js";
 import { InformationGapSchema } from "../../../schemas/discovery/discovery-result.schema.js";
 
 const IntegrationCandidateSchema = z.object({
@@ -53,8 +53,14 @@ const DataContractSchema = z.object({
 
 const unknownOrBoolean = z.union([z.boolean(), z.literal("unknown")]);
 
+const AuthenticationPlacementSchema = z.object({
+  location: z.enum(["header", "query", "cookie", "unknown"]),
+  name: z.string().optional(),
+});
+
 const AuthenticationRequirementSchema = z.object({
   mechanism: z.enum(["api-key", "oauth2", "basic", "mtls", "service-account", "none", "unknown"]),
+  placement: AuthenticationPlacementSchema.optional(),
   notes: z.array(z.string()).optional(),
   evidenceRefs: z.array(EvidenceReferenceSchema).optional(),
 });
@@ -85,6 +91,7 @@ const RestOperationSchema = z.object({
   method: z.enum(["GET", "POST", "PUT", "PATCH", "DELETE"]).optional(),
   path: z.string().optional(),
   description: z.string().optional(),
+  integrationOperationId: z.string().optional(),
 });
 
 const RestContractSchema = z.object({
@@ -145,10 +152,46 @@ const ImplementationArtifactSchema = z.object({
   generatedAt: z.string().min(1),
 });
 
+// ─── Export bundles (Phase 5.5A) ────────────────────────────────────────────
+
+const ExportReadinessReasonSchema = z.object({
+  code: z.string().min(1),
+  description: z.string().min(1),
+  severity: z.enum(["info", "warning", "blocking"]),
+  architectureRefs: z.array(ArchitectureReferenceSchema),
+});
+
+const ExportReadinessSchema = z.object({
+  integrationId: z.string().min(1),
+  exporterId: z.string().min(1),
+  status: z.enum(["ready", "needs-review", "blocked", "unsupported"]),
+  reasons: z.array(ExportReadinessReasonSchema),
+  informationGapIds: z.array(z.string()),
+  securityRequirementIds: z.array(z.string()),
+  riskIds: z.array(z.string()),
+});
+
+const GeneratedSourceFileSchema = z.object({
+  path: z.string().min(1),
+  language: z.enum(["typescript", "json", "markdown", "yaml", "text"]),
+  role: z.enum(["client", "types", "configuration", "manifest", "documentation", "test"]),
+});
+
+const IntegrationExportBundleSchema = z.object({
+  id: z.string().min(1),
+  integrationId: z.string().min(1),
+  exporterId: z.string().min(1),
+  readiness: ExportReadinessSchema,
+  files: z.array(GeneratedSourceFileSchema),
+  artifacts: z.array(ImplementationArtifactSchema),
+  notes: z.array(z.string()),
+});
+
 export const IntegrationsSectionSchema = z.object({
   implemented: z.boolean(),
   plan: IntegrationPlanSchema.optional(),
   integrations: z.array(IntegrationDefinitionSchema),
+  exports: z.array(IntegrationExportBundleSchema),
   artifacts: z.array(ImplementationArtifactSchema),
   notes: z.array(z.string()),
 });

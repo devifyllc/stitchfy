@@ -8,6 +8,13 @@
  * itself never depends on it. `implemented: true` means Stitchfy generated
  * and validated one or more vendor-neutral integration specifications —
  * never that it connected to or exchanged data with an external system.
+ *
+ * `exports` always starts empty here (Phase 5.5A) — export-bundle
+ * generation needs SecurityArchitecture, which doesn't exist yet at this
+ * capability's own execution time (security-governance registers after
+ * integrations). It's populated by a post-loop step in
+ * solution-orchestrator.ts instead — see
+ * framework/capabilities/integrations/exporters/generate-integration-exports.ts.
  */
 
 import type { StitchfyCapability } from "../../core/contracts/capability.js";
@@ -51,7 +58,7 @@ async function execute(
 
   if (!discovery || integrationPlan.candidates.length === 0) {
     notes.push("No cross-system boundary identified to specify an integration for.");
-    return { implemented: false, plan: integrationPlan, integrations: [], artifacts: [], notes };
+    return { implemented: false, plan: integrationPlan, integrations: [], exports: [], artifacts: [], notes };
   }
 
   const workflowResult = context.capabilityResults.find((r) => r.capabilityId === "workflow-automation");
@@ -97,7 +104,7 @@ async function execute(
       : "No integration specification could be validated for this business context."
   );
 
-  return { implemented: integrations.length > 0, plan: integrationPlan, integrations, artifacts, notes };
+  return { implemented: integrations.length > 0, plan: integrationPlan, integrations, exports: [], artifacts, notes };
 }
 
 async function validate(
@@ -112,7 +119,7 @@ async function validate(
 export const integrationsCapability: StitchfyCapability<CapabilityAssessment, IntegrationsSection> = {
   id: INTEGRATIONS_CAPABILITY_ID,
   name: "Integrations",
-  version: "0.2.0",
+  version: "0.3.0",
   supports,
   assess,
   plan,

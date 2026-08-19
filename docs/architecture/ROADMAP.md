@@ -276,23 +276,77 @@ requirements can be represented explicitly.
   `context.capabilityResults` for sibling output — `orchestrator.ts` (the
   website pipeline) stays untouched.
 
-## Phase 5.5 — Integration Provider / Export Adapters
+## Phase 5.5A — Integration Export Adapter Foundation ✅ done
 
-Formalizes what Phase 4's "Still deferred" section already scoped out —
-now placed after Security & Governance rather than immediately after
-Integrations, since provider-specific, increasingly executable artifacts
-should be generated only once security, data-protection, auditability, and
-governance requirements can be represented explicitly for whatever they'd
-be built on top of.
+The first layer that converts a validated `IntegrationDefinition` into
+implementation-oriented artifacts — deliberately placed after Security &
+Governance (not immediately after Integrations) so export readiness can
+consume real `SecurityRequirement`/`RiskAssessment` data, never a generic
+checklist. See `docs/architecture/ARCHITECTURE.md` "Integration Export
+Adapter Foundation (Phase 5.5A)" for the full design, and
+`framework/capabilities/integrations/exporters/README.md` for the
+Exporter/Provider boundary.
+
+- `IntegrationExporter` contract + `IntegrationExporterRegistry`
+  (`framework/capabilities/integrations/exporters/`) — deliberately
+  separate from `IntegrationProvider` (still unimplemented); adding a new
+  export target is a `register()` call, never a switch statement.
+- First concrete exporter: `generic-rest-typescript` — supports an
+  `IntegrationDefinition` only via its explicit `restContract`, never
+  system name or SaaS classification.
+- `ExportReadiness` (`ready`/`needs-review`/`blocked`/`unsupported`, no
+  numeric score) — security-aware: consumes (never regenerates)
+  `SecurityArchitecture.requirements`/`.risks` applying to the integration.
+- Generated bundle: `client.ts` (transport-abstracted, every method throws
+  `"Transport implementation not configured."`), `types.ts` (request/
+  response interfaces from real `DataContract`s only, every field
+  disclaiming that names are derived from source prose), `config.ts`
+  (credential *shape* only, never a value), `integration.manifest.json`,
+  `README.md` — 5 files under
+  `output/artifacts/integrations/exporters/<slug>/<target>/`.
+- Small additive, backward-compatible Phase 4 extensions:
+  `AuthenticationRequirement.placement?`, `RestContract.baseUrl` (existed,
+  never populated), `RestOperation.integrationOperationId?` (unambiguous
+  correlation only), per-field `(type, required)` annotations reusing
+  `DataContractField.type`/`.required`.
+- Export-bundle generation runs as a post-capabilities-loop step in
+  `solution-orchestrator.ts` (`generate-integration-exports.ts`), not
+  inside `integrations.capability.ts`'s own `execute()` — see
+  ARCHITECTURE.md for why (security-governance registers after
+  integrations, so `SecurityArchitecture` doesn't exist yet at that point).
+- Fourth example, `examples/solution/rest-export-ready.md` — fully explicit
+  (base URL, method+path, auth mechanism + placement, typed/required
+  request+response fields) — proves readiness can reach `ready` purely from
+  explicit information; `api-integration.md` stays `needs-review` (API-key
+  placement genuinely unresolved); `appointment-business.md`/
+  `invoice-approval.md` produce no export bundle at all (unsupported, not
+  an error).
+- `tests/integration-export.test.ts` — registry, support/readiness across
+  all 4+1 examples, method/path preservation, unknown-value preservation
+  (base URL, auth placement, field types/requiredness), no fabricated
+  fields, security/risk id propagation, secret-literal rejection, method-
+  name collision detection, manifest/bundle integrity, zero network calls,
+  Exporter/Provider separation.
+
+**Still deferred — Phase 5.5B:**
+
+## Phase 5.5B — Runtime Integration Providers
 
 - Real vendor clients (Google Calendar, QuickBooks, WhatsApp, Stripe,
   Salesforce, ...) — none exist; no HTTP call is made anywhere in this
   codebase.
-- OAuth2/API-key flows, credential/secret storage, token refresh.
+- An actual implementation of `IntegrationProvider.call()` — real
+  `HttpTransport` implementation for the scaffolding Phase 5.5A generates.
+- OAuth2/API-key flows, credential/secret storage, token refresh,
+  environment-secret reading.
 - Concrete exporters translating a validated `IntegrationDefinition` into a
   vendor's actual API shape (beyond the generic OpenAPI artifact already
-  generated when justified).
-- Actual HTTP calls, webhook receivers/runtime, retries, message brokers.
+  generated when justified), and additional export targets (java, openapi,
+  webhook-typescript, aws-lambda, azure-function, vendor-specific targets)
+  plus explicit multi-target selection when an integration matches more
+  than one registered exporter.
+- Actual HTTP calls, webhook receivers/runtime, retries, timeouts, circuit
+  breakers, message brokers.
 - Real IAM configuration, cloud security groups, WAF rules, or any concrete
   encryption configuration — `SecurityRequirement`/`DataProtectionRequirement`
   stay pure domain models until this phase.

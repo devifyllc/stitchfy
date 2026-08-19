@@ -21,6 +21,8 @@ IntegrationDefinition[]
      ↓ validators/integration-definition.validator.ts   (referential integrity, boundary, duplicates)
      ↓ generators/integration-artifact.generator.ts     (JSON + Markdown-with-Mermaid, + OpenAPI when justified)
 ImplementationArtifact[]  →  output/artifacts/integrations/
+     ↓ exporters/ (Phase 5.5A, run separately from solution-orchestrator.ts — see below)
+IntegrationExportBundle[]  →  output/artifacts/integrations/exporters/<slug>/<target>/
 ```
 
 ## Structure
@@ -32,6 +34,10 @@ integrations/
 │   └── integration-artifact.generator.ts     ← IntegrationDefinition → JSON/Markdown/OpenAPI artifacts
 ├── validators/
 │   └── integration-definition.validator.ts   ← referential integrity, same-system-boundary, duplicates
+├── exporters/                                 ← Phase 5.5A — IntegrationDefinition → implementation scaffolding
+│   ├── exporter.types.ts, exporter-registry.ts, default-exporters.ts, generate-integration-exports.ts
+│   ├── naming/typescript-identifier.ts
+│   └── generic-rest-typescript/               ← the first concrete exporter (see exporters/README.md)
 ├── schemas/
 │   ├── integrations.types.ts
 │   └── integrations.schema.ts
@@ -83,7 +89,9 @@ below).
   blocking customer-data gap already exists, a new integration-level gap
   points back to it by id instead of guessing a data-sensitivity answer.
 
-See `docs/architecture/ARCHITECTURE.md` "Integration Architecture" for the
-full design rationale, and `docs/architecture/ROADMAP.md` for **Phase 4.5 —
-Provider / Export Adapter Implementation** (real vendor clients, OAuth
-flows, exporters to concrete API shapes) and beyond.
+See `docs/architecture/ARCHITECTURE.md` "Integration Architecture" (Phase 4)
+and "Integration Export Adapter Foundation" (Phase 5.5A) for the full design
+rationale, `exporters/README.md` for the Exporter/Provider boundary, and
+`docs/architecture/ROADMAP.md` for **Phase 5.5B — Runtime Integration
+Providers** (real vendor clients, OAuth flows, an implemented
+`IntegrationProvider`) and beyond.

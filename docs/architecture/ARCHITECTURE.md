@@ -834,6 +834,149 @@ memory audit) is deliberately out of scope here too — the `SecurityDomain`/
 AI Agent's actions once that capability exists (Phase 6), but nothing
 AI-Agent-specific is implemented yet.
 
+## Integration Export Adapter Foundation (Phase 5.5A)
+
+The first capability output through Phase 5 is a *domain model* — never
+anything executable. Phase 5.5A introduces the first layer that converts a
+validated `IntegrationDefinition` into implementation-oriented TypeScript
+scaffolding for a specific technical target
+(`framework/capabilities/integrations/exporters/`), while keeping that
+generation-time concept (`IntegrationExporter`) strictly separate from the
+existing runtime concept (`IntegrationProvider`,
+`framework/providers/integrations/integration-provider.types.ts`, still
+unimplemented). Neither extends nor imports the other.
+
+### Why export generation isn't inside `integrations.capability.ts`
+
+`default-capabilities.ts` registers capabilities in this order: website,
+workflow-automation, ai-agents, **integrations**, cloud,
+**security-governance**, observability, modernization —
+`CapabilityRegistry.getAll()` returns a `Map`'s insertion order, and
+`solution-orchestrator.ts`'s capability loop runs `execute()` in that exact
+order. This means `integrations.capability.ts`'s own `execute()` runs
+*before* `security-governance` has run at all, so it cannot see
+`SecurityArchitecture` via the usual `context.capabilityResults.find(...)`
+sibling-read pattern Phase 4/5 established (that pattern only works for a
+capability that has already executed) — and export readiness genuinely
+needs `SecurityArchitecture` (task requirement: "Security & Governance
+constraints can be examined in the generated bundle before provider
+execution exists").
+
+Rather than reordering the registry (which would break security-governance's
+own dependency on already-validated `IntegrationDefinition[]`), export-bundle
+generation is a pure function,
+`exporters/generate-integration-exports.ts`, invoked from
+`solution-orchestrator.ts` in a step positioned *after* the full capabilities
+loop completes (both `integrations` and `security-governance` have executed
+and been merged onto `context.solutionBlueprint`) and *before* the existing
+artifact collection. It mutates `context.solutionBlueprint.integrations.exports`/
+`.artifacts` — the same object reference `capabilityResults` already points
+to, so the existing generic artifact-writer picks up the new files with zero
+further changes. This mirrors the one precedent already in that file (the
+`security-governance` special case in `mergeCapabilityOutput`) — a second,
+equally-documented exception, not a new general orchestration mechanism.
+`integrations.capability.ts`'s own `execute()` only initializes `exports: []`.
+
+### Readiness — deterministic, no numeric score
+
+`ExportReadiness.status` is one of `ready`/`needs-review`/`blocked`/
+`unsupported`. `unsupported` means the exporter's `supports()` check failed
+(source of truth is the `IntegrationDefinition`'s own `restContract` —
+never system name or SaaS classification) — not an error, no bundle
+produced at all (verified: `appointment-business.md`'s Google Calendar and
+`invoice-approval.md`'s QuickBooks integrations, both `interactionPattern:
+"unknown"`, produce nothing under `output/artifacts/integrations/exporters/`).
+`ready` vs `needs-review` is decided by whether anything *implementation-
+relevant* stays unresolved (authentication mechanism itself, or a known
+mechanism with unresolved placement, or unresolved data sensitivity) — an
+unknown `baseUrl` or unresolved field requiredness do **not** downgrade
+status on their own, since both become safe, honestly-represented required
+external configuration rather than blocking anything. `blocked` only fires
+when a `SecurityRequirement` applying to the integration is both
+`priority: "required"` and `status: "needs-information"` simultaneously —
+verified to never fire for any of the 4 pre-existing examples, matching the
+"use sparingly" instruction.
+
+### Security is consumed, never regenerated
+
+`assessReadiness()` filters `SecurityArchitecture.requirements`/`.risks` by
+`ArchitectureReference{entityType:"integration", entityId}` — the exact same
+reference shape Phase 5 already produces. Nothing here re-derives a security
+requirement; it either already exists (with its own evidence chain intact)
+or it doesn't. Verified against `api-integration.md`: security-governance
+produces 3 `SecurityRequirement`s and 1 `RiskAssessment` referencing
+`INT-001`, and the export README/manifest cite them by id.
+
+### Content isn't duplicated three times
+
+`IntegrationExportBundle.files: GeneratedSourceFile[]` (the shape persisted
+on `IntegrationsSection.exports`) carries `{path, role, language}` only — no
+`content`. `IntegrationExportBundle.artifacts` is the exact same
+`ImplementationArtifact[]` pushed onto `IntegrationsSection.artifacts`
+(shared object references, not copies), so the full generated source exists
+exactly once per file in the final `solution-blueprint.v1.json`, in the one
+place `ImplementationArtifact.content` already lives — the same precedent
+`integration-artifact.generator.ts` already set by JSON-stringifying the
+full `IntegrationDefinition` into a `.integration.json` artifact's content.
+
+### The field-name-fabrication risk
+
+`DataContractField.name` (Phase 4) is always free text split from a source
+sentence — `"Order identifier"`, never a real API wire-format field name.
+Naively camelCasing this into a TypeScript property name would read as
+authoritative when it isn't. Every generated `types.ts` interface therefore
+carries an explicit disclaiming doc-comment, plus a per-field `/** From:
+"..." */` comment, saying the name is derived from source prose and unverified
+against the real contract. `field.type` maps only `string`/`number`/`boolean`
+verbatim; anything else (including simply unset) renders TypeScript
+`unknown` — never an invented shape. `field.required === true` renders a
+required property; `false` or unset both render optional (`?:`), a documented
+convention, not a guess.
+
+### Naming
+
+`exporters/naming/typescript-identifier.ts`'s `toSafeTypeScriptIdentifier()`
+splits on non-alphanumeric characters *and* camelCase/PascalCase boundaries
+— "Fulfillment API" → `FulfillmentApi` (matches the task's own example
+exactly), and critically, an already-camelCase source field like
+`"externalOrderId"` is preserved as `externalOrderId`, not flattened to
+`externalorderid` (a real bug caught during this phase's own verification —
+the initial version only split on non-alphanumeric separators and silently
+lowercased any single "word" with no internal separator). Collision
+detection (`detectIdentifierCollisions()`) is a separate, explicit step run
+by validation, not generation — generation stays deterministic and never
+throws; a genuine collision is a validation error instead.
+
+### Small additive Phase 4 changes
+
+Four optional, backward-compatible additions to `IntegrationDefinition`
+made export generation possible without touching Phase 4's existing
+decisions: `AuthenticationRequirement.placement?` (explicit header/query/
+cookie location — never inferred from the mechanism alone),
+`RestContract.baseUrl` (the field existed since Phase 4 but nothing ever
+populated it), `RestOperation.integrationOperationId?` (correlates the one
+explicit REST endpoint to the one `IntegrationOperation` it produced — only
+set when unambiguous, i.e. exactly one operation exists; left `undefined`
+otherwise rather than guessed), and per-field `(type, required)`
+parenthetical annotations reusing `DataContractField.type`/`.required`
+(already in the Phase 4 schema, never previously populated). A real bug was
+found and fixed while adding the last one: `splitDataPoints()`'s naive
+`text.split(/,| and /i)` would have corrupted two annotated fields sharing
+one line (commas inside `(...)` also get split) — fixed to be
+paren-depth-aware before the annotation syntax was wired up. All four
+changes are inert for the 4 pre-existing examples (none use the new syntax).
+
+### Selection policy
+
+`generate-integration-exports.ts`: exactly one supported exporter → assess
+readiness, generate when `ready`/`needs-review` (a `blocked` bundle still
+gets a diagnostic manifest/README, just no `client.ts`/`types.ts`/`config.ts`
+— explainability is never discarded); zero supported exporters → no bundle;
+2+ supported exporters → no bundle, a note explaining that explicit target
+selection isn't implemented yet. Only one exporter exists today, so the 2+
+branch is currently unreachable but documented for when a second target is
+added.
+
 ## Adaptation from the literal proposed folder tree
 
 The originally proposed structure gives every capability 4-5 subfolders

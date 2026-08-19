@@ -36,6 +36,7 @@ import { logAuditEvent } from "../governance/audit/audit-logger.js";
 import type { ProjectMeta } from "../schemas/blueprint.types.js";
 import type { WorkflowAutomationSection } from "../capabilities/workflow-automation/schemas/workflow-automation.types.js";
 import type { ImplementationArtifact } from "../core/contracts/artifact.js";
+import { generateIntegrationExports } from "../capabilities/integrations/exporters/generate-integration-exports.js";
 
 const DIVIDER = "━".repeat(52);
 
@@ -201,6 +202,32 @@ export async function runSolutionPipeline(inputPath: string, outputDir: string):
   // mergeCapabilityOutput above — assessRisks() is only the deterministic
   // empty-array fallback for when it didn't.
   context.solutionBlueprint.risks = context.solutionBlueprint.risks ?? assessRisks(context);
+
+  // Integration export-bundle generation (Phase 5.5A) needs SecurityArchitecture,
+  // which only exists once security-governance has run — it registers after
+  // integrations in default-capabilities.ts, so this can't happen inside
+  // integrations.capability.ts's own execute(). Runs here, once every
+  // capability has executed, mutating the SAME IntegrationsSection object
+  // capabilityResults already references (so the artifact collection below
+  // picks up the new files with zero further changes) — see
+  // docs/architecture/ARCHITECTURE.md "Integration Export Adapter Foundation
+  // (Phase 5.5A)".
+  const integrationsSection = context.solutionBlueprint.integrations;
+  if (integrationsSection && integrationsSection.integrations.length > 0) {
+    const { exports: exportBundles, artifacts: exportArtifacts, notes: exportNotes } = await generateIntegrationExports(
+      integrationsSection.integrations,
+      context.solutionBlueprint.security,
+      context.solutionBlueprint.governance,
+      (context.solutionBlueprint.automation as WorkflowAutomationSection | undefined)?.workflows ?? [],
+      context.solutionBlueprint.systems ?? []
+    );
+    integrationsSection.exports = exportBundles;
+    integrationsSection.artifacts.push(...exportArtifacts);
+    integrationsSection.notes.push(...exportNotes);
+    if (exportBundles.length > 0) {
+      ok(`Integration exports: generated ${exportBundles.length} bundle(s).`);
+    }
+  }
 
   // ── Implementation artifacts ─────────────────────────────────────────────
   // Any capability output may carry an `artifacts` array (see
