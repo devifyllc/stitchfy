@@ -443,12 +443,97 @@ for integrations, applied to AI agents. Not implemented.
   invocation, tool execution, memory implementation, telemetry — no real
   provider exists yet, same as Phase 5.5B for integrations.
 
-## Phase 7 — Cloud / Observability
+## Phase 7A — Observability and Operational Architecture ✅ done
 
-- First concrete `CloudProvider` adapter (behind
-  `framework/providers/cloud/`, vendor selectable, not hardcoded).
-- Real logging/metrics/tracing/alerting recommendations tied to whichever
-  capabilities are active in a given solution.
+The sixth fully-generated capability, and the second cross-cutting one
+(after Security & Governance): inspects `WorkflowDefinition[]`,
+`IntegrationDefinition[]`, `AIAgentDefinition[]`, `SecurityArchitecture`,
+and `GovernancePlan` — every other real capability's output — and produces
+a vendor-neutral operational-observability specification. See
+`docs/architecture/ARCHITECTURE.md` "Observability and Operational
+Architecture (Phase 7A)" for the full design, including a real signal-
+naming collision caught and fixed during this phase's own verification.
+
+- `ObservabilityArchitecture` (`framework/capabilities/observability/schemas/`)
+  — replaces the Phase 0 unstructured `string[]` model with
+  `TelemetryRequirement`, `ObservabilitySignal`, `LogRequirement`,
+  `MetricRequirement`, `CorrelationRequirement`, `HealthRequirement`,
+  `AlertRequirement`, `DashboardSpecification`, `AuditTelemetryMapping`,
+  `OperationalObjective` — every one evidence-backed via
+  `ArchitectureReference`/`EvidenceReference`, no new entity types needed
+  in either enum.
+- `observability.assessor.ts`/`.planner.ts` — structured selection from
+  Discovery-only structural proxies (multi-step processes, integration/AI
+  agent needs, explicit operational terminology); the real signal-
+  generation decisions happen entirely in `execute()`.
+- `generators/observability-architecture.generator.ts` — workflow
+  visibility (baseline outcome + decisions/approvals/notifications, never
+  one signal per plain step — a documented explosion-avoidance policy),
+  integration visibility (per-operation attempt/success/failure events,
+  per-integration count/failure/duration metrics, HTTP attributes only
+  when Phase 4 knows REST), AI agent visibility (session + tool-invocation
+  + escalation + human-approval events, metadata-only attributes by
+  construction — no code path reads message/response/prompt content),
+  security-aware telemetry (secrets → prohibited-data, unresolved/sensitive
+  classification → payload-avoidance requirement), audit mapping,
+  cross-component correlation (never a vendor trace format), health
+  requirements, narrow alert generation (explicit text or approval-
+  significance only), explicit-only operational objectives (no fabricated
+  threshold), and dashboards gated on having ≥1 real signal to show.
+- `validators/observability.validator.ts` — referential integrity, signal/
+  audit/alert/dashboard/objective integrity, signal-name collision
+  detection (reuses Phase 5.5A's `detectIdentifierCollisions()`), the
+  **threshold-provenance rule** (any concrete threshold must have real
+  evidence and be marked explicit), a secret-literal reject-list (reuses
+  Phase 5.5A's pattern), and a payload-attribute denylist (defense-in-depth
+  on top of the by-construction metadata-only guarantee).
+- New example, `examples/solution/operational-order-processing.md` —
+  explicit correlation-id requirement, explicit 5-consecutive-failure
+  alert threshold, explicit 95%/2-second objective, explicit no-secret/
+  no-payload-logging requirement — proving Stitchfy preserves stated
+  thresholds verbatim rather than inventing or discarding them. All 6
+  pre-existing examples (`appointment-business.md`, `invoice-approval.md`,
+  `api-integration.md`, `rest-export-ready.md`, `customer-support-agent.md`,
+  `invoice-triage-agent.md`) verified to produce evidence-backed,
+  non-fabricated observability output — including the invoice-triage
+  agent's zero tool-invocation telemetry (it has zero tools).
+- `tests/observability-generation.test.ts` (new) — 175 tests passing total.
+
+**Still deferred, intentionally:**
+
+- No telemetry emission/collection, no vendor SDK of any kind (OpenTelemetry,
+  Prometheus, Grafana, Datadog, New Relic, CloudWatch, Azure Monitor, GCP
+  Monitoring, Splunk, Loki, Tempo, Jaeger).
+- No infrastructure metrics (CPU/memory/disk/pod/container counts) — Cloud
+  Architecture (Phase 7B) doesn't exist yet, so there is no compute
+  architecture for these to describe.
+- No `ObservabilityProvider` of any kind.
+
+## Phase 7B — Vendor-Neutral Cloud Architecture
+
+- Deployment/runtime topology: what compute, storage, and network
+  architecture the generated solution implies — vendor-neutral, same
+  unknown-preserving discipline as every prior phase.
+- First concrete `CloudProvider` adapter (behind `framework/providers/cloud/`,
+  vendor selectable, not hardcoded) remains a *later* concern — Phase 7B
+  itself is the domain model, not an implementation.
+- Once real compute/deployment architecture exists, Observability's own
+  scope can extend to infrastructure metrics (CPU/memory/disk/pod counts) —
+  deliberately excluded from Phase 7A since there was nothing yet for them
+  to describe.
+
+## Phase 7C — Cloud / Observability Export & Provider Adapters
+
+Mirrors the Exporter-vs-Provider boundary Phases 5.5A/6.5 already
+established, applied to both Cloud (7B) and Observability (7A) architecture.
+Not implemented.
+
+- **Export side**: `ObservabilityArchitecture` → OpenTelemetry
+  instrumentation plan, Prometheus rules, Grafana dashboards, CloudWatch
+  alarms, Datadog monitors — no real generation exists yet.
+- **Runtime side**: `ObservabilityArchitecture`/Cloud architecture →
+  runtime telemetry/configuration APIs — no real provider exists yet, same
+  as Phase 5.5B/6.5's runtime sides.
 
 ## Phase 8 — Legacy Modernization
 

@@ -1154,6 +1154,168 @@ model invocation/tool execution/memory implementation/telemetry) — mirroring
 the Exporter-vs-Provider boundary Phase 5.5A already established for
 integrations. Neither is implemented here.
 
+## Observability and Operational Architecture (Phase 7A)
+
+`observability` was the last Phase 0 skeleton with an unstructured
+string-array model (`logging: string[]`, `metrics: string[]`, ...). Phase 7A
+makes it the sixth fully-generated capability, and the second
+cross-cutting one: it inspects `WorkflowDefinition[]`, `IntegrationDefinition[]`,
+`AIAgentDefinition[]`, `SecurityArchitecture`, and `GovernancePlan` — every
+other real capability's output — and produces a vendor-neutral operational-
+observability specification: what needs to be observable and why, never
+actual telemetry.
+
+### No registry change needed — the fourth confirmation
+
+`default-capabilities.ts`'s order (website, workflow-automation,
+integrations, ai-agents, cloud, **security-governance, observability**,
+modernization) already placed `observability` strictly after every
+capability it needs to consume, before this phase began. `execute()` reads
+all four as siblings via `context.capabilityResults.find(...)` — the exact
+pattern Phase 4/5/6 already established, extended to four reads instead of
+one/two/three. No `dependsOn`/`executionOrder` field was introduced — the
+fourth time in this project the static registration order alone has been
+sufficient for every capability dependency encountered.
+
+`assessObservability()` itself only ever reads `DiscoveryResult` (assessment
+runs in the `"planning"` stage, before any capability executes — the same
+constraint every assessor has). Its signals are necessarily structural
+proxies — a multi-step `BusinessProcess`, an `IntegrationNeed`, an
+`AIAgentNeed`, or explicit operational terminology in already-structured
+requirement/constraint/business-rule text — since the real
+`WorkflowDefinition[]`/`IntegrationDefinition[]`/`AIAgentDefinition[]` don't
+exist yet at that stage. The richer, decisive analysis (which signals,
+metrics, alerts actually get generated) happens entirely in `execute()`,
+once the real architecture is available.
+
+### Workflow signal policy — explosion avoidance is deliberate
+
+A workflow gets a baseline `started`/`completed`/`failed` event trio, plus
+one event per `WorkflowDecision`, per `WorkflowApproval` (request +
+outcome), and per `WorkflowNotification` — but **not** one signal per plain
+`WorkflowStep`. An external-task step's operational visibility is already
+covered by the matching `IntegrationOperation`'s own attempt/success/
+failure signals (built separately, from the Integration side) — duplicating
+that at the workflow-step level would explode the signal count for zero
+additional evidence. Decisions/approvals/notifications get individual
+signals because they represent genuinely distinct operational facts a plain
+step traversal doesn't.
+
+### AI telemetry — metadata-only by construction, not by a runtime filter
+
+The AI-signal builder (`aiAttrs()` in
+`observability-architecture.generator.ts`) only ever emits from a fixed,
+small set of operational identifiers — `agentId`, `toolId`, `outcome`,
+`escalationReason`. The function has no code path that reads message/
+response/prompt/conversation *content* at all, only real architecture ids
+— so there is structurally nothing to leak, not merely nothing that
+happened to survive an exclusion list. The validator's payload-attribute
+denylist (`message`, `response`, `prompt`, `body`, `payload`, `content`,
+`conversation`) is defense-in-depth verification of that guarantee, not the
+mechanism that provides it.
+
+### A real naming collision, caught and fixed during verification
+
+Phase 6's `AIAgentToolSpecification.name` is set to the same display name
+as the underlying `IntegrationOperation` it wraps (`kind:
+"integration-operation"`). A first version of this generator's tool-
+invocation signal name (`"${tool.name} ${outcome}"`) therefore collided
+textually with the integration-operation signal for the exact same real-
+world event (verified empirically: `customer-support-agent.md`'s "check
+availability" tool produced a signal-name collision the validator's own
+collision-detection rule correctly caught, which is what surfaced the bug).
+Fixed by prefixing tool-invocation signal names with `"Tool invocation: "`
+— the two signals describe related-but-distinct facts ("the operation
+happened" vs. "the agent specifically invoked it"), so both are kept, just
+disambiguated.
+
+### No numeric threshold is ever fabricated — the threshold-provenance rule
+
+`OperationalObjective.targetValue` and `AlertRequirement.threshold` are
+only populated when a dedicated regex (`PERCENT_PATTERN`/`TIME_PATTERN`/
+`COUNT_THRESHOLD_PATTERN`) finds a real, already-structured percentage/
+time/count value in `RequirementItem`/`Constraint`/`BusinessRule` text —
+never raw Markdown, never a default. `observability.validator.ts`
+independently re-checks this: any object carrying a concrete threshold-
+shaped string must have a non-empty `evidenceRefs`, and any threshold-
+shaped value on an object marked `explicit: false` is rejected outright —
+so even a future generator regression that tried to slip in a threshold
+without evidence, or mislabel a derived one as explicit, would fail
+validation rather than silently pass through.
+
+### Alerts stay narrow — explicit text or approval-significance only
+
+An `AlertRequirement` is only ever generated from (a) explicit operational
+text matching alert/notification language (the stated threshold/condition
+is preserved verbatim), or (b) a workflow's approval-required step (treated
+as inherently operationally significant — a pending human decision).
+Nothing else produces an alert; a plain integration or a workflow with no
+approval produces zero alerts, deliberately avoiding the "one alert per
+signal" explosion the task's own instructions warned against. An alert with
+an unresolved `destination`/`threshold` always surfaces a matching
+`InformationGap` rather than leaving the gap silent.
+
+### Security & Governance consumed, never re-derived
+
+A `SecurityRequirement` with `domain: "secrets"` becomes a
+`LogRequirement.prohibitedData` entry ("credential/API-key material")
+attached to the relevant integration's signals. A `DataProtectionRequirement`
+with any classification other than `public`/`internal` (i.e. `confidential`,
+`restricted`, or still `unknown`) becomes a `TelemetryRequirement` stating
+telemetry must avoid recording the associated payload until classification/
+logging policy is resolved — both cite the exact originating Phase 5
+requirement via `evidenceRefs`, never duplicating or reinventing it.
+`AuditTelemetryMapping` links a real `AuditRequirement` (from
+`SecurityArchitecture.auditRequirements` — the same objects
+`GovernancePlan.auditRequirements` already reuses per Phase 5) to whichever
+signals' `source` actually overlaps that requirement's `appliesTo` — a
+mapping is only created when at least one matching signal exists, never an
+empty placeholder.
+
+### Correlation, never distributed tracing
+
+`CorrelationRequirement.architecturePath` describes a vendor-neutral
+"these components should be correlatable" fact — workflow↔integration (via
+`IntegrationDefinition.relatedWorkflowIds`), workflow↔agent (via
+`AIAgentDefinition.relatedWorkflowIds`), and agent↔tool↔integration (via a
+tool with `kind: "integration-operation"`). No W3C Trace Context,
+OpenTelemetry `traceparent`, AWS X-Ray, or Datadog trace-ID format appears
+anywhere — "cross-component correlation" is the entire vocabulary, exactly
+as specified; a future exporter decides whether that becomes distributed
+tracing.
+
+### Two audit trails, never conflated
+
+Stitchfy's own capability-execution audit trail
+(`framework/governance/audit/audit-logger.ts`) records what *Stitchfy*
+did while generating a solution. `AuditTelemetryMapping` is about whether
+the *generated business solution* itself will be auditable at runtime —
+an entirely different, and much more important, question this capability
+answers by mapping real `AuditRequirement`s to real signals. The two are
+never mixed.
+
+### `implemented: true` — what it does and doesn't mean
+
+Same discipline as every prior capability: means Stitchfy generated and
+validated a vendor-neutral observability and operational architecture for
+the currently known solution. It does **not** mean telemetry is being
+collected, logging exists, dashboards are deployed, alerts are active,
+tracing is installed, an SLO is being met, or production operations are
+ready. Every generated artifact repeats this verbatim.
+
+### Future work
+
+`docs/architecture/ROADMAP.md` splits future work into **Phase 7B —
+Vendor-Neutral Cloud Architecture** (deployment/runtime topology — after
+which infrastructure metrics like CPU/memory/pod counts become meaningful,
+deliberately excluded here since no compute architecture exists yet) and
+**Phase 7C — Cloud / Observability Export & Provider Adapters** (an
+Exporter producing OpenTelemetry instrumentation plans/Prometheus rules/
+Grafana dashboards/CloudWatch alarms/Datadog monitors, and separately a
+Runtime Provider for actual telemetry/configuration APIs) — mirroring the
+Exporter-vs-Provider boundary Phases 5.5A/6.5 already established. Neither
+is implemented here.
+
 ## Adaptation from the literal proposed folder tree
 
 The originally proposed structure gives every capability 4-5 subfolders
