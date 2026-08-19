@@ -123,6 +123,10 @@ output/blueprints/*.json
 output/artifacts/**
 !output/artifacts/.gitkeep
 
+# Codebase analysis output (Phase 8.5A)
+output/analysis/**
+!output/analysis/.gitkeep
+
 # Next.js
 .next/
 next-env.d.ts

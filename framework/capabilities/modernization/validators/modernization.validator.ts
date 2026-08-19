@@ -68,7 +68,7 @@ export function validateModernizationArchitecture(
   }
   for (const debt of arch.technicalDebt) {
     if (!systemIds.has(debt.systemId)) issues.push({ code: "unknown-system", message: `TechnicalDebtItem "${debt.id}" references unknown system "${debt.systemId}"`, severity: "error" });
-    if (debt.evidenceRefs.length === 0) issues.push({ code: "no-evidence", message: `TechnicalDebtItem "${debt.id}" has no evidence references`, severity: "error" });
+    if (debt.evidenceRefs.length === 0 && !debt.codebaseEvidenceRefs?.length) issues.push({ code: "no-evidence", message: `TechnicalDebtItem "${debt.id}" has no evidence references`, severity: "error" });
   }
   for (const p of arch.preservationRequirements) {
     if (!systemIds.has(p.systemId)) issues.push({ code: "unknown-system", message: `PreservationRequirement "${p.id}" references unknown system "${p.systemId}"`, severity: "error" });

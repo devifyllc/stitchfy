@@ -668,18 +668,65 @@ during this phase's own verification.
 - No fake implementation schedule (no dates/durations/quarters) and no fake
   migration sequencing — dependency direction alone never determines order.
 
-## Phase 8.5 — Codebase Analysis and Modernization Export Adapters
+## Phase 8.5A — Local Codebase Evidence and Dependency Analysis ✅ done
+
+A second, independent, optional evidence domain (`framework/analysis/codebase/`)
+that inspects a user-supplied local repository in read-only mode and turns
+manifests and limited source structure into provenance-backed facts
+(`CodebaseAnalysisResult`), which Legacy Modernization may optionally
+consume as additional, non-authoritative evidence for one explicitly-mapped
+system. See `docs/architecture/CODEBASE_ANALYSIS.md` for the full design.
+
+- `CodebaseAnalyzer`/`CodebaseAnalyzerRegistry` (`analyzers/`) — detection
+  lives in each analyzer's own `supports()`, never orchestration branching;
+  multiple analyzers may run against the same repository at once.
+- Safe repository scanner (`scanner/`) — centralized directory/sensitive-
+  file/binary/size exclusions, symlinks never followed, path-traversal
+  rejected, deterministic sorted traversal.
+- Implemented analyzers: **Repository/filesystem** (language histogram,
+  build-descriptor detection, honest unsupported-ecosystem gaps — no
+  per-ecosystem special-casing), **Maven** (a minimal dependency-free XML
+  parser scoped to POM structure, DTD/entity resolution impossible by
+  construction, local-only property resolution, unresolved versions
+  preserved as the literal string `"unresolved"`), **npm** (`JSON.parse`
+  only, scripts recorded never executed, ranges preserved verbatim),
+  **Java source structure** (regex-based package/import/type-declaration/
+  annotation extraction, no compilation).
+- `CodebaseEvidenceReference`/`CodebaseFactMetadata` — a deliberately
+  separate provenance contract from `EvidenceReference` (Discovery); every
+  "derived" fact cites the "observed" fact it came from.
+- Modernization integration (`generators/modernization-codebase-enrichment.generator.ts`)
+  — fills a mapped `SystemModernizationProfile.codebaseAnalysis` reference,
+  may append a narrow `TechnicalDebtItem`/`MigrationValidationRequirement`,
+  and detects `CodebaseEvidenceConflict`s — **never touches
+  `MigrationCandidate.strategyOptions`**; Phase 8's own strategy
+  classification is completely unaffected by this phase's existence.
+- `scripts/analyze-codebase.ts` (`npm run analyze:codebase -- --path <dir>`)
+  — standalone inventory. `npm run solution -- --input ... --codebase <dir>
+  --system-id <id>` — optional integrated enrichment; the plain
+  `npm run solution -- --input ...` invocation is unchanged.
+- 3 fixture repositories (`tests/fixtures/codebases/`) + `tests/codebase-analysis.test.ts`
+  — 257 tests passing total, including static guards proving no
+  `child_process`/network usage anywhere in the module.
+
+**Still deferred, intentionally:**
+
+- Gradle/.NET/Python/Go/container-image analyzers (extension points only).
+- Git/commit-history analysis, dependency-upgrade recommendations,
+  vulnerability/EOL evaluation, transitive dependency resolution.
+- Any code-transformation or migration-recipe generation — deferred to
+  Phase 8.5B.
+
+## Phase 8.5B — Modernization Recipe & Transformation Export Adapters
 
 Mirrors the Exporter/Provider pattern established across Phases 5.5A/6.5/7C,
-applied to Modernization. Not implemented.
-
-- **Codebase analyzers**: Maven/Gradle/npm/Java-source/.NET-project/Python-
-  dependency/container-image analyzers producing real dependency-manifest
-  and framework/version facts — no repository cloning, commit inspection,
-  or source-file parsing exists yet.
-- **Modernization export adapters**: `ModernizationArchitecture` → migration
-  recipe generation, code-transformation scaffolding, test-impact analysis
-  — no real generation exists yet.
+applied to Modernization. May eventually consume `ModernizationArchitecture`
+`+` `CodebaseAnalysisResult` together to generate a migration recipe,
+dependency-change plan, configuration-change plan, code-transformation
+scaffolding, and test-impact specification. Not implemented. A deliberate
+review boundary sits between codebase analysis and any transformation
+output — `CodebaseAnalysisResult → architecture/human review → Modernization
+Export Adapter` — Phase 8.5B is not assumed automatic.
 
 ## Phase 9 — Reference Implementations
 

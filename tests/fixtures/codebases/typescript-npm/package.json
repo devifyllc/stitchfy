@@ -1,0 +1,20 @@
+{
+  "name": "fixture-service",
+  "version": "0.1.0",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "express": "^4.19.0",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.0",
+    "tsx": "^4.15.0"
+  },
+  "scripts": {
+    "build": "tsc --noEmit",
+    "test": "node --test"
+  }
+}

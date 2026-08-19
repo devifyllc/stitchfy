@@ -438,6 +438,25 @@ pipeline documented above is unchanged and keeps working exactly as
 described. See [docs/architecture/ARCHITECTURE.md](docs/architecture/ARCHITECTURE.md)
 and [docs/architecture/ROADMAP.md](docs/architecture/ROADMAP.md) for details.
 
+### Codebase analysis (advanced)
+
+Legacy Modernization can optionally be enriched with real, read-only, local
+repository evidence (Maven/npm/Java) — see
+[docs/architecture/CODEBASE_ANALYSIS.md](docs/architecture/CODEBASE_ANALYSIS.md)
+for the full trust boundary and analyzer model.
+
+```bash
+# Standalone repository inventory — no solution/system mapping required
+npm run analyze:codebase -- --path ../order-portal
+
+# Integrated: enrich a Modernization solution with codebase evidence for
+# one explicitly-mapped system (the existing --input-only form is unchanged)
+npm run solution -- \
+  --input examples/solution/legacy-java-modernization.md \
+  --codebase ../order-portal \
+  --system-id SYS-001
+```
+
 ---
 
 ## Repository Structure

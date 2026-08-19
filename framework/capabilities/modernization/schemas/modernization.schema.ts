@@ -2,6 +2,7 @@ import { z } from "zod";
 import { EvidenceReferenceSchema, ArchitectureReferenceSchema } from "../../../schemas/planning/planning.schema.js";
 import { InformationGapSchema } from "../../../schemas/discovery/discovery-result.schema.js";
 import { RiskAssessmentSchema } from "../../../planning/risk-assessment/risk-assessment.schema.js";
+import { CodebaseEvidenceReferenceSchema } from "../../../analysis/codebase/contracts/codebase-analysis-result.schema.js";
 
 const ModernizationDriverSchema = z.enum([
   "maintainability",
@@ -47,6 +48,14 @@ const SystemModernizationProfileSchema = z.object({
   constraintIds: z.array(z.string()),
   evidenceRefs: z.array(EvidenceReferenceSchema),
   status: z.enum(["candidate", "retain", "needs-review", "out-of-scope"]),
+  codebaseAnalysis: z
+    .object({
+      analysisId: z.string().min(1),
+      frameworkFactIds: z.array(z.string()),
+      runtimeFactIds: z.array(z.string()),
+      dependencyFactIds: z.array(z.string()),
+    })
+    .optional(),
 });
 
 // ─── Technical debt ─────────────────────────────────────────────────────────
@@ -71,6 +80,7 @@ const TechnicalDebtItemSchema = z.object({
   description: z.string().min(1),
   impact: z.enum(["low", "medium", "high", "unknown"]),
   evidenceRefs: z.array(EvidenceReferenceSchema),
+  codebaseEvidenceRefs: z.array(CodebaseEvidenceReferenceSchema).optional(),
 });
 
 // ─── System dependencies ────────────────────────────────────────────────────
@@ -177,6 +187,18 @@ const MigrationValidationRequirementSchema = z.object({
   description: z.string().min(1),
   preservationRequirementIds: z.array(z.string()),
   evidenceRefs: z.array(EvidenceReferenceSchema),
+  codebaseEvidenceRefs: z.array(CodebaseEvidenceReferenceSchema).optional(),
+});
+
+// ─── Codebase evidence conflicts (Phase 8.5A) ──────────────────────────────
+
+const CodebaseEvidenceConflictSchema = z.object({
+  id: z.string().min(1),
+  topic: z.string().min(1),
+  discoveryEvidence: z.array(EvidenceReferenceSchema),
+  codebaseEvidence: z.array(CodebaseEvidenceReferenceSchema),
+  description: z.string().min(1),
+  resolution: z.enum(["unresolved", "prefer-discovery", "prefer-codebase", "confirmed"]),
 });
 
 // ─── Roadmap ─────────────────────────────────────────────────────────────────
@@ -227,6 +249,7 @@ export const ModernizationArchitectureSchema = z.object({
   roadmap: ModernizationRoadmapSchema,
   informationGaps: z.array(InformationGapSchema),
   evidenceRefs: z.array(EvidenceReferenceSchema),
+  codebaseEvidenceConflicts: z.array(CodebaseEvidenceConflictSchema),
   status: z.enum(["draft", "needs-review", "complete"]),
   statusReasons: z.array(z.string()),
 });

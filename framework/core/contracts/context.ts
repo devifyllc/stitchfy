@@ -15,6 +15,7 @@ import type { SolutionBlueprint } from "../../schemas/solution-blueprint/solutio
 import type { CapabilityExecutionResult } from "../../schemas/capability/capability-result.types.js";
 import type { CapabilityAssessment } from "../../planning/capability-assessment/capability-assessment.types.js";
 import type { SolutionPlan } from "../../planning/capability-assessment/solution-plan.types.js";
+import type { CodebaseAnalysisResult } from "../../analysis/codebase/contracts/codebase-analysis-result.types.js";
 
 export type SolutionStage =
   | "idle"
@@ -42,6 +43,15 @@ export interface SolutionContext {
    * docs/architecture/ARCHITECTURE.md "Capability Selection Evolution".
    */
   discoveryResult?: DiscoveryResult;
+  /**
+   * Phase 8.5A — a second, independent evidence domain (see
+   * docs/architecture/CODEBASE_ANALYSIS.md "Trust boundary"). Populated
+   * only when the CLI's optional `--codebase`/`--system-id` flags are
+   * supplied. Never merged into DiscoveryResult/BusinessContext.
+   */
+  codebaseAnalysis?: CodebaseAnalysisResult;
+  /** The DiscoveryResult SystemInventoryItem.id the supplied repository represents — required for `codebaseAnalysis` to enrich Modernization; never inferred from folder/artifact/package names. */
+  codebaseSystemId?: string;
   /** Populated once, during the "planning" stage, before any capability executes. */
   capabilityAssessments?: CapabilityAssessment[];
   solutionPlan?: SolutionPlan;

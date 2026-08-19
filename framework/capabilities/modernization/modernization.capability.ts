@@ -27,6 +27,7 @@ import type { IntegrationsSection } from "../integrations/schemas/integrations.t
 import type { SecurityGovernanceOutput } from "../security-governance/schemas/security-governance.types.js";
 import type { ObservabilitySection, ObservabilityArchitecture } from "../observability/schemas/observability.types.js";
 import type { CloudArchitectureSection } from "../cloud/schemas/cloud.types.js";
+import { enrichModernizationWithCodebaseAnalysis, buildModernizationCodebaseEvidenceArtifacts } from "./generators/modernization-codebase-enrichment.generator.js";
 
 function supports(context: SolutionContext): boolean {
   const assessment = assessModernization(context);
@@ -61,6 +62,7 @@ const EMPTY_ARCHITECTURE: ModernizationArchitecture = {
   roadmap: { candidateIds: [], workstreams: [], dependencies: [], validationRequirementIds: [], informationGapIds: [], status: "draft" },
   informationGaps: [],
   evidenceRefs: [],
+  codebaseEvidenceConflicts: [],
   status: "draft",
   statusReasons: [],
 };
@@ -133,6 +135,18 @@ async function execute(assessment: CapabilityAssessment, context: SolutionContex
       ? "Generated and validated a legacy-modernization assessment and migration-strategy architecture. This means Stitchfy can produce and validate the specification — not that application code was analyzed, migrated, or that a target system was deployed."
       : "No modernization architecture could be derived for this business context."
   );
+
+  // Phase 8.5A — optional codebase-analysis enrichment for exactly one, explicitly-mapped system.
+  // Never touches strategy classification; a missing/invalid mapping applies no enrichment (task item 100).
+  if (hasAnyArchitecture && context.codebaseAnalysis && context.codebaseSystemId) {
+    const enrichment = enrichModernizationWithCodebaseAnalysis(architecture, context.codebaseAnalysis, context.codebaseSystemId, discovery.modernizationNeeds[0]);
+    if (enrichment.applied) {
+      notes.push(`Enriched with codebase evidence for system "${context.codebaseSystemId}" (${context.codebaseAnalysis.repository.name}).`);
+      artifacts.push(...buildModernizationCodebaseEvidenceArtifacts(architecture, context.codebaseAnalysis, context.codebaseSystemId));
+    } else if (enrichment.reason) {
+      notes.push(enrichment.reason);
+    }
+  }
 
   return { implemented: hasAnyArchitecture, plan: modernizationPlan, architecture, artifacts, notes };
 }

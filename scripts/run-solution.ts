@@ -22,8 +22,16 @@ async function main() {
     return i !== -1 && args[i + 1] ? args[i + 1] : fallback;
   };
 
+  const getOptionalArg = (flag: string): string | undefined => {
+    const i = args.indexOf(flag);
+    return i !== -1 && args[i + 1] ? args[i + 1] : undefined;
+  };
+
   const inputPath = path.resolve(getArg("--input", "input/project.md"));
   const outputDir = path.resolve(getArg("--output", "output"));
+  const codebaseArg = getOptionalArg("--codebase");
+  const codebasePath = codebaseArg ? path.resolve(codebaseArg) : undefined;
+  const codebaseSystemId = getOptionalArg("--system-id");
 
   const validation = validateInput(inputPath);
   for (const w of validation.warnings) console.warn(`  ⚠  ${w}`);
@@ -33,7 +41,7 @@ async function main() {
   }
 
   try {
-    const context = await runSolutionPipeline(inputPath, outputDir);
+    const context = await runSolutionPipeline(inputPath, outputDir, codebasePath, codebaseSystemId);
     process.exit(context.stage === "complete" ? 0 : 1);
   } catch (err) {
     console.error("Fatal error:", err);

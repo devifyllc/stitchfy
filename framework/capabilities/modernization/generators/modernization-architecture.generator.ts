@@ -119,6 +119,7 @@ export function buildModernizationArchitecture(
       roadmap: { candidateIds: [], workstreams: [], dependencies: [], validationRequirementIds: [], informationGapIds: [], status: "draft" },
       informationGaps: [],
       evidenceRefs: [],
+      codebaseEvidenceConflicts: [],
       status: "draft",
       statusReasons: ["no modernization need identified"],
     };
@@ -194,6 +195,7 @@ export function buildModernizationArchitecture(
     roadmap,
     informationGaps,
     evidenceRefs,
+    codebaseEvidenceConflicts: [],
     status,
     statusReasons,
   };

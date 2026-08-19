@@ -25,6 +25,7 @@ import type { InformationGap } from "../../../discovery/gaps/information-gap.typ
 import type { RiskAssessment } from "../../../planning/risk-assessment/risk-assessment.types.js";
 import type { ImplementationArtifact } from "../../../core/contracts/artifact.js";
 import type { ModernizationDriver } from "../../../discovery/modernization/modernization-need.types.js";
+import type { CodebaseEvidenceReference } from "../../../analysis/codebase/contracts/codebase-evidence.types.js";
 
 // ─── Planning (modernization.planner.ts) ───────────────────────────────────
 
@@ -62,6 +63,17 @@ export interface SystemModernizationProfile {
   constraintIds: string[];
   evidenceRefs: EvidenceReference[];
   status: "candidate" | "retain" | "needs-review" | "out-of-scope";
+  /**
+   * Phase 8.5A — references only, never a copy of the underlying facts
+   * (task item 79). Populated only when a real CodebaseAnalysisResult was
+   * explicitly mapped to this profile's systemId.
+   */
+  codebaseAnalysis?: {
+    analysisId: string;
+    frameworkFactIds: string[];
+    runtimeFactIds: string[];
+    dependencyFactIds: string[];
+  };
 }
 
 // ─── Technical debt ─────────────────────────────────────────────────────────
@@ -82,7 +94,13 @@ export type TechnicalDebtCategory =
 
 export type TechnicalDebtImpact = "low" | "medium" | "high" | "unknown";
 
-/** Never inferred from technology "looking old" — only from an explicit Technical Debt bullet. */
+/**
+ * Never inferred from technology "looking old" — only from an explicit
+ * Technical Debt bullet, or (Phase 8.5A) a narrow, deterministic codebase
+ * analysis finding. `evidenceRefs` stays Discovery-only; `codebaseEvidenceRefs`
+ * is a small additive field for the second, independent evidence domain —
+ * never conflated with the first (task item 80/81).
+ */
 export interface TechnicalDebtItem {
   id: string;
   systemId: string;
@@ -90,6 +108,7 @@ export interface TechnicalDebtItem {
   description: string;
   impact: TechnicalDebtImpact;
   evidenceRefs: EvidenceReference[];
+  codebaseEvidenceRefs?: CodebaseEvidenceReference[];
 }
 
 // ─── System dependencies ────────────────────────────────────────────────────
@@ -245,6 +264,26 @@ export interface MigrationValidationRequirement {
   description: string;
   preservationRequirementIds: string[];
   evidenceRefs: EvidenceReference[];
+  codebaseEvidenceRefs?: CodebaseEvidenceReference[];
+}
+
+// ─── Codebase evidence conflicts (Phase 8.5A) ──────────────────────────────
+
+/**
+ * When business-discovery evidence and repository evidence disagree on the
+ * same fact (e.g. Discovery says "Java 11", the repository's compiler
+ * config says "8"), neither source is silently treated as authoritative —
+ * task item 46.
+ */
+export type CodebaseEvidenceConflictResolution = "unresolved" | "prefer-discovery" | "prefer-codebase" | "confirmed";
+
+export interface CodebaseEvidenceConflict {
+  id: string;
+  topic: string;
+  discoveryEvidence: EvidenceReference[];
+  codebaseEvidence: CodebaseEvidenceReference[];
+  description: string;
+  resolution: CodebaseEvidenceConflictResolution;
 }
 
 // ─── Roadmap ─────────────────────────────────────────────────────────────────
@@ -300,6 +339,8 @@ export interface ModernizationArchitecture {
   roadmap: ModernizationRoadmap;
   informationGaps: InformationGap[];
   evidenceRefs: EvidenceReference[];
+  /** Phase 8.5A — always present, empty when no CodebaseAnalysisResult was supplied (byte-compatible with Phase 8 output otherwise). */
+  codebaseEvidenceConflicts: CodebaseEvidenceConflict[];
   status: ModernizationArchitectureStatus;
   statusReasons: string[];
 }

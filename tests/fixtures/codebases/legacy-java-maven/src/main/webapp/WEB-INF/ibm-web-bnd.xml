@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-bnd xmlns="http://websphere.ibm.com/xml/ns/javaee" version="1.0">
+  <!-- fictional fixture content — a recognizable WebSphere binding descriptor marker -->
+</web-bnd>

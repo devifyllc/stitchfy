@@ -37,6 +37,8 @@ import type { ProjectMeta } from "../schemas/blueprint.types.js";
 import type { WorkflowAutomationSection } from "../capabilities/workflow-automation/schemas/workflow-automation.types.js";
 import type { ImplementationArtifact } from "../core/contracts/artifact.js";
 import { generateIntegrationExports } from "../capabilities/integrations/exporters/generate-integration-exports.js";
+import { runCodebaseAnalysis } from "../analysis/codebase/codebase-analysis.js";
+import { buildCodebaseAnalysisArtifacts } from "../analysis/codebase/generators/codebase-analysis-artifact.generator.js";
 
 const DIVIDER = "━".repeat(52);
 
@@ -82,7 +84,12 @@ function mergeCapabilityOutput(blueprint: Partial<SolutionBlueprint>, result: Ca
   }
 }
 
-export async function runSolutionPipeline(inputPath: string, outputDir: string): Promise<SolutionContext> {
+export async function runSolutionPipeline(
+  inputPath: string,
+  outputDir: string,
+  codebasePath?: string,
+  codebaseSystemId?: string
+): Promise<SolutionContext> {
   console.log(`\n${DIVIDER}`);
   console.log("  Stitchfy — Solution Pipeline (Phase 0)");
   console.log(DIVIDER);
@@ -97,6 +104,18 @@ export async function runSolutionPipeline(inputPath: string, outputDir: string):
   const markdown = fs.readFileSync(inputPath, "utf-8");
   const parsed = parseMarkdown(markdown);
   const context = createSolutionContext(inputPath, outputDir, markdown, parsed);
+
+  // ── Codebase analysis (Phase 8.5A, optional) ─────────────────────────────
+  // Runs before discovery/planning so Modernization can consume it during
+  // its own execute() — a second, independent evidence domain, never merged
+  // into DiscoveryResult/BusinessContext (see docs/architecture/CODEBASE_ANALYSIS.md).
+  if (codebasePath) {
+    console.log(`  Codebase: ${codebasePath}${codebaseSystemId ? ` (system: ${codebaseSystemId})` : ""}`);
+    const codebaseAnalysis = await runCodebaseAnalysis(codebasePath);
+    context.codebaseAnalysis = codebaseAnalysis;
+    context.codebaseSystemId = codebaseSystemId;
+    ok(`Codebase analysis ${codebaseAnalysis.status} — ${codebaseAnalysis.buildSystems.length} build system(s), ${codebaseAnalysis.dependencies.length} dependenc${codebaseAnalysis.dependencies.length === 1 ? "y" : "ies"}, ${codebaseAnalysis.frameworks.length} framework(s)`);
+  }
 
   // ── Business discovery ──────────────────────────────────────────────────
   context.stage = "discovery";
@@ -234,9 +253,14 @@ export async function runSolutionPipeline(inputPath: string, outputDir: string):
   // ImplementationArtifact) — write them all generically, no capability-ID
   // branching (task item 19/21 for workflow-automation specifically, but
   // this stays open for any future capability that produces artifacts).
-  const allArtifacts = context.capabilityResults.flatMap(
-    (result) => (result.output as { artifacts?: ImplementationArtifact[] } | undefined)?.artifacts ?? []
-  );
+  // The three generic codebase-analysis artifacts (item 53) are written here, once, regardless of whether
+  // Modernization ran — Modernization's own execute() only adds the fourth, mapping-specific pair.
+  const codebaseArtifacts = context.codebaseAnalysis ? buildCodebaseAnalysisArtifacts(context.codebaseAnalysis, context.codebaseSystemId) : [];
+
+  const allArtifacts = [
+    ...context.capabilityResults.flatMap((result) => (result.output as { artifacts?: ImplementationArtifact[] } | undefined)?.artifacts ?? []),
+    ...codebaseArtifacts,
+  ];
   if (allArtifacts.length > 0) {
     const artifactWrites = writeImplementationArtifacts(allArtifacts, outputDir);
     for (const write of artifactWrites) {
