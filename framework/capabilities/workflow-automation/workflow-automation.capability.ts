@@ -1,22 +1,25 @@
 /**
- * Workflow Automation capability — the first to use structured assessment
- * (Phase 1.5) instead of keyword matching. supports() and assess() both
- * delegate to the same assessWorkflowAutomation() — one source of truth for
- * the selection rule (see docs/architecture/ARCHITECTURE.md). plan()/
- * execute() are now meaningful (task item 8): plan() is the assessment
- * itself, execute() turns it into a real WorkflowAutomationPlan via
- * workflow-automation.planner.ts. `implemented` stays false — only
- * selection and planning became real in this phase, not execution.
+ * Workflow Automation capability. supports() and assess() delegate to the
+ * same assessWorkflowAutomation() — one source of truth for the selection
+ * rule (see docs/architecture/ARCHITECTURE.md). Phase 3: execute() turns
+ * the WorkflowAutomationPlan into real, validated WorkflowDefinition(s) +
+ * ImplementationArtifacts. `implemented: true` means Stitchfy generated and
+ * validated a vendor-neutral spec — never that it runs against real
+ * systems (task item 22).
  */
 
 import type { StitchfyCapability } from "../../core/contracts/capability.js";
 import type { SolutionContext } from "../../core/contracts/context.js";
 import type { ValidationResult } from "../../schemas/common/validation-result.js";
-import { validationOk } from "../../schemas/common/validation-result.js";
+import { validationOk, validationFail } from "../../schemas/common/validation-result.js";
 import type { CapabilityAssessment } from "../../planning/capability-assessment/capability-assessment.types.js";
 import { assessWorkflowAutomation, WORKFLOW_AUTOMATION_CAPABILITY_ID } from "./workflow-automation.assessor.js";
 import { buildWorkflowAutomationPlan } from "./workflow-automation.planner.js";
-import type { WorkflowAutomationSection } from "./schemas/workflow-automation.types.js";
+import { buildWorkflowDefinitions } from "./generators/workflow-definition.generator.js";
+import { buildWorkflowArtifacts } from "./generators/workflow-artifact.generator.js";
+import { validateWorkflowDefinition } from "./validators/workflow-definition.validator.js";
+import type { WorkflowAutomationSection, WorkflowDefinition } from "./schemas/workflow-automation.types.js";
+import type { ImplementationArtifact } from "../../core/contracts/artifact.js";
 
 function supports(context: SolutionContext): boolean {
   const assessment = assessWorkflowAutomation(context);
@@ -36,27 +39,55 @@ async function execute(
   context: SolutionContext
 ): Promise<WorkflowAutomationSection> {
   const plan = buildWorkflowAutomationPlan(context, assessment);
+  const discovery = context.discoveryResult;
 
-  return {
-    implemented: false,
-    plan,
-    triggers: [],
-    steps: [],
-    decisions: [],
-    approvals: [],
-    notifications: [],
-    externalSystems: [],
-    notes: [
-      `Status: ${assessment.status} (confidence: ${assessment.confidence}, method: ${assessment.method}).`,
-      ...assessment.reasons.map((r) => r.description),
-      "Selection and planning are real; execution (implemented: false) is deferred — see docs/architecture/ROADMAP.md Phase 3.",
-    ],
-  };
+  const notes: string[] = [
+    `Status: ${assessment.status} (confidence: ${assessment.confidence}, method: ${assessment.method}).`,
+    ...assessment.reasons.map((r) => r.description),
+  ];
+
+  if (!discovery || plan.processIds.length === 0) {
+    notes.push("No relevant business process to build a workflow specification from.");
+    return { implemented: false, plan, workflows: [], artifacts: [], notes };
+  }
+
+  const candidates = buildWorkflowDefinitions(context, plan);
+  const workflows: WorkflowDefinition[] = [];
+  const artifacts: ImplementationArtifact[] = [];
+
+  for (const workflow of candidates) {
+    const validation = validateWorkflowDefinition(workflow, discovery);
+    if (!validation.ok) {
+      notes.push(
+        `Workflow "${workflow.name}" failed validation: ${validation.issues
+          .filter((i) => i.severity === "error")
+          .map((i) => i.message)
+          .join("; ")}`
+      );
+      continue;
+    }
+    workflows.push(workflow);
+    artifacts.push(...buildWorkflowArtifacts(workflow, discovery));
+    if (validation.issues.length > 0) {
+      notes.push(`Workflow "${workflow.name}" validated with warnings: ${validation.issues.map((i) => i.message).join("; ")}`);
+    }
+  }
+
+  notes.push(
+    workflows.length > 0
+      ? `Generated and validated ${workflows.length} vendor-neutral workflow specification(s). This means Stitchfy can produce and validate the spec — not that it has been deployed or is running against real systems.`
+      : "No workflow specification could be validated for this business context."
+  );
+
+  return { implemented: workflows.length > 0, plan, workflows, artifacts, notes };
 }
 
 async function validate(
   output: WorkflowAutomationSection
 ): Promise<ValidationResult<WorkflowAutomationSection>> {
+  if (output.implemented && output.workflows.length === 0) {
+    return validationFail(["implemented is true but no workflows were produced"]);
+  }
   return validationOk(output);
 }
 

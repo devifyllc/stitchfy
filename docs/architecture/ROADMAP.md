@@ -105,26 +105,59 @@
 - Decide whether `WebsiteBlueprint` becomes a capability-owned schema
   referenced by `SolutionBlueprint`, or stays fully independent.
 
-## Phase 3 — Workflow Automation
+## Phase 3 — Workflow Automation Specification Generation ✅ done
 
-Selection and planning are already real as of Phase 1.5
-(`workflow-automation.assessor.ts`/`.planner.ts`,
-`WorkflowAutomationSection.plan`, `HumanTouchpoint` via
-`framework/governance/approvals`). What's still `implemented: false` and
-left for this phase:
+Selection and planning were already real as of Phase 1.5. This phase made
+generation real: `implemented: true` now means Stitchfy generated and
+validated a vendor-neutral `WorkflowDefinition` — never that it runs
+against real systems (see ARCHITECTURE.md "Workflow Specification
+Generation" for the full design).
 
-- Real `triggers`/`steps`/`decisions`/`approvals` (the legacy
-  `WorkflowAutomationSection` fields, distinct from `.plan`) derived from
-  `WorkflowAutomationPlan.automationCandidates`/`humanTouchpoints`.
-- Turning `AutomationCandidate`/`HumanTouchpoint` into actual generated
-  implementation artifacts, not just a plan.
+- `WorkflowDefinition` (`framework/capabilities/workflow-automation/schemas/workflow-automation.types.ts`)
+  — triggers, steps, transitions, decisions, approvals, notifications,
+  external systems, workflow-scoped information gaps, evidence, and a
+  deterministic `draft | needs-review | complete` status.
+- `generators/workflow-definition.generator.ts` — one `WorkflowDefinition`
+  per relevant `BusinessProcess` (never a single business-wide workflow);
+  AS-IS (`DiscoveryResult.processes`) is never rebuilt, TO-BE is a
+  per-step, evidence-grounded overlay.
+- `validators/workflow-definition.validator.ts` — referential integrity,
+  structural integrity, reachability (orphan detection), and cycle
+  detection, independent of the Zod shape check.
+- `generators/workflow-artifact.generator.ts` — JSON + Markdown (with an
+  inline Mermaid diagram, no runtime dependency) `ImplementationArtifact`s
+  per workflow, written to `output/artifacts/workflow-automation/` by the
+  new generic `framework/core/artifact-writer.ts`.
+- `WorkflowAutomationSection` reshaped: `workflows`/`artifacts` replace the
+  Phase 0 leftover always-empty flat arrays.
+- Second example, `examples/solution/invoice-approval.md` — structurally
+  different from the appointment example (manual entry, threshold-based
+  decision, distinct approver, different systems) — proves the generator
+  is generic, not appointment-specific.
+- `tests/workflow-generation.test.ts` — the 15 scenarios from the Phase 3
+  task (37 tests total passing across all three suites).
+
+**Still deferred** (unchanged in spirit from Phase 1.5's list, now
+Phase-3-specific):
+
+- Multi-process `HumanTouchpoint` attribution (only unambiguous when
+  exactly one process is relevant — see ARCHITECTURE.md).
+- Any real vendor exporter (`WorkflowDefinition` → AWS Step Functions /
+  Temporal / Camunda / n8n / ...) — the extension point is documented, not
+  implemented; see ARCHITECTURE.md "Future export/provider architecture".
+- Deterministic `ImplementationArtifact.id` generation (currently
+  `Date.now()`-based, confined to the artifact wrapper — documented, not
+  fixed, per task item 24).
 
 ## Phase 4 — Integration Architecture
 
 - Real REST/webhook/SaaS integration derivation from
-  `BusinessContext.integrations` + `existingSystems`.
+  `WorkflowExternalSystem`/`IntegrationNeed` (now structured, per Phases 1
+  and 3) instead of flat `BusinessContext.integrations` strings.
 - First real `IntegrationProvider` implementation
   (`framework/providers/integrations/`).
+- API payload/contract design for the external systems Phase 3
+  deliberately left unspecified (`WorkflowExternalSystem.interactionType`).
 
 ## Phase 5 — AI Agent Architecture
 

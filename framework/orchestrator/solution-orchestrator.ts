@@ -31,9 +31,11 @@ import { runCapability } from "./capability-runner.js";
 import { writeBusinessContextArtifact } from "../core/business-context-writer.js";
 import { writeSolutionBlueprintArtifact } from "../core/solution-blueprint-writer.js";
 import { renderSolutionPlanReport, writeSolutionPlanReport } from "../reports/render-solution-plan-report.js";
+import { writeImplementationArtifacts } from "../core/artifact-writer.js";
 import { logAuditEvent } from "../governance/audit/audit-logger.js";
 import type { ProjectMeta } from "../schemas/blueprint.types.js";
 import type { WorkflowAutomationSection } from "../capabilities/workflow-automation/schemas/workflow-automation.types.js";
+import type { ImplementationArtifact } from "../core/contracts/artifact.js";
 
 const DIVIDER = "━".repeat(52);
 
@@ -195,6 +197,22 @@ export async function runSolutionPipeline(inputPath: string, outputDir: string):
   }
 
   context.solutionBlueprint.risks = assessRisks(context);
+
+  // ── Implementation artifacts ─────────────────────────────────────────────
+  // Any capability output may carry an `artifacts` array (see
+  // ImplementationArtifact) — write them all generically, no capability-ID
+  // branching (task item 19/21 for workflow-automation specifically, but
+  // this stays open for any future capability that produces artifacts).
+  const allArtifacts = context.capabilityResults.flatMap(
+    (result) => (result.output as { artifacts?: ImplementationArtifact[] } | undefined)?.artifacts ?? []
+  );
+  if (allArtifacts.length > 0) {
+    const artifactWrites = writeImplementationArtifacts(allArtifacts, outputDir);
+    for (const write of artifactWrites) {
+      if (write.ok) ok(`${write.filePath}`);
+      else fail(write.error ?? "artifact write failed");
+    }
+  }
 
   // ── Planning report ──────────────────────────────────────────────────────
   const workflowAutomationOutput = context.solutionBlueprint.automation as WorkflowAutomationSection | undefined;
