@@ -36,6 +36,13 @@ import type { ImplementationArtifact } from "../../core/contracts/artifact.js";
 import type { RiskAssessment } from "../../planning/risk-assessment/risk-assessment.types.js";
 import type { SolutionPlan } from "../../planning/capability-assessment/solution-plan.types.js";
 
+/**
+ * Legacy, unpopulated — a Phase 0 sketch with zero producers and zero
+ * consumers anywhere in the codebase. `SolutionBlueprint.architecture`
+ * (`CloudArchitectureSection`, Phase 7B) is the real, evidence-backed source
+ * of truth for deployment/environment/strategy information; nothing writes
+ * to this field.
+ */
 export interface DeploymentInfo {
   environments: string[];
   strategy: string;
@@ -70,6 +77,7 @@ export interface SolutionBlueprint {
   observability?: ObservabilitySection;
   /** Addition beyond the base field list — see ARCHITECTURE.md "Adaptation". */
   modernization?: ModernizationSection;
+  /** @deprecated Legacy/unpopulated — see DeploymentInfo's doc comment. Use `architecture` instead. */
   deployment?: DeploymentInfo;
   risks?: RiskAssessment[];
   artifacts?: ImplementationArtifact[];

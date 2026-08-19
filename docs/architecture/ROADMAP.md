@@ -505,35 +505,105 @@ naming collision caught and fixed during this phase's own verification.
   Prometheus, Grafana, Datadog, New Relic, CloudWatch, Azure Monitor, GCP
   Monitoring, Splunk, Loki, Tempo, Jaeger).
 - No infrastructure metrics (CPU/memory/disk/pod/container counts) — Cloud
-  Architecture (Phase 7B) doesn't exist yet, so there is no compute
-  architecture for these to describe.
+  Architecture (Phase 7B, now done) deliberately keeps deployment units
+  logical rather than adding compute metrics; see Phase 7B's own deferred
+  list.
 - No `ObservabilityProvider` of any kind.
 
-## Phase 7B — Vendor-Neutral Cloud Architecture
+## Phase 7B — Vendor-Neutral Cloud and Deployment Architecture ✅ done
 
-- Deployment/runtime topology: what compute, storage, and network
-  architecture the generated solution implies — vendor-neutral, same
-  unknown-preserving discipline as every prior phase.
+The seventh fully-generated capability, and the last cross-cutting one:
+inspects `WorkflowDefinition[]`, `IntegrationDefinition[]`,
+`AIAgentDefinition[]`, `SecurityArchitecture`, `GovernancePlan`, and
+`ObservabilityArchitecture` — every other real capability's output — and
+produces a vendor-neutral deployment/runtime specification. Replaces the
+Phase 0 skeleton (mandatory `provider`, `NetworkingConfig{vpcNeeded,
+publicEndpoints}`, `DatabaseResource{engine}`, free-form
+`deploymentStrategy: string`). See `docs/architecture/ARCHITECTURE.md`
+"Vendor-Neutral Cloud and Deployment Architecture (Phase 7B)" for the full
+design, including the AI-agent-vs-workflow/integration signal asymmetry and
+two classification bugs caught and fixed during this phase's own
+verification.
+
+- `DeploymentNeed` (`framework/discovery/cloud/`) — a new Discovery entity,
+  extracted from 8 dedicated section-heading aliases only, never from
+  incidental "AWS"/"server"/"cloud"/"database" mentions elsewhere.
+- `CloudArchitecture` (`framework/capabilities/cloud/schemas/`) —
+  `HostingModel`, `CloudProviderRequirement`, `LocationRequirement`,
+  `DeploymentUnit`, `RuntimeRequirement`, `StateRequirement`,
+  `PersistenceRequirement`, `ConnectivityRequirement`,
+  `EnvironmentRequirement`, `ScalabilityRequirement`,
+  `ResilienceRequirement`, `DeploymentStrategyRequirement`,
+  `CloudSecurityMapping`, `CloudObservabilityMapping` — every one
+  evidence-backed, provider/service/database engine/network implementation
+  never selected unless explicitly stated in the source document.
+- `cloud.assessor.ts`/`.planner.ts` — structured selection deliberately
+  excluding multi-step-process and integration-need signals (a human or a
+  third-party SaaS owning runtime work is not evidence the *solution* does);
+  `AIAgentNeed` is the one supporting signal, reaching `needs-review`.
+- `generators/cloud-architecture.generator.ts` — deployment units only from
+  explicit `solution-managed <Name>` language (never one per capability
+  object — no automatic microservices split), runtime requirements per unit
+  plus unconditionally per AI agent, durable state from a real
+  `WorkflowApproval`, connectivity reusing real `IntegrationDefinition`s
+  with protocol preserved verbatim, environment names preserved verbatim,
+  explicit-only scalability/resilience (reusing Phase 7A's threshold-
+  provenance approach), security/observability as pure reference-layer
+  mappings.
+- `validators/cloud.validator.ts` — referential integrity, deployment-unit-
+  ownership (an external system can never be a unit), connectivity source≠
+  target, provider/location/scaling/environment/deployment-strategy
+  provenance, and two denylists (provider services; network-implementation
+  terms) as defense-in-depth.
+- Registry reorder: Cloud now runs after Security & Governance and
+  Observability (website, workflow-automation, integrations, ai-agents,
+  security-governance, observability, **cloud**, modernization).
+- New examples — `examples/solution/cloud-order-platform.md` (two
+  solution-managed components, explicit public/non-public exposure, Test/
+  Production environments, durable state, Fulfillment-API resilience, 100-
+  concurrent-submissions target, explicit no-provider/no-database/no-
+  deployment-strategy statements) and `examples/solution/cloud-provider-
+  explicit.md` (AWS + `us-east-1` stated explicitly, no service names) —
+  proving both real topology generation and provider/region preservation
+  without invention. All 8 pre-existing examples re-verified: the 6
+  non-deployment ones stay `not-recommended`, the 2 AI-agent ones reach
+  `needs-review` with an agent runtime requirement and no provider selected.
+- `SolutionBlueprint.deployment`/`DeploymentInfo` confirmed to have zero
+  producers and zero consumers anywhere in the codebase — doc comment now
+  marks it legacy, pointing at `SolutionBlueprint.architecture`
+  (`CloudArchitectureSection`) as the real source of truth.
+- `tests/cloud-generation.test.ts` (new) — 209 tests passing total.
+
+**Still deferred, intentionally:**
+
+- No IaC generation, no cloud SDK installed/invoked, no credentials, no
+  network calls, no cost estimation.
+- No HA/multi-region/multi-AZ/active-active/load-balanced/replicated/
+  hot-standby/DR-site defaults, no backup/retention defaults.
 - First concrete `CloudProvider` adapter (behind `framework/providers/cloud/`,
   vendor selectable, not hardcoded) remains a *later* concern — Phase 7B
-  itself is the domain model, not an implementation.
-- Once real compute/deployment architecture exists, Observability's own
-  scope can extend to infrastructure metrics (CPU/memory/disk/pod counts) —
-  deliberately excluded from Phase 7A since there was nothing yet for them
-  to describe.
+  itself is the domain model, not an implementation; `CloudProvider.deploy()`
+  is never invoked.
+- No infrastructure metrics (CPU/memory/disk/pod/container counts) —
+  Observability's own scope can extend to these in a future phase now that
+  real compute/deployment architecture exists, but Phase 7B itself
+  deliberately does not add them.
 
-## Phase 7C — Cloud / Observability Export & Provider Adapters
+## Phase 7C — Cloud / Observability Export & Runtime Provider Adapters
 
 Mirrors the Exporter-vs-Provider boundary Phases 5.5A/6.5 already
 established, applied to both Cloud (7B) and Observability (7A) architecture.
 Not implemented.
 
-- **Export side**: `ObservabilityArchitecture` → OpenTelemetry
+- **Cloud Exporters**: `CloudArchitecture` → IaC artifacts — Terraform,
+  OpenTofu, AWS CloudFormation, AWS CDK, Azure Bicep, Pulumi — no real
+  generation exists yet.
+- **Observability Exporters**: `ObservabilityArchitecture` → OpenTelemetry
   instrumentation plan, Prometheus rules, Grafana dashboards, CloudWatch
   alarms, Datadog monitors — no real generation exists yet.
-- **Runtime side**: `ObservabilityArchitecture`/Cloud architecture →
-  runtime telemetry/configuration APIs — no real provider exists yet, same
-  as Phase 5.5B/6.5's runtime sides.
+- **Runtime Providers**: `CloudArchitecture`/`ObservabilityArchitecture` →
+  actual provisioning/telemetry/configuration APIs — no real provider exists
+  yet, same as Phase 5.5B/6.5's runtime sides.
 
 ## Phase 8 — Legacy Modernization
 

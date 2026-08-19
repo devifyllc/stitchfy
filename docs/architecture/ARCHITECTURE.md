@@ -1316,6 +1316,149 @@ Runtime Provider for actual telemetry/configuration APIs) — mirroring the
 Exporter-vs-Provider boundary Phases 5.5A/6.5 already established. Neither
 is implemented here.
 
+## Vendor-Neutral Cloud and Deployment Architecture (Phase 7B)
+
+Replaces the Phase 0 Cloud skeleton — a mandatory `provider: CloudProviderKind`,
+`NetworkingConfig{vpcNeeded, publicEndpoints}`, `DatabaseResource{engine}`,
+free-form `deploymentStrategy: string` — with a vendor-neutral,
+requirement-oriented `CloudArchitecture`. Cloud Architecture answers **"what
+deployment/runtime characteristics does this solution require,"** never
+**"which AWS/Azure/GCP service should we use."** No infrastructure is
+provisioned and `CloudProvider.deploy()` is never invoked — Phase 7B produces
+and validates a specification only.
+
+### Registry reorder — the fifth confirmation
+
+`default-capabilities.ts`'s order changed from (website, workflow-automation,
+integrations, ai-agents, **cloud**, security-governance, observability,
+modernization) to (website, workflow-automation, integrations, ai-agents,
+security-governance, observability, **cloud**, modernization) — Cloud moves to
+run last among the real capabilities so it can consume
+`SecurityArchitecture`/`GovernancePlan`/`ObservabilityArchitecture` as
+siblings via `context.capabilityResults.find(...)`, the same pattern every
+capability since Phase 4 has used, now for five siblings. No `dependsOn`
+field — the fifth confirmation the static registration order is sufficient.
+
+### `DeploymentNeed` — a new Discovery entity, from dedicated sections only
+
+`framework/discovery/cloud/deployment-needs.extractor.ts` scans 8 heading
+aliases ("Deployment/Runtime/Hosting/Infrastructure/Cloud/Environment/
+Scalability/Resilience Requirements") — never an incidental "AWS"/"server"/
+"cloud"/"database" mention elsewhere in the document. It deliberately does
+not use the shared `findSection()` helper (which returns only the first
+matching alias); a real document could plausibly use more than one of these
+headings as genuinely separate sections, so the extractor collects entries
+from every heading present instead of silently dropping all but the first —
+a small, local, documented deviation, not a change to the shared utility
+every other extractor still uses as-is. Each bullet is classified into a
+`DeploymentNeedCategory` via an ordered, most-specific-first keyword table.
+
+### Selection signals — the AI-agent-vs-workflow/integration asymmetry
+
+`cloud.assessor.ts`'s signals are deliberately narrow: `discovery.
+deploymentNeeds.length > 0` (strong) and explicit deployment/operational
+terminology already present in structured requirement/constraint/
+business-rule text (strong) — plus exactly one supporting signal,
+`discovery.aiAgentNeeds.length > 0` (reaching `needs-review` at low
+confidence). Multi-step-process and integration-need signals are
+**deliberately excluded entirely**: a human-performed process step (Google
+Calendar, WhatsApp in `appointment-business.md`) or an integration to an
+external SaaS system (QuickBooks in `invoice-approval.md`; a bare REST API in
+`api-integration.md`) is evidence a human or a third party owns the runtime
+work, never that the *solution itself* does. An `AIAgentNeed` is treated
+differently: an agent's tools/permissions/autonomy are active software logic
+the solution would need to host regardless of where model inference
+eventually runs — so `customer-support-agent.md` and
+`invoice-triage-agent.md` both reach `needs-review` and produce an agent
+`RuntimeRequirement`, without ever selecting a provider.
+
+### Deployment units — restrained by construction, never one per capability object
+
+A `DeploymentUnit` is only ever created from an explicit `solution-managed
+<Name> that/which...` bullet in a Deployment Requirements section — never one
+per `WorkflowDefinition`/`IntegrationDefinition`/`AIAgentDefinition`.
+Multiple workflow/integration/agent objects existing in a solution does not
+automatically produce multiple deployment units or a microservices split;
+Stitchfy's own capability module names are design-time framework boundaries,
+never automatically runtime service boundaries. External systems referenced
+by integrations are never turned into deployment units — they stay
+referenced as `external-system` connectivity endpoints.
+
+### State, persistence, and connectivity — never a database or a network implementation
+
+A workflow with a real pending approval derives a `durable`
+`StateRequirement` citing the actual `WorkflowApproval` — never a
+`DatabaseResource` or a named engine. `PersistenceRequirement.technology` is
+always the literal string `"unspecified"`. `ConnectivityRequirement` replaces
+`vpcNeeded`/`publicEndpoints`: it either reuses a real `IntegrationDefinition`
+(protocol preserved verbatim) or resolves from an explicit public/non-public
+exposure statement about a named deployment unit — no VPC/subnet/NAT/
+security-group/load-balancer is ever invented, and `exposure: "public"` is
+only set with real supporting evidence.
+
+### Security and observability are pure reference layers
+
+`CloudSecurityMapping`/`CloudObservabilityMapping` link to `SecurityRequirement`/
+`ObservabilityArchitecture` ids that already exist — no new security policy
+is inferred and no telemetry threshold is recomputed. No secret-manager
+product is ever named. No infrastructure metric (CPU%, memory%, disk%, pod
+count, node count, container-restart count) is generated here — deferred to
+a future exporter once real compute topology exists.
+
+### `SolutionBlueprint.deployment` — confirmed dead, documented not migrated
+
+`DeploymentInfo`/`SolutionBlueprint.deployment` has zero producers and zero
+consumers anywhere in the codebase. Rather than write a "derived projection"
+into a field nothing has ever read, its doc comment now explicitly marks it
+legacy/unpopulated and points at `SolutionBlueprint.architecture`
+(`CloudArchitectureSection`) as the real source of truth.
+
+### Two denylists as defense-in-depth, not exhaustive vendor catalogs
+
+`cloud.validator.ts` rejects any generated string containing a specific
+provider service name (Lambda, ECS, EKS, Fargate, EC2, RDS, DynamoDB, S3,
+SQS, AKS, App Service, Cosmos DB, Azure Functions, GKE, Cloud Run, Cloud
+Functions, Firestore, Pub/Sub) or a network-implementation term (VPC, subnet,
+NAT gateway, security group, load balancer, private link, route table,
+internet gateway) — regression guards, not something the generator is ever
+expected to need.
+
+### Two bugs caught during this phase's own verification
+
+`deployment-needs.extractor.ts`'s persistence pattern originally used
+`\brestart\b`, which cannot match inside the plural "restarts" due to
+JavaScript regex word-boundary rules — "Order processing state must survive
+application restarts." was silently misclassified as `runtime` instead of
+`persistence`. Separately, the environment-category pattern's bare
+`\bproduction\b`/`\bstaging\b` alternatives caused a scalability bullet
+("Production must support at least 100 concurrent order submissions.") to be
+misclassified as `environment` merely because it started with "Production"
+as a scope qualifier — fixed by requiring the literal word "environment(s)"
+for that category and reordering scalability ahead of it. Same category of
+bug every prior phase has hit at least once: a generic word matching in a
+context the pattern's author didn't intend.
+
+### `implemented: true` — what it does and doesn't mean
+
+Same discipline as every prior capability: means Stitchfy generated and
+validated a vendor-neutral cloud/deployment architecture for the currently
+known solution. It does **not** mean infrastructure was provisioned, an
+application was deployed, a cloud account or credentials exist, a region was
+selected (unless explicitly required), networking was configured, a database
+was created, scalability was tested, resilience was verified, or the
+architecture is production-ready. Every generated artifact repeats this
+verbatim.
+
+### Future work
+
+`docs/architecture/ROADMAP.md`'s **Phase 7C — Cloud / Observability Export &
+Runtime Provider Adapters** stays exactly as scoped in Phase 7A's update
+(Cloud Exporters producing Terraform/OpenTofu/CloudFormation/CDK/Bicep/
+Pulumi, Observability Exporters producing OpenTelemetry/Prometheus/Grafana/
+CloudWatch/Datadog artifacts, and separate Runtime Providers for actual
+provisioning/telemetry APIs) — mirroring the Exporter-vs-Provider boundary
+Phases 5.5A/6.5 already established. Neither is implemented here.
+
 ## Adaptation from the literal proposed folder tree
 
 The originally proposed structure gives every capability 4-5 subfolders

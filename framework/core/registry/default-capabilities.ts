@@ -21,9 +21,9 @@ export function createDefaultRegistry(): CapabilityRegistry {
     workflowAutomationCapability,
     integrationsCapability,
     aiAgentsCapability,
-    cloudCapability,
     securityGovernanceCapability,
     observabilityCapability,
+    cloudCapability,
     modernizationCapability,
   ]) {
     registry.register(capability);

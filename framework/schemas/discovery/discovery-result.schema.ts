@@ -125,6 +125,30 @@ export const AIAgentNeedSchema = z.object({
   metadata: DiscoveryMetadataSchema,
 });
 
+// ─── deployment needs ──────────────────────────────────────────────────────
+
+export const DeploymentNeedSchema = z.object({
+  id: z.string().min(1),
+  category: z.enum([
+    "hosting",
+    "runtime",
+    "compute",
+    "storage",
+    "persistence",
+    "network",
+    "environment",
+    "scalability",
+    "resilience",
+    "availability",
+    "location",
+    "unknown",
+  ]),
+  description: z.string().min(1),
+  relatedSystemIds: z.array(z.string()),
+  relatedRequirementIds: z.array(z.string()),
+  metadata: DiscoveryMetadataSchema,
+});
+
 // ─── requirements ────────────────────────────────────────────────────────────
 
 export const RequirementItemSchema = z.object({
@@ -220,4 +244,5 @@ export const DiscoveryResultSchema = z.object({
   informationGaps: z.array(InformationGapSchema),
   traceability: z.array(TraceabilityLinkSchema),
   aiAgentNeeds: z.array(AIAgentNeedSchema),
+  deploymentNeeds: z.array(DeploymentNeedSchema),
 });

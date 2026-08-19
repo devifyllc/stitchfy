@@ -22,7 +22,9 @@ export type ArchitectureEntityType =
   | "approval"
   /** Added Phase 6 — the generated AI agent architecture itself. */
   | "ai-agent"
-  | "ai-tool";
+  | "ai-tool"
+  /** Added Phase 7B — the generated Cloud/deployment architecture itself. */
+  | "deployment-unit";
 
 export interface ArchitectureReference {
   entityType: ArchitectureEntityType;

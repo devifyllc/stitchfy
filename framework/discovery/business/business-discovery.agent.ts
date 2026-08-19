@@ -41,6 +41,7 @@ import { extractRequirements } from "../requirements/requirements.extractor.js";
 import { extractInformationGaps } from "../gaps/information-gaps.extractor.js";
 import { extractTraceabilityLinks } from "../traceability/traceability.extractor.js";
 import { extractAIAgentNeeds } from "../ai-agents/ai-agent-needs.extractor.js";
+import { extractDeploymentNeeds } from "../cloud/deployment-needs.extractor.js";
 
 export interface BusinessDiscoveryInput {
   parsed: ParsedProject;
@@ -92,6 +93,7 @@ async function run(input: BusinessDiscoveryInput): Promise<DiscoveryResult> {
 
   const requirements = extractRequirements(parsed, desiredOutcomes);
   const aiAgentNeeds = extractAIAgentNeeds(parsed, allActors);
+  const deploymentNeeds = extractDeploymentNeeds(parsed, allSystems);
 
   const withoutGapsAndTraceability = {
     businessName,
@@ -108,6 +110,7 @@ async function run(input: BusinessDiscoveryInput): Promise<DiscoveryResult> {
     constraints,
     businessRules: allBusinessRules,
     aiAgentNeeds,
+    deploymentNeeds,
   };
 
   const informationGaps = extractInformationGaps(withoutGapsAndTraceability);

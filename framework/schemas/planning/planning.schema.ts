@@ -27,6 +27,7 @@ export const EvidenceReferenceSchema = z.object({
     "actor",
     "data-entity",
     "ai-agent-need",
+    "deployment-need",
   ]),
   entityId: z.string().min(1),
   description: z.string().optional(),
@@ -44,6 +45,7 @@ export const ArchitectureReferenceSchema = z.object({
     "approval",
     "ai-agent",
     "ai-tool",
+    "deployment-unit",
   ]),
   entityId: z.string().min(1),
 });
