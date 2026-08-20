@@ -1,7 +1,7 @@
 {
   "project": {
     "schemaVersion": "1.0",
-    "generatedAt": "2026-08-19T23:56:11.767Z",
+    "generatedAt": "2026-08-20T03:05:57.743Z",
     "sourceFile": "project.md",
     "frameworkVersion": "2.2.0"
   },
@@ -102,7 +102,7 @@
   ],
   "traceability": [],
   "planning": {
-    "generatedAt": "2026-08-19T23:56:11.772Z",
+    "generatedAt": "2026-08-20T03:05:57.750Z",
     "assessments": [
       {
         "capabilityId": "website",
@@ -322,9 +322,9 @@
       "status": "executed",
       "success": true,
       "summary": "Executed",
-      "durationMs": 7,
+      "durationMs": 13,
       "output": {
-        "projectId": "run-1787183771775",
+        "projectId": "run-1787195157756",
         "inputPath": "F:\\devify\\stitchfy\\input\\project.md",
         "outputDir": "F:\\devify\\stitchfy\\output\\contracts\\release-version-solution-check",
         "markdown": "# Project: Luxe Beauty Studio\r\n\r\n## Business Information\r\n\r\n- **Business Name:** Luxe Beauty Studio\r\n- **Industry:** Beauty Salon\r\n- **Description:** Luxe Beauty Studio is a premium full-service beauty salon in Austin, Texas. We offer hair, nails, and skincare services in a relaxing, modern environment where every client leaves feeling confident and beautiful.\r\n\r\n## Operating Hours\r\n\r\n- Monday–Friday: 9:00 AM – 7:00 PM\r\n- Saturday: 9:00 AM – 6:00 PM\r\n- Sunday: 10:00 AM – 4:00 PM\r\n- Closed on major holidays\r\n\r\n## Services\r\n\r\n- Haircuts & Styling\r\n- Color & Balayage\r\n- Blowouts & Deep Treatments\r\n- Manicure & Pedicure\r\n- Gel & Acrylic Nails\r\n- Facials & Skincare Treatments\r\n- Eyebrow Shaping & Tinting\r\n- Lash Extensions\r\n\r\n## Location\r\n\r\n- Address: 1234 South Congress Avenue, Suite 102, Austin, TX 78704\r\n- Neighborhood: South Congress (SoCo)\r\n- Parking: Free street parking and a small lot behind the building\r\n\r\n## Contact Information\r\n\r\n- Phone: (512) 555-0190\r\n- Email: hello@luxebeautystudio.com\r\n- Website: https://www.luxebeautystudio.com\r\n\r\n## Social Networks\r\n\r\n- Instagram: @luxebeautystudio\r\n- Facebook: /luxebeautystudio\r\n- TikTok: @luxebeautystudio\r\n\r\n## Booking Preference\r\n\r\n- Primary: Online booking via Vagaro (https://www.vagaro.com/luxebeautystudio)\r\n- Secondary: Phone call during business hours\r\n- Walk-ins welcome Monday–Friday; appointment recommended on weekends\r\n\r\n## Desired Pages\r\n\r\n- Home\r\n- Services\r\n- Gallery\r\n- About Us\r\n- Contact\r\n- Book Online\r\n\r\n## Brand Tone\r\n\r\n- Warm, welcoming, and luxurious but never pretentious\r\n- Modern and visually polished\r\n- Empowering and confidence-boosting\r\n- Conversational and human — not corporate\r\n\r\n## Color Preferences\r\n\r\n- Primary: Dusty rose (#C4847A)\r\n- Secondary: Warm white (#FAF8F5)\r\n- Accent: Soft gold (#C9A96E)\r\n- Text: Charcoal (#2C2C2C)\r\n- Borders/subtle backgrounds: Light blush (#EDD9D5)\r\n\r\n## Special Notes\r\n\r\n- Feature seasonal promotions prominently on the Home page\r\n- Include a \"Meet the Team\" section on the About page with stylist bios and photos\r\n- Gallery should support filtering by service category (hair, nails, skincare)\r\n- Display at least 4–5 testimonials on the homepage\r\n- The booking CTA button should appear persistently on every page\r\n- Accessibility is a priority — all images need alt text and color contrast must be WCAG AA compliant\r\n- Do NOT include real booking forms, payment flows, login/accounts, or a database\r\n- Site should be fully exportable as static HTML/CSS/JS\r\n",
@@ -466,7 +466,7 @@
         "blueprint": {
           "project": {
             "schemaVersion": "1.0",
-            "generatedAt": "2026-08-19T23:56:11.775Z",
+            "generatedAt": "2026-08-20T03:05:57.757Z",
             "sourceFile": "project.md",
             "frameworkVersion": "2.2.0"
           },
@@ -1356,7 +1356,7 @@
           {
             "stage": "intake",
             "success": true,
-            "durationMs": 0
+            "durationMs": 1
           },
           {
             "stage": "ux",
@@ -1366,7 +1366,7 @@
           {
             "stage": "seo",
             "success": true,
-            "durationMs": 0
+            "durationMs": 1
           },
           {
             "stage": "accessibility",
@@ -1376,11 +1376,11 @@
           {
             "stage": "frontend",
             "success": true,
-            "durationMs": 0
+            "durationMs": 1
           }
         ],
-        "startedAt": "2026-08-19T23:56:11.775Z",
-        "completedAt": "2026-08-19T23:56:11.780Z"
+        "startedAt": "2026-08-20T03:05:57.756Z",
+        "completedAt": "2026-08-20T03:05:57.766Z"
       },
       "assessment": {
         "capabilityId": "website",
@@ -1468,7 +1468,7 @@
       "status": "executed",
       "success": true,
       "summary": "Executed",
-      "durationMs": 4,
+      "durationMs": 8,
       "output": {
         "implemented": true,
         "security": {
@@ -1511,48 +1511,48 @@
             "type": "config",
             "path": "artifacts/security-governance/security-architecture.json",
             "content": "{\n  \"version\": \"1.0\",\n  \"requirements\": [],\n  \"trustBoundaries\": [],\n  \"dataProtection\": [],\n  \"identityAccess\": [],\n  \"integrationSecurity\": [],\n  \"auditRequirements\": [],\n  \"risks\": [],\n  \"informationGaps\": [\n    {\n      \"gapId\": \"GAP-007\",\n      \"topic\": \"Data\",\n      \"question\": \"What data does this solution create, store, or rely on?\",\n      \"isNew\": false\n    }\n  ],\n  \"evidenceRefs\": [],\n  \"status\": \"draft\",\n  \"statusReasons\": [\n    \"1 unresolved information gap(s)\"\n  ]\n}",
-            "id": "artifact-1787183771785-qgghyp",
-            "generatedAt": "2026-08-19T23:56:11.785Z"
+            "id": "artifact-1787195157773-jwt495",
+            "generatedAt": "2026-08-20T03:05:57.773Z"
           },
           {
             "capabilityId": "security-governance",
             "type": "document",
             "path": "artifacts/security-governance/security-architecture.md",
             "content": "# Security Architecture\n\n_Status: **draft** (1 unresolved information gap(s))_\n\n> `implemented: true` on this capability means Stitchfy generated and validated a security/governance architecture for the currently known solution. It does not mean the resulting system is secure, compliant, certified, penetration-tested, or production-ready.\n\n## Scope\n\n0 trust boundary(ies), 0 security requirement(s), 0 data protection requirement(s), 0 risk(s) identified from the generated solution.\n\n## Systems and Trust Boundaries\n\nNone identified.\n\n## Identity and Authentication\n\nNo explicit identity requirements identified.\n\n## Authorization\n\nNo explicit authorization requirements identified.\n\n## Data Protection\n\nNone identified.\n\n## Integration Security\n\nNone identified.\n\n## Secrets\n\nNone identified.\n\n## Privacy Considerations\n\nNone identified.\n\n## Auditability\n\nNone identified.\n\n## Human Oversight\n\nNone identified.\n\n## Open Security Questions\n\n- **Data**: What data does this solution create, store, or rely on? _(already tracked upstream)_\n\n## Traceability\n\nSecurity requirements: 0, Trust boundaries: 0, Risks: 0, Evidence references: 0\n",
-            "id": "artifact-1787183771785-ifvefq",
-            "generatedAt": "2026-08-19T23:56:11.785Z"
+            "id": "artifact-1787195157774-7b9ppt",
+            "generatedAt": "2026-08-20T03:05:57.774Z"
           },
           {
             "capabilityId": "security-governance",
             "type": "config",
             "path": "artifacts/security-governance/risk-register.json",
             "content": "[]",
-            "id": "artifact-1787183771785-ukpjpv",
-            "generatedAt": "2026-08-19T23:56:11.785Z"
+            "id": "artifact-1787195157774-vcnt9z",
+            "generatedAt": "2026-08-20T03:05:57.774Z"
           },
           {
             "capabilityId": "security-governance",
             "type": "document",
             "path": "artifacts/security-governance/risk-register.md",
             "content": "# Risk Register\n\nNo risks identified from the currently known solution.\n",
-            "id": "artifact-1787183771786-oht4ct",
-            "generatedAt": "2026-08-19T23:56:11.786Z"
+            "id": "artifact-1787195157774-lj5wdb",
+            "generatedAt": "2026-08-20T03:05:57.774Z"
           },
           {
             "capabilityId": "security-governance",
             "type": "config",
             "path": "artifacts/security-governance/governance-plan.json",
             "content": "{\n  \"policies\": [],\n  \"humanOversight\": [],\n  \"auditRequirements\": [],\n  \"decisionControls\": [],\n  \"complianceConsiderations\": [],\n  \"informationGaps\": [\n    \"GAP-007\"\n  ],\n  \"status\": \"draft\"\n}",
-            "id": "artifact-1787183771786-zlphf0",
-            "generatedAt": "2026-08-19T23:56:11.786Z"
+            "id": "artifact-1787195157774-y6lhxu",
+            "generatedAt": "2026-08-20T03:05:57.774Z"
           },
           {
             "capabilityId": "security-governance",
             "type": "document",
             "path": "artifacts/security-governance/governance-plan.md",
             "content": "# Governance Plan\n\n_Status: **draft**_\n\n> `implemented: true` on this capability means Stitchfy generated and validated a security/governance architecture for the currently known solution. It does not mean the resulting system is secure, compliant, certified, penetration-tested, or production-ready.\n\n## Human Approval Controls\n\nNone identified.\n\n## Decision Controls\n\nNone identified.\n\n## Audit Requirements\n\nNone identified.\n\n## Privacy Considerations\n\nNone identified.\n\n## Compliance Considerations\n\nNone explicitly stated.\n\n## Unresolved Governance Questions\n\n- GAP-007\n\n## Policies\n\nNone derived from an explicit business rule.\n",
-            "id": "artifact-1787183771786-57c84q",
-            "generatedAt": "2026-08-19T23:56:11.786Z"
+            "id": "artifact-1787195157775-8vz2zd",
+            "generatedAt": "2026-08-20T03:05:57.775Z"
           }
         ],
         "notes": [

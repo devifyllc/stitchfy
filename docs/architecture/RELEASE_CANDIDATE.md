@@ -103,7 +103,7 @@ RC1's "Recommended Version: retain `2.1.0`" above is **superseded** by this sect
 
 ### Website compatibility (hard gate)
 
-`npm run stitchfy -- --input examples/beauty-salon.md`, `npm run build:site`, and `npm run audit` all pass on `development`, using the real fixture confirmed identical to `main`'s copy — not a simplified replacement. Locked by `tests/contracts/website-blueprint-v1.contract.test.ts` (new in RC2).
+`npm run stitchfy -- --input examples/beauty-salon.md` and `npm run audit` passed on `development`, using the real fixture confirmed identical to `main`'s copy — not a simplified replacement. `npm run build:site` could not be completed in the Windows validation environment because of the pre-existing symlink-permission (`EPERM`) limitation; the relevant build script was confirmed byte-identical to `main`'s, so this was classified as an environmental limitation rather than a regression — see `docs/releases/MAINLINE_PROMOTION.md` for the full detail. Blueprint generation — the actual `WebsiteBlueprint` v1 contract being promoted to STABLE — is locked by `tests/contracts/website-blueprint-v1.contract.test.ts` (new in RC2).
 
 ### Contracts promoted CANDIDATE → STABLE
 

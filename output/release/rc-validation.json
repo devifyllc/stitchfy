@@ -8,21 +8,21 @@
       "name": "Type safety",
       "command": "npm run typecheck",
       "ok": true,
-      "durationMs": 18319
+      "durationMs": 19960
     },
     {
       "id": "test",
       "name": "Full test suite (incl. contract tests)",
       "command": "npm run test",
       "ok": true,
-      "durationMs": 15982
+      "durationMs": 17096
     },
     {
       "id": "reference",
       "name": "Reference solutions",
       "command": "npm run reference:validate",
       "ok": true,
-      "durationMs": 8034
+      "durationMs": 7832
     }
   ],
   "manualGates": [
