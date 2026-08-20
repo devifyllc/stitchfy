@@ -1,0 +1,50 @@
+[
+  {
+    "id": "RISK-001",
+    "category": "security",
+    "description": "Credential material for \"The booking system checks and reserves availability in Google Calendar.\" requires protection; improper handling could expose access to the target system.",
+    "likelihood": "unknown",
+    "impact": "unknown",
+    "treatment": "mitigate",
+    "relatedArchitectureRefs": [
+      {
+        "entityType": "integration",
+        "entityId": "INT-001"
+      }
+    ],
+    "evidenceRefs": [
+      {
+        "entityType": "integration",
+        "entityId": "INTNEED-001",
+        "description": "The booking system checks and reserves availability in Google Calendar."
+      }
+    ],
+    "status": "open"
+  },
+  {
+    "id": "RISK-002",
+    "category": "privacy",
+    "description": "Data associated with \"The booking system checks and reserves availability in Google Calendar.\" may cross a third-party boundary while its classification remains unresolved; exposure could result in a privacy issue.",
+    "likelihood": "unknown",
+    "impact": "unknown",
+    "treatment": "review",
+    "relatedArchitectureRefs": [
+      {
+        "entityType": "integration",
+        "entityId": "INT-001"
+      },
+      {
+        "entityType": "system",
+        "entityId": "SYS-001"
+      }
+    ],
+    "evidenceRefs": [
+      {
+        "entityType": "integration",
+        "entityId": "INTNEED-001",
+        "description": "The booking system checks and reserves availability in Google Calendar."
+      }
+    ],
+    "status": "needs-review"
+  }
+]

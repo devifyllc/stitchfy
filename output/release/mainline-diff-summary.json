@@ -1,0 +1,13 @@
+{
+  "baseBranch": "main",
+  "candidateBranch": "development",
+  "mergeBase": "efec1ba84ca9f9ad18a20d8a6802b5a9cea439ad",
+  "baseHead": "8e017da6a65795bc62eeea3f944a02506ef989f4",
+  "candidateHead": "2e0405922776547817ac2cdad0a8269a37cfc0b8",
+  "commitsAhead": 17,
+  "commitsBehind": 4,
+  "changedFiles": 440,
+  "compatibility": "backward-compatible, additive",
+  "recommendedVersion": "2.2.0",
+  "promotionStatus": "READY TO PROMOTE WITH CONDITIONS"
+}

@@ -1,0 +1,172 @@
+{
+  "schemaVersion": "1.0",
+  "scenarios": [
+    {
+      "id": "appointment-automation-ai",
+      "name": "Appointment Automation & AI",
+      "ok": true,
+      "selectedCapabilities": [
+        "website",
+        "workflow-automation",
+        "integrations",
+        "ai-agents",
+        "security-governance",
+        "observability",
+        "cloud"
+      ],
+      "invariants": [
+        {
+          "id": "appointment-hitl-exists",
+          "description": "Workflow Automation preserves at least one required human approval for conflicting appointments",
+          "ok": true
+        },
+        {
+          "id": "appointment-agent-supervised",
+          "description": "The generated AI agent is not autonomous",
+          "ok": true
+        },
+        {
+          "id": "appointment-session-memory",
+          "description": "The agent's memory is session-scoped, never assumed persistent",
+          "ok": true
+        },
+        {
+          "id": "appointment-tool-maps-to-integration",
+          "description": "The agent's availability-check tool maps to a real IntegrationDefinition, not an invented one",
+          "ok": true
+        },
+        {
+          "id": "appointment-approval-cannot-be-bypassed",
+          "description": "A guardrail explicitly forbids bypassing conflict approval",
+          "ok": true
+        },
+        {
+          "id": "appointment-security-references-real-entities",
+          "description": "Security requirements exist and reference real architecture entities",
+          "ok": true
+        },
+        {
+          "id": "appointment-observability-covers-workflow-agent",
+          "description": "Observability signals cover both workflow and AI-agent/tool activity",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": "order-platform",
+      "name": "Operational Order Platform",
+      "ok": true,
+      "selectedCapabilities": [
+        "website",
+        "workflow-automation",
+        "integrations",
+        "security-governance",
+        "observability",
+        "cloud"
+      ],
+      "invariants": [
+        {
+          "id": "order-rest-contract-preserved",
+          "description": "The REST method and path from the input document are preserved verbatim",
+          "ok": true
+        },
+        {
+          "id": "order-deployment-units-reflect-ownership",
+          "description": "Only solution-managed components become deployment units — the external Fulfillment API never does",
+          "ok": true
+        },
+        {
+          "id": "order-provider-unspecified",
+          "description": "No cloud provider is invented when none was stated",
+          "ok": true
+        },
+        {
+          "id": "order-integration-export-generated",
+          "description": "generic-rest-typescript generates an export bundle at readiness ready or needs-review",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": "legacy-java-modernization",
+      "name": "Legacy Java Modernization",
+      "ok": true,
+      "selectedCapabilities": [
+        "website",
+        "integrations",
+        "security-governance",
+        "observability",
+        "modernization"
+      ],
+      "invariants": [
+        {
+          "id": "java-strategy-remains-replatform",
+          "description": "The migration strategy stays the explicit replatform Phase 8 decided — never re-derived",
+          "ok": true
+        },
+        {
+          "id": "java-websphere-to-tomcat-preserved",
+          "description": "The current/target runtime delta is preserved verbatim, with no invented version",
+          "ok": true
+        },
+        {
+          "id": "java-database-preservation-exists",
+          "description": "A preservation requirement protects the Order Database technology",
+          "ok": true
+        },
+        {
+          "id": "java-codebase-mapped-to-sys-001",
+          "description": "Repository evidence is mapped to the correct, explicitly-named system id",
+          "ok": true
+        },
+        {
+          "id": "java-exporter-generates-recipe",
+          "description": "generic-java-replatform generates a MigrationRecipe",
+          "ok": true
+        },
+        {
+          "id": "java-no-target-version-invented",
+          "description": "The exporter reports the target version as unresolved rather than inventing one",
+          "ok": true
+        }
+      ]
+    }
+  ],
+  "capabilityCoverage": {
+    "website": [
+      "appointment-automation-ai",
+      "order-platform",
+      "legacy-java-modernization"
+    ],
+    "workflow-automation": [
+      "appointment-automation-ai",
+      "order-platform"
+    ],
+    "integrations": [
+      "appointment-automation-ai",
+      "order-platform",
+      "legacy-java-modernization"
+    ],
+    "ai-agents": [
+      "appointment-automation-ai"
+    ],
+    "security-governance": [
+      "appointment-automation-ai",
+      "order-platform",
+      "legacy-java-modernization"
+    ],
+    "observability": [
+      "appointment-automation-ai",
+      "order-platform",
+      "legacy-java-modernization"
+    ],
+    "cloud": [
+      "appointment-automation-ai",
+      "order-platform"
+    ],
+    "modernization": [
+      "legacy-java-modernization"
+    ]
+  },
+  "status": "passed"
+}

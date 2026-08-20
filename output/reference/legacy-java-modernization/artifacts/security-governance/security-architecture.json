@@ -1,0 +1,175 @@
+{
+  "version": "1.0",
+  "requirements": [
+    {
+      "id": "SECREQ-001",
+      "domain": "integration",
+      "description": "Interaction with the system behind \"The Order Portal sends order requests to the Integration Gateway.\" crosses a trust boundary; requests and responses should be validated and protection requirements confirmed before implementation.",
+      "priority": "review",
+      "appliesTo": [
+        {
+          "entityType": "integration",
+          "entityId": "INT-001"
+        },
+        {
+          "entityType": "system",
+          "entityId": "SYS-002"
+        }
+      ],
+      "evidenceRefs": [
+        {
+          "entityType": "integration",
+          "entityId": "INTNEED-001",
+          "description": "The Order Portal sends order requests to the Integration Gateway."
+        }
+      ],
+      "status": "defined"
+    },
+    {
+      "id": "SECREQ-002",
+      "domain": "integration",
+      "description": "Interaction with the system behind \"The Order Portal reads and writes order records in the Order Database.\" crosses a trust boundary; requests and responses should be validated and protection requirements confirmed before implementation.",
+      "priority": "review",
+      "appliesTo": [
+        {
+          "entityType": "integration",
+          "entityId": "INT-002"
+        },
+        {
+          "entityType": "system",
+          "entityId": "SYS-003"
+        }
+      ],
+      "evidenceRefs": [
+        {
+          "entityType": "integration",
+          "entityId": "INTNEED-002",
+          "description": "The Order Portal reads and writes order records in the Order Database."
+        }
+      ],
+      "status": "defined"
+    }
+  ],
+  "trustBoundaries": [
+    {
+      "id": "BOUNDARY-001",
+      "sourceSystemId": "SYS-001",
+      "targetSystemId": "SYS-002",
+      "integrationId": "INT-001",
+      "classification": "external",
+      "dataContractIds": [],
+      "evidenceRefs": [
+        {
+          "entityType": "integration",
+          "entityId": "INTNEED-001",
+          "description": "The Order Portal sends order requests to the Integration Gateway."
+        }
+      ]
+    },
+    {
+      "id": "BOUNDARY-002",
+      "sourceSystemId": "SYS-001",
+      "targetSystemId": "SYS-003",
+      "integrationId": "INT-002",
+      "classification": "external",
+      "dataContractIds": [],
+      "evidenceRefs": [
+        {
+          "entityType": "integration",
+          "entityId": "INTNEED-002",
+          "description": "The Order Portal reads and writes order records in the Order Database."
+        }
+      ]
+    }
+  ],
+  "dataProtection": [],
+  "identityAccess": [],
+  "integrationSecurity": [
+    {
+      "integrationId": "INT-001",
+      "relatedSecurityRequirementIds": [
+        "SECREQ-001"
+      ],
+      "evidenceRefs": [
+        {
+          "entityType": "integration",
+          "entityId": "INTNEED-001",
+          "description": "The Order Portal sends order requests to the Integration Gateway."
+        }
+      ]
+    },
+    {
+      "integrationId": "INT-002",
+      "relatedSecurityRequirementIds": [
+        "SECREQ-002"
+      ],
+      "evidenceRefs": [
+        {
+          "entityType": "integration",
+          "entityId": "INTNEED-002",
+          "description": "The Order Portal reads and writes order records in the Order Database."
+        }
+      ]
+    }
+  ],
+  "auditRequirements": [],
+  "risks": [],
+  "informationGaps": [
+    {
+      "gapId": "GAP-004",
+      "topic": "Data",
+      "question": "What data does this solution create, store, or rely on?",
+      "isNew": false
+    },
+    {
+      "gapId": "INTGAP-001",
+      "topic": "Integration authentication",
+      "question": "What authentication mechanism is required for \"The Order Portal sends order requests to the Integration Gateway.\"?",
+      "isNew": false
+    },
+    {
+      "gapId": "INTGAP-002",
+      "topic": "Integration failure handling",
+      "question": "What should happen if Integration Gateway is unavailable during \"The Order Portal sends order requests to the Integration Gateway.\"?",
+      "isNew": false
+    },
+    {
+      "gapId": "INTGAP-003",
+      "topic": "Integration authentication",
+      "question": "What authentication mechanism is required for \"The Order Portal reads and writes order records in the Order Database.\"?",
+      "isNew": false
+    },
+    {
+      "gapId": "INTGAP-004",
+      "topic": "Integration failure handling",
+      "question": "What should happen if Order Database is unavailable during \"The Order Portal reads and writes order records in the Order Database.\"?",
+      "isNew": false
+    }
+  ],
+  "evidenceRefs": [
+    {
+      "entityType": "integration",
+      "entityId": "INTNEED-001",
+      "description": "The Order Portal sends order requests to the Integration Gateway."
+    },
+    {
+      "entityType": "integration",
+      "entityId": "INTNEED-002",
+      "description": "The Order Portal reads and writes order records in the Order Database."
+    },
+    {
+      "entityType": "integration",
+      "entityId": "INTNEED-001",
+      "description": "The Order Portal sends order requests to the Integration Gateway."
+    },
+    {
+      "entityType": "integration",
+      "entityId": "INTNEED-002",
+      "description": "The Order Portal reads and writes order records in the Order Database."
+    }
+  ],
+  "status": "needs-review",
+  "statusReasons": [
+    "5 unresolved information gap(s)"
+  ]
+}

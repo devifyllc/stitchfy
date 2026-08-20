@@ -1,0 +1,187 @@
+{
+  "version": "1.0",
+  "requirements": [
+    {
+      "id": "SECREQ-001",
+      "domain": "secrets",
+      "description": "Credentials for \"The Order Processor submits orders to the Fulfillment API.\" (mechanism: api-key) must not be embedded directly in generated application code or static configuration committed to source control.",
+      "priority": "required",
+      "appliesTo": [
+        {
+          "entityType": "integration",
+          "entityId": "INT-001"
+        }
+      ],
+      "evidenceRefs": [
+        {
+          "entityType": "integration",
+          "entityId": "INTNEED-001",
+          "description": "The Order Processor submits orders to the Fulfillment API."
+        }
+      ],
+      "status": "defined"
+    },
+    {
+      "id": "SECREQ-002",
+      "domain": "integration",
+      "description": "Interaction with the system behind \"The Order Processor submits orders to the Fulfillment API.\" crosses a trust boundary; requests and responses should be validated and protection requirements confirmed before implementation.",
+      "priority": "review",
+      "appliesTo": [
+        {
+          "entityType": "integration",
+          "entityId": "INT-001"
+        },
+        {
+          "entityType": "system",
+          "entityId": "SYS-001"
+        }
+      ],
+      "evidenceRefs": [
+        {
+          "entityType": "integration",
+          "entityId": "INTNEED-001",
+          "description": "The Order Processor submits orders to the Fulfillment API."
+        }
+      ],
+      "status": "defined"
+    }
+  ],
+  "trustBoundaries": [
+    {
+      "id": "BOUNDARY-001",
+      "targetSystemId": "SYS-001",
+      "integrationId": "INT-001",
+      "classification": "external",
+      "dataContractIds": [
+        "CONTRACT-001",
+        "CONTRACT-002"
+      ],
+      "evidenceRefs": [
+        {
+          "entityType": "integration",
+          "entityId": "INTNEED-001",
+          "description": "The Order Processor submits orders to the Fulfillment API."
+        }
+      ]
+    }
+  ],
+  "dataProtection": [
+    {
+      "id": "DATAPROT-001",
+      "dataEntityIds": [],
+      "dataContractIds": [
+        "CONTRACT-001"
+      ],
+      "classification": "unknown",
+      "encryptionInTransit": true,
+      "encryptionAtRest": "unknown",
+      "evidenceRefs": [
+        {
+          "entityType": "integration",
+          "entityId": "INTNEED-001",
+          "description": "The Order Processor submits orders to the Fulfillment API."
+        }
+      ]
+    },
+    {
+      "id": "DATAPROT-002",
+      "dataEntityIds": [],
+      "dataContractIds": [
+        "CONTRACT-002"
+      ],
+      "classification": "unknown",
+      "encryptionInTransit": true,
+      "encryptionAtRest": "unknown",
+      "evidenceRefs": [
+        {
+          "entityType": "integration",
+          "entityId": "INTNEED-001",
+          "description": "The Order Processor submits orders to the Fulfillment API."
+        }
+      ]
+    }
+  ],
+  "identityAccess": [],
+  "integrationSecurity": [
+    {
+      "integrationId": "INT-001",
+      "relatedSecurityRequirementIds": [
+        "SECREQ-001",
+        "SECREQ-002"
+      ],
+      "evidenceRefs": [
+        {
+          "entityType": "integration",
+          "entityId": "INTNEED-001",
+          "description": "The Order Processor submits orders to the Fulfillment API."
+        }
+      ]
+    }
+  ],
+  "auditRequirements": [],
+  "risks": [
+    {
+      "id": "RISK-001",
+      "category": "security",
+      "description": "Credential material for \"The Order Processor submits orders to the Fulfillment API.\" requires protection; improper handling could expose access to the target system.",
+      "likelihood": "unknown",
+      "impact": "unknown",
+      "treatment": "mitigate",
+      "relatedArchitectureRefs": [
+        {
+          "entityType": "integration",
+          "entityId": "INT-001"
+        }
+      ],
+      "evidenceRefs": [
+        {
+          "entityType": "integration",
+          "entityId": "INTNEED-001",
+          "description": "The Order Processor submits orders to the Fulfillment API."
+        }
+      ],
+      "status": "open"
+    }
+  ],
+  "informationGaps": [
+    {
+      "gapId": "GAP-004",
+      "topic": "Data",
+      "question": "What data does this solution create, store, or rely on?",
+      "isNew": false
+    },
+    {
+      "gapId": "INTGAP-001",
+      "topic": "Integration source system",
+      "question": "What system will initiate: The Order Processor submits orders to the Fulfillment API.?",
+      "isNew": false
+    },
+    {
+      "gapId": "INTGAP-002",
+      "topic": "Integration failure handling",
+      "question": "What should happen if Fulfillment API is unavailable during \"The Order Processor submits orders to the Fulfillment API.\"?",
+      "isNew": false
+    }
+  ],
+  "evidenceRefs": [
+    {
+      "entityType": "integration",
+      "entityId": "INTNEED-001",
+      "description": "The Order Processor submits orders to the Fulfillment API."
+    },
+    {
+      "entityType": "integration",
+      "entityId": "INTNEED-001",
+      "description": "The Order Processor submits orders to the Fulfillment API."
+    },
+    {
+      "entityType": "integration",
+      "entityId": "INTNEED-001",
+      "description": "The Order Processor submits orders to the Fulfillment API."
+    }
+  ],
+  "status": "needs-review",
+  "statusReasons": [
+    "3 unresolved information gap(s)"
+  ]
+}

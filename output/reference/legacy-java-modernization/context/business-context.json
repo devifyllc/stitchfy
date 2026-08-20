@@ -1,0 +1,361 @@
+{
+  "businessName": "Order Portal Modernization",
+  "industry": "Retail software",
+  "goals": [
+    {
+      "id": "GOAL-001",
+      "description": "Modernize the Order Portal without disrupting existing order operations",
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "goals",
+            "text": "Modernize the Order Portal without disrupting existing order operations"
+          }
+        ],
+        "inferred": false
+      }
+    }
+  ],
+  "painPoints": [],
+  "desiredOutcomes": [
+    {
+      "id": "OUTCOME-001",
+      "description": "The Order Portal runs on a supported, maintainable application-server platform",
+      "relatedGoalIds": [],
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "desired-outcomes",
+            "text": "The Order Portal runs on a supported, maintainable application-server platform"
+          }
+        ],
+        "inferred": false
+      }
+    },
+    {
+      "id": "OUTCOME-002",
+      "description": "Existing order operations continue without disruption during modernization",
+      "relatedGoalIds": [],
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "desired-outcomes",
+            "text": "Existing order operations continue without disruption during modernization"
+          }
+        ],
+        "inferred": false
+      }
+    }
+  ],
+  "actors": [
+    {
+      "id": "ACTOR-001",
+      "role": "Order Portal internal staff",
+      "description": "Order Portal internal staff",
+      "relatedProcessIds": [],
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "users",
+            "text": "Order Portal internal staff"
+          }
+        ],
+        "inferred": false
+      }
+    },
+    {
+      "id": "ACTOR-002",
+      "role": "Fulfillment Coordinator",
+      "description": "Fulfillment Coordinator",
+      "relatedProcessIds": [],
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "users",
+            "text": "Fulfillment Coordinator"
+          }
+        ],
+        "inferred": false
+      }
+    }
+  ],
+  "processes": [],
+  "requirements": [
+    {
+      "id": "REQ-001",
+      "description": "Support: The Order Portal runs on a supported, maintainable application-server platform",
+      "type": "functional",
+      "priority": "should",
+      "relatedGoalIds": [],
+      "relatedPainPointIds": [],
+      "relatedProcessIds": [],
+      "relatedOutcomeIds": [
+        "OUTCOME-001"
+      ],
+      "acceptanceCriteria": [],
+      "metadata": {
+        "confidence": 0.5,
+        "sources": [
+          {
+            "sourceType": "derived",
+            "section": "desired-outcomes",
+            "text": "The Order Portal runs on a supported, maintainable application-server platform"
+          }
+        ],
+        "inferred": false
+      }
+    },
+    {
+      "id": "REQ-002",
+      "description": "Support: Existing order operations continue without disruption during modernization",
+      "type": "functional",
+      "priority": "should",
+      "relatedGoalIds": [],
+      "relatedPainPointIds": [],
+      "relatedProcessIds": [],
+      "relatedOutcomeIds": [
+        "OUTCOME-002"
+      ],
+      "acceptanceCriteria": [],
+      "metadata": {
+        "confidence": 0.5,
+        "sources": [
+          {
+            "sourceType": "derived",
+            "section": "desired-outcomes",
+            "text": "Existing order operations continue without disruption during modernization"
+          }
+        ],
+        "inferred": false
+      }
+    }
+  ],
+  "systems": [
+    {
+      "id": "SYS-001",
+      "name": "Order Portal",
+      "category": "legacy",
+      "purpose": "Internal legacy order-management application.",
+      "integrations": [],
+      "dataHandled": [],
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "existing-systems",
+            "text": "Order Portal: Internal legacy order-management application."
+          }
+        ],
+        "inferred": false
+      }
+    },
+    {
+      "id": "SYS-002",
+      "name": "Integration Gateway",
+      "category": "unknown",
+      "purpose": "Routes order requests to external fulfillment systems.",
+      "integrations": [],
+      "dataHandled": [],
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "existing-systems",
+            "text": "Integration Gateway: Routes order requests to external fulfillment systems."
+          }
+        ],
+        "inferred": false
+      }
+    },
+    {
+      "id": "SYS-003",
+      "name": "Order Database",
+      "category": "database",
+      "purpose": "Stores order and customer-order information.",
+      "integrations": [],
+      "dataHandled": [],
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "existing-systems",
+            "text": "Order Database: Stores order and customer-order information."
+          }
+        ],
+        "inferred": false
+      }
+    }
+  ],
+  "integrationNeeds": [
+    {
+      "id": "INTNEED-001",
+      "description": "The Order Portal sends order requests to the Integration Gateway.",
+      "relatedSystemIds": [
+        "SYS-001",
+        "SYS-002"
+      ],
+      "details": {
+        "Integration method": "REST over HTTPS"
+      },
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "integrations",
+            "text": "The Order Portal sends order requests to the Integration Gateway."
+          }
+        ],
+        "inferred": false
+      }
+    },
+    {
+      "id": "INTNEED-002",
+      "description": "The Order Portal reads and writes order records in the Order Database.",
+      "relatedSystemIds": [
+        "SYS-001",
+        "SYS-003"
+      ],
+      "details": {
+        "Integration method": "JDBC"
+      },
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "integrations",
+            "text": "The Order Portal reads and writes order records in the Order Database."
+          }
+        ],
+        "inferred": false
+      }
+    }
+  ],
+  "dataEntities": [],
+  "constraints": [],
+  "businessRules": [],
+  "informationGaps": [
+    {
+      "id": "GAP-001",
+      "topic": "Pain points",
+      "question": "What current problems is this solution meant to solve?",
+      "importance": "medium",
+      "blocking": false,
+      "relatedCapabilityIds": []
+    },
+    {
+      "id": "GAP-002",
+      "topic": "Constraints",
+      "question": "Are there budget, timeline, regulatory, or technical constraints to account for?",
+      "importance": "low",
+      "blocking": false,
+      "relatedCapabilityIds": []
+    },
+    {
+      "id": "GAP-003",
+      "topic": "Business rules",
+      "question": "Are there rules that must always hold (e.g. no double-booking, approval thresholds)?",
+      "importance": "low",
+      "blocking": false,
+      "relatedCapabilityIds": [
+        "workflow-automation"
+      ]
+    },
+    {
+      "id": "GAP-004",
+      "topic": "Data",
+      "question": "What data does this solution create, store, or rely on?",
+      "importance": "medium",
+      "blocking": false,
+      "relatedCapabilityIds": [
+        "security-governance",
+        "cloud"
+      ]
+    },
+    {
+      "id": "GAP-005",
+      "topic": "Requirements",
+      "question": "No explicit requirements were provided — the requirements above were derived from desired outcomes. Can you confirm or refine them?",
+      "importance": "medium",
+      "blocking": false,
+      "relatedCapabilityIds": []
+    }
+  ],
+  "traceability": [
+    {
+      "fromId": "REQ-001",
+      "toId": "OUTCOME-001",
+      "relationship": "derived-from"
+    },
+    {
+      "fromId": "REQ-002",
+      "toId": "OUTCOME-002",
+      "relationship": "derived-from"
+    }
+  ],
+  "aiAgentNeeds": [],
+  "deploymentNeeds": [],
+  "modernizationNeeds": [
+    {
+      "id": "MODNEED-001",
+      "systemIds": [
+        "SYS-001"
+      ],
+      "drivers": [
+        "platform-lifecycle",
+        "maintainability",
+        "unknown"
+      ],
+      "desiredOutcomes": [
+        "The business wants to modernize the Order Portal.",
+        "The application must move from IBM WebSphere to Apache Tomcat while preserving application behavior.",
+        "The migration must allow the current and modernized application versions to coexist during validation.",
+        "No cloud provider has been selected.",
+        "No microservices decomposition has been approved."
+      ],
+      "preservationNeeds": [
+        "Existing order-management business behavior must remain unchanged.",
+        "Existing integration behavior with the Integration Gateway must remain compatible.",
+        "The Order Database technology must not change during this modernization phase."
+      ],
+      "constraints": [
+        "Database technology must remain unchanged.",
+        "Existing integration behavior must remain compatible.",
+        "Production cutover approach has not been selected."
+      ],
+      "technicalDebtSignals": [],
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "modernization requirements"
+          },
+          {
+            "sourceType": "input",
+            "section": "modernization drivers"
+          },
+          {
+            "sourceType": "input",
+            "section": "migration constraints"
+          }
+        ],
+        "inferred": false
+      }
+    }
+  ]
+}

@@ -1,0 +1,170 @@
+{
+  "version": "1.0",
+  "hostingModel": "unknown",
+  "providerRequirement": {
+    "provider": "unspecified",
+    "explicit": false,
+    "evidenceRefs": []
+  },
+  "deploymentUnits": [],
+  "runtimeRequirements": [
+    {
+      "id": "RUNTIME-001",
+      "executionModel": "interactive",
+      "description": "Runtime for AI agent \"Riverside Wellness Studio Assistant\" — model/provider execution location is a separate, unresolved concern.",
+      "appliesTo": [
+        {
+          "entityType": "ai-agent",
+          "entityId": "AIAGENT-001"
+        }
+      ],
+      "evidenceRefs": [
+        {
+          "entityType": "ai-agent-need",
+          "entityId": "AINEED-001",
+          "description": "Customers should be able to ask the assistant questions about services and studio policies."
+        }
+      ]
+    }
+  ],
+  "stateRequirements": [
+    {
+      "id": "STATE-001",
+      "mode": "durable",
+      "purpose": "Workflow \"Appointment Booking Workflow\" state must survive the wait between an approval being requested and resolved.",
+      "appliesTo": [
+        {
+          "entityType": "workflow",
+          "entityId": "WF-001"
+        }
+      ],
+      "dataEntityIds": [],
+      "evidenceRefs": [
+        {
+          "entityType": "outcome",
+          "entityId": "OUTCOME-002",
+          "description": "Every conflicting request is reviewed and approved by a front-desk employee before confirmation"
+        }
+      ]
+    },
+    {
+      "id": "STATE-002",
+      "mode": "session",
+      "purpose": "Agent \"Riverside Wellness Studio Assistant\" requires session-scoped state.",
+      "appliesTo": [
+        {
+          "entityType": "ai-agent",
+          "entityId": "AIAGENT-001"
+        }
+      ],
+      "dataEntityIds": [
+        "DATA-001"
+      ],
+      "evidenceRefs": [
+        {
+          "entityType": "ai-agent-need",
+          "entityId": "AINEED-001",
+          "description": "Customers should be able to ask the assistant questions about services and studio policies."
+        }
+      ]
+    }
+  ],
+  "persistenceRequirements": [],
+  "connectivityRequirements": [
+    {
+      "id": "CONNECT-001",
+      "source": {
+        "kind": "unknown",
+        "label": "unknown"
+      },
+      "target": {
+        "kind": "external-system",
+        "entityId": "SYS-001",
+        "label": "Google Calendar"
+      },
+      "direction": "unknown",
+      "exposure": "external",
+      "protocol": "https",
+      "integrationId": "INT-001",
+      "evidenceRefs": [
+        {
+          "entityType": "integration",
+          "entityId": "INTNEED-001",
+          "description": "The booking system checks and reserves availability in Google Calendar."
+        }
+      ]
+    }
+  ],
+  "environmentRequirements": [],
+  "scalabilityRequirements": [],
+  "resilienceRequirements": [],
+  "securityMappings": [
+    {
+      "id": "CLOUDSEC-001",
+      "securityRequirementId": "SECREQ-001",
+      "deploymentUnitIds": [],
+      "connectivityRequirementIds": [
+        "CONNECT-001"
+      ],
+      "stateRequirementIds": [],
+      "evidenceRefs": [
+        {
+          "entityType": "integration",
+          "entityId": "INTNEED-001",
+          "description": "The booking system checks and reserves availability in Google Calendar."
+        }
+      ]
+    },
+    {
+      "id": "CLOUDSEC-002",
+      "securityRequirementId": "SECREQ-002",
+      "deploymentUnitIds": [],
+      "connectivityRequirementIds": [
+        "CONNECT-001"
+      ],
+      "stateRequirementIds": [],
+      "evidenceRefs": [
+        {
+          "entityType": "integration",
+          "entityId": "INTNEED-001",
+          "description": "The booking system checks and reserves availability in Google Calendar."
+        }
+      ]
+    }
+  ],
+  "observabilityMappings": [],
+  "informationGaps": [
+    {
+      "id": "CLOUDGAP-001",
+      "topic": "Deployment boundary",
+      "question": "Should the identified runtime responsibilities deploy independently or share one application boundary?",
+      "importance": "medium",
+      "blocking": false,
+      "relatedCapabilityIds": [
+        "cloud"
+      ]
+    },
+    {
+      "id": "CLOUDGAP-002",
+      "topic": "Cloud provider",
+      "question": "Which provider, if any, is required for hosting this solution?",
+      "importance": "low",
+      "blocking": false,
+      "relatedCapabilityIds": [
+        "cloud"
+      ]
+    }
+  ],
+  "evidenceRefs": [
+    {
+      "entityType": "ai-agent-need",
+      "entityId": "AINEED-001",
+      "description": "Customers should be able to ask the assistant questions about services and studio policies."
+    }
+  ],
+  "status": "needs-review",
+  "statusReasons": [
+    "cloud provider is unresolved",
+    "2 unresolved information gap(s)"
+  ]
+}

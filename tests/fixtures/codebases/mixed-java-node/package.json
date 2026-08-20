@@ -1,0 +1,11 @@
+{
+  "name": "mixed-fixture-frontend",
+  "version": "1.0.0",
+  "dependencies": {
+    "react": "^18.3.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "build": "echo build"
+  }
+}

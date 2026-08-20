@@ -1,0 +1,102 @@
+[
+  {
+    "id": "DEPCHANGE-001",
+    "dependencyFactId": "CODEDEP-003",
+    "action": "review",
+    "currentDependency": {
+      "group": "javax.servlet",
+      "name": "javax.servlet-api",
+      "version": "3.1.0"
+    },
+    "reason": "Servlet API compatibility with the target runtime requires review; no target Servlet API version is specified.",
+    "evidenceRefs": [
+      {
+        "analyzerId": "maven",
+        "filePath": "pom.xml",
+        "line": 27,
+        "symbol": "javax.servlet:javax.servlet-api",
+        "evidenceType": "build-file"
+      }
+    ],
+    "status": "needs-review"
+  },
+  {
+    "id": "DEPCHANGE-002",
+    "dependencyFactId": "CODEDEP-004",
+    "action": "review",
+    "currentDependency": {
+      "group": "com.example",
+      "name": "internal-fixture-lib",
+      "version": "unresolved"
+    },
+    "reason": "Dependency version could not be resolved locally; review required before migration proceeds.",
+    "evidenceRefs": [
+      {
+        "analyzerId": "maven",
+        "filePath": "pom.xml",
+        "line": 33,
+        "symbol": "com.example:internal-fixture-lib",
+        "evidenceType": "build-file"
+      }
+    ],
+    "status": "needs-review"
+  },
+  {
+    "id": "DEPCHANGE-003",
+    "action": "retain",
+    "currentDependency": {
+      "name": "Spring Framework",
+      "version": "4.3.30.RELEASE"
+    },
+    "reason": "No modernization evidence requires changing this dependency.",
+    "evidenceRefs": [
+      {
+        "analyzerId": "maven",
+        "filePath": "pom.xml",
+        "line": 17,
+        "symbol": "org.springframework:spring-context",
+        "evidenceType": "build-file",
+        "factId": "CODEDEP-001"
+      }
+    ],
+    "status": "proposed"
+  },
+  {
+    "id": "DEPCHANGE-004",
+    "action": "retain",
+    "currentDependency": {
+      "name": "Hibernate",
+      "version": "5.2.18.Final"
+    },
+    "reason": "No modernization evidence requires changing this dependency.",
+    "evidenceRefs": [
+      {
+        "analyzerId": "maven",
+        "filePath": "pom.xml",
+        "line": 22,
+        "symbol": "org.hibernate:hibernate-core",
+        "evidenceType": "build-file",
+        "factId": "CODEDEP-002"
+      }
+    ],
+    "status": "proposed"
+  },
+  {
+    "id": "DEPCHANGE-005",
+    "action": "retain",
+    "currentDependency": {
+      "name": "Spring Framework"
+    },
+    "reason": "No modernization evidence requires changing this dependency.",
+    "evidenceRefs": [
+      {
+        "analyzerId": "java-source",
+        "filePath": "src/main/java/com/example/OrderService.java",
+        "line": 4,
+        "symbol": "org.springframework.stereotype.Service",
+        "evidenceType": "source"
+      }
+    ],
+    "status": "proposed"
+  }
+]

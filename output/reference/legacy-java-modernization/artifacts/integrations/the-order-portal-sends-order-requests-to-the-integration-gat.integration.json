@@ -1,0 +1,74 @@
+{
+  "id": "INT-001",
+  "name": "The Order Portal sends order requests to the Integration Gateway.",
+  "version": "1.0",
+  "sourceSystemId": "SYS-001",
+  "targetSystemId": "SYS-002",
+  "purpose": "The Order Portal sends order requests to the Integration Gateway.",
+  "direction": "unknown",
+  "interactionPattern": "request-response",
+  "protocol": "https",
+  "operations": [],
+  "dataContracts": [],
+  "authentication": {
+    "mechanism": "unknown",
+    "evidenceRefs": [
+      {
+        "entityType": "integration",
+        "entityId": "INTNEED-001",
+        "description": "The Order Portal sends order requests to the Integration Gateway."
+      }
+    ]
+  },
+  "reliability": {
+    "retryRequired": "unknown",
+    "idempotencyRequired": "unknown",
+    "timeoutRequired": "unknown",
+    "orderingRequired": true,
+    "notes": []
+  },
+  "failureScenarios": [],
+  "security": {
+    "encryptionInTransit": true,
+    "containsSensitiveData": "unknown",
+    "secretsRequired": "unknown",
+    "auditRequired": "unknown"
+  },
+  "relatedWorkflowIds": [],
+  "relatedProcessIds": [],
+  "relatedRequirementIds": [],
+  "informationGaps": [
+    {
+      "id": "INTGAP-001",
+      "topic": "Integration authentication",
+      "question": "What authentication mechanism is required for \"The Order Portal sends order requests to the Integration Gateway.\"?",
+      "importance": "medium",
+      "blocking": false,
+      "relatedCapabilityIds": [
+        "integrations",
+        "security-governance"
+      ]
+    },
+    {
+      "id": "INTGAP-002",
+      "topic": "Integration failure handling",
+      "question": "What should happen if Integration Gateway is unavailable during \"The Order Portal sends order requests to the Integration Gateway.\"?",
+      "importance": "low",
+      "blocking": false,
+      "relatedCapabilityIds": [
+        "integrations"
+      ]
+    }
+  ],
+  "evidenceRefs": [
+    {
+      "entityType": "integration",
+      "entityId": "INTNEED-001",
+      "description": "The Order Portal sends order requests to the Integration Gateway."
+    }
+  ],
+  "status": "needs-review",
+  "statusReasons": [
+    "authentication mechanism unknown"
+  ]
+}

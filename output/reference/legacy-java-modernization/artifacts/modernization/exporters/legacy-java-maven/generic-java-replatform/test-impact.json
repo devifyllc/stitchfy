@@ -1,0 +1,177 @@
+{
+  "id": "TESTIMPACTSPEC-001",
+  "modernizationCandidateId": "CANDIDATE-001",
+  "testAreas": [
+    {
+      "id": "TESTIMPACT-001",
+      "category": "build",
+      "description": "Validate that the project builds successfully with the target runtime's dependency set.",
+      "affectedArchitectureRefs": [
+        {
+          "entityType": "system",
+          "entityId": "SYS-001"
+        }
+      ],
+      "affectedFiles": [
+        "pom.xml"
+      ],
+      "evidenceRefs": [
+        {
+          "analyzerId": "maven",
+          "filePath": "pom.xml",
+          "line": 2,
+          "symbol": "project",
+          "evidenceType": "build-file"
+        }
+      ]
+    },
+    {
+      "id": "TESTIMPACT-002",
+      "category": "startup",
+      "description": "Validate that the application starts successfully under the target runtime.",
+      "affectedArchitectureRefs": [
+        {
+          "entityType": "system",
+          "entityId": "SYS-001"
+        }
+      ],
+      "affectedFiles": [
+        "src/main/webapp/WEB-INF/ibm-web-bnd.xml"
+      ],
+      "evidenceRefs": [
+        {
+          "analyzerId": "java-source",
+          "filePath": "src/main/webapp/WEB-INF/ibm-web-bnd.xml",
+          "evidenceType": "configuration"
+        }
+      ]
+    },
+    {
+      "id": "TESTIMPACT-003",
+      "category": "runtime",
+      "description": "Validate Servlet API compatibility under the target runtime.",
+      "affectedArchitectureRefs": [
+        {
+          "entityType": "system",
+          "entityId": "SYS-001"
+        }
+      ],
+      "affectedFiles": [
+        "pom.xml",
+        "src/main/java/com/example/OrderService.java"
+      ],
+      "evidenceRefs": [
+        {
+          "analyzerId": "maven",
+          "filePath": "pom.xml",
+          "line": 27,
+          "symbol": "javax.servlet:javax.servlet-api",
+          "evidenceType": "build-file",
+          "factId": "CODEDEP-003"
+        },
+        {
+          "analyzerId": "java-source",
+          "filePath": "src/main/java/com/example/OrderService.java",
+          "line": 2,
+          "symbol": "javax.servlet.http.HttpServletRequest",
+          "evidenceType": "source"
+        }
+      ]
+    },
+    {
+      "id": "TESTIMPACT-004",
+      "category": "business-behavior",
+      "description": "Behavioral regression validation: Existing order-management business behavior must remain unchanged.",
+      "affectedArchitectureRefs": [
+        {
+          "entityType": "system",
+          "entityId": "SYS-001"
+        }
+      ],
+      "affectedFiles": [],
+      "evidenceRefs": []
+    },
+    {
+      "id": "TESTIMPACT-005",
+      "category": "integration",
+      "description": "Integration compatibility validation: Existing integration behavior with the Integration Gateway must remain compatible.",
+      "affectedArchitectureRefs": [
+        {
+          "entityType": "system",
+          "entityId": "SYS-001"
+        },
+        {
+          "entityType": "integration",
+          "entityId": "INT-001"
+        }
+      ],
+      "affectedFiles": [],
+      "evidenceRefs": []
+    },
+    {
+      "id": "TESTIMPACT-006",
+      "category": "integration",
+      "description": "Integration compatibility validation: The Order Database technology must not change during this modernization phase.",
+      "affectedArchitectureRefs": [
+        {
+          "entityType": "system",
+          "entityId": "SYS-001"
+        },
+        {
+          "entityType": "integration",
+          "entityId": "INT-002"
+        }
+      ],
+      "affectedFiles": [],
+      "evidenceRefs": []
+    }
+  ],
+  "preservationRequirementIds": [
+    "PRESERVE-001",
+    "PRESERVE-002",
+    "PRESERVE-003"
+  ],
+  "migrationValidationRequirementIds": [
+    "VALIDATE-001",
+    "VALIDATE-002",
+    "VALIDATE-003",
+    "VALIDATE-004"
+  ],
+  "informationGapIds": [
+    "MODGAP-001",
+    "MODGAP-002",
+    "MODGAP-003",
+    "MODGAP-004",
+    "MODGAP-005",
+    "MODGAP-006"
+  ],
+  "evidenceRefs": [
+    {
+      "analyzerId": "maven",
+      "filePath": "pom.xml",
+      "line": 2,
+      "symbol": "project",
+      "evidenceType": "build-file"
+    },
+    {
+      "analyzerId": "java-source",
+      "filePath": "src/main/webapp/WEB-INF/ibm-web-bnd.xml",
+      "evidenceType": "configuration"
+    },
+    {
+      "analyzerId": "maven",
+      "filePath": "pom.xml",
+      "line": 27,
+      "symbol": "javax.servlet:javax.servlet-api",
+      "evidenceType": "build-file",
+      "factId": "CODEDEP-003"
+    },
+    {
+      "analyzerId": "java-source",
+      "filePath": "src/main/java/com/example/OrderService.java",
+      "line": 2,
+      "symbol": "javax.servlet.http.HttpServletRequest",
+      "evidenceType": "source"
+    }
+  ]
+}

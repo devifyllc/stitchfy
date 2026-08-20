@@ -10,6 +10,6 @@
     "rootDir": ".",
     "resolveJsonModule": true
   },
-  "include": ["framework/**/*", "scripts/**/*"],
+  "include": ["framework/**/*", "scripts/**/*", "tests/**/*"],
   "exclude": ["node_modules", "output", "dist", "site-template"]
 }

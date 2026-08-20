@@ -1,0 +1,41 @@
+{
+  "candidateIds": [
+    "CANDIDATE-001"
+  ],
+  "workstreams": [
+    {
+      "id": "WORKSTREAM-001",
+      "name": "Modernization: SYS-001",
+      "systemIds": [
+        "SYS-001"
+      ],
+      "candidateIds": [
+        "CANDIDATE-001"
+      ],
+      "objective": "Modernize system \"SYS-001\".",
+      "prerequisiteIds": [],
+      "evidenceRefs": [
+        {
+          "entityType": "modernization-need",
+          "entityId": "MODNEED-001",
+          "description": "The business wants to modernize the Order Portal. The application must move from IBM WebSphere to Apache Tomcat while preserving application behavior. The migration must allow the current and modernized application versions to coexist during validation. No cloud provider has been selected. No microservices decomposition has been approved."
+        }
+      ]
+    }
+  ],
+  "dependencies": [],
+  "validationRequirementIds": [
+    "VALIDATE-001",
+    "VALIDATE-002",
+    "VALIDATE-003"
+  ],
+  "informationGapIds": [
+    "MODGAP-001",
+    "MODGAP-002",
+    "MODGAP-003",
+    "MODGAP-004",
+    "MODGAP-005",
+    "MODGAP-006"
+  ],
+  "status": "needs-review"
+}

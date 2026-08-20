@@ -1,0 +1,129 @@
+[
+  {
+    "id": "FRAMEWORK-001",
+    "name": "Spring Framework",
+    "version": "4.3.30.RELEASE",
+    "detectionMethod": "dependency",
+    "moduleIds": [
+      "MODULE-001"
+    ],
+    "metadata": {
+      "provenance": "derived",
+      "evidenceRefs": [
+        {
+          "analyzerId": "maven",
+          "filePath": "pom.xml",
+          "line": 17,
+          "symbol": "org.springframework:spring-context",
+          "evidenceType": "build-file",
+          "factId": "CODEDEP-001"
+        }
+      ]
+    }
+  },
+  {
+    "id": "FRAMEWORK-002",
+    "name": "Hibernate",
+    "version": "5.2.18.Final",
+    "detectionMethod": "dependency",
+    "moduleIds": [
+      "MODULE-001"
+    ],
+    "metadata": {
+      "provenance": "derived",
+      "evidenceRefs": [
+        {
+          "analyzerId": "maven",
+          "filePath": "pom.xml",
+          "line": 22,
+          "symbol": "org.hibernate:hibernate-core",
+          "evidenceType": "build-file",
+          "factId": "CODEDEP-002"
+        }
+      ]
+    }
+  },
+  {
+    "id": "FRAMEWORK-003",
+    "name": "Servlet API (javax)",
+    "version": "3.1.0",
+    "detectionMethod": "dependency",
+    "moduleIds": [
+      "MODULE-001"
+    ],
+    "metadata": {
+      "provenance": "derived",
+      "evidenceRefs": [
+        {
+          "analyzerId": "maven",
+          "filePath": "pom.xml",
+          "line": 27,
+          "symbol": "javax.servlet:javax.servlet-api",
+          "evidenceType": "build-file",
+          "factId": "CODEDEP-003"
+        }
+      ]
+    }
+  },
+  {
+    "id": "FRAMEWORK-004",
+    "name": "JPA (javax)",
+    "detectionMethod": "import",
+    "moduleIds": [],
+    "metadata": {
+      "provenance": "derived",
+      "evidenceRefs": [
+        {
+          "analyzerId": "java-source",
+          "filePath": "src/main/java/com/example/OrderRepository.java",
+          "line": 2,
+          "symbol": "javax.persistence.Entity",
+          "evidenceType": "source"
+        },
+        {
+          "analyzerId": "java-source",
+          "filePath": "src/main/java/com/example/OrderRepository.java",
+          "line": 4,
+          "symbol": "javax.persistence.Id",
+          "evidenceType": "source"
+        }
+      ]
+    }
+  },
+  {
+    "id": "FRAMEWORK-005",
+    "name": "Servlet API (javax)",
+    "detectionMethod": "import",
+    "moduleIds": [],
+    "metadata": {
+      "provenance": "derived",
+      "evidenceRefs": [
+        {
+          "analyzerId": "java-source",
+          "filePath": "src/main/java/com/example/OrderService.java",
+          "line": 2,
+          "symbol": "javax.servlet.http.HttpServletRequest",
+          "evidenceType": "source"
+        }
+      ]
+    }
+  },
+  {
+    "id": "FRAMEWORK-006",
+    "name": "Spring Framework",
+    "detectionMethod": "import",
+    "moduleIds": [],
+    "metadata": {
+      "provenance": "derived",
+      "evidenceRefs": [
+        {
+          "analyzerId": "java-source",
+          "filePath": "src/main/java/com/example/OrderService.java",
+          "line": 4,
+          "symbol": "org.springframework.stereotype.Service",
+          "evidenceType": "source"
+        }
+      ]
+    }
+  }
+]

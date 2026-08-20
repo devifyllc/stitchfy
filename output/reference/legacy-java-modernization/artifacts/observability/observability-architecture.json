@@ -1,0 +1,52 @@
+{
+  "version": "1.0",
+  "telemetryRequirements": [],
+  "signals": [],
+  "logRequirements": [],
+  "metricRequirements": [],
+  "correlationRequirements": [],
+  "healthRequirements": [
+    {
+      "id": "HEALTH-001",
+      "target": {
+        "entityType": "integration",
+        "entityId": "INT-001"
+      },
+      "type": "dependency",
+      "description": "Ability to determine whether \"The Order Portal sends order requests to the Integration Gateway.\" is operational.",
+      "evidenceRefs": [
+        {
+          "entityType": "integration",
+          "entityId": "INTNEED-001",
+          "description": "The Order Portal sends order requests to the Integration Gateway."
+        }
+      ]
+    },
+    {
+      "id": "HEALTH-002",
+      "target": {
+        "entityType": "integration",
+        "entityId": "INT-002"
+      },
+      "type": "dependency",
+      "description": "Ability to determine whether \"The Order Portal reads and writes order records in the Order Database.\" is operational.",
+      "evidenceRefs": [
+        {
+          "entityType": "integration",
+          "entityId": "INTNEED-002",
+          "description": "The Order Portal reads and writes order records in the Order Database."
+        }
+      ]
+    }
+  ],
+  "alertRequirements": [],
+  "dashboardSpecifications": [],
+  "auditMappings": [],
+  "operationalObjectives": [],
+  "informationGaps": [],
+  "evidenceRefs": [],
+  "status": "needs-review",
+  "statusReasons": [
+    "no explicit operational objectives were stated"
+  ]
+}

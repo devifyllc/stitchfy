@@ -1,0 +1,46 @@
+{
+  "planning": {
+    "selectedCapabilities": ["website", "workflow-automation", "integrations", "ai-agents", "security-governance", "observability", "cloud"]
+  },
+  "automation": {
+    "workflows": [
+      {
+        "id": "WF-001",
+        "approvals": [{ "approval": { "approvalRequired": true } }, { "approval": { "approvalRequired": true } }]
+      }
+    ]
+  },
+  "integrations": {
+    "integrations": [{ "id": "INT-001" }],
+    "exports": []
+  },
+  "ai": {
+    "agents": [
+      {
+        "id": "AIAGENT-001",
+        "autonomy": "assistive",
+        "memory": { "mode": "session", "containsSensitiveData": true },
+        "tools": [{}],
+        "guardrails": [{}, {}, {}, {}]
+      }
+    ]
+  },
+  "security": {
+    "requirements": [{}, {}, {}, {}],
+    "risks": [{}, {}]
+  },
+  "observability": {
+    "architecture": {
+      "signals": [
+        {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
+      ],
+      "alertRequirements": [{}, {}]
+    }
+  },
+  "architecture": {
+    "architecture": {
+      "deploymentUnits": [],
+      "providerRequirement": { "provider": "unspecified" }
+    }
+  }
+}

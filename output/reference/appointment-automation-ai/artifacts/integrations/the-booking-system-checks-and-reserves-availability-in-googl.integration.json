@@ -1,0 +1,90 @@
+{
+  "id": "INT-001",
+  "name": "The booking system checks and reserves availability in Google Calendar.",
+  "version": "1.0",
+  "targetSystemId": "SYS-001",
+  "purpose": "The booking system checks and reserves availability in Google Calendar.",
+  "direction": "unknown",
+  "interactionPattern": "request-response",
+  "protocol": "https",
+  "operations": [
+    {
+      "id": "OP-001",
+      "name": "The system checks Google Calendar for availability",
+      "description": "The system checks Google Calendar for availability",
+      "type": "read",
+      "evidenceRefs": [
+        {
+          "entityType": "integration",
+          "entityId": "INTNEED-001",
+          "description": "The booking system checks and reserves availability in Google Calendar."
+        }
+      ]
+    }
+  ],
+  "dataContracts": [],
+  "authentication": {
+    "mechanism": "oauth2",
+    "evidenceRefs": [
+      {
+        "entityType": "integration",
+        "entityId": "INTNEED-001",
+        "description": "The booking system checks and reserves availability in Google Calendar."
+      }
+    ]
+  },
+  "reliability": {
+    "retryRequired": "unknown",
+    "idempotencyRequired": "unknown",
+    "timeoutRequired": "unknown",
+    "orderingRequired": "unknown",
+    "notes": []
+  },
+  "failureScenarios": [],
+  "security": {
+    "encryptionInTransit": true,
+    "containsSensitiveData": true,
+    "secretsRequired": true,
+    "auditRequired": "unknown"
+  },
+  "relatedWorkflowIds": [
+    "WF-001"
+  ],
+  "relatedProcessIds": [
+    "PROC-001"
+  ],
+  "relatedRequirementIds": [],
+  "informationGaps": [
+    {
+      "id": "INTGAP-001",
+      "topic": "Integration source system",
+      "question": "What system will initiate: The booking system checks and reserves availability in Google Calendar.?",
+      "importance": "medium",
+      "blocking": false,
+      "relatedCapabilityIds": [
+        "integrations"
+      ]
+    },
+    {
+      "id": "INTGAP-002",
+      "topic": "Integration failure handling",
+      "question": "What should happen if Google Calendar is unavailable during \"The booking system checks and reserves availability in Google Calendar.\"?",
+      "importance": "low",
+      "blocking": false,
+      "relatedCapabilityIds": [
+        "integrations"
+      ]
+    }
+  ],
+  "evidenceRefs": [
+    {
+      "entityType": "integration",
+      "entityId": "INTNEED-001",
+      "description": "The booking system checks and reserves availability in Google Calendar."
+    }
+  ],
+  "status": "needs-review",
+  "statusReasons": [
+    "source system unknown"
+  ]
+}

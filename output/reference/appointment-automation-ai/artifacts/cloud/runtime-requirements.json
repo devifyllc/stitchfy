@@ -1,0 +1,20 @@
+[
+  {
+    "id": "RUNTIME-001",
+    "executionModel": "interactive",
+    "description": "Runtime for AI agent \"Riverside Wellness Studio Assistant\" — model/provider execution location is a separate, unresolved concern.",
+    "appliesTo": [
+      {
+        "entityType": "ai-agent",
+        "entityId": "AIAGENT-001"
+      }
+    ],
+    "evidenceRefs": [
+      {
+        "entityType": "ai-agent-need",
+        "entityId": "AINEED-001",
+        "description": "Customers should be able to ask the assistant questions about services and studio policies."
+      }
+    ]
+  }
+]

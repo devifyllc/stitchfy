@@ -1,0 +1,57 @@
+{
+  "sourceCandidates": [
+    {
+      "id": "SRCCHANGE-001",
+      "filePath": "src/main/java/com/example/OrderService.java",
+      "symbol": "javax.servlet.http.HttpServletRequest",
+      "category": "namespace",
+      "observedState": "javax.servlet.http.HttpServletRequest import observed.",
+      "evidenceRefs": [
+        {
+          "analyzerId": "java-source",
+          "filePath": "src/main/java/com/example/OrderService.java",
+          "line": 2,
+          "symbol": "javax.servlet.http.HttpServletRequest",
+          "evidenceType": "source"
+        }
+      ],
+      "status": "review"
+    }
+  ],
+  "manualReviews": [
+    {
+      "id": "MANUALREVIEW-001",
+      "topic": "WebSphere-specific configuration and Servlet API compatibility",
+      "description": "Server-specific configuration and Servlet API usage require engineering review before migration; safe automated transformation cannot be established from repository evidence alone.",
+      "affectedFiles": [
+        "src/main/webapp/WEB-INF/ibm-web-bnd.xml"
+      ],
+      "reason": "No target-runtime configuration equivalence has been established.",
+      "evidenceRefs": [
+        {
+          "analyzerId": "java-source",
+          "filePath": "src/main/webapp/WEB-INF/ibm-web-bnd.xml",
+          "evidenceType": "configuration"
+        }
+      ]
+    },
+    {
+      "id": "MANUALREVIEW-002",
+      "topic": "Unresolved dependency version(s)",
+      "description": "1 direct dependency could not be resolved locally and require manual review before migration.",
+      "affectedFiles": [
+        "pom.xml"
+      ],
+      "reason": "Dependency version is a local property reference that could not be resolved from the repository model.",
+      "evidenceRefs": [
+        {
+          "analyzerId": "maven",
+          "filePath": "pom.xml",
+          "line": 33,
+          "symbol": "com.example:internal-fixture-lib",
+          "evidenceType": "build-file"
+        }
+      ]
+    }
+  ]
+}

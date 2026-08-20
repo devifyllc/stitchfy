@@ -1,0 +1,72 @@
+{
+  "systemId": "SYS-001",
+  "analysisId": "legacy-java-maven",
+  "profileMapping": {
+    "analysisId": "legacy-java-maven",
+    "frameworkFactIds": [
+      "FRAMEWORK-001",
+      "FRAMEWORK-002",
+      "FRAMEWORK-003",
+      "FRAMEWORK-004",
+      "FRAMEWORK-005",
+      "FRAMEWORK-006"
+    ],
+    "runtimeFactIds": [
+      "RUNTIME-001",
+      "RUNTIME-002"
+    ],
+    "dependencyFactIds": [
+      "CODEDEP-001",
+      "CODEDEP-002",
+      "CODEDEP-003",
+      "CODEDEP-004"
+    ]
+  },
+  "findings": [
+    {
+      "id": "DEBT-001",
+      "systemId": "SYS-001",
+      "category": "dependencies",
+      "description": "Analysis finding: dependency version for com.example:internal-fixture-lib could not be resolved locally.",
+      "impact": "unknown",
+      "evidenceRefs": [],
+      "codebaseEvidenceRefs": [
+        {
+          "analyzerId": "maven",
+          "filePath": "pom.xml",
+          "line": 33,
+          "symbol": "com.example:internal-fixture-lib",
+          "evidenceType": "build-file"
+        }
+      ]
+    }
+  ],
+  "validationRequirements": [
+    {
+      "id": "VALIDATE-004",
+      "type": "behavior",
+      "description": "Verify preserved servlet behavior after runtime migration.",
+      "preservationRequirementIds": [
+        "PRESERVE-002"
+      ],
+      "evidenceRefs": [
+        {
+          "entityType": "modernization-need",
+          "entityId": "MODNEED-001",
+          "description": "Existing integration behavior with the Integration Gateway must remain compatible."
+        }
+      ],
+      "codebaseEvidenceRefs": [
+        {
+          "analyzerId": "maven",
+          "filePath": "pom.xml",
+          "line": 27,
+          "symbol": "javax.servlet:javax.servlet-api",
+          "evidenceType": "build-file",
+          "factId": "CODEDEP-003"
+        }
+      ]
+    }
+  ],
+  "conflicts": []
+}
