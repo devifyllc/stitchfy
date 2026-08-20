@@ -5,9 +5,9 @@ Status: **READY TO PROMOTE WITH CONDITIONS**
 ## Branch state
 
 - Base branch: `main` @ `8e017da6a65795bc62eeea3f944a02506ef989f4`
-- Candidate branch: `development` @ `eb0f43316e9d0037e7870c0e2ff05abb581b43bd`
+- Candidate branch: `development` @ `2e0405922776547817ac2cdad0a8269a37cfc0b8`
 - Merge base: `efec1ba84ca9f9ad18a20d8a6802b5a9cea439ad`
-- Commits ahead (candidate-only): 16
+- Commits ahead (candidate-only): 17
 - Commits behind (base-only): 4
 - Changed files: 440
 - Merge topology: **MERGE REQUIRED (non-fast-forward, content-conflict-free)**
@@ -26,8 +26,8 @@ IntegrationExportManifest v1, ModernizationExportManifest v1, CodebaseAnalysisRe
 
 ## Release gates
 
-- PASS — RC1 gates (typecheck/test/reference:validate) (`npm run rc:validate`, 51031ms)
-- PASS — Contract tests (`npm run test:contracts`, 10745ms)
+- PASS — RC1 gates (typecheck/test/reference:validate) (`npm run rc:validate`, 38681ms)
+- PASS — Contract tests (`npm run test:contracts`, 9402ms)
 
 ## Recommended version
 

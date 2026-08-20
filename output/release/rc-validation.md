@@ -8,9 +8,9 @@ WebsiteBlueprint schema: `1.0`
 
 ## Gates
 
-- PASS — Type safety (`npm run typecheck`, 19960ms)
-- PASS — Full test suite (incl. contract tests) (`npm run test`, 17096ms)
-- PASS — Reference solutions (`npm run reference:validate`, 7832ms)
+- PASS — Type safety (`npm run typecheck`, 13145ms)
+- PASS — Full test suite (incl. contract tests) (`npm run test`, 14414ms)
+- PASS — Reference solutions (`npm run reference:validate`, 4413ms)
 
 ## Manual gates (not run by this script)
 

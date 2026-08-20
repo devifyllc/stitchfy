@@ -1,7 +1,7 @@
 {
   "project": {
     "schemaVersion": "1.0",
-    "generatedAt": "2026-08-20T03:05:59.178Z",
+    "generatedAt": "2026-08-20T11:55:57.182Z",
     "sourceFile": "order-platform.md",
     "frameworkVersion": "2.2.0"
   },
@@ -344,7 +344,7 @@
     }
   ],
   "planning": {
-    "generatedAt": "2026-08-20T03:05:59.179Z",
+    "generatedAt": "2026-08-20T11:55:57.182Z",
     "assessments": [
       {
         "capabilityId": "website",
@@ -885,9 +885,9 @@
       "status": "executed",
       "success": true,
       "summary": "Executed",
-      "durationMs": 9,
+      "durationMs": 7,
       "output": {
-        "projectId": "run-1787195159184",
+        "projectId": "run-1787226957184",
         "inputPath": "F:\\devify\\stitchfy\\examples\\reference\\order-platform.md",
         "outputDir": "F:\\devify\\stitchfy\\output\\reference\\order-platform",
         "markdown": "# Project: Northwind Order Platform\n\n## Business\n- **Business Name:** Northwind Order Platform\n- **Industry:** Retail software\n- **Description:** A small company operating a solution-managed Order API and background Order Processor that forwards approved orders to a third-party Fulfillment API for shipping.\n\n## Goals\n- Reliably process and forward customer orders to the fulfillment partner\n- Detect and respond to fulfillment submission problems quickly\n- Keep the platform available to customers even when the fulfillment partner has temporary problems\n\n## Users\n- Customers placing orders\n- Fulfillment Coordinator\n\n## Business Processes\n\nOrder Submission\n\nTrigger:\nA customer submits an order through the Order API\n\nActors:\nCustomer\nFulfillment Coordinator\n\nCurrent systems:\nFulfillment API\n\nSteps:\n1. Customer submits an order through the Order API\n2. The Order Processor validates the order and forwards it to the Fulfillment API\n3. Fulfillment Coordinator confirms the order was accepted\n\n## Existing Systems\n- Fulfillment API\n\n## Integrations\n- The Order Processor submits orders to the Fulfillment API.\n  Integration method: REST over HTTPS\n  Base URL: https://api.fulfillment.example.test\n  Endpoint: POST /v1/orders\n  Authentication: API key\n  Authentication placement: X-API-Key request header\n  Request fields: orderId (string, required), customerId (string, required), amount (number, required), items (array, required)\n  Response fields: fulfillmentId (string, required), status (string, required)\n\n## Deployment Requirements\n- The solution includes a solution-managed Order API that receives customer order requests.\n- The Order API must be publicly reachable over HTTPS.\n- The solution includes a solution-managed Order Processor that processes accepted orders in the background.\n- The Order Processor must not expose a public endpoint.\n- The business requires separate Test and Production environments.\n- Order processing state must persist and survive application restarts.\n- Production must support at least 100 concurrent order submissions.\n- The solution must continue accepting new orders when the external Fulfillment API is temporarily unavailable.\n- No cloud provider has been selected.\n- No database technology has been selected.\n\n## Requirements\n- Every order submission must have a correlation identifier.\n- Failed order submissions must be recorded.\n- Operations must be notified after 5 consecutive failed fulfillment submissions.\n- 95% of accepted order submissions should complete within 2 seconds.\n- API keys and customer order payloads must not appear in operational logs.\n- Order-processing audit trails must be retained.\n\n## Desired Outcomes\n- Order submission problems are detected and addressed quickly\n- The platform remains available to customers during fulfillment partner outages\n- Fulfillment partner integration remains observable in production\n",
@@ -991,7 +991,7 @@
         "blueprint": {
           "project": {
             "schemaVersion": "1.0",
-            "generatedAt": "2026-08-20T03:05:59.185Z",
+            "generatedAt": "2026-08-20T11:55:57.184Z",
             "sourceFile": "order-platform.md",
             "frameworkVersion": "2.2.0"
           },
@@ -1736,7 +1736,7 @@
           {
             "stage": "intake",
             "success": true,
-            "durationMs": 2
+            "durationMs": 1
           },
           {
             "stage": "ux",
@@ -1746,7 +1746,7 @@
           {
             "stage": "seo",
             "success": true,
-            "durationMs": 1
+            "durationMs": 0
           },
           {
             "stage": "accessibility",
@@ -1759,8 +1759,8 @@
             "durationMs": 0
           }
         ],
-        "startedAt": "2026-08-20T03:05:59.184Z",
-        "completedAt": "2026-08-20T03:05:59.191Z"
+        "startedAt": "2026-08-20T11:55:57.184Z",
+        "completedAt": "2026-08-20T11:55:57.190Z"
       },
       "assessment": {
         "capabilityId": "website",
@@ -1788,7 +1788,7 @@
       "status": "executed",
       "success": true,
       "summary": "Executed",
-      "durationMs": 2,
+      "durationMs": 0,
       "output": {
         "implemented": true,
         "plan": {
@@ -1931,8 +1931,8 @@
               "workflowId": "WF-001",
               "processId": "PROC-001"
             },
-            "id": "artifact-1787195159192-e4iwae",
-            "generatedAt": "2026-08-20T03:05:59.192Z"
+            "id": "artifact-1787226957191-gbvmtq",
+            "generatedAt": "2026-08-20T11:55:57.191Z"
           },
           {
             "capabilityId": "workflow-automation",
@@ -1943,8 +1943,8 @@
               "workflowId": "WF-001",
               "processId": "PROC-001"
             },
-            "id": "artifact-1787195159192-zv797f",
-            "generatedAt": "2026-08-20T03:05:59.192Z"
+            "id": "artifact-1787226957191-o6p881",
+            "generatedAt": "2026-08-20T11:55:57.191Z"
           }
         ],
         "notes": [
@@ -2009,7 +2009,7 @@
       "status": "executed",
       "success": true,
       "summary": "Executed",
-      "durationMs": 2,
+      "durationMs": 1,
       "output": {
         "implemented": true,
         "plan": {
@@ -2294,8 +2294,8 @@
                   "exporterId": "generic-rest-typescript",
                   "readiness": "ready"
                 },
-                "id": "artifact-1787195159206-p9hcic",
-                "generatedAt": "2026-08-20T03:05:59.206Z"
+                "id": "artifact-1787226957200-6y083v",
+                "generatedAt": "2026-08-20T11:55:57.200Z"
               },
               {
                 "capabilityId": "integrations",
@@ -2307,8 +2307,8 @@
                   "exporterId": "generic-rest-typescript",
                   "readiness": "ready"
                 },
-                "id": "artifact-1787195159206-35m8n2",
-                "generatedAt": "2026-08-20T03:05:59.206Z"
+                "id": "artifact-1787226957200-9gq4wh",
+                "generatedAt": "2026-08-20T11:55:57.200Z"
               },
               {
                 "capabilityId": "integrations",
@@ -2320,21 +2320,21 @@
                   "exporterId": "generic-rest-typescript",
                   "readiness": "ready"
                 },
-                "id": "artifact-1787195159206-wookg8",
-                "generatedAt": "2026-08-20T03:05:59.206Z"
+                "id": "artifact-1787226957200-jxpn3m",
+                "generatedAt": "2026-08-20T11:55:57.200Z"
               },
               {
                 "capabilityId": "integrations",
                 "type": "config",
                 "path": "artifacts/integrations/exporters/fulfillment-api/generic-rest-typescript/integration.manifest.json",
-                "content": "{\n  \"schemaVersion\": \"1.0\",\n  \"integrationId\": \"INT-001\",\n  \"integrationVersion\": \"1.0\",\n  \"exporterId\": \"generic-rest-typescript\",\n  \"exporterVersion\": \"1.0.0\",\n  \"readiness\": \"ready\",\n  \"generatedFiles\": [\n    \"client.ts\",\n    \"types.ts\",\n    \"config.ts\"\n  ],\n  \"operationIds\": [\n    \"OP-001\"\n  ],\n  \"dataContractIds\": [\n    \"CONTRACT-001\",\n    \"CONTRACT-002\"\n  ],\n  \"securityRequirementIds\": [\n    \"SECREQ-001\",\n    \"SECREQ-002\"\n  ],\n  \"riskIds\": [\n    \"RISK-001\"\n  ],\n  \"informationGapIds\": [\n    \"INTGAP-001\",\n    \"INTGAP-002\"\n  ],\n  \"generatedAt\": \"2026-08-20T03:05:59.205Z\"\n}",
+                "content": "{\n  \"schemaVersion\": \"1.0\",\n  \"integrationId\": \"INT-001\",\n  \"integrationVersion\": \"1.0\",\n  \"exporterId\": \"generic-rest-typescript\",\n  \"exporterVersion\": \"1.0.0\",\n  \"readiness\": \"ready\",\n  \"generatedFiles\": [\n    \"client.ts\",\n    \"types.ts\",\n    \"config.ts\"\n  ],\n  \"operationIds\": [\n    \"OP-001\"\n  ],\n  \"dataContractIds\": [\n    \"CONTRACT-001\",\n    \"CONTRACT-002\"\n  ],\n  \"securityRequirementIds\": [\n    \"SECREQ-001\",\n    \"SECREQ-002\"\n  ],\n  \"riskIds\": [\n    \"RISK-001\"\n  ],\n  \"informationGapIds\": [\n    \"INTGAP-001\",\n    \"INTGAP-002\"\n  ],\n  \"generatedAt\": \"2026-08-20T11:55:57.200Z\"\n}",
                 "metadata": {
                   "integrationId": "INT-001",
                   "exporterId": "generic-rest-typescript",
                   "readiness": "ready"
                 },
-                "id": "artifact-1787195159206-tl77v9",
-                "generatedAt": "2026-08-20T03:05:59.206Z"
+                "id": "artifact-1787226957200-30031i",
+                "generatedAt": "2026-08-20T11:55:57.200Z"
               },
               {
                 "capabilityId": "integrations",
@@ -2346,8 +2346,8 @@
                   "exporterId": "generic-rest-typescript",
                   "readiness": "ready"
                 },
-                "id": "artifact-1787195159206-pqkswy",
-                "generatedAt": "2026-08-20T03:05:59.206Z"
+                "id": "artifact-1787226957200-pwstiy",
+                "generatedAt": "2026-08-20T11:55:57.200Z"
               }
             ],
             "notes": [
@@ -2365,8 +2365,8 @@
             "metadata": {
               "integrationId": "INT-001"
             },
-            "id": "artifact-1787195159194-e25rti",
-            "generatedAt": "2026-08-20T03:05:59.194Z"
+            "id": "artifact-1787226957193-0o4q5l",
+            "generatedAt": "2026-08-20T11:55:57.193Z"
           },
           {
             "capabilityId": "integrations",
@@ -2376,8 +2376,8 @@
             "metadata": {
               "integrationId": "INT-001"
             },
-            "id": "artifact-1787195159194-xkroez",
-            "generatedAt": "2026-08-20T03:05:59.194Z"
+            "id": "artifact-1787226957193-xf2ads",
+            "generatedAt": "2026-08-20T11:55:57.193Z"
           },
           {
             "capabilityId": "integrations",
@@ -2387,8 +2387,8 @@
             "metadata": {
               "integrationId": "INT-001"
             },
-            "id": "artifact-1787195159195-jq9n0p",
-            "generatedAt": "2026-08-20T03:05:59.195Z"
+            "id": "artifact-1787226957193-yc91op",
+            "generatedAt": "2026-08-20T11:55:57.193Z"
           },
           {
             "capabilityId": "integrations",
@@ -2400,8 +2400,8 @@
               "exporterId": "generic-rest-typescript",
               "readiness": "ready"
             },
-            "id": "artifact-1787195159206-p9hcic",
-            "generatedAt": "2026-08-20T03:05:59.206Z"
+            "id": "artifact-1787226957200-6y083v",
+            "generatedAt": "2026-08-20T11:55:57.200Z"
           },
           {
             "capabilityId": "integrations",
@@ -2413,8 +2413,8 @@
               "exporterId": "generic-rest-typescript",
               "readiness": "ready"
             },
-            "id": "artifact-1787195159206-35m8n2",
-            "generatedAt": "2026-08-20T03:05:59.206Z"
+            "id": "artifact-1787226957200-9gq4wh",
+            "generatedAt": "2026-08-20T11:55:57.200Z"
           },
           {
             "capabilityId": "integrations",
@@ -2426,21 +2426,21 @@
               "exporterId": "generic-rest-typescript",
               "readiness": "ready"
             },
-            "id": "artifact-1787195159206-wookg8",
-            "generatedAt": "2026-08-20T03:05:59.206Z"
+            "id": "artifact-1787226957200-jxpn3m",
+            "generatedAt": "2026-08-20T11:55:57.200Z"
           },
           {
             "capabilityId": "integrations",
             "type": "config",
             "path": "artifacts/integrations/exporters/fulfillment-api/generic-rest-typescript/integration.manifest.json",
-            "content": "{\n  \"schemaVersion\": \"1.0\",\n  \"integrationId\": \"INT-001\",\n  \"integrationVersion\": \"1.0\",\n  \"exporterId\": \"generic-rest-typescript\",\n  \"exporterVersion\": \"1.0.0\",\n  \"readiness\": \"ready\",\n  \"generatedFiles\": [\n    \"client.ts\",\n    \"types.ts\",\n    \"config.ts\"\n  ],\n  \"operationIds\": [\n    \"OP-001\"\n  ],\n  \"dataContractIds\": [\n    \"CONTRACT-001\",\n    \"CONTRACT-002\"\n  ],\n  \"securityRequirementIds\": [\n    \"SECREQ-001\",\n    \"SECREQ-002\"\n  ],\n  \"riskIds\": [\n    \"RISK-001\"\n  ],\n  \"informationGapIds\": [\n    \"INTGAP-001\",\n    \"INTGAP-002\"\n  ],\n  \"generatedAt\": \"2026-08-20T03:05:59.205Z\"\n}",
+            "content": "{\n  \"schemaVersion\": \"1.0\",\n  \"integrationId\": \"INT-001\",\n  \"integrationVersion\": \"1.0\",\n  \"exporterId\": \"generic-rest-typescript\",\n  \"exporterVersion\": \"1.0.0\",\n  \"readiness\": \"ready\",\n  \"generatedFiles\": [\n    \"client.ts\",\n    \"types.ts\",\n    \"config.ts\"\n  ],\n  \"operationIds\": [\n    \"OP-001\"\n  ],\n  \"dataContractIds\": [\n    \"CONTRACT-001\",\n    \"CONTRACT-002\"\n  ],\n  \"securityRequirementIds\": [\n    \"SECREQ-001\",\n    \"SECREQ-002\"\n  ],\n  \"riskIds\": [\n    \"RISK-001\"\n  ],\n  \"informationGapIds\": [\n    \"INTGAP-001\",\n    \"INTGAP-002\"\n  ],\n  \"generatedAt\": \"2026-08-20T11:55:57.200Z\"\n}",
             "metadata": {
               "integrationId": "INT-001",
               "exporterId": "generic-rest-typescript",
               "readiness": "ready"
             },
-            "id": "artifact-1787195159206-tl77v9",
-            "generatedAt": "2026-08-20T03:05:59.206Z"
+            "id": "artifact-1787226957200-30031i",
+            "generatedAt": "2026-08-20T11:55:57.200Z"
           },
           {
             "capabilityId": "integrations",
@@ -2452,8 +2452,8 @@
               "exporterId": "generic-rest-typescript",
               "readiness": "ready"
             },
-            "id": "artifact-1787195159206-pqkswy",
-            "generatedAt": "2026-08-20T03:05:59.206Z"
+            "id": "artifact-1787226957200-pwstiy",
+            "generatedAt": "2026-08-20T11:55:57.200Z"
           }
         ],
         "notes": [
@@ -2739,48 +2739,48 @@
             "type": "config",
             "path": "artifacts/security-governance/security-architecture.json",
             "content": "{\n  \"version\": \"1.0\",\n  \"requirements\": [\n    {\n      \"id\": \"SECREQ-001\",\n      \"domain\": \"secrets\",\n      \"description\": \"Credentials for \\\"The Order Processor submits orders to the Fulfillment API.\\\" (mechanism: api-key) must not be embedded directly in generated application code or static configuration committed to source control.\",\n      \"priority\": \"required\",\n      \"appliesTo\": [\n        {\n          \"entityType\": \"integration\",\n          \"entityId\": \"INT-001\"\n        }\n      ],\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"integration\",\n          \"entityId\": \"INTNEED-001\",\n          \"description\": \"The Order Processor submits orders to the Fulfillment API.\"\n        }\n      ],\n      \"status\": \"defined\"\n    },\n    {\n      \"id\": \"SECREQ-002\",\n      \"domain\": \"integration\",\n      \"description\": \"Interaction with the system behind \\\"The Order Processor submits orders to the Fulfillment API.\\\" crosses a trust boundary; requests and responses should be validated and protection requirements confirmed before implementation.\",\n      \"priority\": \"review\",\n      \"appliesTo\": [\n        {\n          \"entityType\": \"integration\",\n          \"entityId\": \"INT-001\"\n        },\n        {\n          \"entityType\": \"system\",\n          \"entityId\": \"SYS-001\"\n        }\n      ],\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"integration\",\n          \"entityId\": \"INTNEED-001\",\n          \"description\": \"The Order Processor submits orders to the Fulfillment API.\"\n        }\n      ],\n      \"status\": \"defined\"\n    }\n  ],\n  \"trustBoundaries\": [\n    {\n      \"id\": \"BOUNDARY-001\",\n      \"targetSystemId\": \"SYS-001\",\n      \"integrationId\": \"INT-001\",\n      \"classification\": \"external\",\n      \"dataContractIds\": [\n        \"CONTRACT-001\",\n        \"CONTRACT-002\"\n      ],\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"integration\",\n          \"entityId\": \"INTNEED-001\",\n          \"description\": \"The Order Processor submits orders to the Fulfillment API.\"\n        }\n      ]\n    }\n  ],\n  \"dataProtection\": [\n    {\n      \"id\": \"DATAPROT-001\",\n      \"dataEntityIds\": [],\n      \"dataContractIds\": [\n        \"CONTRACT-001\"\n      ],\n      \"classification\": \"unknown\",\n      \"encryptionInTransit\": true,\n      \"encryptionAtRest\": \"unknown\",\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"integration\",\n          \"entityId\": \"INTNEED-001\",\n          \"description\": \"The Order Processor submits orders to the Fulfillment API.\"\n        }\n      ]\n    },\n    {\n      \"id\": \"DATAPROT-002\",\n      \"dataEntityIds\": [],\n      \"dataContractIds\": [\n        \"CONTRACT-002\"\n      ],\n      \"classification\": \"unknown\",\n      \"encryptionInTransit\": true,\n      \"encryptionAtRest\": \"unknown\",\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"integration\",\n          \"entityId\": \"INTNEED-001\",\n          \"description\": \"The Order Processor submits orders to the Fulfillment API.\"\n        }\n      ]\n    }\n  ],\n  \"identityAccess\": [],\n  \"integrationSecurity\": [\n    {\n      \"integrationId\": \"INT-001\",\n      \"relatedSecurityRequirementIds\": [\n        \"SECREQ-001\",\n        \"SECREQ-002\"\n      ],\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"integration\",\n          \"entityId\": \"INTNEED-001\",\n          \"description\": \"The Order Processor submits orders to the Fulfillment API.\"\n        }\n      ]\n    }\n  ],\n  \"auditRequirements\": [],\n  \"risks\": [\n    {\n      \"id\": \"RISK-001\",\n      \"category\": \"security\",\n      \"description\": \"Credential material for \\\"The Order Processor submits orders to the Fulfillment API.\\\" requires protection; improper handling could expose access to the target system.\",\n      \"likelihood\": \"unknown\",\n      \"impact\": \"unknown\",\n      \"treatment\": \"mitigate\",\n      \"relatedArchitectureRefs\": [\n        {\n          \"entityType\": \"integration\",\n          \"entityId\": \"INT-001\"\n        }\n      ],\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"integration\",\n          \"entityId\": \"INTNEED-001\",\n          \"description\": \"The Order Processor submits orders to the Fulfillment API.\"\n        }\n      ],\n      \"status\": \"open\"\n    }\n  ],\n  \"informationGaps\": [\n    {\n      \"gapId\": \"GAP-004\",\n      \"topic\": \"Data\",\n      \"question\": \"What data does this solution create, store, or rely on?\",\n      \"isNew\": false\n    },\n    {\n      \"gapId\": \"INTGAP-001\",\n      \"topic\": \"Integration source system\",\n      \"question\": \"What system will initiate: The Order Processor submits orders to the Fulfillment API.?\",\n      \"isNew\": false\n    },\n    {\n      \"gapId\": \"INTGAP-002\",\n      \"topic\": \"Integration failure handling\",\n      \"question\": \"What should happen if Fulfillment API is unavailable during \\\"The Order Processor submits orders to the Fulfillment API.\\\"?\",\n      \"isNew\": false\n    }\n  ],\n  \"evidenceRefs\": [\n    {\n      \"entityType\": \"integration\",\n      \"entityId\": \"INTNEED-001\",\n      \"description\": \"The Order Processor submits orders to the Fulfillment API.\"\n    },\n    {\n      \"entityType\": \"integration\",\n      \"entityId\": \"INTNEED-001\",\n      \"description\": \"The Order Processor submits orders to the Fulfillment API.\"\n    },\n    {\n      \"entityType\": \"integration\",\n      \"entityId\": \"INTNEED-001\",\n      \"description\": \"The Order Processor submits orders to the Fulfillment API.\"\n    }\n  ],\n  \"status\": \"needs-review\",\n  \"statusReasons\": [\n    \"3 unresolved information gap(s)\"\n  ]\n}",
-            "id": "artifact-1787195159196-c1a24b",
-            "generatedAt": "2026-08-20T03:05:59.196Z"
+            "id": "artifact-1787226957194-iuzzaa",
+            "generatedAt": "2026-08-20T11:55:57.194Z"
           },
           {
             "capabilityId": "security-governance",
             "type": "document",
             "path": "artifacts/security-governance/security-architecture.md",
             "content": "# Security Architecture\n\n_Status: **needs-review** (3 unresolved information gap(s))_\n\n> `implemented: true` on this capability means Stitchfy generated and validated a security/governance architecture for the currently known solution. It does not mean the resulting system is secure, compliant, certified, penetration-tested, or production-ready.\n\n## Scope\n\n1 trust boundary(ies), 2 security requirement(s), 2 data protection requirement(s), 1 risk(s) identified from the generated solution.\n\n## Systems and Trust Boundaries\n\n- **unknown source → Fulfillment API (SYS-001)** — classification: external\n\n## Identity and Authentication\n\nNo explicit identity requirements identified.\n\n## Authorization\n\nNo explicit authorization requirements identified.\n\n## Data Protection\n\n- Classification: **unknown** — encryption in transit: true, encryption at rest: unknown\n- Classification: **unknown** — encryption in transit: true, encryption at rest: unknown\n\n## Integration Security\n\n- **INT-001 (INT-001)**\n  - Credentials for \"The Order Processor submits orders to the Fulfillment API.\" (mechanism: api-key) must not be embedded directly in generated application code or static configuration committed to source control.\n  - Interaction with the system behind \"The Order Processor submits orders to the Fulfillment API.\" crosses a trust boundary; requests and responses should be validated and protection requirements confirmed before implementation.\n\n## Secrets\n\n- Credentials for \"The Order Processor submits orders to the Fulfillment API.\" (mechanism: api-key) must not be embedded directly in generated application code or static configuration committed to source control.\n\n## Privacy Considerations\n\nNone identified.\n\n## Auditability\n\nNone identified.\n\n## Human Oversight\n\nNone identified.\n\n## Open Security Questions\n\n- **Data**: What data does this solution create, store, or rely on? _(already tracked upstream)_\n- **Integration source system**: What system will initiate: The Order Processor submits orders to the Fulfillment API.? _(already tracked upstream)_\n- **Integration failure handling**: What should happen if Fulfillment API is unavailable during \"The Order Processor submits orders to the Fulfillment API.\"? _(already tracked upstream)_\n\n## Traceability\n\nSecurity requirements: 2, Trust boundaries: 1, Risks: 1, Evidence references: 3\n",
-            "id": "artifact-1787195159196-r7ojvv",
-            "generatedAt": "2026-08-20T03:05:59.196Z"
+            "id": "artifact-1787226957194-es1439",
+            "generatedAt": "2026-08-20T11:55:57.194Z"
           },
           {
             "capabilityId": "security-governance",
             "type": "config",
             "path": "artifacts/security-governance/risk-register.json",
             "content": "[\n  {\n    \"id\": \"RISK-001\",\n    \"category\": \"security\",\n    \"description\": \"Credential material for \\\"The Order Processor submits orders to the Fulfillment API.\\\" requires protection; improper handling could expose access to the target system.\",\n    \"likelihood\": \"unknown\",\n    \"impact\": \"unknown\",\n    \"treatment\": \"mitigate\",\n    \"relatedArchitectureRefs\": [\n      {\n        \"entityType\": \"integration\",\n        \"entityId\": \"INT-001\"\n      }\n    ],\n    \"evidenceRefs\": [\n      {\n        \"entityType\": \"integration\",\n        \"entityId\": \"INTNEED-001\",\n        \"description\": \"The Order Processor submits orders to the Fulfillment API.\"\n      }\n    ],\n    \"status\": \"open\"\n  }\n]",
-            "id": "artifact-1787195159196-g03xal",
-            "generatedAt": "2026-08-20T03:05:59.196Z"
+            "id": "artifact-1787226957194-il0r0d",
+            "generatedAt": "2026-08-20T11:55:57.194Z"
           },
           {
             "capabilityId": "security-governance",
             "type": "document",
             "path": "artifacts/security-governance/risk-register.md",
             "content": "# Risk Register\n\n## RISK-001 — Credential material for \"The Order Processor submits orders to the Fulfillment API.\" requires protection; improper handling could expose access to the target system.\n\nCategory:\nsecurity\n\nLikelihood:\nunknown\n\nImpact:\nunknown\n\nTreatment:\nmitigate\n\nStatus:\nopen\n\nEvidence:\nINTNEED-001\n\nRelated architecture:\nintegration/INT-001\n",
-            "id": "artifact-1787195159196-7dki3d",
-            "generatedAt": "2026-08-20T03:05:59.196Z"
+            "id": "artifact-1787226957194-e26n7r",
+            "generatedAt": "2026-08-20T11:55:57.194Z"
           },
           {
             "capabilityId": "security-governance",
             "type": "config",
             "path": "artifacts/security-governance/governance-plan.json",
             "content": "{\n  \"policies\": [],\n  \"humanOversight\": [],\n  \"auditRequirements\": [],\n  \"decisionControls\": [],\n  \"complianceConsiderations\": [],\n  \"informationGaps\": [\n    \"GAP-004\",\n    \"INTGAP-001\",\n    \"INTGAP-002\"\n  ],\n  \"status\": \"draft\"\n}",
-            "id": "artifact-1787195159196-u6ais1",
-            "generatedAt": "2026-08-20T03:05:59.196Z"
+            "id": "artifact-1787226957194-xg9fpm",
+            "generatedAt": "2026-08-20T11:55:57.194Z"
           },
           {
             "capabilityId": "security-governance",
             "type": "document",
             "path": "artifacts/security-governance/governance-plan.md",
             "content": "# Governance Plan\n\n_Status: **draft**_\n\n> `implemented: true` on this capability means Stitchfy generated and validated a security/governance architecture for the currently known solution. It does not mean the resulting system is secure, compliant, certified, penetration-tested, or production-ready.\n\n## Human Approval Controls\n\nNone identified.\n\n## Decision Controls\n\nNone identified.\n\n## Audit Requirements\n\nNone identified.\n\n## Privacy Considerations\n\nNone identified.\n\n## Compliance Considerations\n\nNone explicitly stated.\n\n## Unresolved Governance Questions\n\n- GAP-004\n- INTGAP-001\n- INTGAP-002\n\n## Policies\n\nNone derived from an explicit business rule.\n",
-            "id": "artifact-1787195159196-qs5g76",
-            "generatedAt": "2026-08-20T03:05:59.196Z"
+            "id": "artifact-1787226957194-lc6s3p",
+            "generatedAt": "2026-08-20T11:55:57.194Z"
           }
         ],
         "notes": [
@@ -2823,7 +2823,7 @@
       "status": "executed",
       "success": true,
       "summary": "Executed",
-      "durationMs": 1,
+      "durationMs": 2,
       "output": {
         "implemented": true,
         "plan": {
@@ -3418,48 +3418,48 @@
             "type": "config",
             "path": "artifacts/observability/observability-architecture.json",
             "content": "{\n  \"version\": \"1.0\",\n  \"telemetryRequirements\": [\n    {\n      \"id\": \"TELREQ-002\",\n      \"purpose\": \"security\",\n      \"appliesTo\": [\n        {\n          \"entityType\": \"data-contract\",\n          \"entityId\": \"CONTRACT-001\"\n        }\n      ],\n      \"requiredSignals\": [],\n      \"description\": \"Telemetry must avoid recording the associated business payload until data classification (currently \\\"unknown\\\") and logging policy are resolved.\",\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"integration\",\n          \"entityId\": \"INTNEED-001\",\n          \"description\": \"The Order Processor submits orders to the Fulfillment API.\"\n        }\n      ],\n      \"status\": \"needs-information\"\n    },\n    {\n      \"id\": \"TELREQ-003\",\n      \"purpose\": \"security\",\n      \"appliesTo\": [\n        {\n          \"entityType\": \"data-contract\",\n          \"entityId\": \"CONTRACT-002\"\n        }\n      ],\n      \"requiredSignals\": [],\n      \"description\": \"Telemetry must avoid recording the associated business payload until data classification (currently \\\"unknown\\\") and logging policy are resolved.\",\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"integration\",\n          \"entityId\": \"INTNEED-001\",\n          \"description\": \"The Order Processor submits orders to the Fulfillment API.\"\n        }\n      ],\n      \"status\": \"needs-information\"\n    }\n  ],\n  \"signals\": [\n    {\n      \"id\": \"SIGNAL-001\",\n      \"name\": \"Order Submission Workflow started\",\n      \"type\": \"event\",\n      \"description\": \"Workflow \\\"Order Submission Workflow\\\" started.\",\n      \"source\": {\n        \"entityType\": \"workflow\",\n        \"entityId\": \"WF-001\"\n      },\n      \"attributes\": [\n        {\n          \"name\": \"workflowId\",\n          \"purpose\": \"correlates events to this workflow\",\n          \"sensitivity\": \"internal\",\n          \"required\": true\n        },\n        {\n          \"name\": \"outcome\",\n          \"purpose\": \"execution outcome\",\n          \"sensitivity\": \"internal\",\n          \"required\": true\n        }\n      ],\n      \"sensitivity\": \"internal\",\n      \"provenance\": \"derived\",\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"process\",\n          \"entityId\": \"PROC-001\",\n          \"description\": \"Order Submission\"\n        }\n      ]\n    },\n    {\n      \"id\": \"SIGNAL-002\",\n      \"name\": \"Order Submission Workflow completed\",\n      \"type\": \"event\",\n      \"description\": \"Workflow \\\"Order Submission Workflow\\\" completed.\",\n      \"source\": {\n        \"entityType\": \"workflow\",\n        \"entityId\": \"WF-001\"\n      },\n      \"attributes\": [\n        {\n          \"name\": \"workflowId\",\n          \"purpose\": \"correlates events to this workflow\",\n          \"sensitivity\": \"internal\",\n          \"required\": true\n        },\n        {\n          \"name\": \"outcome\",\n          \"purpose\": \"execution outcome\",\n          \"sensitivity\": \"internal\",\n          \"required\": true\n        }\n      ],\n      \"sensitivity\": \"internal\",\n      \"provenance\": \"derived\",\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"process\",\n          \"entityId\": \"PROC-001\",\n          \"description\": \"Order Submission\"\n        }\n      ]\n    },\n    {\n      \"id\": \"SIGNAL-003\",\n      \"name\": \"Order Submission Workflow failed\",\n      \"type\": \"event\",\n      \"description\": \"Workflow \\\"Order Submission Workflow\\\" failed.\",\n      \"source\": {\n        \"entityType\": \"workflow\",\n        \"entityId\": \"WF-001\"\n      },\n      \"attributes\": [\n        {\n          \"name\": \"workflowId\",\n          \"purpose\": \"correlates events to this workflow\",\n          \"sensitivity\": \"internal\",\n          \"required\": true\n        },\n        {\n          \"name\": \"outcome\",\n          \"purpose\": \"execution outcome\",\n          \"sensitivity\": \"internal\",\n          \"required\": true\n        }\n      ],\n      \"sensitivity\": \"internal\",\n      \"provenance\": \"derived\",\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"process\",\n          \"entityId\": \"PROC-001\",\n          \"description\": \"Order Submission\"\n        }\n      ]\n    },\n    {\n      \"id\": \"SIGNAL-004\",\n      \"name\": \"The Order Processor validates the order and forwards it to the Fulfillment API attempted\",\n      \"type\": \"event\",\n      \"description\": \"Integration operation \\\"The Order Processor validates the order and forwards it to the Fulfillment API\\\" (The Order Processor submits orders to the Fulfillment API.) attempted.\",\n      \"source\": {\n        \"entityType\": \"integration\",\n        \"entityId\": \"INT-001\"\n      },\n      \"attributes\": [\n        {\n          \"name\": \"integrationId\",\n          \"purpose\": \"correlates to the owning integration\",\n          \"sensitivity\": \"internal\",\n          \"required\": true\n        },\n        {\n          \"name\": \"operationId\",\n          \"purpose\": \"which operation\",\n          \"sensitivity\": \"internal\",\n          \"required\": true\n        },\n        {\n          \"name\": \"outcome\",\n          \"purpose\": \"attempt outcome\",\n          \"sensitivity\": \"internal\",\n          \"required\": true\n        }\n      ],\n      \"sensitivity\": \"internal\",\n      \"provenance\": \"derived\",\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"integration\",\n          \"entityId\": \"INTNEED-001\",\n          \"description\": \"The Order Processor submits orders to the Fulfillment API.\"\n        }\n      ]\n    },\n    {\n      \"id\": \"SIGNAL-005\",\n      \"name\": \"The Order Processor validates the order and forwards it to the Fulfillment API succeeded\",\n      \"type\": \"event\",\n      \"description\": \"Integration operation \\\"The Order Processor validates the order and forwards it to the Fulfillment API\\\" (The Order Processor submits orders to the Fulfillment API.) succeeded.\",\n      \"source\": {\n        \"entityType\": \"integration\",\n        \"entityId\": \"INT-001\"\n      },\n      \"attributes\": [\n        {\n          \"name\": \"integrationId\",\n          \"purpose\": \"correlates to the owning integration\",\n          \"sensitivity\": \"internal\",\n          \"required\": true\n        },\n        {\n          \"name\": \"operationId\",\n          \"purpose\": \"which operation\",\n          \"sensitivity\": \"internal\",\n          \"required\": true\n        },\n        {\n          \"name\": \"outcome\",\n          \"purpose\": \"attempt outcome\",\n          \"sensitivity\": \"internal\",\n          \"required\": true\n        },\n        {\n          \"name\": \"httpMethod\",\n          \"purpose\": \"explicit HTTP method\",\n          \"sensitivity\": \"internal\",\n          \"required\": true\n        },\n        {\n          \"name\": \"httpPath\",\n          \"purpose\": \"explicit HTTP path\",\n          \"sensitivity\": \"internal\",\n          \"required\": true\n        }\n      ],\n      \"sensitivity\": \"internal\",\n      \"provenance\": \"derived\",\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"integration\",\n          \"entityId\": \"INTNEED-001\",\n          \"description\": \"The Order Processor submits orders to the Fulfillment API.\"\n        }\n      ]\n    },\n    {\n      \"id\": \"SIGNAL-006\",\n      \"name\": \"The Order Processor validates the order and forwards it to the Fulfillment API failed\",\n      \"type\": \"event\",\n      \"description\": \"Integration operation \\\"The Order Processor validates the order and forwards it to the Fulfillment API\\\" (The Order Processor submits orders to the Fulfillment API.) failed.\",\n      \"source\": {\n        \"entityType\": \"integration\",\n        \"entityId\": \"INT-001\"\n      },\n      \"attributes\": [\n        {\n          \"name\": \"integrationId\",\n          \"purpose\": \"correlates to the owning integration\",\n          \"sensitivity\": \"internal\",\n          \"required\": true\n        },\n        {\n          \"name\": \"operationId\",\n          \"purpose\": \"which operation\",\n          \"sensitivity\": \"internal\",\n          \"required\": true\n        },\n        {\n          \"name\": \"outcome\",\n          \"purpose\": \"attempt outcome\",\n          \"sensitivity\": \"internal\",\n          \"required\": true\n        },\n        {\n          \"name\": \"httpMethod\",\n          \"purpose\": \"explicit HTTP method\",\n          \"sensitivity\": \"internal\",\n          \"required\": true\n        },\n        {\n          \"name\": \"httpPath\",\n          \"purpose\": \"explicit HTTP path\",\n          \"sensitivity\": \"internal\",\n          \"required\": true\n        }\n      ],\n      \"sensitivity\": \"internal\",\n      \"provenance\": \"derived\",\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"integration\",\n          \"entityId\": \"INTNEED-001\",\n          \"description\": \"The Order Processor submits orders to the Fulfillment API.\"\n        }\n      ]\n    }\n  ],\n  \"logRequirements\": [\n    {\n      \"id\": \"TELREQ-001\",\n      \"event\": \"integration operation outcome\",\n      \"level\": \"unknown\",\n      \"source\": {\n        \"entityType\": \"integration\",\n        \"entityId\": \"INT-001\"\n      },\n      \"fields\": [],\n      \"prohibitedData\": [\n        \"credential/API-key material\"\n      ],\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"integration\",\n          \"entityId\": \"INTNEED-001\",\n          \"description\": \"The Order Processor submits orders to the Fulfillment API.\"\n        }\n      ]\n    }\n  ],\n  \"metricRequirements\": [\n    {\n      \"id\": \"METRIC-001\",\n      \"name\": \"The Order Processor submits orders to the Fulfillment API. operation count\",\n      \"kind\": \"counter\",\n      \"description\": \"Count of operation attempts for \\\"The Order Processor submits orders to the Fulfillment API.\\\".\",\n      \"source\": {\n        \"entityType\": \"integration\",\n        \"entityId\": \"INT-001\"\n      },\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"integration\",\n          \"entityId\": \"INTNEED-001\",\n          \"description\": \"The Order Processor submits orders to the Fulfillment API.\"\n        }\n      ]\n    },\n    {\n      \"id\": \"METRIC-002\",\n      \"name\": \"The Order Processor submits orders to the Fulfillment API. failure count\",\n      \"kind\": \"counter\",\n      \"description\": \"Count of operation failures for \\\"The Order Processor submits orders to the Fulfillment API.\\\".\",\n      \"source\": {\n        \"entityType\": \"integration\",\n        \"entityId\": \"INT-001\"\n      },\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"integration\",\n          \"entityId\": \"INTNEED-001\",\n          \"description\": \"The Order Processor submits orders to the Fulfillment API.\"\n        }\n      ]\n    },\n    {\n      \"id\": \"METRIC-003\",\n      \"name\": \"The Order Processor submits orders to the Fulfillment API. operation duration\",\n      \"kind\": \"timer\",\n      \"description\": \"Duration of operation attempts for \\\"The Order Processor submits orders to the Fulfillment API.\\\". No target/threshold implied.\",\n      \"source\": {\n        \"entityType\": \"integration\",\n        \"entityId\": \"INT-001\"\n      },\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"integration\",\n          \"entityId\": \"INTNEED-001\",\n          \"description\": \"The Order Processor submits orders to the Fulfillment API.\"\n        }\n      ]\n    }\n  ],\n  \"correlationRequirements\": [\n    {\n      \"id\": \"CORR-001\",\n      \"description\": \"Operations for \\\"The Order Processor submits orders to the Fulfillment API.\\\" should be correlatable back to the workflow that triggered them.\",\n      \"architecturePath\": [\n        {\n          \"entityType\": \"workflow\",\n          \"entityId\": \"WF-001\"\n        },\n        {\n          \"entityType\": \"integration\",\n          \"entityId\": \"INT-001\"\n        }\n      ],\n      \"correlationRequired\": true,\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"integration\",\n          \"entityId\": \"INTNEED-001\",\n          \"description\": \"The Order Processor submits orders to the Fulfillment API.\"\n        }\n      ]\n    }\n  ],\n  \"healthRequirements\": [\n    {\n      \"id\": \"HEALTH-001\",\n      \"target\": {\n        \"entityType\": \"workflow\",\n        \"entityId\": \"WF-001\"\n      },\n      \"type\": \"business-process\",\n      \"description\": \"Ability to determine whether workflow \\\"Order Submission Workflow\\\" is completing successfully.\",\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"process\",\n          \"entityId\": \"PROC-001\",\n          \"description\": \"Order Submission\"\n        }\n      ]\n    },\n    {\n      \"id\": \"HEALTH-002\",\n      \"target\": {\n        \"entityType\": \"integration\",\n        \"entityId\": \"INT-001\"\n      },\n      \"type\": \"dependency\",\n      \"description\": \"Ability to determine whether \\\"The Order Processor submits orders to the Fulfillment API.\\\" is operational.\",\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"integration\",\n          \"entityId\": \"INTNEED-001\",\n          \"description\": \"The Order Processor submits orders to the Fulfillment API.\"\n        }\n      ]\n    }\n  ],\n  \"alertRequirements\": [\n    {\n      \"id\": \"ALERT-001\",\n      \"name\": \"Operations must be notified after 5 consecutive failed fulfillment submissions.\",\n      \"sourceSignalIds\": [],\n      \"condition\": \"Operations must be notified after 5 consecutive failed fulfillment submissions.\",\n      \"threshold\": \"5 consecutive\",\n      \"severity\": \"warning\",\n      \"provenance\": \"explicit\",\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"requirement\",\n          \"entityId\": \"REQ-003\",\n          \"description\": \"Operations must be notified after 5 consecutive failed fulfillment submissions.\"\n        }\n      ]\n    }\n  ],\n  \"dashboardSpecifications\": [\n    {\n      \"id\": \"DASH-001\",\n      \"name\": \"Workflow Operations View\",\n      \"purpose\": \"Operational visibility into generated workflow execution outcomes, decisions, and approvals.\",\n      \"signalIds\": [\n        \"SIGNAL-001\",\n        \"SIGNAL-002\",\n        \"SIGNAL-003\"\n      ],\n      \"audienceRoles\": [\n        \"operations\"\n      ],\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"process\",\n          \"entityId\": \"PROC-001\",\n          \"description\": \"Order Submission\"\n        }\n      ]\n    },\n    {\n      \"id\": \"DASH-002\",\n      \"name\": \"Integration Health View\",\n      \"purpose\": \"Operational visibility into external integration operation outcomes.\",\n      \"signalIds\": [\n        \"SIGNAL-004\",\n        \"SIGNAL-005\",\n        \"SIGNAL-006\"\n      ],\n      \"audienceRoles\": [\n        \"operations\"\n      ],\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"integration\",\n          \"entityId\": \"INTNEED-001\",\n          \"description\": \"The Order Processor submits orders to the Fulfillment API.\"\n        }\n      ]\n    }\n  ],\n  \"auditMappings\": [],\n  \"operationalObjectives\": [\n    {\n      \"id\": \"OBJ-001\",\n      \"name\": \"95% of accepted order submissions should complete within 2 seconds.\",\n      \"target\": [],\n      \"objectiveType\": \"latency\",\n      \"targetValue\": \"95% within 2 seconds\",\n      \"explicit\": true,\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"requirement\",\n          \"entityId\": \"REQ-004\",\n          \"description\": \"95% of accepted order submissions should complete within 2 seconds.\"\n        }\n      ]\n    }\n  ],\n  \"informationGaps\": [\n    {\n      \"id\": \"OBSGAP-001\",\n      \"topic\": \"Alert destination\",\n      \"question\": \"Who or what system should receive the alert for \\\"Operations must be notified after 5 consecutive failed fulfillment submissions.\\\"?\",\n      \"importance\": \"medium\",\n      \"blocking\": false,\n      \"relatedCapabilityIds\": [\n        \"observability\"\n      ]\n    }\n  ],\n  \"evidenceRefs\": [\n    {\n      \"entityType\": \"process\",\n      \"entityId\": \"PROC-001\",\n      \"description\": \"Order Submission\"\n    },\n    {\n      \"entityType\": \"process\",\n      \"entityId\": \"PROC-001\",\n      \"description\": \"Order Submission\"\n    },\n    {\n      \"entityType\": \"process\",\n      \"entityId\": \"PROC-001\",\n      \"description\": \"Order Submission\"\n    },\n    {\n      \"entityType\": \"integration\",\n      \"entityId\": \"INTNEED-001\",\n      \"description\": \"The Order Processor submits orders to the Fulfillment API.\"\n    },\n    {\n      \"entityType\": \"integration\",\n      \"entityId\": \"INTNEED-001\",\n      \"description\": \"The Order Processor submits orders to the Fulfillment API.\"\n    },\n    {\n      \"entityType\": \"integration\",\n      \"entityId\": \"INTNEED-001\",\n      \"description\": \"The Order Processor submits orders to the Fulfillment API.\"\n    },\n    {\n      \"entityType\": \"integration\",\n      \"entityId\": \"INTNEED-001\",\n      \"description\": \"The Order Processor submits orders to the Fulfillment API.\"\n    },\n    {\n      \"entityType\": \"integration\",\n      \"entityId\": \"INTNEED-001\",\n      \"description\": \"The Order Processor submits orders to the Fulfillment API.\"\n    }\n  ],\n  \"status\": \"needs-review\",\n  \"statusReasons\": [\n    \"some telemetry requirements need more information (data classification/logging policy)\",\n    \"some alert requirements have no known destination\",\n    \"1 unresolved information gap(s)\"\n  ]\n}",
-            "id": "artifact-1787195159198-j3wtaz",
-            "generatedAt": "2026-08-20T03:05:59.198Z"
+            "id": "artifact-1787226957195-780wgu",
+            "generatedAt": "2026-08-20T11:55:57.195Z"
           },
           {
             "capabilityId": "observability",
             "type": "document",
             "path": "artifacts/observability/observability-architecture.md",
             "content": "# Observability Architecture\n\n_Status: **needs-review** (some telemetry requirements need more information (data classification/logging policy); some alert requirements have no known destination; 1 unresolved information gap(s))_\n\n> `implemented: true` on this capability means Stitchfy generated and validated a vendor-neutral observability and operational architecture for the currently known solution. It does not mean telemetry is being collected, logging exists, dashboards are deployed, alerts are active, tracing is installed, an SLO is being met, or production operations are ready.\n\n## Scope\n\n6 signal(s), 3 metric(s), 1 alert requirement(s), 1 operational objective(s) identified from the generated solution.\n\n## Observable Components\n\n- workflow/WF-001\n- integration/INT-001\n\n## Workflow Visibility\n\n- **Order Submission Workflow started** _(event, derived)_ — Workflow \"Order Submission Workflow\" started.\n- **Order Submission Workflow completed** _(event, derived)_ — Workflow \"Order Submission Workflow\" completed.\n- **Order Submission Workflow failed** _(event, derived)_ — Workflow \"Order Submission Workflow\" failed.\n\n## Integration Visibility\n\n- **The Order Processor validates the order and forwards it to the Fulfillment API attempted** _(event, derived)_ — Integration operation \"The Order Processor validates the order and forwards it to the Fulfillment API\" (The Order Processor submits orders to the Fulfillment API.) attempted.\n- **The Order Processor validates the order and forwards it to the Fulfillment API succeeded** _(event, derived)_ — Integration operation \"The Order Processor validates the order and forwards it to the Fulfillment API\" (The Order Processor submits orders to the Fulfillment API.) succeeded.\n- **The Order Processor validates the order and forwards it to the Fulfillment API failed** _(event, derived)_ — Integration operation \"The Order Processor validates the order and forwards it to the Fulfillment API\" (The Order Processor submits orders to the Fulfillment API.) failed.\n\n## AI Agent Visibility\n\nNone identified.\n\n## Logs and Events\n\n- **integration operation outcome** _(level: unknown)_ — prohibited: credential/API-key material\n\n## Metrics\n\n- **The Order Processor submits orders to the Fulfillment API. operation count** _(counter)_ — Count of operation attempts for \"The Order Processor submits orders to the Fulfillment API.\".\n- **The Order Processor submits orders to the Fulfillment API. failure count** _(counter)_ — Count of operation failures for \"The Order Processor submits orders to the Fulfillment API.\".\n- **The Order Processor submits orders to the Fulfillment API. operation duration** _(timer)_ — Duration of operation attempts for \"The Order Processor submits orders to the Fulfillment API.\". No target/threshold implied.\n\n## Correlation / Tracing\n\n- Operations for \"The Order Processor submits orders to the Fulfillment API.\" should be correlatable back to the workflow that triggered them. (path: workflow/WF-001 → integration/INT-001)\n\n## Auditability\n\nNone identified.\n\n## Health Requirements\n\n- **workflow/WF-001** _(business-process)_ — Ability to determine whether workflow \"Order Submission Workflow\" is completing successfully.\n- **integration/INT-001** _(dependency)_ — Ability to determine whether \"The Order Processor submits orders to the Fulfillment API.\" is operational.\n\n## Alert Requirements\n\n- **Operations must be notified after 5 consecutive failed fulfillment submissions.** _(warning, explicit)_ — Operations must be notified after 5 consecutive failed fulfillment submissions.; threshold: 5 consecutive; destination: unresolved\n\n## Operational Objectives\n\n- **95% of accepted order submissions should complete within 2 seconds.** _(latency, explicit)_ — target: 95% within 2 seconds\n\n## Dashboards / Operational Views\n\n- **Workflow Operations View** — Operational visibility into generated workflow execution outcomes, decisions, and approvals. (3 signal(s))\n- **Integration Health View** — Operational visibility into external integration operation outcomes. (3 signal(s))\n\n## Data Protection in Telemetry\n\n- Telemetry must avoid recording the associated business payload until data classification (currently \"unknown\") and logging policy are resolved.\n- Telemetry must avoid recording the associated business payload until data classification (currently \"unknown\") and logging policy are resolved.\n- Prohibited from telemetry for integration/INT-001: credential/API-key material\n\n## Information Gaps\n\n- **Alert destination**: Who or what system should receive the alert for \"Operations must be notified after 5 consecutive failed fulfillment submissions.\"?\n\n## Traceability\n\nSignals: 6, Metrics: 3, Evidence references: 8\n\n```mermaid\nflowchart LR\n    WF_001[\"workflow/WF-001\"]\n    INT_001[\"integration/INT-001\"]\n    WF_001 --> INT_001\n```\n",
-            "id": "artifact-1787195159198-od8nyl",
-            "generatedAt": "2026-08-20T03:05:59.198Z"
+            "id": "artifact-1787226957195-af56d9",
+            "generatedAt": "2026-08-20T11:55:57.195Z"
           },
           {
             "capabilityId": "observability",
             "type": "config",
             "path": "artifacts/observability/telemetry-catalog.json",
             "content": "[\n  {\n    \"id\": \"SIGNAL-001\",\n    \"name\": \"Order Submission Workflow started\",\n    \"type\": \"event\",\n    \"description\": \"Workflow \\\"Order Submission Workflow\\\" started.\",\n    \"source\": {\n      \"entityType\": \"workflow\",\n      \"entityId\": \"WF-001\"\n    },\n    \"attributes\": [\n      {\n        \"name\": \"workflowId\",\n        \"purpose\": \"correlates events to this workflow\",\n        \"sensitivity\": \"internal\",\n        \"required\": true\n      },\n      {\n        \"name\": \"outcome\",\n        \"purpose\": \"execution outcome\",\n        \"sensitivity\": \"internal\",\n        \"required\": true\n      }\n    ],\n    \"sensitivity\": \"internal\",\n    \"provenance\": \"derived\",\n    \"evidenceRefs\": [\n      {\n        \"entityType\": \"process\",\n        \"entityId\": \"PROC-001\",\n        \"description\": \"Order Submission\"\n      }\n    ]\n  },\n  {\n    \"id\": \"SIGNAL-002\",\n    \"name\": \"Order Submission Workflow completed\",\n    \"type\": \"event\",\n    \"description\": \"Workflow \\\"Order Submission Workflow\\\" completed.\",\n    \"source\": {\n      \"entityType\": \"workflow\",\n      \"entityId\": \"WF-001\"\n    },\n    \"attributes\": [\n      {\n        \"name\": \"workflowId\",\n        \"purpose\": \"correlates events to this workflow\",\n        \"sensitivity\": \"internal\",\n        \"required\": true\n      },\n      {\n        \"name\": \"outcome\",\n        \"purpose\": \"execution outcome\",\n        \"sensitivity\": \"internal\",\n        \"required\": true\n      }\n    ],\n    \"sensitivity\": \"internal\",\n    \"provenance\": \"derived\",\n    \"evidenceRefs\": [\n      {\n        \"entityType\": \"process\",\n        \"entityId\": \"PROC-001\",\n        \"description\": \"Order Submission\"\n      }\n    ]\n  },\n  {\n    \"id\": \"SIGNAL-003\",\n    \"name\": \"Order Submission Workflow failed\",\n    \"type\": \"event\",\n    \"description\": \"Workflow \\\"Order Submission Workflow\\\" failed.\",\n    \"source\": {\n      \"entityType\": \"workflow\",\n      \"entityId\": \"WF-001\"\n    },\n    \"attributes\": [\n      {\n        \"name\": \"workflowId\",\n        \"purpose\": \"correlates events to this workflow\",\n        \"sensitivity\": \"internal\",\n        \"required\": true\n      },\n      {\n        \"name\": \"outcome\",\n        \"purpose\": \"execution outcome\",\n        \"sensitivity\": \"internal\",\n        \"required\": true\n      }\n    ],\n    \"sensitivity\": \"internal\",\n    \"provenance\": \"derived\",\n    \"evidenceRefs\": [\n      {\n        \"entityType\": \"process\",\n        \"entityId\": \"PROC-001\",\n        \"description\": \"Order Submission\"\n      }\n    ]\n  },\n  {\n    \"id\": \"SIGNAL-004\",\n    \"name\": \"The Order Processor validates the order and forwards it to the Fulfillment API attempted\",\n    \"type\": \"event\",\n    \"description\": \"Integration operation \\\"The Order Processor validates the order and forwards it to the Fulfillment API\\\" (The Order Processor submits orders to the Fulfillment API.) attempted.\",\n    \"source\": {\n      \"entityType\": \"integration\",\n      \"entityId\": \"INT-001\"\n    },\n    \"attributes\": [\n      {\n        \"name\": \"integrationId\",\n        \"purpose\": \"correlates to the owning integration\",\n        \"sensitivity\": \"internal\",\n        \"required\": true\n      },\n      {\n        \"name\": \"operationId\",\n        \"purpose\": \"which operation\",\n        \"sensitivity\": \"internal\",\n        \"required\": true\n      },\n      {\n        \"name\": \"outcome\",\n        \"purpose\": \"attempt outcome\",\n        \"sensitivity\": \"internal\",\n        \"required\": true\n      }\n    ],\n    \"sensitivity\": \"internal\",\n    \"provenance\": \"derived\",\n    \"evidenceRefs\": [\n      {\n        \"entityType\": \"integration\",\n        \"entityId\": \"INTNEED-001\",\n        \"description\": \"The Order Processor submits orders to the Fulfillment API.\"\n      }\n    ]\n  },\n  {\n    \"id\": \"SIGNAL-005\",\n    \"name\": \"The Order Processor validates the order and forwards it to the Fulfillment API succeeded\",\n    \"type\": \"event\",\n    \"description\": \"Integration operation \\\"The Order Processor validates the order and forwards it to the Fulfillment API\\\" (The Order Processor submits orders to the Fulfillment API.) succeeded.\",\n    \"source\": {\n      \"entityType\": \"integration\",\n      \"entityId\": \"INT-001\"\n    },\n    \"attributes\": [\n      {\n        \"name\": \"integrationId\",\n        \"purpose\": \"correlates to the owning integration\",\n        \"sensitivity\": \"internal\",\n        \"required\": true\n      },\n      {\n        \"name\": \"operationId\",\n        \"purpose\": \"which operation\",\n        \"sensitivity\": \"internal\",\n        \"required\": true\n      },\n      {\n        \"name\": \"outcome\",\n        \"purpose\": \"attempt outcome\",\n        \"sensitivity\": \"internal\",\n        \"required\": true\n      },\n      {\n        \"name\": \"httpMethod\",\n        \"purpose\": \"explicit HTTP method\",\n        \"sensitivity\": \"internal\",\n        \"required\": true\n      },\n      {\n        \"name\": \"httpPath\",\n        \"purpose\": \"explicit HTTP path\",\n        \"sensitivity\": \"internal\",\n        \"required\": true\n      }\n    ],\n    \"sensitivity\": \"internal\",\n    \"provenance\": \"derived\",\n    \"evidenceRefs\": [\n      {\n        \"entityType\": \"integration\",\n        \"entityId\": \"INTNEED-001\",\n        \"description\": \"The Order Processor submits orders to the Fulfillment API.\"\n      }\n    ]\n  },\n  {\n    \"id\": \"SIGNAL-006\",\n    \"name\": \"The Order Processor validates the order and forwards it to the Fulfillment API failed\",\n    \"type\": \"event\",\n    \"description\": \"Integration operation \\\"The Order Processor validates the order and forwards it to the Fulfillment API\\\" (The Order Processor submits orders to the Fulfillment API.) failed.\",\n    \"source\": {\n      \"entityType\": \"integration\",\n      \"entityId\": \"INT-001\"\n    },\n    \"attributes\": [\n      {\n        \"name\": \"integrationId\",\n        \"purpose\": \"correlates to the owning integration\",\n        \"sensitivity\": \"internal\",\n        \"required\": true\n      },\n      {\n        \"name\": \"operationId\",\n        \"purpose\": \"which operation\",\n        \"sensitivity\": \"internal\",\n        \"required\": true\n      },\n      {\n        \"name\": \"outcome\",\n        \"purpose\": \"attempt outcome\",\n        \"sensitivity\": \"internal\",\n        \"required\": true\n      },\n      {\n        \"name\": \"httpMethod\",\n        \"purpose\": \"explicit HTTP method\",\n        \"sensitivity\": \"internal\",\n        \"required\": true\n      },\n      {\n        \"name\": \"httpPath\",\n        \"purpose\": \"explicit HTTP path\",\n        \"sensitivity\": \"internal\",\n        \"required\": true\n      }\n    ],\n    \"sensitivity\": \"internal\",\n    \"provenance\": \"derived\",\n    \"evidenceRefs\": [\n      {\n        \"entityType\": \"integration\",\n        \"entityId\": \"INTNEED-001\",\n        \"description\": \"The Order Processor submits orders to the Fulfillment API.\"\n      }\n    ]\n  }\n]",
-            "id": "artifact-1787195159198-z817he",
-            "generatedAt": "2026-08-20T03:05:59.198Z"
+            "id": "artifact-1787226957195-q7b8f2",
+            "generatedAt": "2026-08-20T11:55:57.195Z"
           },
           {
             "capabilityId": "observability",
             "type": "document",
             "path": "artifacts/observability/telemetry-catalog.md",
             "content": "# Telemetry Catalog\n\n> `implemented: true` on this capability means Stitchfy generated and validated a vendor-neutral observability and operational architecture for the currently known solution. It does not mean telemetry is being collected, logging exists, dashboards are deployed, alerts are active, tracing is installed, an SLO is being met, or production operations are ready.\n\n## SIGNAL-001 — Order Submission Workflow started\n\nType:\nevent\n\nSource:\nworkflow/WF-001\n\nProvenance:\nderived\n\nSensitivity:\ninternal\n\nRequired attributes:\n- workflowId\n- outcome\n\nProhibited data:\n- none identified\n\nEvidence:\n1 reference(s)\n\n## SIGNAL-002 — Order Submission Workflow completed\n\nType:\nevent\n\nSource:\nworkflow/WF-001\n\nProvenance:\nderived\n\nSensitivity:\ninternal\n\nRequired attributes:\n- workflowId\n- outcome\n\nProhibited data:\n- none identified\n\nEvidence:\n1 reference(s)\n\n## SIGNAL-003 — Order Submission Workflow failed\n\nType:\nevent\n\nSource:\nworkflow/WF-001\n\nProvenance:\nderived\n\nSensitivity:\ninternal\n\nRequired attributes:\n- workflowId\n- outcome\n\nProhibited data:\n- none identified\n\nEvidence:\n1 reference(s)\n\n## SIGNAL-004 — The Order Processor validates the order and forwards it to the Fulfillment API attempted\n\nType:\nevent\n\nSource:\nintegration/INT-001\n\nProvenance:\nderived\n\nSensitivity:\ninternal\n\nRequired attributes:\n- integrationId\n- operationId\n- outcome\n\nProhibited data:\n- credential/API-key material\n\nEvidence:\n1 reference(s)\n\n## SIGNAL-005 — The Order Processor validates the order and forwards it to the Fulfillment API succeeded\n\nType:\nevent\n\nSource:\nintegration/INT-001\n\nProvenance:\nderived\n\nSensitivity:\ninternal\n\nRequired attributes:\n- integrationId\n- operationId\n- outcome\n- httpMethod\n- httpPath\n\nProhibited data:\n- credential/API-key material\n\nEvidence:\n1 reference(s)\n\n## SIGNAL-006 — The Order Processor validates the order and forwards it to the Fulfillment API failed\n\nType:\nevent\n\nSource:\nintegration/INT-001\n\nProvenance:\nderived\n\nSensitivity:\ninternal\n\nRequired attributes:\n- integrationId\n- operationId\n- outcome\n- httpMethod\n- httpPath\n\nProhibited data:\n- credential/API-key material\n\nEvidence:\n1 reference(s)\n",
-            "id": "artifact-1787195159198-jjks7n",
-            "generatedAt": "2026-08-20T03:05:59.198Z"
+            "id": "artifact-1787226957196-g6u21r",
+            "generatedAt": "2026-08-20T11:55:57.196Z"
           },
           {
             "capabilityId": "observability",
             "type": "config",
             "path": "artifacts/observability/operational-objectives.json",
             "content": "[\n  {\n    \"id\": \"OBJ-001\",\n    \"name\": \"95% of accepted order submissions should complete within 2 seconds.\",\n    \"target\": [],\n    \"objectiveType\": \"latency\",\n    \"targetValue\": \"95% within 2 seconds\",\n    \"explicit\": true,\n    \"evidenceRefs\": [\n      {\n        \"entityType\": \"requirement\",\n        \"entityId\": \"REQ-004\",\n        \"description\": \"95% of accepted order submissions should complete within 2 seconds.\"\n      }\n    ]\n  }\n]",
-            "id": "artifact-1787195159198-up0lyu",
-            "generatedAt": "2026-08-20T03:05:59.198Z"
+            "id": "artifact-1787226957196-vvfgnx",
+            "generatedAt": "2026-08-20T11:55:57.196Z"
           },
           {
             "capabilityId": "observability",
             "type": "document",
             "path": "artifacts/observability/operational-objectives.md",
             "content": "# Operational Objectives\n\n> `implemented: true` on this capability means Stitchfy generated and validated a vendor-neutral observability and operational architecture for the currently known solution. It does not mean telemetry is being collected, logging exists, dashboards are deployed, alerts are active, tracing is installed, an SLO is being met, or production operations are ready.\n\n## OBJ-001 — 95% of accepted order submissions should complete within 2 seconds.\n\n- Type: latency\n- Target: 95% within 2 seconds\n- Provenance: explicit\n- Applies to: unresolved\n- Evidence: 1 reference(s)\n",
-            "id": "artifact-1787195159198-vxtd23",
-            "generatedAt": "2026-08-20T03:05:59.198Z"
+            "id": "artifact-1787226957196-ttbxdf",
+            "generatedAt": "2026-08-20T11:55:57.196Z"
           }
         ],
         "notes": [
@@ -3531,7 +3531,7 @@
       "status": "executed",
       "success": true,
       "summary": "Executed",
-      "durationMs": 5,
+      "durationMs": 3,
       "output": {
         "implemented": true,
         "plan": {
@@ -3952,48 +3952,48 @@
             "type": "config",
             "path": "artifacts/cloud/cloud-architecture.json",
             "content": "{\n  \"version\": \"1.0\",\n  \"hostingModel\": \"unknown\",\n  \"providerRequirement\": {\n    \"provider\": \"unspecified\",\n    \"explicit\": false,\n    \"evidenceRefs\": []\n  },\n  \"deploymentUnits\": [\n    {\n      \"id\": \"DEPLOYUNIT-001\",\n      \"name\": \"Order API\",\n      \"kind\": \"api\",\n      \"responsibility\": \"solution-managed\",\n      \"workloadProfile\": \"request-driven\",\n      \"sourceArchitectureRefs\": [],\n      \"runtimeRequirementIds\": [\n        \"RUNTIME-001\"\n      ],\n      \"stateRequirementIds\": [],\n      \"connectivityRequirementIds\": [\n        \"CONNECT-002\"\n      ],\n      \"securityRequirementIds\": [],\n      \"observabilityRequirementIds\": [],\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"deployment-need\",\n          \"entityId\": \"DEPLOY-001\",\n          \"description\": \"The solution includes a solution-managed Order API that receives customer order requests.\"\n        }\n      ]\n    },\n    {\n      \"id\": \"DEPLOYUNIT-002\",\n      \"name\": \"Order Processor\",\n      \"kind\": \"worker\",\n      \"responsibility\": \"solution-managed\",\n      \"workloadProfile\": \"background\",\n      \"sourceArchitectureRefs\": [],\n      \"runtimeRequirementIds\": [\n        \"RUNTIME-002\"\n      ],\n      \"stateRequirementIds\": [],\n      \"connectivityRequirementIds\": [\n        \"CONNECT-001\",\n        \"CONNECT-003\"\n      ],\n      \"securityRequirementIds\": [],\n      \"observabilityRequirementIds\": [],\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"deployment-need\",\n          \"entityId\": \"DEPLOY-003\",\n          \"description\": \"The solution includes a solution-managed Order Processor that processes accepted orders in the background.\"\n        }\n      ]\n    }\n  ],\n  \"runtimeRequirements\": [\n    {\n      \"id\": \"RUNTIME-001\",\n      \"executionModel\": \"request-driven\",\n      \"description\": \"Runtime for solution-managed component \\\"Order API\\\".\",\n      \"appliesTo\": [\n        {\n          \"entityType\": \"deployment-unit\",\n          \"entityId\": \"DEPLOYUNIT-001\"\n        }\n      ],\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"deployment-need\",\n          \"entityId\": \"DEPLOY-001\",\n          \"description\": \"The solution includes a solution-managed Order API that receives customer order requests.\"\n        }\n      ]\n    },\n    {\n      \"id\": \"RUNTIME-002\",\n      \"executionModel\": \"background\",\n      \"description\": \"Runtime for solution-managed component \\\"Order Processor\\\".\",\n      \"appliesTo\": [\n        {\n          \"entityType\": \"deployment-unit\",\n          \"entityId\": \"DEPLOYUNIT-002\"\n        }\n      ],\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"deployment-need\",\n          \"entityId\": \"DEPLOY-003\",\n          \"description\": \"The solution includes a solution-managed Order Processor that processes accepted orders in the background.\"\n        }\n      ]\n    }\n  ],\n  \"stateRequirements\": [\n    {\n      \"id\": \"STATE-001\",\n      \"mode\": \"durable\",\n      \"purpose\": \"Order processing state must persist and survive application restarts.\",\n      \"appliesTo\": [],\n      \"dataEntityIds\": [],\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"deployment-need\",\n          \"entityId\": \"DEPLOY-006\",\n          \"description\": \"Order processing state must persist and survive application restarts.\"\n        }\n      ]\n    }\n  ],\n  \"persistenceRequirements\": [\n    {\n      \"id\": \"PERSIST-001\",\n      \"purpose\": \"Order processing state must persist and survive application restarts.\",\n      \"durability\": \"durable\",\n      \"dataEntityIds\": [],\n      \"consistency\": \"unknown\",\n      \"technology\": \"unspecified\",\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"deployment-need\",\n          \"entityId\": \"DEPLOY-006\",\n          \"description\": \"Order processing state must persist and survive application restarts.\"\n        }\n      ]\n    }\n  ],\n  \"connectivityRequirements\": [\n    {\n      \"id\": \"CONNECT-001\",\n      \"source\": {\n        \"kind\": \"deployment-unit\",\n        \"entityId\": \"DEPLOYUNIT-002\",\n        \"label\": \"Order Processor\"\n      },\n      \"target\": {\n        \"kind\": \"external-system\",\n        \"entityId\": \"SYS-001\",\n        \"label\": \"Fulfillment API\"\n      },\n      \"direction\": \"outbound\",\n      \"exposure\": \"external\",\n      \"protocol\": \"https\",\n      \"integrationId\": \"INT-001\",\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"integration\",\n          \"entityId\": \"INTNEED-001\",\n          \"description\": \"The Order Processor submits orders to the Fulfillment API.\"\n        }\n      ]\n    },\n    {\n      \"id\": \"CONNECT-002\",\n      \"source\": {\n        \"kind\": \"actor\",\n        \"label\": \"Customer\"\n      },\n      \"target\": {\n        \"kind\": \"deployment-unit\",\n        \"entityId\": \"DEPLOYUNIT-001\",\n        \"label\": \"Order API\"\n      },\n      \"direction\": \"inbound\",\n      \"exposure\": \"public\",\n      \"protocol\": \"https\",\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"deployment-need\",\n          \"entityId\": \"DEPLOY-002\",\n          \"description\": \"The Order API must be publicly reachable over HTTPS.\"\n        }\n      ]\n    },\n    {\n      \"id\": \"CONNECT-003\",\n      \"source\": {\n        \"kind\": \"actor\",\n        \"label\": \"Customer\"\n      },\n      \"target\": {\n        \"kind\": \"deployment-unit\",\n        \"entityId\": \"DEPLOYUNIT-002\",\n        \"label\": \"Order Processor\"\n      },\n      \"direction\": \"inbound\",\n      \"exposure\": \"internal\",\n      \"protocol\": \"unknown\",\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"deployment-need\",\n          \"entityId\": \"DEPLOY-004\",\n          \"description\": \"The Order Processor must not expose a public endpoint.\"\n        }\n      ]\n    }\n  ],\n  \"environmentRequirements\": [\n    {\n      \"id\": \"ENV-001\",\n      \"name\": \"Test\",\n      \"purpose\": \"test\",\n      \"isolated\": true,\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"deployment-need\",\n          \"entityId\": \"DEPLOY-005\",\n          \"description\": \"The business requires separate Test and Production environments.\"\n        }\n      ]\n    },\n    {\n      \"id\": \"ENV-002\",\n      \"name\": \"Production\",\n      \"purpose\": \"production\",\n      \"isolated\": true,\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"deployment-need\",\n          \"entityId\": \"DEPLOY-005\",\n          \"description\": \"The business requires separate Test and Production environments.\"\n        }\n      ]\n    }\n  ],\n  \"scalabilityRequirements\": [\n    {\n      \"id\": \"SCALE-001\",\n      \"target\": [],\n      \"dimension\": \"concurrency\",\n      \"requirement\": \"100 concurrent order submissions\",\n      \"explicit\": true,\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"deployment-need\",\n          \"entityId\": \"DEPLOY-007\",\n          \"description\": \"Production must support at least 100 concurrent order submissions.\"\n        }\n      ]\n    }\n  ],\n  \"resilienceRequirements\": [\n    {\n      \"id\": \"RESILIENCE-001\",\n      \"target\": [\n        {\n          \"entityType\": \"integration\",\n          \"entityId\": \"INT-001\"\n        }\n      ],\n      \"concern\": \"dependency-failure\",\n      \"description\": \"The solution must continue accepting new orders when the external Fulfillment API is temporarily unavailable.\",\n      \"strategy\": \"unspecified\",\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"deployment-need\",\n          \"entityId\": \"DEPLOY-008\",\n          \"description\": \"The solution must continue accepting new orders when the external Fulfillment API is temporarily unavailable.\"\n        }\n      ]\n    }\n  ],\n  \"securityMappings\": [\n    {\n      \"id\": \"CLOUDSEC-001\",\n      \"securityRequirementId\": \"SECREQ-001\",\n      \"deploymentUnitIds\": [\n        \"DEPLOYUNIT-002\"\n      ],\n      \"connectivityRequirementIds\": [\n        \"CONNECT-001\"\n      ],\n      \"stateRequirementIds\": [],\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"integration\",\n          \"entityId\": \"INTNEED-001\",\n          \"description\": \"The Order Processor submits orders to the Fulfillment API.\"\n        }\n      ]\n    },\n    {\n      \"id\": \"CLOUDSEC-002\",\n      \"securityRequirementId\": \"SECREQ-002\",\n      \"deploymentUnitIds\": [\n        \"DEPLOYUNIT-002\"\n      ],\n      \"connectivityRequirementIds\": [\n        \"CONNECT-001\"\n      ],\n      \"stateRequirementIds\": [],\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"integration\",\n          \"entityId\": \"INTNEED-001\",\n          \"description\": \"The Order Processor submits orders to the Fulfillment API.\"\n        }\n      ]\n    }\n  ],\n  \"observabilityMappings\": [],\n  \"informationGaps\": [\n    {\n      \"id\": \"CLOUDGAP-001\",\n      \"topic\": \"Cloud provider\",\n      \"question\": \"Which provider, if any, is required for hosting this solution?\",\n      \"importance\": \"low\",\n      \"blocking\": false,\n      \"relatedCapabilityIds\": [\n        \"cloud\"\n      ]\n    },\n    {\n      \"id\": \"CLOUDGAP-002\",\n      \"topic\": \"Persistence technology\",\n      \"question\": \"What persistence technology should satisfy the identified durable-state requirements?\",\n      \"importance\": \"medium\",\n      \"blocking\": false,\n      \"relatedCapabilityIds\": [\n        \"cloud\"\n      ]\n    },\n    {\n      \"id\": \"CLOUDGAP-003\",\n      \"topic\": \"Deployment strategy\",\n      \"question\": \"What deployment strategy is required for solution-managed components?\",\n      \"importance\": \"low\",\n      \"blocking\": false,\n      \"relatedCapabilityIds\": [\n        \"cloud\"\n      ]\n    }\n  ],\n  \"evidenceRefs\": [\n    {\n      \"entityType\": \"deployment-need\",\n      \"entityId\": \"DEPLOY-001\",\n      \"description\": \"The solution includes a solution-managed Order API that receives customer order requests.\"\n    },\n    {\n      \"entityType\": \"deployment-need\",\n      \"entityId\": \"DEPLOY-003\",\n      \"description\": \"The solution includes a solution-managed Order Processor that processes accepted orders in the background.\"\n    },\n    {\n      \"entityType\": \"deployment-need\",\n      \"entityId\": \"DEPLOY-001\",\n      \"description\": \"The solution includes a solution-managed Order API that receives customer order requests.\"\n    },\n    {\n      \"entityType\": \"deployment-need\",\n      \"entityId\": \"DEPLOY-003\",\n      \"description\": \"The solution includes a solution-managed Order Processor that processes accepted orders in the background.\"\n    }\n  ],\n  \"status\": \"needs-review\",\n  \"statusReasons\": [\n    \"cloud provider is unresolved\",\n    \"persistence technology is unresolved\",\n    \"deployment strategy is unresolved\",\n    \"3 unresolved information gap(s)\"\n  ]\n}",
-            "id": "artifact-1787195159203-4ecu1u",
-            "generatedAt": "2026-08-20T03:05:59.203Z"
+            "id": "artifact-1787226957198-7vggc7",
+            "generatedAt": "2026-08-20T11:55:57.198Z"
           },
           {
             "capabilityId": "cloud",
             "type": "document",
             "path": "artifacts/cloud/cloud-architecture.md",
             "content": "# Cloud Architecture\n\n_Status: **needs-review** (cloud provider is unresolved; persistence technology is unresolved; deployment strategy is unresolved; 3 unresolved information gap(s))_\n\n> `implemented: true` on this capability means Stitchfy generated and validated a vendor-neutral cloud/deployment architecture for the currently known solution. It does not mean infrastructure was provisioned, an application was deployed, a cloud account or credentials exist, a region was selected (unless explicitly required), networking was configured, a database was created, scalability was tested, resilience was verified, or the architecture is production-ready.\n\n## Hosting Model\n\n- Model: **unknown**\n- Provider: **unspecified** (not specified)\n\n## Deployment Units\n\n- **Order API** _(api, solution-managed, workload: request-driven)_\n- **Order Processor** _(worker, solution-managed, workload: background)_\n\n## Runtime Requirements\n\n- **RUNTIME-001** _(request-driven)_ — Runtime for solution-managed component \"Order API\".\n- **RUNTIME-002** _(background)_ — Runtime for solution-managed component \"Order Processor\".\n\n## State Requirements\n\n- **STATE-001** _(durable)_ — Order processing state must persist and survive application restarts.\n\n## Persistence Requirements\n\n- **PERSIST-001** _(durable, technology: unspecified)_ — Order processing state must persist and survive application restarts.\n\n## Connectivity\n\n- deployment-unit/DEPLOYUNIT-002 (Order Processor) → external-system/SYS-001 (Fulfillment API) _(outbound, exposure: external, protocol: https)_\n- actor (Customer) → deployment-unit/DEPLOYUNIT-001 (Order API) _(inbound, exposure: public, protocol: https)_\n- actor (Customer) → deployment-unit/DEPLOYUNIT-002 (Order Processor) _(inbound, exposure: internal, protocol: unknown)_\n\n## Environments\n\n- **Test** _(test, isolated: true)_\n- **Production** _(production, isolated: true)_\n\n## Scalability\n\n- **concurrency**: 100 concurrent order submissions\n\n## Resilience\n\n- **dependency-failure** _(strategy: unspecified)_ — The solution must continue accepting new orders when the external Fulfillment API is temporarily unavailable.\n\n## Deployment Strategy\n\nNot explicitly required.\n\n## Security Mapping\n\n- Security requirement `SECREQ-001` maps to deployment unit(s): DEPLOYUNIT-002, connectivity: CONNECT-001\n- Security requirement `SECREQ-002` maps to deployment unit(s): DEPLOYUNIT-002, connectivity: CONNECT-001\n\n## Observability Mapping\n\nNone identified.\n\n## Information Gaps\n\n- **Cloud provider**: Which provider, if any, is required for hosting this solution?\n- **Persistence technology**: What persistence technology should satisfy the identified durable-state requirements?\n- **Deployment strategy**: What deployment strategy is required for solution-managed components?\n\n```mermaid\nflowchart LR\n    Order_API[\"Order API\"]\n    Order_Processor[\"Order Processor\"]\n    Fulfillment_API[\"Fulfillment API\"]\n    Customer[\"Customer\"]\n    Order_Processor --> Fulfillment_API\n    Customer --> Order_API\n    Customer --> Order_Processor\n```\n",
-            "id": "artifact-1787195159204-qilu4g",
-            "generatedAt": "2026-08-20T03:05:59.204Z"
+            "id": "artifact-1787226957199-3120q9",
+            "generatedAt": "2026-08-20T11:55:57.199Z"
           },
           {
             "capabilityId": "cloud",
             "type": "config",
             "path": "artifacts/cloud/deployment-topology.json",
             "content": "[\n  {\n    \"id\": \"DEPLOYUNIT-001\",\n    \"name\": \"Order API\",\n    \"kind\": \"api\",\n    \"responsibility\": \"solution-managed\",\n    \"workloadProfile\": \"request-driven\"\n  },\n  {\n    \"id\": \"DEPLOYUNIT-002\",\n    \"name\": \"Order Processor\",\n    \"kind\": \"worker\",\n    \"responsibility\": \"solution-managed\",\n    \"workloadProfile\": \"background\"\n  }\n]",
-            "id": "artifact-1787195159204-4wvquq",
-            "generatedAt": "2026-08-20T03:05:59.204Z"
+            "id": "artifact-1787226957199-id5fjr",
+            "generatedAt": "2026-08-20T11:55:57.199Z"
           },
           {
             "capabilityId": "cloud",
             "type": "document",
             "path": "artifacts/cloud/deployment-topology.md",
             "content": "# Deployment Topology\n\n> `implemented: true` on this capability means Stitchfy generated and validated a vendor-neutral cloud/deployment architecture for the currently known solution. It does not mean infrastructure was provisioned, an application was deployed, a cloud account or credentials exist, a region was selected (unless explicitly required), networking was configured, a database was created, scalability was tested, resilience was verified, or the architecture is production-ready.\n\n## DEPLOYUNIT-001 — Order API\n\n- Kind: api\n- Responsibility: solution-managed\n- Workload profile: request-driven\n- Runtime requirement(s): RUNTIME-001\n- State requirement(s): none\n- Connectivity requirement(s): CONNECT-002\n- Evidence: 1 reference(s)\n\n## DEPLOYUNIT-002 — Order Processor\n\n- Kind: worker\n- Responsibility: solution-managed\n- Workload profile: background\n- Runtime requirement(s): RUNTIME-002\n- State requirement(s): none\n- Connectivity requirement(s): CONNECT-001, CONNECT-003\n- Evidence: 1 reference(s)\n\n## External Systems Referenced\n\n- Fulfillment API _(external, not a deployment unit)_\n",
-            "id": "artifact-1787195159204-ib8d1g",
-            "generatedAt": "2026-08-20T03:05:59.204Z"
+            "id": "artifact-1787226957199-w9ord0",
+            "generatedAt": "2026-08-20T11:55:57.199Z"
           },
           {
             "capabilityId": "cloud",
             "type": "config",
             "path": "artifacts/cloud/runtime-requirements.json",
             "content": "[\n  {\n    \"id\": \"RUNTIME-001\",\n    \"executionModel\": \"request-driven\",\n    \"description\": \"Runtime for solution-managed component \\\"Order API\\\".\",\n    \"appliesTo\": [\n      {\n        \"entityType\": \"deployment-unit\",\n        \"entityId\": \"DEPLOYUNIT-001\"\n      }\n    ],\n    \"evidenceRefs\": [\n      {\n        \"entityType\": \"deployment-need\",\n        \"entityId\": \"DEPLOY-001\",\n        \"description\": \"The solution includes a solution-managed Order API that receives customer order requests.\"\n      }\n    ]\n  },\n  {\n    \"id\": \"RUNTIME-002\",\n    \"executionModel\": \"background\",\n    \"description\": \"Runtime for solution-managed component \\\"Order Processor\\\".\",\n    \"appliesTo\": [\n      {\n        \"entityType\": \"deployment-unit\",\n        \"entityId\": \"DEPLOYUNIT-002\"\n      }\n    ],\n    \"evidenceRefs\": [\n      {\n        \"entityType\": \"deployment-need\",\n        \"entityId\": \"DEPLOY-003\",\n        \"description\": \"The solution includes a solution-managed Order Processor that processes accepted orders in the background.\"\n      }\n    ]\n  }\n]",
-            "id": "artifact-1787195159204-93rd9s",
-            "generatedAt": "2026-08-20T03:05:59.204Z"
+            "id": "artifact-1787226957199-8fvk21",
+            "generatedAt": "2026-08-20T11:55:57.199Z"
           },
           {
             "capabilityId": "cloud",
             "type": "document",
             "path": "artifacts/cloud/runtime-requirements.md",
             "content": "# Runtime Requirements\n\n> `implemented: true` on this capability means Stitchfy generated and validated a vendor-neutral cloud/deployment architecture for the currently known solution. It does not mean infrastructure was provisioned, an application was deployed, a cloud account or credentials exist, a region was selected (unless explicitly required), networking was configured, a database was created, scalability was tested, resilience was verified, or the architecture is production-ready.\n\n## RUNTIME-001\n\n- Execution model: request-driven\n- Description: Runtime for solution-managed component \"Order API\".\n- Applies to: deployment-unit/DEPLOYUNIT-001\n- Evidence: 1 reference(s)\n\n## RUNTIME-002\n\n- Execution model: background\n- Description: Runtime for solution-managed component \"Order Processor\".\n- Applies to: deployment-unit/DEPLOYUNIT-002\n- Evidence: 1 reference(s)\n",
-            "id": "artifact-1787195159204-qu25ew",
-            "generatedAt": "2026-08-20T03:05:59.204Z"
+            "id": "artifact-1787226957199-bkhsws",
+            "generatedAt": "2026-08-20T11:55:57.199Z"
           }
         ],
         "notes": [
@@ -4577,52 +4577,52 @@
     },
     "artifacts": [
       {
-        "id": "artifact-1787195159203-4ecu1u",
+        "id": "artifact-1787226957198-7vggc7",
         "capabilityId": "cloud",
         "type": "config",
         "path": "artifacts/cloud/cloud-architecture.json",
         "content": "{\n  \"version\": \"1.0\",\n  \"hostingModel\": \"unknown\",\n  \"providerRequirement\": {\n    \"provider\": \"unspecified\",\n    \"explicit\": false,\n    \"evidenceRefs\": []\n  },\n  \"deploymentUnits\": [\n    {\n      \"id\": \"DEPLOYUNIT-001\",\n      \"name\": \"Order API\",\n      \"kind\": \"api\",\n      \"responsibility\": \"solution-managed\",\n      \"workloadProfile\": \"request-driven\",\n      \"sourceArchitectureRefs\": [],\n      \"runtimeRequirementIds\": [\n        \"RUNTIME-001\"\n      ],\n      \"stateRequirementIds\": [],\n      \"connectivityRequirementIds\": [\n        \"CONNECT-002\"\n      ],\n      \"securityRequirementIds\": [],\n      \"observabilityRequirementIds\": [],\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"deployment-need\",\n          \"entityId\": \"DEPLOY-001\",\n          \"description\": \"The solution includes a solution-managed Order API that receives customer order requests.\"\n        }\n      ]\n    },\n    {\n      \"id\": \"DEPLOYUNIT-002\",\n      \"name\": \"Order Processor\",\n      \"kind\": \"worker\",\n      \"responsibility\": \"solution-managed\",\n      \"workloadProfile\": \"background\",\n      \"sourceArchitectureRefs\": [],\n      \"runtimeRequirementIds\": [\n        \"RUNTIME-002\"\n      ],\n      \"stateRequirementIds\": [],\n      \"connectivityRequirementIds\": [\n        \"CONNECT-001\",\n        \"CONNECT-003\"\n      ],\n      \"securityRequirementIds\": [],\n      \"observabilityRequirementIds\": [],\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"deployment-need\",\n          \"entityId\": \"DEPLOY-003\",\n          \"description\": \"The solution includes a solution-managed Order Processor that processes accepted orders in the background.\"\n        }\n      ]\n    }\n  ],\n  \"runtimeRequirements\": [\n    {\n      \"id\": \"RUNTIME-001\",\n      \"executionModel\": \"request-driven\",\n      \"description\": \"Runtime for solution-managed component \\\"Order API\\\".\",\n      \"appliesTo\": [\n        {\n          \"entityType\": \"deployment-unit\",\n          \"entityId\": \"DEPLOYUNIT-001\"\n        }\n      ],\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"deployment-need\",\n          \"entityId\": \"DEPLOY-001\",\n          \"description\": \"The solution includes a solution-managed Order API that receives customer order requests.\"\n        }\n      ]\n    },\n    {\n      \"id\": \"RUNTIME-002\",\n      \"executionModel\": \"background\",\n      \"description\": \"Runtime for solution-managed component \\\"Order Processor\\\".\",\n      \"appliesTo\": [\n        {\n          \"entityType\": \"deployment-unit\",\n          \"entityId\": \"DEPLOYUNIT-002\"\n        }\n      ],\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"deployment-need\",\n          \"entityId\": \"DEPLOY-003\",\n          \"description\": \"The solution includes a solution-managed Order Processor that processes accepted orders in the background.\"\n        }\n      ]\n    }\n  ],\n  \"stateRequirements\": [\n    {\n      \"id\": \"STATE-001\",\n      \"mode\": \"durable\",\n      \"purpose\": \"Order processing state must persist and survive application restarts.\",\n      \"appliesTo\": [],\n      \"dataEntityIds\": [],\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"deployment-need\",\n          \"entityId\": \"DEPLOY-006\",\n          \"description\": \"Order processing state must persist and survive application restarts.\"\n        }\n      ]\n    }\n  ],\n  \"persistenceRequirements\": [\n    {\n      \"id\": \"PERSIST-001\",\n      \"purpose\": \"Order processing state must persist and survive application restarts.\",\n      \"durability\": \"durable\",\n      \"dataEntityIds\": [],\n      \"consistency\": \"unknown\",\n      \"technology\": \"unspecified\",\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"deployment-need\",\n          \"entityId\": \"DEPLOY-006\",\n          \"description\": \"Order processing state must persist and survive application restarts.\"\n        }\n      ]\n    }\n  ],\n  \"connectivityRequirements\": [\n    {\n      \"id\": \"CONNECT-001\",\n      \"source\": {\n        \"kind\": \"deployment-unit\",\n        \"entityId\": \"DEPLOYUNIT-002\",\n        \"label\": \"Order Processor\"\n      },\n      \"target\": {\n        \"kind\": \"external-system\",\n        \"entityId\": \"SYS-001\",\n        \"label\": \"Fulfillment API\"\n      },\n      \"direction\": \"outbound\",\n      \"exposure\": \"external\",\n      \"protocol\": \"https\",\n      \"integrationId\": \"INT-001\",\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"integration\",\n          \"entityId\": \"INTNEED-001\",\n          \"description\": \"The Order Processor submits orders to the Fulfillment API.\"\n        }\n      ]\n    },\n    {\n      \"id\": \"CONNECT-002\",\n      \"source\": {\n        \"kind\": \"actor\",\n        \"label\": \"Customer\"\n      },\n      \"target\": {\n        \"kind\": \"deployment-unit\",\n        \"entityId\": \"DEPLOYUNIT-001\",\n        \"label\": \"Order API\"\n      },\n      \"direction\": \"inbound\",\n      \"exposure\": \"public\",\n      \"protocol\": \"https\",\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"deployment-need\",\n          \"entityId\": \"DEPLOY-002\",\n          \"description\": \"The Order API must be publicly reachable over HTTPS.\"\n        }\n      ]\n    },\n    {\n      \"id\": \"CONNECT-003\",\n      \"source\": {\n        \"kind\": \"actor\",\n        \"label\": \"Customer\"\n      },\n      \"target\": {\n        \"kind\": \"deployment-unit\",\n        \"entityId\": \"DEPLOYUNIT-002\",\n        \"label\": \"Order Processor\"\n      },\n      \"direction\": \"inbound\",\n      \"exposure\": \"internal\",\n      \"protocol\": \"unknown\",\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"deployment-need\",\n          \"entityId\": \"DEPLOY-004\",\n          \"description\": \"The Order Processor must not expose a public endpoint.\"\n        }\n      ]\n    }\n  ],\n  \"environmentRequirements\": [\n    {\n      \"id\": \"ENV-001\",\n      \"name\": \"Test\",\n      \"purpose\": \"test\",\n      \"isolated\": true,\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"deployment-need\",\n          \"entityId\": \"DEPLOY-005\",\n          \"description\": \"The business requires separate Test and Production environments.\"\n        }\n      ]\n    },\n    {\n      \"id\": \"ENV-002\",\n      \"name\": \"Production\",\n      \"purpose\": \"production\",\n      \"isolated\": true,\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"deployment-need\",\n          \"entityId\": \"DEPLOY-005\",\n          \"description\": \"The business requires separate Test and Production environments.\"\n        }\n      ]\n    }\n  ],\n  \"scalabilityRequirements\": [\n    {\n      \"id\": \"SCALE-001\",\n      \"target\": [],\n      \"dimension\": \"concurrency\",\n      \"requirement\": \"100 concurrent order submissions\",\n      \"explicit\": true,\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"deployment-need\",\n          \"entityId\": \"DEPLOY-007\",\n          \"description\": \"Production must support at least 100 concurrent order submissions.\"\n        }\n      ]\n    }\n  ],\n  \"resilienceRequirements\": [\n    {\n      \"id\": \"RESILIENCE-001\",\n      \"target\": [\n        {\n          \"entityType\": \"integration\",\n          \"entityId\": \"INT-001\"\n        }\n      ],\n      \"concern\": \"dependency-failure\",\n      \"description\": \"The solution must continue accepting new orders when the external Fulfillment API is temporarily unavailable.\",\n      \"strategy\": \"unspecified\",\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"deployment-need\",\n          \"entityId\": \"DEPLOY-008\",\n          \"description\": \"The solution must continue accepting new orders when the external Fulfillment API is temporarily unavailable.\"\n        }\n      ]\n    }\n  ],\n  \"securityMappings\": [\n    {\n      \"id\": \"CLOUDSEC-001\",\n      \"securityRequirementId\": \"SECREQ-001\",\n      \"deploymentUnitIds\": [\n        \"DEPLOYUNIT-002\"\n      ],\n      \"connectivityRequirementIds\": [\n        \"CONNECT-001\"\n      ],\n      \"stateRequirementIds\": [],\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"integration\",\n          \"entityId\": \"INTNEED-001\",\n          \"description\": \"The Order Processor submits orders to the Fulfillment API.\"\n        }\n      ]\n    },\n    {\n      \"id\": \"CLOUDSEC-002\",\n      \"securityRequirementId\": \"SECREQ-002\",\n      \"deploymentUnitIds\": [\n        \"DEPLOYUNIT-002\"\n      ],\n      \"connectivityRequirementIds\": [\n        \"CONNECT-001\"\n      ],\n      \"stateRequirementIds\": [],\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"integration\",\n          \"entityId\": \"INTNEED-001\",\n          \"description\": \"The Order Processor submits orders to the Fulfillment API.\"\n        }\n      ]\n    }\n  ],\n  \"observabilityMappings\": [],\n  \"informationGaps\": [\n    {\n      \"id\": \"CLOUDGAP-001\",\n      \"topic\": \"Cloud provider\",\n      \"question\": \"Which provider, if any, is required for hosting this solution?\",\n      \"importance\": \"low\",\n      \"blocking\": false,\n      \"relatedCapabilityIds\": [\n        \"cloud\"\n      ]\n    },\n    {\n      \"id\": \"CLOUDGAP-002\",\n      \"topic\": \"Persistence technology\",\n      \"question\": \"What persistence technology should satisfy the identified durable-state requirements?\",\n      \"importance\": \"medium\",\n      \"blocking\": false,\n      \"relatedCapabilityIds\": [\n        \"cloud\"\n      ]\n    },\n    {\n      \"id\": \"CLOUDGAP-003\",\n      \"topic\": \"Deployment strategy\",\n      \"question\": \"What deployment strategy is required for solution-managed components?\",\n      \"importance\": \"low\",\n      \"blocking\": false,\n      \"relatedCapabilityIds\": [\n        \"cloud\"\n      ]\n    }\n  ],\n  \"evidenceRefs\": [\n    {\n      \"entityType\": \"deployment-need\",\n      \"entityId\": \"DEPLOY-001\",\n      \"description\": \"The solution includes a solution-managed Order API that receives customer order requests.\"\n    },\n    {\n      \"entityType\": \"deployment-need\",\n      \"entityId\": \"DEPLOY-003\",\n      \"description\": \"The solution includes a solution-managed Order Processor that processes accepted orders in the background.\"\n    },\n    {\n      \"entityType\": \"deployment-need\",\n      \"entityId\": \"DEPLOY-001\",\n      \"description\": \"The solution includes a solution-managed Order API that receives customer order requests.\"\n    },\n    {\n      \"entityType\": \"deployment-need\",\n      \"entityId\": \"DEPLOY-003\",\n      \"description\": \"The solution includes a solution-managed Order Processor that processes accepted orders in the background.\"\n    }\n  ],\n  \"status\": \"needs-review\",\n  \"statusReasons\": [\n    \"cloud provider is unresolved\",\n    \"persistence technology is unresolved\",\n    \"deployment strategy is unresolved\",\n    \"3 unresolved information gap(s)\"\n  ]\n}",
-        "generatedAt": "2026-08-20T03:05:59.203Z"
+        "generatedAt": "2026-08-20T11:55:57.198Z"
       },
       {
-        "id": "artifact-1787195159204-qilu4g",
+        "id": "artifact-1787226957199-3120q9",
         "capabilityId": "cloud",
         "type": "document",
         "path": "artifacts/cloud/cloud-architecture.md",
         "content": "# Cloud Architecture\n\n_Status: **needs-review** (cloud provider is unresolved; persistence technology is unresolved; deployment strategy is unresolved; 3 unresolved information gap(s))_\n\n> `implemented: true` on this capability means Stitchfy generated and validated a vendor-neutral cloud/deployment architecture for the currently known solution. It does not mean infrastructure was provisioned, an application was deployed, a cloud account or credentials exist, a region was selected (unless explicitly required), networking was configured, a database was created, scalability was tested, resilience was verified, or the architecture is production-ready.\n\n## Hosting Model\n\n- Model: **unknown**\n- Provider: **unspecified** (not specified)\n\n## Deployment Units\n\n- **Order API** _(api, solution-managed, workload: request-driven)_\n- **Order Processor** _(worker, solution-managed, workload: background)_\n\n## Runtime Requirements\n\n- **RUNTIME-001** _(request-driven)_ — Runtime for solution-managed component \"Order API\".\n- **RUNTIME-002** _(background)_ — Runtime for solution-managed component \"Order Processor\".\n\n## State Requirements\n\n- **STATE-001** _(durable)_ — Order processing state must persist and survive application restarts.\n\n## Persistence Requirements\n\n- **PERSIST-001** _(durable, technology: unspecified)_ — Order processing state must persist and survive application restarts.\n\n## Connectivity\n\n- deployment-unit/DEPLOYUNIT-002 (Order Processor) → external-system/SYS-001 (Fulfillment API) _(outbound, exposure: external, protocol: https)_\n- actor (Customer) → deployment-unit/DEPLOYUNIT-001 (Order API) _(inbound, exposure: public, protocol: https)_\n- actor (Customer) → deployment-unit/DEPLOYUNIT-002 (Order Processor) _(inbound, exposure: internal, protocol: unknown)_\n\n## Environments\n\n- **Test** _(test, isolated: true)_\n- **Production** _(production, isolated: true)_\n\n## Scalability\n\n- **concurrency**: 100 concurrent order submissions\n\n## Resilience\n\n- **dependency-failure** _(strategy: unspecified)_ — The solution must continue accepting new orders when the external Fulfillment API is temporarily unavailable.\n\n## Deployment Strategy\n\nNot explicitly required.\n\n## Security Mapping\n\n- Security requirement `SECREQ-001` maps to deployment unit(s): DEPLOYUNIT-002, connectivity: CONNECT-001\n- Security requirement `SECREQ-002` maps to deployment unit(s): DEPLOYUNIT-002, connectivity: CONNECT-001\n\n## Observability Mapping\n\nNone identified.\n\n## Information Gaps\n\n- **Cloud provider**: Which provider, if any, is required for hosting this solution?\n- **Persistence technology**: What persistence technology should satisfy the identified durable-state requirements?\n- **Deployment strategy**: What deployment strategy is required for solution-managed components?\n\n```mermaid\nflowchart LR\n    Order_API[\"Order API\"]\n    Order_Processor[\"Order Processor\"]\n    Fulfillment_API[\"Fulfillment API\"]\n    Customer[\"Customer\"]\n    Order_Processor --> Fulfillment_API\n    Customer --> Order_API\n    Customer --> Order_Processor\n```\n",
-        "generatedAt": "2026-08-20T03:05:59.204Z"
+        "generatedAt": "2026-08-20T11:55:57.199Z"
       },
       {
-        "id": "artifact-1787195159204-4wvquq",
+        "id": "artifact-1787226957199-id5fjr",
         "capabilityId": "cloud",
         "type": "config",
         "path": "artifacts/cloud/deployment-topology.json",
         "content": "[\n  {\n    \"id\": \"DEPLOYUNIT-001\",\n    \"name\": \"Order API\",\n    \"kind\": \"api\",\n    \"responsibility\": \"solution-managed\",\n    \"workloadProfile\": \"request-driven\"\n  },\n  {\n    \"id\": \"DEPLOYUNIT-002\",\n    \"name\": \"Order Processor\",\n    \"kind\": \"worker\",\n    \"responsibility\": \"solution-managed\",\n    \"workloadProfile\": \"background\"\n  }\n]",
-        "generatedAt": "2026-08-20T03:05:59.204Z"
+        "generatedAt": "2026-08-20T11:55:57.199Z"
       },
       {
-        "id": "artifact-1787195159204-ib8d1g",
+        "id": "artifact-1787226957199-w9ord0",
         "capabilityId": "cloud",
         "type": "document",
         "path": "artifacts/cloud/deployment-topology.md",
         "content": "# Deployment Topology\n\n> `implemented: true` on this capability means Stitchfy generated and validated a vendor-neutral cloud/deployment architecture for the currently known solution. It does not mean infrastructure was provisioned, an application was deployed, a cloud account or credentials exist, a region was selected (unless explicitly required), networking was configured, a database was created, scalability was tested, resilience was verified, or the architecture is production-ready.\n\n## DEPLOYUNIT-001 — Order API\n\n- Kind: api\n- Responsibility: solution-managed\n- Workload profile: request-driven\n- Runtime requirement(s): RUNTIME-001\n- State requirement(s): none\n- Connectivity requirement(s): CONNECT-002\n- Evidence: 1 reference(s)\n\n## DEPLOYUNIT-002 — Order Processor\n\n- Kind: worker\n- Responsibility: solution-managed\n- Workload profile: background\n- Runtime requirement(s): RUNTIME-002\n- State requirement(s): none\n- Connectivity requirement(s): CONNECT-001, CONNECT-003\n- Evidence: 1 reference(s)\n\n## External Systems Referenced\n\n- Fulfillment API _(external, not a deployment unit)_\n",
-        "generatedAt": "2026-08-20T03:05:59.204Z"
+        "generatedAt": "2026-08-20T11:55:57.199Z"
       },
       {
-        "id": "artifact-1787195159204-93rd9s",
+        "id": "artifact-1787226957199-8fvk21",
         "capabilityId": "cloud",
         "type": "config",
         "path": "artifacts/cloud/runtime-requirements.json",
         "content": "[\n  {\n    \"id\": \"RUNTIME-001\",\n    \"executionModel\": \"request-driven\",\n    \"description\": \"Runtime for solution-managed component \\\"Order API\\\".\",\n    \"appliesTo\": [\n      {\n        \"entityType\": \"deployment-unit\",\n        \"entityId\": \"DEPLOYUNIT-001\"\n      }\n    ],\n    \"evidenceRefs\": [\n      {\n        \"entityType\": \"deployment-need\",\n        \"entityId\": \"DEPLOY-001\",\n        \"description\": \"The solution includes a solution-managed Order API that receives customer order requests.\"\n      }\n    ]\n  },\n  {\n    \"id\": \"RUNTIME-002\",\n    \"executionModel\": \"background\",\n    \"description\": \"Runtime for solution-managed component \\\"Order Processor\\\".\",\n    \"appliesTo\": [\n      {\n        \"entityType\": \"deployment-unit\",\n        \"entityId\": \"DEPLOYUNIT-002\"\n      }\n    ],\n    \"evidenceRefs\": [\n      {\n        \"entityType\": \"deployment-need\",\n        \"entityId\": \"DEPLOY-003\",\n        \"description\": \"The solution includes a solution-managed Order Processor that processes accepted orders in the background.\"\n      }\n    ]\n  }\n]",
-        "generatedAt": "2026-08-20T03:05:59.204Z"
+        "generatedAt": "2026-08-20T11:55:57.199Z"
       },
       {
-        "id": "artifact-1787195159204-qu25ew",
+        "id": "artifact-1787226957199-bkhsws",
         "capabilityId": "cloud",
         "type": "document",
         "path": "artifacts/cloud/runtime-requirements.md",
         "content": "# Runtime Requirements\n\n> `implemented: true` on this capability means Stitchfy generated and validated a vendor-neutral cloud/deployment architecture for the currently known solution. It does not mean infrastructure was provisioned, an application was deployed, a cloud account or credentials exist, a region was selected (unless explicitly required), networking was configured, a database was created, scalability was tested, resilience was verified, or the architecture is production-ready.\n\n## RUNTIME-001\n\n- Execution model: request-driven\n- Description: Runtime for solution-managed component \"Order API\".\n- Applies to: deployment-unit/DEPLOYUNIT-001\n- Evidence: 1 reference(s)\n\n## RUNTIME-002\n\n- Execution model: background\n- Description: Runtime for solution-managed component \"Order Processor\".\n- Applies to: deployment-unit/DEPLOYUNIT-002\n- Evidence: 1 reference(s)\n",
-        "generatedAt": "2026-08-20T03:05:59.204Z"
+        "generatedAt": "2026-08-20T11:55:57.199Z"
       }
     ],
     "notes": [
@@ -4919,7 +4919,7 @@
         ],
         "artifacts": [
           {
-            "id": "artifact-1787195159206-p9hcic",
+            "id": "artifact-1787226957200-6y083v",
             "capabilityId": "integrations",
             "type": "code",
             "path": "artifacts/integrations/exporters/fulfillment-api/generic-rest-typescript/client.ts",
@@ -4929,10 +4929,10 @@
               "exporterId": "generic-rest-typescript",
               "readiness": "ready"
             },
-            "generatedAt": "2026-08-20T03:05:59.206Z"
+            "generatedAt": "2026-08-20T11:55:57.200Z"
           },
           {
-            "id": "artifact-1787195159206-35m8n2",
+            "id": "artifact-1787226957200-9gq4wh",
             "capabilityId": "integrations",
             "type": "code",
             "path": "artifacts/integrations/exporters/fulfillment-api/generic-rest-typescript/types.ts",
@@ -4942,10 +4942,10 @@
               "exporterId": "generic-rest-typescript",
               "readiness": "ready"
             },
-            "generatedAt": "2026-08-20T03:05:59.206Z"
+            "generatedAt": "2026-08-20T11:55:57.200Z"
           },
           {
-            "id": "artifact-1787195159206-wookg8",
+            "id": "artifact-1787226957200-jxpn3m",
             "capabilityId": "integrations",
             "type": "code",
             "path": "artifacts/integrations/exporters/fulfillment-api/generic-rest-typescript/config.ts",
@@ -4955,23 +4955,23 @@
               "exporterId": "generic-rest-typescript",
               "readiness": "ready"
             },
-            "generatedAt": "2026-08-20T03:05:59.206Z"
+            "generatedAt": "2026-08-20T11:55:57.200Z"
           },
           {
-            "id": "artifact-1787195159206-tl77v9",
+            "id": "artifact-1787226957200-30031i",
             "capabilityId": "integrations",
             "type": "config",
             "path": "artifacts/integrations/exporters/fulfillment-api/generic-rest-typescript/integration.manifest.json",
-            "content": "{\n  \"schemaVersion\": \"1.0\",\n  \"integrationId\": \"INT-001\",\n  \"integrationVersion\": \"1.0\",\n  \"exporterId\": \"generic-rest-typescript\",\n  \"exporterVersion\": \"1.0.0\",\n  \"readiness\": \"ready\",\n  \"generatedFiles\": [\n    \"client.ts\",\n    \"types.ts\",\n    \"config.ts\"\n  ],\n  \"operationIds\": [\n    \"OP-001\"\n  ],\n  \"dataContractIds\": [\n    \"CONTRACT-001\",\n    \"CONTRACT-002\"\n  ],\n  \"securityRequirementIds\": [\n    \"SECREQ-001\",\n    \"SECREQ-002\"\n  ],\n  \"riskIds\": [\n    \"RISK-001\"\n  ],\n  \"informationGapIds\": [\n    \"INTGAP-001\",\n    \"INTGAP-002\"\n  ],\n  \"generatedAt\": \"2026-08-20T03:05:59.205Z\"\n}",
+            "content": "{\n  \"schemaVersion\": \"1.0\",\n  \"integrationId\": \"INT-001\",\n  \"integrationVersion\": \"1.0\",\n  \"exporterId\": \"generic-rest-typescript\",\n  \"exporterVersion\": \"1.0.0\",\n  \"readiness\": \"ready\",\n  \"generatedFiles\": [\n    \"client.ts\",\n    \"types.ts\",\n    \"config.ts\"\n  ],\n  \"operationIds\": [\n    \"OP-001\"\n  ],\n  \"dataContractIds\": [\n    \"CONTRACT-001\",\n    \"CONTRACT-002\"\n  ],\n  \"securityRequirementIds\": [\n    \"SECREQ-001\",\n    \"SECREQ-002\"\n  ],\n  \"riskIds\": [\n    \"RISK-001\"\n  ],\n  \"informationGapIds\": [\n    \"INTGAP-001\",\n    \"INTGAP-002\"\n  ],\n  \"generatedAt\": \"2026-08-20T11:55:57.200Z\"\n}",
             "metadata": {
               "integrationId": "INT-001",
               "exporterId": "generic-rest-typescript",
               "readiness": "ready"
             },
-            "generatedAt": "2026-08-20T03:05:59.206Z"
+            "generatedAt": "2026-08-20T11:55:57.200Z"
           },
           {
-            "id": "artifact-1787195159206-pqkswy",
+            "id": "artifact-1787226957200-pwstiy",
             "capabilityId": "integrations",
             "type": "document",
             "path": "artifacts/integrations/exporters/fulfillment-api/generic-rest-typescript/README.md",
@@ -4981,7 +4981,7 @@
               "exporterId": "generic-rest-typescript",
               "readiness": "ready"
             },
-            "generatedAt": "2026-08-20T03:05:59.206Z"
+            "generatedAt": "2026-08-20T11:55:57.200Z"
           }
         ],
         "notes": [
@@ -4992,7 +4992,7 @@
     ],
     "artifacts": [
       {
-        "id": "artifact-1787195159194-e25rti",
+        "id": "artifact-1787226957193-0o4q5l",
         "capabilityId": "integrations",
         "type": "config",
         "path": "artifacts/integrations/the-order-processor-submits-orders-to-the-fulfillment-api.integration.json",
@@ -5000,10 +5000,10 @@
         "metadata": {
           "integrationId": "INT-001"
         },
-        "generatedAt": "2026-08-20T03:05:59.194Z"
+        "generatedAt": "2026-08-20T11:55:57.193Z"
       },
       {
-        "id": "artifact-1787195159194-xkroez",
+        "id": "artifact-1787226957193-xf2ads",
         "capabilityId": "integrations",
         "type": "document",
         "path": "artifacts/integrations/the-order-processor-submits-orders-to-the-fulfillment-api.integration.md",
@@ -5011,10 +5011,10 @@
         "metadata": {
           "integrationId": "INT-001"
         },
-        "generatedAt": "2026-08-20T03:05:59.194Z"
+        "generatedAt": "2026-08-20T11:55:57.193Z"
       },
       {
-        "id": "artifact-1787195159195-jq9n0p",
+        "id": "artifact-1787226957193-yc91op",
         "capabilityId": "integrations",
         "type": "config",
         "path": "artifacts/integrations/the-order-processor-submits-orders-to-the-fulfillment-api.openapi.json",
@@ -5022,10 +5022,10 @@
         "metadata": {
           "integrationId": "INT-001"
         },
-        "generatedAt": "2026-08-20T03:05:59.195Z"
+        "generatedAt": "2026-08-20T11:55:57.193Z"
       },
       {
-        "id": "artifact-1787195159206-p9hcic",
+        "id": "artifact-1787226957200-6y083v",
         "capabilityId": "integrations",
         "type": "code",
         "path": "artifacts/integrations/exporters/fulfillment-api/generic-rest-typescript/client.ts",
@@ -5035,10 +5035,10 @@
           "exporterId": "generic-rest-typescript",
           "readiness": "ready"
         },
-        "generatedAt": "2026-08-20T03:05:59.206Z"
+        "generatedAt": "2026-08-20T11:55:57.200Z"
       },
       {
-        "id": "artifact-1787195159206-35m8n2",
+        "id": "artifact-1787226957200-9gq4wh",
         "capabilityId": "integrations",
         "type": "code",
         "path": "artifacts/integrations/exporters/fulfillment-api/generic-rest-typescript/types.ts",
@@ -5048,10 +5048,10 @@
           "exporterId": "generic-rest-typescript",
           "readiness": "ready"
         },
-        "generatedAt": "2026-08-20T03:05:59.206Z"
+        "generatedAt": "2026-08-20T11:55:57.200Z"
       },
       {
-        "id": "artifact-1787195159206-wookg8",
+        "id": "artifact-1787226957200-jxpn3m",
         "capabilityId": "integrations",
         "type": "code",
         "path": "artifacts/integrations/exporters/fulfillment-api/generic-rest-typescript/config.ts",
@@ -5061,23 +5061,23 @@
           "exporterId": "generic-rest-typescript",
           "readiness": "ready"
         },
-        "generatedAt": "2026-08-20T03:05:59.206Z"
+        "generatedAt": "2026-08-20T11:55:57.200Z"
       },
       {
-        "id": "artifact-1787195159206-tl77v9",
+        "id": "artifact-1787226957200-30031i",
         "capabilityId": "integrations",
         "type": "config",
         "path": "artifacts/integrations/exporters/fulfillment-api/generic-rest-typescript/integration.manifest.json",
-        "content": "{\n  \"schemaVersion\": \"1.0\",\n  \"integrationId\": \"INT-001\",\n  \"integrationVersion\": \"1.0\",\n  \"exporterId\": \"generic-rest-typescript\",\n  \"exporterVersion\": \"1.0.0\",\n  \"readiness\": \"ready\",\n  \"generatedFiles\": [\n    \"client.ts\",\n    \"types.ts\",\n    \"config.ts\"\n  ],\n  \"operationIds\": [\n    \"OP-001\"\n  ],\n  \"dataContractIds\": [\n    \"CONTRACT-001\",\n    \"CONTRACT-002\"\n  ],\n  \"securityRequirementIds\": [\n    \"SECREQ-001\",\n    \"SECREQ-002\"\n  ],\n  \"riskIds\": [\n    \"RISK-001\"\n  ],\n  \"informationGapIds\": [\n    \"INTGAP-001\",\n    \"INTGAP-002\"\n  ],\n  \"generatedAt\": \"2026-08-20T03:05:59.205Z\"\n}",
+        "content": "{\n  \"schemaVersion\": \"1.0\",\n  \"integrationId\": \"INT-001\",\n  \"integrationVersion\": \"1.0\",\n  \"exporterId\": \"generic-rest-typescript\",\n  \"exporterVersion\": \"1.0.0\",\n  \"readiness\": \"ready\",\n  \"generatedFiles\": [\n    \"client.ts\",\n    \"types.ts\",\n    \"config.ts\"\n  ],\n  \"operationIds\": [\n    \"OP-001\"\n  ],\n  \"dataContractIds\": [\n    \"CONTRACT-001\",\n    \"CONTRACT-002\"\n  ],\n  \"securityRequirementIds\": [\n    \"SECREQ-001\",\n    \"SECREQ-002\"\n  ],\n  \"riskIds\": [\n    \"RISK-001\"\n  ],\n  \"informationGapIds\": [\n    \"INTGAP-001\",\n    \"INTGAP-002\"\n  ],\n  \"generatedAt\": \"2026-08-20T11:55:57.200Z\"\n}",
         "metadata": {
           "integrationId": "INT-001",
           "exporterId": "generic-rest-typescript",
           "readiness": "ready"
         },
-        "generatedAt": "2026-08-20T03:05:59.206Z"
+        "generatedAt": "2026-08-20T11:55:57.200Z"
       },
       {
-        "id": "artifact-1787195159206-pqkswy",
+        "id": "artifact-1787226957200-pwstiy",
         "capabilityId": "integrations",
         "type": "document",
         "path": "artifacts/integrations/exporters/fulfillment-api/generic-rest-typescript/README.md",
@@ -5087,7 +5087,7 @@
           "exporterId": "generic-rest-typescript",
           "readiness": "ready"
         },
-        "generatedAt": "2026-08-20T03:05:59.206Z"
+        "generatedAt": "2026-08-20T11:55:57.200Z"
       }
     ],
     "notes": [
@@ -5233,7 +5233,7 @@
     ],
     "artifacts": [
       {
-        "id": "artifact-1787195159192-e4iwae",
+        "id": "artifact-1787226957191-gbvmtq",
         "capabilityId": "workflow-automation",
         "type": "config",
         "path": "artifacts/workflow-automation/order-submission.workflow.json",
@@ -5242,10 +5242,10 @@
           "workflowId": "WF-001",
           "processId": "PROC-001"
         },
-        "generatedAt": "2026-08-20T03:05:59.192Z"
+        "generatedAt": "2026-08-20T11:55:57.191Z"
       },
       {
-        "id": "artifact-1787195159192-zv797f",
+        "id": "artifact-1787226957191-o6p881",
         "capabilityId": "workflow-automation",
         "type": "document",
         "path": "artifacts/workflow-automation/order-submission.workflow.md",
@@ -5254,7 +5254,7 @@
           "workflowId": "WF-001",
           "processId": "PROC-001"
         },
-        "generatedAt": "2026-08-20T03:05:59.192Z"
+        "generatedAt": "2026-08-20T11:55:57.191Z"
       }
     ],
     "notes": [
@@ -6054,52 +6054,52 @@
     },
     "artifacts": [
       {
-        "id": "artifact-1787195159198-j3wtaz",
+        "id": "artifact-1787226957195-780wgu",
         "capabilityId": "observability",
         "type": "config",
         "path": "artifacts/observability/observability-architecture.json",
         "content": "{\n  \"version\": \"1.0\",\n  \"telemetryRequirements\": [\n    {\n      \"id\": \"TELREQ-002\",\n      \"purpose\": \"security\",\n      \"appliesTo\": [\n        {\n          \"entityType\": \"data-contract\",\n          \"entityId\": \"CONTRACT-001\"\n        }\n      ],\n      \"requiredSignals\": [],\n      \"description\": \"Telemetry must avoid recording the associated business payload until data classification (currently \\\"unknown\\\") and logging policy are resolved.\",\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"integration\",\n          \"entityId\": \"INTNEED-001\",\n          \"description\": \"The Order Processor submits orders to the Fulfillment API.\"\n        }\n      ],\n      \"status\": \"needs-information\"\n    },\n    {\n      \"id\": \"TELREQ-003\",\n      \"purpose\": \"security\",\n      \"appliesTo\": [\n        {\n          \"entityType\": \"data-contract\",\n          \"entityId\": \"CONTRACT-002\"\n        }\n      ],\n      \"requiredSignals\": [],\n      \"description\": \"Telemetry must avoid recording the associated business payload until data classification (currently \\\"unknown\\\") and logging policy are resolved.\",\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"integration\",\n          \"entityId\": \"INTNEED-001\",\n          \"description\": \"The Order Processor submits orders to the Fulfillment API.\"\n        }\n      ],\n      \"status\": \"needs-information\"\n    }\n  ],\n  \"signals\": [\n    {\n      \"id\": \"SIGNAL-001\",\n      \"name\": \"Order Submission Workflow started\",\n      \"type\": \"event\",\n      \"description\": \"Workflow \\\"Order Submission Workflow\\\" started.\",\n      \"source\": {\n        \"entityType\": \"workflow\",\n        \"entityId\": \"WF-001\"\n      },\n      \"attributes\": [\n        {\n          \"name\": \"workflowId\",\n          \"purpose\": \"correlates events to this workflow\",\n          \"sensitivity\": \"internal\",\n          \"required\": true\n        },\n        {\n          \"name\": \"outcome\",\n          \"purpose\": \"execution outcome\",\n          \"sensitivity\": \"internal\",\n          \"required\": true\n        }\n      ],\n      \"sensitivity\": \"internal\",\n      \"provenance\": \"derived\",\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"process\",\n          \"entityId\": \"PROC-001\",\n          \"description\": \"Order Submission\"\n        }\n      ]\n    },\n    {\n      \"id\": \"SIGNAL-002\",\n      \"name\": \"Order Submission Workflow completed\",\n      \"type\": \"event\",\n      \"description\": \"Workflow \\\"Order Submission Workflow\\\" completed.\",\n      \"source\": {\n        \"entityType\": \"workflow\",\n        \"entityId\": \"WF-001\"\n      },\n      \"attributes\": [\n        {\n          \"name\": \"workflowId\",\n          \"purpose\": \"correlates events to this workflow\",\n          \"sensitivity\": \"internal\",\n          \"required\": true\n        },\n        {\n          \"name\": \"outcome\",\n          \"purpose\": \"execution outcome\",\n          \"sensitivity\": \"internal\",\n          \"required\": true\n        }\n      ],\n      \"sensitivity\": \"internal\",\n      \"provenance\": \"derived\",\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"process\",\n          \"entityId\": \"PROC-001\",\n          \"description\": \"Order Submission\"\n        }\n      ]\n    },\n    {\n      \"id\": \"SIGNAL-003\",\n      \"name\": \"Order Submission Workflow failed\",\n      \"type\": \"event\",\n      \"description\": \"Workflow \\\"Order Submission Workflow\\\" failed.\",\n      \"source\": {\n        \"entityType\": \"workflow\",\n        \"entityId\": \"WF-001\"\n      },\n      \"attributes\": [\n        {\n          \"name\": \"workflowId\",\n          \"purpose\": \"correlates events to this workflow\",\n          \"sensitivity\": \"internal\",\n          \"required\": true\n        },\n        {\n          \"name\": \"outcome\",\n          \"purpose\": \"execution outcome\",\n          \"sensitivity\": \"internal\",\n          \"required\": true\n        }\n      ],\n      \"sensitivity\": \"internal\",\n      \"provenance\": \"derived\",\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"process\",\n          \"entityId\": \"PROC-001\",\n          \"description\": \"Order Submission\"\n        }\n      ]\n    },\n    {\n      \"id\": \"SIGNAL-004\",\n      \"name\": \"The Order Processor validates the order and forwards it to the Fulfillment API attempted\",\n      \"type\": \"event\",\n      \"description\": \"Integration operation \\\"The Order Processor validates the order and forwards it to the Fulfillment API\\\" (The Order Processor submits orders to the Fulfillment API.) attempted.\",\n      \"source\": {\n        \"entityType\": \"integration\",\n        \"entityId\": \"INT-001\"\n      },\n      \"attributes\": [\n        {\n          \"name\": \"integrationId\",\n          \"purpose\": \"correlates to the owning integration\",\n          \"sensitivity\": \"internal\",\n          \"required\": true\n        },\n        {\n          \"name\": \"operationId\",\n          \"purpose\": \"which operation\",\n          \"sensitivity\": \"internal\",\n          \"required\": true\n        },\n        {\n          \"name\": \"outcome\",\n          \"purpose\": \"attempt outcome\",\n          \"sensitivity\": \"internal\",\n          \"required\": true\n        }\n      ],\n      \"sensitivity\": \"internal\",\n      \"provenance\": \"derived\",\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"integration\",\n          \"entityId\": \"INTNEED-001\",\n          \"description\": \"The Order Processor submits orders to the Fulfillment API.\"\n        }\n      ]\n    },\n    {\n      \"id\": \"SIGNAL-005\",\n      \"name\": \"The Order Processor validates the order and forwards it to the Fulfillment API succeeded\",\n      \"type\": \"event\",\n      \"description\": \"Integration operation \\\"The Order Processor validates the order and forwards it to the Fulfillment API\\\" (The Order Processor submits orders to the Fulfillment API.) succeeded.\",\n      \"source\": {\n        \"entityType\": \"integration\",\n        \"entityId\": \"INT-001\"\n      },\n      \"attributes\": [\n        {\n          \"name\": \"integrationId\",\n          \"purpose\": \"correlates to the owning integration\",\n          \"sensitivity\": \"internal\",\n          \"required\": true\n        },\n        {\n          \"name\": \"operationId\",\n          \"purpose\": \"which operation\",\n          \"sensitivity\": \"internal\",\n          \"required\": true\n        },\n        {\n          \"name\": \"outcome\",\n          \"purpose\": \"attempt outcome\",\n          \"sensitivity\": \"internal\",\n          \"required\": true\n        },\n        {\n          \"name\": \"httpMethod\",\n          \"purpose\": \"explicit HTTP method\",\n          \"sensitivity\": \"internal\",\n          \"required\": true\n        },\n        {\n          \"name\": \"httpPath\",\n          \"purpose\": \"explicit HTTP path\",\n          \"sensitivity\": \"internal\",\n          \"required\": true\n        }\n      ],\n      \"sensitivity\": \"internal\",\n      \"provenance\": \"derived\",\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"integration\",\n          \"entityId\": \"INTNEED-001\",\n          \"description\": \"The Order Processor submits orders to the Fulfillment API.\"\n        }\n      ]\n    },\n    {\n      \"id\": \"SIGNAL-006\",\n      \"name\": \"The Order Processor validates the order and forwards it to the Fulfillment API failed\",\n      \"type\": \"event\",\n      \"description\": \"Integration operation \\\"The Order Processor validates the order and forwards it to the Fulfillment API\\\" (The Order Processor submits orders to the Fulfillment API.) failed.\",\n      \"source\": {\n        \"entityType\": \"integration\",\n        \"entityId\": \"INT-001\"\n      },\n      \"attributes\": [\n        {\n          \"name\": \"integrationId\",\n          \"purpose\": \"correlates to the owning integration\",\n          \"sensitivity\": \"internal\",\n          \"required\": true\n        },\n        {\n          \"name\": \"operationId\",\n          \"purpose\": \"which operation\",\n          \"sensitivity\": \"internal\",\n          \"required\": true\n        },\n        {\n          \"name\": \"outcome\",\n          \"purpose\": \"attempt outcome\",\n          \"sensitivity\": \"internal\",\n          \"required\": true\n        },\n        {\n          \"name\": \"httpMethod\",\n          \"purpose\": \"explicit HTTP method\",\n          \"sensitivity\": \"internal\",\n          \"required\": true\n        },\n        {\n          \"name\": \"httpPath\",\n          \"purpose\": \"explicit HTTP path\",\n          \"sensitivity\": \"internal\",\n          \"required\": true\n        }\n      ],\n      \"sensitivity\": \"internal\",\n      \"provenance\": \"derived\",\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"integration\",\n          \"entityId\": \"INTNEED-001\",\n          \"description\": \"The Order Processor submits orders to the Fulfillment API.\"\n        }\n      ]\n    }\n  ],\n  \"logRequirements\": [\n    {\n      \"id\": \"TELREQ-001\",\n      \"event\": \"integration operation outcome\",\n      \"level\": \"unknown\",\n      \"source\": {\n        \"entityType\": \"integration\",\n        \"entityId\": \"INT-001\"\n      },\n      \"fields\": [],\n      \"prohibitedData\": [\n        \"credential/API-key material\"\n      ],\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"integration\",\n          \"entityId\": \"INTNEED-001\",\n          \"description\": \"The Order Processor submits orders to the Fulfillment API.\"\n        }\n      ]\n    }\n  ],\n  \"metricRequirements\": [\n    {\n      \"id\": \"METRIC-001\",\n      \"name\": \"The Order Processor submits orders to the Fulfillment API. operation count\",\n      \"kind\": \"counter\",\n      \"description\": \"Count of operation attempts for \\\"The Order Processor submits orders to the Fulfillment API.\\\".\",\n      \"source\": {\n        \"entityType\": \"integration\",\n        \"entityId\": \"INT-001\"\n      },\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"integration\",\n          \"entityId\": \"INTNEED-001\",\n          \"description\": \"The Order Processor submits orders to the Fulfillment API.\"\n        }\n      ]\n    },\n    {\n      \"id\": \"METRIC-002\",\n      \"name\": \"The Order Processor submits orders to the Fulfillment API. failure count\",\n      \"kind\": \"counter\",\n      \"description\": \"Count of operation failures for \\\"The Order Processor submits orders to the Fulfillment API.\\\".\",\n      \"source\": {\n        \"entityType\": \"integration\",\n        \"entityId\": \"INT-001\"\n      },\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"integration\",\n          \"entityId\": \"INTNEED-001\",\n          \"description\": \"The Order Processor submits orders to the Fulfillment API.\"\n        }\n      ]\n    },\n    {\n      \"id\": \"METRIC-003\",\n      \"name\": \"The Order Processor submits orders to the Fulfillment API. operation duration\",\n      \"kind\": \"timer\",\n      \"description\": \"Duration of operation attempts for \\\"The Order Processor submits orders to the Fulfillment API.\\\". No target/threshold implied.\",\n      \"source\": {\n        \"entityType\": \"integration\",\n        \"entityId\": \"INT-001\"\n      },\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"integration\",\n          \"entityId\": \"INTNEED-001\",\n          \"description\": \"The Order Processor submits orders to the Fulfillment API.\"\n        }\n      ]\n    }\n  ],\n  \"correlationRequirements\": [\n    {\n      \"id\": \"CORR-001\",\n      \"description\": \"Operations for \\\"The Order Processor submits orders to the Fulfillment API.\\\" should be correlatable back to the workflow that triggered them.\",\n      \"architecturePath\": [\n        {\n          \"entityType\": \"workflow\",\n          \"entityId\": \"WF-001\"\n        },\n        {\n          \"entityType\": \"integration\",\n          \"entityId\": \"INT-001\"\n        }\n      ],\n      \"correlationRequired\": true,\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"integration\",\n          \"entityId\": \"INTNEED-001\",\n          \"description\": \"The Order Processor submits orders to the Fulfillment API.\"\n        }\n      ]\n    }\n  ],\n  \"healthRequirements\": [\n    {\n      \"id\": \"HEALTH-001\",\n      \"target\": {\n        \"entityType\": \"workflow\",\n        \"entityId\": \"WF-001\"\n      },\n      \"type\": \"business-process\",\n      \"description\": \"Ability to determine whether workflow \\\"Order Submission Workflow\\\" is completing successfully.\",\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"process\",\n          \"entityId\": \"PROC-001\",\n          \"description\": \"Order Submission\"\n        }\n      ]\n    },\n    {\n      \"id\": \"HEALTH-002\",\n      \"target\": {\n        \"entityType\": \"integration\",\n        \"entityId\": \"INT-001\"\n      },\n      \"type\": \"dependency\",\n      \"description\": \"Ability to determine whether \\\"The Order Processor submits orders to the Fulfillment API.\\\" is operational.\",\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"integration\",\n          \"entityId\": \"INTNEED-001\",\n          \"description\": \"The Order Processor submits orders to the Fulfillment API.\"\n        }\n      ]\n    }\n  ],\n  \"alertRequirements\": [\n    {\n      \"id\": \"ALERT-001\",\n      \"name\": \"Operations must be notified after 5 consecutive failed fulfillment submissions.\",\n      \"sourceSignalIds\": [],\n      \"condition\": \"Operations must be notified after 5 consecutive failed fulfillment submissions.\",\n      \"threshold\": \"5 consecutive\",\n      \"severity\": \"warning\",\n      \"provenance\": \"explicit\",\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"requirement\",\n          \"entityId\": \"REQ-003\",\n          \"description\": \"Operations must be notified after 5 consecutive failed fulfillment submissions.\"\n        }\n      ]\n    }\n  ],\n  \"dashboardSpecifications\": [\n    {\n      \"id\": \"DASH-001\",\n      \"name\": \"Workflow Operations View\",\n      \"purpose\": \"Operational visibility into generated workflow execution outcomes, decisions, and approvals.\",\n      \"signalIds\": [\n        \"SIGNAL-001\",\n        \"SIGNAL-002\",\n        \"SIGNAL-003\"\n      ],\n      \"audienceRoles\": [\n        \"operations\"\n      ],\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"process\",\n          \"entityId\": \"PROC-001\",\n          \"description\": \"Order Submission\"\n        }\n      ]\n    },\n    {\n      \"id\": \"DASH-002\",\n      \"name\": \"Integration Health View\",\n      \"purpose\": \"Operational visibility into external integration operation outcomes.\",\n      \"signalIds\": [\n        \"SIGNAL-004\",\n        \"SIGNAL-005\",\n        \"SIGNAL-006\"\n      ],\n      \"audienceRoles\": [\n        \"operations\"\n      ],\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"integration\",\n          \"entityId\": \"INTNEED-001\",\n          \"description\": \"The Order Processor submits orders to the Fulfillment API.\"\n        }\n      ]\n    }\n  ],\n  \"auditMappings\": [],\n  \"operationalObjectives\": [\n    {\n      \"id\": \"OBJ-001\",\n      \"name\": \"95% of accepted order submissions should complete within 2 seconds.\",\n      \"target\": [],\n      \"objectiveType\": \"latency\",\n      \"targetValue\": \"95% within 2 seconds\",\n      \"explicit\": true,\n      \"evidenceRefs\": [\n        {\n          \"entityType\": \"requirement\",\n          \"entityId\": \"REQ-004\",\n          \"description\": \"95% of accepted order submissions should complete within 2 seconds.\"\n        }\n      ]\n    }\n  ],\n  \"informationGaps\": [\n    {\n      \"id\": \"OBSGAP-001\",\n      \"topic\": \"Alert destination\",\n      \"question\": \"Who or what system should receive the alert for \\\"Operations must be notified after 5 consecutive failed fulfillment submissions.\\\"?\",\n      \"importance\": \"medium\",\n      \"blocking\": false,\n      \"relatedCapabilityIds\": [\n        \"observability\"\n      ]\n    }\n  ],\n  \"evidenceRefs\": [\n    {\n      \"entityType\": \"process\",\n      \"entityId\": \"PROC-001\",\n      \"description\": \"Order Submission\"\n    },\n    {\n      \"entityType\": \"process\",\n      \"entityId\": \"PROC-001\",\n      \"description\": \"Order Submission\"\n    },\n    {\n      \"entityType\": \"process\",\n      \"entityId\": \"PROC-001\",\n      \"description\": \"Order Submission\"\n    },\n    {\n      \"entityType\": \"integration\",\n      \"entityId\": \"INTNEED-001\",\n      \"description\": \"The Order Processor submits orders to the Fulfillment API.\"\n    },\n    {\n      \"entityType\": \"integration\",\n      \"entityId\": \"INTNEED-001\",\n      \"description\": \"The Order Processor submits orders to the Fulfillment API.\"\n    },\n    {\n      \"entityType\": \"integration\",\n      \"entityId\": \"INTNEED-001\",\n      \"description\": \"The Order Processor submits orders to the Fulfillment API.\"\n    },\n    {\n      \"entityType\": \"integration\",\n      \"entityId\": \"INTNEED-001\",\n      \"description\": \"The Order Processor submits orders to the Fulfillment API.\"\n    },\n    {\n      \"entityType\": \"integration\",\n      \"entityId\": \"INTNEED-001\",\n      \"description\": \"The Order Processor submits orders to the Fulfillment API.\"\n    }\n  ],\n  \"status\": \"needs-review\",\n  \"statusReasons\": [\n    \"some telemetry requirements need more information (data classification/logging policy)\",\n    \"some alert requirements have no known destination\",\n    \"1 unresolved information gap(s)\"\n  ]\n}",
-        "generatedAt": "2026-08-20T03:05:59.198Z"
+        "generatedAt": "2026-08-20T11:55:57.195Z"
       },
       {
-        "id": "artifact-1787195159198-od8nyl",
+        "id": "artifact-1787226957195-af56d9",
         "capabilityId": "observability",
         "type": "document",
         "path": "artifacts/observability/observability-architecture.md",
         "content": "# Observability Architecture\n\n_Status: **needs-review** (some telemetry requirements need more information (data classification/logging policy); some alert requirements have no known destination; 1 unresolved information gap(s))_\n\n> `implemented: true` on this capability means Stitchfy generated and validated a vendor-neutral observability and operational architecture for the currently known solution. It does not mean telemetry is being collected, logging exists, dashboards are deployed, alerts are active, tracing is installed, an SLO is being met, or production operations are ready.\n\n## Scope\n\n6 signal(s), 3 metric(s), 1 alert requirement(s), 1 operational objective(s) identified from the generated solution.\n\n## Observable Components\n\n- workflow/WF-001\n- integration/INT-001\n\n## Workflow Visibility\n\n- **Order Submission Workflow started** _(event, derived)_ — Workflow \"Order Submission Workflow\" started.\n- **Order Submission Workflow completed** _(event, derived)_ — Workflow \"Order Submission Workflow\" completed.\n- **Order Submission Workflow failed** _(event, derived)_ — Workflow \"Order Submission Workflow\" failed.\n\n## Integration Visibility\n\n- **The Order Processor validates the order and forwards it to the Fulfillment API attempted** _(event, derived)_ — Integration operation \"The Order Processor validates the order and forwards it to the Fulfillment API\" (The Order Processor submits orders to the Fulfillment API.) attempted.\n- **The Order Processor validates the order and forwards it to the Fulfillment API succeeded** _(event, derived)_ — Integration operation \"The Order Processor validates the order and forwards it to the Fulfillment API\" (The Order Processor submits orders to the Fulfillment API.) succeeded.\n- **The Order Processor validates the order and forwards it to the Fulfillment API failed** _(event, derived)_ — Integration operation \"The Order Processor validates the order and forwards it to the Fulfillment API\" (The Order Processor submits orders to the Fulfillment API.) failed.\n\n## AI Agent Visibility\n\nNone identified.\n\n## Logs and Events\n\n- **integration operation outcome** _(level: unknown)_ — prohibited: credential/API-key material\n\n## Metrics\n\n- **The Order Processor submits orders to the Fulfillment API. operation count** _(counter)_ — Count of operation attempts for \"The Order Processor submits orders to the Fulfillment API.\".\n- **The Order Processor submits orders to the Fulfillment API. failure count** _(counter)_ — Count of operation failures for \"The Order Processor submits orders to the Fulfillment API.\".\n- **The Order Processor submits orders to the Fulfillment API. operation duration** _(timer)_ — Duration of operation attempts for \"The Order Processor submits orders to the Fulfillment API.\". No target/threshold implied.\n\n## Correlation / Tracing\n\n- Operations for \"The Order Processor submits orders to the Fulfillment API.\" should be correlatable back to the workflow that triggered them. (path: workflow/WF-001 → integration/INT-001)\n\n## Auditability\n\nNone identified.\n\n## Health Requirements\n\n- **workflow/WF-001** _(business-process)_ — Ability to determine whether workflow \"Order Submission Workflow\" is completing successfully.\n- **integration/INT-001** _(dependency)_ — Ability to determine whether \"The Order Processor submits orders to the Fulfillment API.\" is operational.\n\n## Alert Requirements\n\n- **Operations must be notified after 5 consecutive failed fulfillment submissions.** _(warning, explicit)_ — Operations must be notified after 5 consecutive failed fulfillment submissions.; threshold: 5 consecutive; destination: unresolved\n\n## Operational Objectives\n\n- **95% of accepted order submissions should complete within 2 seconds.** _(latency, explicit)_ — target: 95% within 2 seconds\n\n## Dashboards / Operational Views\n\n- **Workflow Operations View** — Operational visibility into generated workflow execution outcomes, decisions, and approvals. (3 signal(s))\n- **Integration Health View** — Operational visibility into external integration operation outcomes. (3 signal(s))\n\n## Data Protection in Telemetry\n\n- Telemetry must avoid recording the associated business payload until data classification (currently \"unknown\") and logging policy are resolved.\n- Telemetry must avoid recording the associated business payload until data classification (currently \"unknown\") and logging policy are resolved.\n- Prohibited from telemetry for integration/INT-001: credential/API-key material\n\n## Information Gaps\n\n- **Alert destination**: Who or what system should receive the alert for \"Operations must be notified after 5 consecutive failed fulfillment submissions.\"?\n\n## Traceability\n\nSignals: 6, Metrics: 3, Evidence references: 8\n\n```mermaid\nflowchart LR\n    WF_001[\"workflow/WF-001\"]\n    INT_001[\"integration/INT-001\"]\n    WF_001 --> INT_001\n```\n",
-        "generatedAt": "2026-08-20T03:05:59.198Z"
+        "generatedAt": "2026-08-20T11:55:57.195Z"
       },
       {
-        "id": "artifact-1787195159198-z817he",
+        "id": "artifact-1787226957195-q7b8f2",
         "capabilityId": "observability",
         "type": "config",
         "path": "artifacts/observability/telemetry-catalog.json",
         "content": "[\n  {\n    \"id\": \"SIGNAL-001\",\n    \"name\": \"Order Submission Workflow started\",\n    \"type\": \"event\",\n    \"description\": \"Workflow \\\"Order Submission Workflow\\\" started.\",\n    \"source\": {\n      \"entityType\": \"workflow\",\n      \"entityId\": \"WF-001\"\n    },\n    \"attributes\": [\n      {\n        \"name\": \"workflowId\",\n        \"purpose\": \"correlates events to this workflow\",\n        \"sensitivity\": \"internal\",\n        \"required\": true\n      },\n      {\n        \"name\": \"outcome\",\n        \"purpose\": \"execution outcome\",\n        \"sensitivity\": \"internal\",\n        \"required\": true\n      }\n    ],\n    \"sensitivity\": \"internal\",\n    \"provenance\": \"derived\",\n    \"evidenceRefs\": [\n      {\n        \"entityType\": \"process\",\n        \"entityId\": \"PROC-001\",\n        \"description\": \"Order Submission\"\n      }\n    ]\n  },\n  {\n    \"id\": \"SIGNAL-002\",\n    \"name\": \"Order Submission Workflow completed\",\n    \"type\": \"event\",\n    \"description\": \"Workflow \\\"Order Submission Workflow\\\" completed.\",\n    \"source\": {\n      \"entityType\": \"workflow\",\n      \"entityId\": \"WF-001\"\n    },\n    \"attributes\": [\n      {\n        \"name\": \"workflowId\",\n        \"purpose\": \"correlates events to this workflow\",\n        \"sensitivity\": \"internal\",\n        \"required\": true\n      },\n      {\n        \"name\": \"outcome\",\n        \"purpose\": \"execution outcome\",\n        \"sensitivity\": \"internal\",\n        \"required\": true\n      }\n    ],\n    \"sensitivity\": \"internal\",\n    \"provenance\": \"derived\",\n    \"evidenceRefs\": [\n      {\n        \"entityType\": \"process\",\n        \"entityId\": \"PROC-001\",\n        \"description\": \"Order Submission\"\n      }\n    ]\n  },\n  {\n    \"id\": \"SIGNAL-003\",\n    \"name\": \"Order Submission Workflow failed\",\n    \"type\": \"event\",\n    \"description\": \"Workflow \\\"Order Submission Workflow\\\" failed.\",\n    \"source\": {\n      \"entityType\": \"workflow\",\n      \"entityId\": \"WF-001\"\n    },\n    \"attributes\": [\n      {\n        \"name\": \"workflowId\",\n        \"purpose\": \"correlates events to this workflow\",\n        \"sensitivity\": \"internal\",\n        \"required\": true\n      },\n      {\n        \"name\": \"outcome\",\n        \"purpose\": \"execution outcome\",\n        \"sensitivity\": \"internal\",\n        \"required\": true\n      }\n    ],\n    \"sensitivity\": \"internal\",\n    \"provenance\": \"derived\",\n    \"evidenceRefs\": [\n      {\n        \"entityType\": \"process\",\n        \"entityId\": \"PROC-001\",\n        \"description\": \"Order Submission\"\n      }\n    ]\n  },\n  {\n    \"id\": \"SIGNAL-004\",\n    \"name\": \"The Order Processor validates the order and forwards it to the Fulfillment API attempted\",\n    \"type\": \"event\",\n    \"description\": \"Integration operation \\\"The Order Processor validates the order and forwards it to the Fulfillment API\\\" (The Order Processor submits orders to the Fulfillment API.) attempted.\",\n    \"source\": {\n      \"entityType\": \"integration\",\n      \"entityId\": \"INT-001\"\n    },\n    \"attributes\": [\n      {\n        \"name\": \"integrationId\",\n        \"purpose\": \"correlates to the owning integration\",\n        \"sensitivity\": \"internal\",\n        \"required\": true\n      },\n      {\n        \"name\": \"operationId\",\n        \"purpose\": \"which operation\",\n        \"sensitivity\": \"internal\",\n        \"required\": true\n      },\n      {\n        \"name\": \"outcome\",\n        \"purpose\": \"attempt outcome\",\n        \"sensitivity\": \"internal\",\n        \"required\": true\n      }\n    ],\n    \"sensitivity\": \"internal\",\n    \"provenance\": \"derived\",\n    \"evidenceRefs\": [\n      {\n        \"entityType\": \"integration\",\n        \"entityId\": \"INTNEED-001\",\n        \"description\": \"The Order Processor submits orders to the Fulfillment API.\"\n      }\n    ]\n  },\n  {\n    \"id\": \"SIGNAL-005\",\n    \"name\": \"The Order Processor validates the order and forwards it to the Fulfillment API succeeded\",\n    \"type\": \"event\",\n    \"description\": \"Integration operation \\\"The Order Processor validates the order and forwards it to the Fulfillment API\\\" (The Order Processor submits orders to the Fulfillment API.) succeeded.\",\n    \"source\": {\n      \"entityType\": \"integration\",\n      \"entityId\": \"INT-001\"\n    },\n    \"attributes\": [\n      {\n        \"name\": \"integrationId\",\n        \"purpose\": \"correlates to the owning integration\",\n        \"sensitivity\": \"internal\",\n        \"required\": true\n      },\n      {\n        \"name\": \"operationId\",\n        \"purpose\": \"which operation\",\n        \"sensitivity\": \"internal\",\n        \"required\": true\n      },\n      {\n        \"name\": \"outcome\",\n        \"purpose\": \"attempt outcome\",\n        \"sensitivity\": \"internal\",\n        \"required\": true\n      },\n      {\n        \"name\": \"httpMethod\",\n        \"purpose\": \"explicit HTTP method\",\n        \"sensitivity\": \"internal\",\n        \"required\": true\n      },\n      {\n        \"name\": \"httpPath\",\n        \"purpose\": \"explicit HTTP path\",\n        \"sensitivity\": \"internal\",\n        \"required\": true\n      }\n    ],\n    \"sensitivity\": \"internal\",\n    \"provenance\": \"derived\",\n    \"evidenceRefs\": [\n      {\n        \"entityType\": \"integration\",\n        \"entityId\": \"INTNEED-001\",\n        \"description\": \"The Order Processor submits orders to the Fulfillment API.\"\n      }\n    ]\n  },\n  {\n    \"id\": \"SIGNAL-006\",\n    \"name\": \"The Order Processor validates the order and forwards it to the Fulfillment API failed\",\n    \"type\": \"event\",\n    \"description\": \"Integration operation \\\"The Order Processor validates the order and forwards it to the Fulfillment API\\\" (The Order Processor submits orders to the Fulfillment API.) failed.\",\n    \"source\": {\n      \"entityType\": \"integration\",\n      \"entityId\": \"INT-001\"\n    },\n    \"attributes\": [\n      {\n        \"name\": \"integrationId\",\n        \"purpose\": \"correlates to the owning integration\",\n        \"sensitivity\": \"internal\",\n        \"required\": true\n      },\n      {\n        \"name\": \"operationId\",\n        \"purpose\": \"which operation\",\n        \"sensitivity\": \"internal\",\n        \"required\": true\n      },\n      {\n        \"name\": \"outcome\",\n        \"purpose\": \"attempt outcome\",\n        \"sensitivity\": \"internal\",\n        \"required\": true\n      },\n      {\n        \"name\": \"httpMethod\",\n        \"purpose\": \"explicit HTTP method\",\n        \"sensitivity\": \"internal\",\n        \"required\": true\n      },\n      {\n        \"name\": \"httpPath\",\n        \"purpose\": \"explicit HTTP path\",\n        \"sensitivity\": \"internal\",\n        \"required\": true\n      }\n    ],\n    \"sensitivity\": \"internal\",\n    \"provenance\": \"derived\",\n    \"evidenceRefs\": [\n      {\n        \"entityType\": \"integration\",\n        \"entityId\": \"INTNEED-001\",\n        \"description\": \"The Order Processor submits orders to the Fulfillment API.\"\n      }\n    ]\n  }\n]",
-        "generatedAt": "2026-08-20T03:05:59.198Z"
+        "generatedAt": "2026-08-20T11:55:57.195Z"
       },
       {
-        "id": "artifact-1787195159198-jjks7n",
+        "id": "artifact-1787226957196-g6u21r",
         "capabilityId": "observability",
         "type": "document",
         "path": "artifacts/observability/telemetry-catalog.md",
         "content": "# Telemetry Catalog\n\n> `implemented: true` on this capability means Stitchfy generated and validated a vendor-neutral observability and operational architecture for the currently known solution. It does not mean telemetry is being collected, logging exists, dashboards are deployed, alerts are active, tracing is installed, an SLO is being met, or production operations are ready.\n\n## SIGNAL-001 — Order Submission Workflow started\n\nType:\nevent\n\nSource:\nworkflow/WF-001\n\nProvenance:\nderived\n\nSensitivity:\ninternal\n\nRequired attributes:\n- workflowId\n- outcome\n\nProhibited data:\n- none identified\n\nEvidence:\n1 reference(s)\n\n## SIGNAL-002 — Order Submission Workflow completed\n\nType:\nevent\n\nSource:\nworkflow/WF-001\n\nProvenance:\nderived\n\nSensitivity:\ninternal\n\nRequired attributes:\n- workflowId\n- outcome\n\nProhibited data:\n- none identified\n\nEvidence:\n1 reference(s)\n\n## SIGNAL-003 — Order Submission Workflow failed\n\nType:\nevent\n\nSource:\nworkflow/WF-001\n\nProvenance:\nderived\n\nSensitivity:\ninternal\n\nRequired attributes:\n- workflowId\n- outcome\n\nProhibited data:\n- none identified\n\nEvidence:\n1 reference(s)\n\n## SIGNAL-004 — The Order Processor validates the order and forwards it to the Fulfillment API attempted\n\nType:\nevent\n\nSource:\nintegration/INT-001\n\nProvenance:\nderived\n\nSensitivity:\ninternal\n\nRequired attributes:\n- integrationId\n- operationId\n- outcome\n\nProhibited data:\n- credential/API-key material\n\nEvidence:\n1 reference(s)\n\n## SIGNAL-005 — The Order Processor validates the order and forwards it to the Fulfillment API succeeded\n\nType:\nevent\n\nSource:\nintegration/INT-001\n\nProvenance:\nderived\n\nSensitivity:\ninternal\n\nRequired attributes:\n- integrationId\n- operationId\n- outcome\n- httpMethod\n- httpPath\n\nProhibited data:\n- credential/API-key material\n\nEvidence:\n1 reference(s)\n\n## SIGNAL-006 — The Order Processor validates the order and forwards it to the Fulfillment API failed\n\nType:\nevent\n\nSource:\nintegration/INT-001\n\nProvenance:\nderived\n\nSensitivity:\ninternal\n\nRequired attributes:\n- integrationId\n- operationId\n- outcome\n- httpMethod\n- httpPath\n\nProhibited data:\n- credential/API-key material\n\nEvidence:\n1 reference(s)\n",
-        "generatedAt": "2026-08-20T03:05:59.198Z"
+        "generatedAt": "2026-08-20T11:55:57.196Z"
       },
       {
-        "id": "artifact-1787195159198-up0lyu",
+        "id": "artifact-1787226957196-vvfgnx",
         "capabilityId": "observability",
         "type": "config",
         "path": "artifacts/observability/operational-objectives.json",
         "content": "[\n  {\n    \"id\": \"OBJ-001\",\n    \"name\": \"95% of accepted order submissions should complete within 2 seconds.\",\n    \"target\": [],\n    \"objectiveType\": \"latency\",\n    \"targetValue\": \"95% within 2 seconds\",\n    \"explicit\": true,\n    \"evidenceRefs\": [\n      {\n        \"entityType\": \"requirement\",\n        \"entityId\": \"REQ-004\",\n        \"description\": \"95% of accepted order submissions should complete within 2 seconds.\"\n      }\n    ]\n  }\n]",
-        "generatedAt": "2026-08-20T03:05:59.198Z"
+        "generatedAt": "2026-08-20T11:55:57.196Z"
       },
       {
-        "id": "artifact-1787195159198-vxtd23",
+        "id": "artifact-1787226957196-ttbxdf",
         "capabilityId": "observability",
         "type": "document",
         "path": "artifacts/observability/operational-objectives.md",
         "content": "# Operational Objectives\n\n> `implemented: true` on this capability means Stitchfy generated and validated a vendor-neutral observability and operational architecture for the currently known solution. It does not mean telemetry is being collected, logging exists, dashboards are deployed, alerts are active, tracing is installed, an SLO is being met, or production operations are ready.\n\n## OBJ-001 — 95% of accepted order submissions should complete within 2 seconds.\n\n- Type: latency\n- Target: 95% within 2 seconds\n- Provenance: explicit\n- Applies to: unresolved\n- Evidence: 1 reference(s)\n",
-        "generatedAt": "2026-08-20T03:05:59.198Z"
+        "generatedAt": "2026-08-20T11:55:57.196Z"
       }
     ],
     "notes": [
