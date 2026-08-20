@@ -2,7 +2,7 @@
 
 **A solution-engineering framework that transforms structured Markdown requirements into traceable solution architecture and implementation-oriented artifacts.**
 
-[![Version](https://img.shields.io/badge/version-2.1.0-brightgreen.svg)](package.json)
+[![Version](https://img.shields.io/badge/version-2.2.0-brightgreen.svg)](package.json)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 [![Node](https://img.shields.io/badge/node-%3E%3D18-green.svg)](package.json)
 [![Next.js](https://img.shields.io/badge/Next.js-14-black.svg)](https://nextjs.org)
@@ -552,7 +552,7 @@ vercel --prebuilt output/stitch-site
 
 Stitchfy began as a website-only generator and evolved into the broader solution-engineering framework described above: website generation became one capability among eight, selected via a capability registry rather than hardcoded into the pipeline. The website pipeline documented earlier in this README is unchanged and keeps working exactly as described. See [docs/architecture/ARCHITECTURE.md](docs/architecture/ARCHITECTURE.md) for the full design rationale and [docs/architecture/ROADMAP.md](docs/architecture/ROADMAP.md) for the phase-by-phase history and what remains deferred.
 
-Stitchfy has completed an Architecture Stabilization / Release Candidate review (RC1): [docs/architecture/PUBLIC_CONTRACTS.md](docs/architecture/PUBLIC_CONTRACTS.md) classifies what's stable vs. experimental, [docs/architecture/COMPATIBILITY.md](docs/architecture/COMPATIBILITY.md) defines the compatibility/deprecation policy, and [docs/architecture/RELEASE_CANDIDATE.md](docs/architecture/RELEASE_CANDIDATE.md) has the full gate-by-gate result.
+Stitchfy has completed an Architecture Stabilization / Release Candidate review (RC1) and a Stable Contract Promotion review (RC2): [docs/architecture/PUBLIC_CONTRACTS.md](docs/architecture/PUBLIC_CONTRACTS.md) classifies what's stable vs. experimental, [docs/architecture/COMPATIBILITY.md](docs/architecture/COMPATIBILITY.md) defines the compatibility/deprecation policy, and [docs/architecture/RELEASE_CANDIDATE.md](docs/architecture/RELEASE_CANDIDATE.md) has the full gate-by-gate result. Upgrading from an earlier version? See [docs/releases/2.2.0.md](docs/releases/2.2.0.md) and [docs/releases/UPGRADING_FROM_2_1.md](docs/releases/UPGRADING_FROM_2_1.md).
 
 ### Codebase analysis (advanced)
 
@@ -695,4 +695,4 @@ Copyright 2024–2025 Devify LLC
 
 ---
 
-*Stitchfy v2.1.0, built by [Devify LLC](https://github.com/devifyllc)*
+*Stitchfy v2.2.0, built by [Devify LLC](https://github.com/devifyllc)*

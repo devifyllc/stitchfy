@@ -8,6 +8,8 @@
 
 import { test, describe } from "node:test";
 import assert from "node:assert/strict";
+import * as fs from "node:fs";
+import * as path from "node:path";
 
 import { REFERENCE_SOLUTIONS } from "../reference/reference-solutions.js";
 import { runReferenceScenario } from "../reference/reference-runner.js";
@@ -62,6 +64,15 @@ describe("SolutionBlueprint v1 — legacy `deployment` remains accepted (depreca
     if (validation.ok) {
       assert.deepEqual(validation.blueprint.deployment, legacyShaped.deployment);
     }
+  });
+
+  test("a static historical fixture file (not synthetically injected) containing `deployment` still validates", () => {
+    const fixturePath = path.join(process.cwd(), "tests", "fixtures", "contracts", "solution-blueprint-v1.legacy-deployment.json");
+    const historical = JSON.parse(fs.readFileSync(fixturePath, "utf-8"));
+    assert.ok(historical.deployment, "fixture should intentionally carry a deployment field");
+
+    const validation = validateSolutionBlueprint(historical);
+    assert.equal(validation.ok, true, validation.ok ? undefined : validation.errors.join("; "));
   });
 });
 

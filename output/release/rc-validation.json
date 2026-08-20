@@ -1,5 +1,5 @@
 {
-  "frameworkVersion": "2.1.0",
+  "frameworkVersion": "2.2.0",
   "solutionBlueprintSchema": "1.0",
   "websiteBlueprintSchema": "1.0",
   "gates": [
@@ -8,21 +8,21 @@
       "name": "Type safety",
       "command": "npm run typecheck",
       "ok": true,
-      "durationMs": 17676
+      "durationMs": 18319
     },
     {
       "id": "test",
       "name": "Full test suite (incl. contract tests)",
       "command": "npm run test",
       "ok": true,
-      "durationMs": 15099
+      "durationMs": 15982
     },
     {
       "id": "reference",
       "name": "Reference solutions",
       "command": "npm run reference:validate",
       "ok": true,
-      "durationMs": 7717
+      "durationMs": 8034
     }
   ],
   "manualGates": [

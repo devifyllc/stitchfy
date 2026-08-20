@@ -962,3 +962,69 @@ Phase 9 exists to give the "Architecture Stabilization / Release Candidate
 Review" milestone above enough real, end-to-end evidence to decide which of
 these (if any) become Stitchfy core versus a separate, optional package —
 that decision is explicitly not made in this phase.
+
+## RC2 — Stable Contract Promotion & Mainline Release Preparation ✅ done
+
+Not a feature phase. Answers the question RC1 deliberately left open: is
+`development`'s huge additive delta over `main` safe to promote, and which
+CANDIDATE contracts have now earned a real STABLE compatibility promise.
+
+- **Main → development compatibility verified with real Git evidence**:
+  `main`'s tree is byte-identical to the branches' merge-base (`main`
+  introduced zero unique content since the split — its 4 extra commits are
+  empty GitHub PR merge commits); all 8 of `main`'s CLI commands survive
+  verbatim on `development`; the example fixtures used for compatibility
+  testing are byte-identical between branches. Full classification:
+  `docs/releases/MAIN_TO_DEVELOPMENT_DELTA.md`.
+- **A real, independent bug found on `main` itself**: `main`'s
+  `blueprint.schema.ts` used Zod v3-era `z.record()`/`errorMap` syntax
+  while `package.json` already declared Zod v4 — fixed on `development`
+  with zero behavior change to `WebsiteBlueprint` validation.
+- **First STABLE contracts Stitchfy has ever formally promised**, each
+  individually justified (not a blanket promotion): `WebsiteBlueprint` v1,
+  `SolutionBlueprint` v1, `npm run stitchfy`, `npm run solution`,
+  `npm run analyze:codebase`. `IntegrationExportManifest` v1,
+  `ModernizationExportManifest` v1, `CodebaseAnalysisResult`, every
+  per-capability standalone JSON artifact, and `npm run reference:validate`
+  were evaluated and deliberately left CANDIDATE — reasons on record in
+  `docs/architecture/PUBLIC_CONTRACTS.md`. No EXPERIMENTAL API was
+  promoted.
+- **`docs/architecture/decisions/ADR-004-mainline-promotion.md`** — the
+  promotion decision itself, distinct from the contract-stability decision.
+- **SemVer analysis → recommended `2.2.0`** (MINOR, backward-compatible
+  and additive; no user-facing breaking contract found). `package.json`'s
+  version was updated from the never-tagged `2.1.0` to `2.2.0` as part of
+  this review — README badge/footer and `STITCHFY_VERSION` kept consistent,
+  regression-locked by `tests/contracts/release-version.contract.test.ts`.
+  No git tag, no publish, no merge performed.
+- **New release documentation**: `docs/releases/2.2.0.md`,
+  `docs/releases/UPGRADING_FROM_2_1.md` (states plainly: "no migration is
+  required" for website-only users), `docs/releases/MAINLINE_PROMOTION.md`
+  (human-reviewable checklist, final "human approval to merge" box
+  deliberately left unchecked), root `CHANGELOG.md` (new — none existed).
+- **`npm run release:validate`** (new) composes `rc:validate` +
+  `test:contracts` + a read-only main-vs-development Git topology check;
+  writes `output/release/{compatibility-report.json,mainline-diff-summary.json,mainline-promotion.md}`.
+  `rc:validate` itself is untouched (additive only).
+- **6 new contract tests** (`website-blueprint-v1`, `stable-cli`,
+  `release-version`, plus one added case in `solution-blueprint-v1`) —
+  370 tests total (369 pass, 1 pre-existing environment-appropriate skip).
+- **Git merge topology**: non-fast-forward (`main`'s HEAD is not an
+  ancestor of `development`'s) but content-conflict-free (`main`'s tree
+  equals the merge-base's) — reported as
+  "MERGE REQUIRED (non-fast-forward, content-conflict-free)", not a flat
+  "FF possible"/"conflicts likely."
+- **Known environment limitation, not a regression**: `npm run build:site`
+  hit a Windows symlink-permission (`EPERM`) limitation in this sandbox —
+  confirmed via `git diff` that `scripts/build-site.ts` is byte-identical
+  to `main`'s, so this would affect `main` identically; unrelated to this
+  delta. `npm run stitchfy` (blueprint generation, the actual contract
+  being promoted) and `npm run audit` (gracefully degraded) both verified.
+- **RC2 Result: PASSED. Recommendation: READY TO PROMOTE WITH CONDITIONS**
+  — see `docs/architecture/RELEASE_CANDIDATE.md`'s RC2 section and
+  `docs/releases/MAINLINE_PROMOTION.md` for the full conditions. No
+  `git merge`/tag/publish/GitHub-release performed — human-controlled,
+  as required.
+
+**Deferred tracks remain exactly as ADR-001/ADR-003 left them — this
+review did not begin, and does not recommend beginning, any of them.**

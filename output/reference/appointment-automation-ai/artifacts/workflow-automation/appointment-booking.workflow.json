@@ -287,13 +287,13 @@
       "id": "APPROVAL-001",
       "stepId": "STEP-007",
       "approval": {
-        "id": "approval-1787179722601-v2hhj7",
+        "id": "approval-1787183772887-px5zj7",
         "approvalRequired": true,
         "approverRole": "Front-desk employee",
         "reason": "Every conflicting request is reviewed and approved by a front-desk employee before confirmation",
         "riskLevel": "medium",
         "decision": "pending",
-        "timestamp": "2026-08-19T22:48:42.601Z"
+        "timestamp": "2026-08-19T23:56:12.887Z"
       },
       "evidenceRefs": [
         {
@@ -307,13 +307,13 @@
       "id": "APPROVAL-002",
       "stepId": "STEP-010",
       "approval": {
-        "id": "approval-1787179722601-dbh5n9",
+        "id": "approval-1787183772887-5m2wrw",
         "approvalRequired": true,
         "approverRole": "Front-desk employee",
         "reason": "Conflicting appointment requests must always be routed to a front-desk employee for approval before confirmation.",
         "riskLevel": "medium",
         "decision": "pending",
-        "timestamp": "2026-08-19T22:48:42.601Z"
+        "timestamp": "2026-08-19T23:56:12.887Z"
       },
       "evidenceRefs": [
         {

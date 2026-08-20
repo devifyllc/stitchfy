@@ -1,0 +1,11 @@
+{
+  "policies": [],
+  "humanOversight": [],
+  "auditRequirements": [],
+  "decisionControls": [],
+  "complianceConsiderations": [],
+  "informationGaps": [
+    "GAP-007"
+  ],
+  "status": "draft"
+}

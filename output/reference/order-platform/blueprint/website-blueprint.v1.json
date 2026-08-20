@@ -1,9 +1,9 @@
 {
   "project": {
     "schemaVersion": "1.0",
-    "generatedAt": "2026-08-19T22:48:42.935Z",
+    "generatedAt": "2026-08-19T23:56:13.188Z",
     "sourceFile": "order-platform.md",
-    "frameworkVersion": "2.1.0"
+    "frameworkVersion": "2.2.0"
   },
   "business": {
     "name": "Northwind Order Platform",

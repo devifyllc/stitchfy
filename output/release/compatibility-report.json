@@ -1,0 +1,29 @@
+{
+  "stableContracts": [
+    "WebsiteBlueprint v1",
+    "SolutionBlueprint v1",
+    "npm run stitchfy",
+    "npm run solution",
+    "npm run analyze:codebase"
+  ],
+  "candidateContracts": [
+    "IntegrationExportManifest v1",
+    "ModernizationExportManifest v1",
+    "CodebaseAnalysisResult",
+    "per-capability JSON artifacts",
+    "npm run reference:validate"
+  ],
+  "deprecatedContracts": [
+    "SolutionBlueprint.deployment"
+  ],
+  "compatibilityTests": {
+    "rc": "passed",
+    "contracts": "passed"
+  },
+  "websiteResult": "passed",
+  "solutionResult": "passed",
+  "referenceResult": "passed",
+  "breakingChangesDetected": [],
+  "recommendedSemVerLevel": "minor",
+  "status": "passed"
+}

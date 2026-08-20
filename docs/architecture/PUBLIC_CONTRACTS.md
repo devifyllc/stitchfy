@@ -1,6 +1,6 @@
-# Public Contract Inventory (RC1)
+# Public Contract Inventory
 
-Classifies Stitchfy's important surfaces into four stability levels. A surface being `export`ed from a TypeScript module does **not** by itself make it public — this document only classifies things a consumer would reasonably depend on across releases.
+**Last reviewed: RC2.** Classifies Stitchfy's important surfaces into four stability levels. A surface being `export`ed from a TypeScript module does **not** by itself make it public — this document only classifies things a consumer would reasonably depend on across releases.
 
 ## Stability levels
 
@@ -9,32 +9,43 @@ Classifies Stitchfy's important surfaces into four stability levels. A surface b
 - **EXPERIMENTAL** — a real, usable extension point, but import path/shape compatibility is not promised yet.
 - **INTERNAL** — implementation detail; may change at any time without a compatibility guarantee.
 
-**Nothing in Stitchfy is classified STABLE in RC1.** This is the first formal stabilization pass — every serialization/CLI contract below is CANDIDATE, meaning "this is the shape we intend to keep," not "this is already guaranteed." See `docs/architecture/RELEASE_CANDIDATE.md` for the overall RC result.
+**What STABLE means, precisely:** *within the stated schema/CLI generation, backward-incompatible changes require explicit versioning or migration documentation.* It does **not** mean the implementation can never change, that no optional field may ever be added, that no bug may be fixed, or that semantics can never evolve compatibly — see `docs/architecture/COMPATIBILITY.md` for exactly what counts as compatible evolution vs. a breaking change.
+
+RC1 classified nothing STABLE — it was the first formal review. **RC2 promotes five contracts to STABLE**, each evaluated individually against real evidence (reference-scenario coverage, contract-test coverage, producer maturity, documented schema, existing compatibility rules, user-facing value) — see `docs/architecture/RELEASE_CANDIDATE.md`'s "RC2" section for the full per-contract justification, and `docs/architecture/decisions/ADR-004-mainline-promotion.md` for the promotion decision itself. Everything not explicitly promoted stays exactly where RC1 left it.
+
+## STABLE — serialization contracts
+
+| Contract | Producer | Compatibility scope |
+|---|---|---|
+| `WebsiteBlueprint` v1 (`website-blueprint.v1.json`) | `framework/orchestrator/orchestrator.ts` | `schemaVersion` = `WEBSITE_BLUEPRINT_SCHEMA_VERSION` (`framework/core/version.ts`), `"1.0"`. Governed by `docs/architecture/COMPATIBILITY.md`'s serialization policy; locked by `tests/contracts/website-blueprint-v1.contract.test.ts` |
+| `SolutionBlueprint` v1 (`solution-blueprint.v1.json`) | `framework/orchestrator/solution-orchestrator.ts` | `schemaVersion` = `SOLUTION_BLUEPRINT_SCHEMA_VERSION`, `"1.0"` — frozen by ADR-002, locked by `tests/contracts/solution-blueprint-v1.contract.test.ts`. **The STABLE promise applies to the aggregate `SolutionBlueprint` shape and its top-level section presence/optionality — not to the internal shape of any individual nested capability section**, which stays CANDIDATE (see below) |
+
+## STABLE — CLI contracts
+
+| Command | Flags | Compatibility scope |
+|---|---|---|
+| `npm run stitchfy` | `--input <path>` (default `input/project.md`), `--output <dir>` (default `output`) | Oldest, unchanged command; zero flag drift since before this architecture effort began |
+| `npm run solution` | `--input <path>`, `--output <dir>`, `--codebase <path>` (optional), `--system-id <id>` (optional, requires `--codebase`), `--modernization-export <target>` (optional, requires `--codebase`/`--system-id`) | All 5 flags exercised across the 3 canonical reference solutions; locked by `tests/contracts/stable-cli.contract.test.ts` |
+| `npm run analyze:codebase` | `--path <repo>` (required), `--system-id <id>` (optional, standalone tagging only), `--output <dir>` (default `output`) | Real producer, documented, flag-tested. **Caveat, stated explicitly rather than hidden**: the *standalone* CLI form isn't directly exercised by a reference scenario — only the underlying `runCodebaseAnalysis()` function is, via `solution --codebase`. Promoted on the strength of the function-level coverage plus flag stability, not full CLI-level reference coverage |
+
+Governed by `docs/architecture/COMPATIBILITY.md`'s "CLI compatibility policy."
 
 ## CANDIDATE — serialization contracts
 
 | Contract | Producer | Notes |
 |---|---|---|
-| `WebsiteBlueprint` v1 (`website-blueprint.v1.json`) | `framework/orchestrator/orchestrator.ts` | `schemaVersion` = `WEBSITE_BLUEPRINT_SCHEMA_VERSION` (`framework/core/version.ts`), currently `"1.0"` |
-| `SolutionBlueprint` v1 (`solution-blueprint.v1.json`) | `framework/orchestrator/solution-orchestrator.ts` | `schemaVersion` = `SOLUTION_BLUEPRINT_SCHEMA_VERSION`, currently `"1.0"` — see ADR-002 |
-| Per-capability generated JSON (`*.workflow.json`, `*.integration.json`, `*.agent.json`, `security-architecture.json`, `observability-architecture.json`, `cloud-architecture.json`, `modernization-architecture.json`, ...) | each capability's own `generators/*-artifact.generator.ts` | Shape follows the capability's own `.types.ts`/`.schema.ts` pair (verified in parity below) |
-| `IntegrationExportManifest` v1 (`integration.manifest.json`) | `framework/capabilities/integrations/exporters/generic-rest-typescript/` | `schemaVersion: "1.0"` (`exporter.types.ts`) |
-| `ModernizationExportManifest` v1 (`modernization.manifest.json`) | `framework/capabilities/modernization/exporters/generic-java-replatform/` | `schemaVersion: "1.0"` (`exporter.types.ts`) |
-| `CodebaseAnalysisResult` (`codebase-analysis.json`) | `framework/analysis/codebase/codebase-analysis.ts` | `schemaVersion: "1.0"` |
+| Per-capability generated JSON (`*.workflow.json`, `*.integration.json`, `*.agent.json`, `security-architecture.json`, `observability-architecture.json`, `cloud-architecture.json`, `modernization-architecture.json`, ...) | each capability's own `generators/*-artifact.generator.ts` | Deliberately kept CANDIDATE rather than promoted alongside `SolutionBlueprint` — the STABLE promise attaches to the aggregate, giving individual capability models room to evolve additively without each one independently carrying a compatibility burden |
+| `IntegrationExportManifest` v1 (`integration.manifest.json`) | `framework/capabilities/integrations/exporters/generic-rest-typescript/` | `schemaVersion: "1.0"`. **Evaluated for STABLE promotion in RC2 and not promoted** — exactly one concrete exporter implementation exists, exercised by only one of the three canonical references (order-platform), no dedicated contract test yet. Real and useful; not yet proven across enough independent cases |
+| `ModernizationExportManifest` v1 (`modernization.manifest.json`) | `framework/capabilities/modernization/exporters/generic-java-replatform/` | `schemaVersion: "1.0"`. Same reasoning as above — one implementation, one reference scenario (legacy-java-modernization), no dedicated contract test |
+| `CodebaseAnalysisResult` (`codebase-analysis.json`) | `framework/analysis/codebase/codebase-analysis.ts` | `schemaVersion: "1.0"`. **Evaluated and not promoted** — one ecosystem (Maven/npm/Java) proven end-to-end, one reference scenario, no dedicated contract test. Its *safety semantics* (see EXPERIMENTAL section below) are non-negotiable regardless of this tier; only the serialization *shape* stays CANDIDATE |
 
 Human-readable Markdown reports generated alongside these (e.g. `*.workflow.md`, `migration-recipe.md`, `solution-plan.md`) are **not** covered by this contract — see `docs/architecture/COMPATIBILITY.md` "Markdown vs. JSON."
 
-## CANDIDATE — CLI contracts
+## CANDIDATE — CLI / maintainer tooling
 
-Exact flag inventory, verified against `scripts/*.ts` source (never assumed):
-
-| Command | Flags |
-|---|---|
-| `npm run stitchfy` | `--input <path>` (default `input/project.md`), `--output <dir>` (default `output`) |
-| `npm run solution` | `--input <path>`, `--output <dir>`, `--codebase <path>` (optional), `--system-id <id>` (optional, requires `--codebase`), `--modernization-export <target>` (optional, requires `--codebase`/`--system-id`) |
-| `npm run analyze:codebase` | `--path <repo>` (required), `--system-id <id>` (optional, standalone tagging only), `--output <dir>` (default `output`) |
-| `npm run reference:validate` | none — runs the fixed set of 3 canonical scenarios in `tests/reference/reference-solutions.ts` |
-| `npm run rc:validate` | none — composes `typecheck`/`test`/`reference:validate` |
+| Command | Flags | Notes |
+|---|---|---|
+| `npm run reference:validate` | none — runs the fixed set of 3 canonical scenarios in `tests/reference/reference-solutions.ts` | CANDIDATE, but explicitly a **maintainer/release-verification** command, not an end-user-facing STABLE contract |
 
 See `docs/architecture/COMPATIBILITY.md` "CLI compatibility policy."
 
@@ -58,6 +69,8 @@ See `docs/architecture/COMPATIBILITY.md` "CLI compatibility policy."
 ## INTERNAL
 
 Generators, extractors, planners, validators, `SolutionContext`'s internal fields (`projectId`, `capabilityAssessments`, etc.), the exact capability registration order in `framework/core/registry/default-capabilities.ts`, and general helper utilities (`makeIdGenerator`, `section-lookup.ts`, path-safety helpers, ...).
+
+**Release/test tooling** — `npm run rc:validate`, `npm run release:validate`, `npm run test`, `npm run test:contracts` are INTERNAL: they compose other gates and write release-tooling reports (`output/release/*.json`/`*.md`), but are not themselves a contract a downstream consumer depends on. They may be restructured, split, or renamed freely as the release process evolves, independent of any CANDIDATE/STABLE promise elsewhere in this document.
 
 **Capability registration order is architecturally meaningful but not a public API.** Later cross-cutting capabilities (Security & Governance, Observability, Cloud, Modernization) read earlier capabilities' already-executed output via `context.capabilityResults` — the order in `default-capabilities.ts` (website, workflow-automation, integrations, ai-agents, security-governance, observability, cloud, modernization) is a real dependency, documented here and in `docs/architecture/ARCHITECTURE.md`, but it is internal orchestration behavior, not something a consumer configures or depends on directly. No `dependsOn`/DAG scheduler exists or is planned for RC1 — the registration-order model has worked for every completed capability phase and nothing has forced a change.
 

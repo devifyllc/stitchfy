@@ -90,3 +90,47 @@ See `docs/architecture/KNOWN_TECHNICAL_DEBT.md` in full. Summary: no intentional
 - Conditions: (1) a human should review `docs/architecture/decisions/` and confirm the package-boundary/runtime-provider decisions before treating them as final; (2) the "Open" item in `KNOWN_TECHNICAL_DEBT.md` (no intentional npm export surface) should be a deliberate decision point before anyone tries to `npm install stitchfy` as a library; (3) per the task's own explicit instruction, this report does not perform the merge, tag, or publish — that remains a separate, human-approved action.
 
 See `docs/architecture/ROADMAP.md` "Architecture Stabilization / Release Candidate Review" for the historical record of this decision.
+
+---
+
+## RC2 — Stable Contract Promotion & Mainline Release Preparation
+
+RC1's "Recommended Version: retain `2.1.0`" above is **superseded** by this section — RC1 deliberately deferred the version decision to the release-preparation review that follows it; this is that review. RC1's text is left unedited as the historical record of what was known/decided at that time.
+
+### Main → development compatibility
+
+`docs/releases/MAIN_TO_DEVELOPMENT_DELTA.md` has the full classification. Summary: `main`'s tree is byte-identical to the branches' merge-base (`main` introduced zero unique content since the split); the website pipeline is untouched except one metadata fix (RC1) and one behaviorally-inert Zod v3→v4 syntax fix; all 8 of `main`'s CLI commands survive verbatim; the 3 example fixtures used for compatibility testing are byte-identical to `main`'s. No compatibility risk requiring a major version bump was found.
+
+### Website compatibility (hard gate)
+
+`npm run stitchfy -- --input examples/beauty-salon.md`, `npm run build:site`, and `npm run audit` all pass on `development`, using the real fixture confirmed identical to `main`'s copy — not a simplified replacement. Locked by `tests/contracts/website-blueprint-v1.contract.test.ts` (new in RC2).
+
+### Contracts promoted CANDIDATE → STABLE
+
+Each evaluated individually against reference-scenario coverage, contract-test coverage, producer maturity, documented schema, existing compatibility rules, and user-facing value — not a blanket promotion:
+
+| Contract | Why promoted |
+|---|---|
+| `WebsiteBlueprint` v1 | Longest track record of any Stitchfy contract (predates this entire architecture effort); 3 real example fixtures; now backed by a dedicated contract test |
+| `SolutionBlueprint` v1 | Full 3-scenario reference coverage; existing RC1 contract test; ADR-002 already froze it; documented compatibility policy already exists |
+| `npm run stitchfy` | Oldest command, zero flag drift ever recorded |
+| `npm run solution` | All 5 flags exercised across the 3 reference scenarios; existing + new contract test coverage |
+| `npm run analyze:codebase` | Real producer, documented, flag-tested — promoted with an explicit caveat that its *standalone* CLI form has thinner reference-scenario coverage than its underlying function (see `PUBLIC_CONTRACTS.md`) |
+
+### Contracts deliberately remaining CANDIDATE (evaluated, not silently skipped)
+
+`IntegrationExportManifest` v1 and `ModernizationExportManifest` v1 (one exporter implementation each, one reference scenario each, no dedicated contract test yet); `CodebaseAnalysisResult` (one ecosystem proven, one reference scenario, no dedicated contract test — though its safety semantics are non-negotiable regardless of tier); every per-capability standalone JSON artifact (the STABLE promise attaches to the `SolutionBlueprint` aggregate, not each nested section independently, per the task's own recommended default); `npm run reference:validate` (reclassified explicitly as CANDIDATE/maintainer tooling, not an end-user STABLE contract). All EXPERIMENTAL extension APIs (`StitchfyCapability`, `CapabilityRegistry`, both exporter interfaces, `CodebaseAnalyzer`, the `Provider` family) stay EXPERIMENTAL — no npm library surface exists.
+
+### SemVer analysis and recommended version
+
+Five compatibility questions, all answered "no breaking change found" — see `docs/releases/MAIN_TO_DEVELOPMENT_DELTA.md` "POTENTIAL COMPATIBILITY RISK" for the evidence. Conclusion: backward-compatible and additive → MINOR bump. `package.json` already sat at an untagged `2.1.0` (confirmed via `git tag -l`: only `v1.0.0`/`v2.0.0` were ever tagged); the next tagged release is **`2.2.0`**. No `3.0.0` (no breaking public contract), no invented prerelease suffix (no `-rc.N` convention exists in this repo's tag history).
+
+**`package.json`'s version has been updated to `2.2.0` as part of this RC2 preparation pass** (README badge/footer and `STITCHFY_VERSION` updated consistently; regression-locked by `tests/contracts/release-version.contract.test.ts`). No tag was created, nothing was published, and `main` was not merged into.
+
+### RC2 Result
+
+**PASSED.** See `docs/releases/MAINLINE_PROMOTION.md` for the full gate-by-gate checklist and `output/release/mainline-promotion.md` for the generated promotion report.
+
+### Recommended merge decision
+
+**READY TO PROMOTE WITH CONDITIONS** — see `docs/releases/MAINLINE_PROMOTION.md` for the concrete, itemized conditions. Merge topology: non-fast-forward (verified via `git merge-base --is-ancestor main development` → false) but content-conflict-free (verified via `git diff --quiet efec1ba main` → exit 0). The actual `git merge`, tag, and publish steps remain outside this review, to be performed by a human after reviewing this report.
