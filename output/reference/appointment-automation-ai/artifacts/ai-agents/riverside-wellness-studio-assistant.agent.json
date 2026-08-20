@@ -1,0 +1,218 @@
+{
+  "id": "AIAGENT-001",
+  "name": "Riverside Wellness Studio Assistant",
+  "version": "1.0",
+  "purpose": "Customers should be able to ask the assistant questions about services and studio policies.",
+  "interactionMode": "conversational",
+  "autonomy": "assistive",
+  "modelRequirements": {
+    "capabilities": [
+      "text-generation",
+      "tool-use"
+    ],
+    "structuredOutputRequired": "unknown",
+    "toolUseRequired": "unknown",
+    "evidenceRefs": [
+      {
+        "entityType": "ai-agent-need",
+        "entityId": "AINEED-001",
+        "description": "Customers should be able to ask the assistant questions about services and studio policies."
+      }
+    ]
+  },
+  "tools": [
+    {
+      "id": "AITOOL-001",
+      "name": "The system checks Google Calendar for availability",
+      "description": "The system checks Google Calendar for availability",
+      "kind": "integration-operation",
+      "sideEffect": "read",
+      "integrationId": "INT-001",
+      "integrationOperationId": "OP-001",
+      "inputContractIds": [],
+      "outputContractIds": [],
+      "approvalRequired": false,
+      "evidenceRefs": [
+        {
+          "entityType": "ai-agent-need",
+          "entityId": "AINEED-001",
+          "description": "Customers should be able to ask the assistant questions about services and studio policies."
+        },
+        {
+          "entityType": "integration",
+          "entityId": "INTNEED-001",
+          "description": "The booking system checks and reserves availability in Google Calendar."
+        }
+      ]
+    }
+  ],
+  "inputContracts": [
+    {
+      "id": "AICONTRACT-001",
+      "name": "Customer message",
+      "direction": "input",
+      "dataEntityIds": [],
+      "integrationDataContractIds": [],
+      "description": "Natural-language input from the user — no structured schema captured by Discovery.",
+      "evidenceRefs": [
+        {
+          "entityType": "ai-agent-need",
+          "entityId": "AINEED-001",
+          "description": "Customers should be able to ask the assistant questions about services and studio policies."
+        }
+      ]
+    }
+  ],
+  "outputContracts": [
+    {
+      "id": "AICONTRACT-002",
+      "name": "Assistant response",
+      "direction": "output",
+      "dataEntityIds": [],
+      "integrationDataContractIds": [],
+      "description": "Natural-language response to the user — no structured schema captured by Discovery.",
+      "evidenceRefs": [
+        {
+          "entityType": "ai-agent-need",
+          "entityId": "AINEED-001",
+          "description": "Customers should be able to ask the assistant questions about services and studio policies."
+        }
+      ]
+    }
+  ],
+  "memory": {
+    "mode": "session",
+    "purpose": "Conversation history is only needed during the active customer session and should not persist after the session ends.",
+    "dataEntityIds": [
+      "DATA-001"
+    ],
+    "dataContractIds": [],
+    "containsSensitiveData": true,
+    "evidenceRefs": [
+      {
+        "entityType": "ai-agent-need",
+        "entityId": "AINEED-001",
+        "description": "Customers should be able to ask the assistant questions about services and studio policies."
+      }
+    ]
+  },
+  "permissions": [
+    {
+      "id": "AIPERM-001",
+      "action": "read",
+      "appliesTo": [
+        {
+          "entityType": "ai-tool",
+          "entityId": "AITOOL-001"
+        }
+      ],
+      "evidenceRefs": [
+        {
+          "entityType": "ai-agent-need",
+          "entityId": "AINEED-001",
+          "description": "Customers should be able to ask the assistant questions about services and studio policies."
+        }
+      ]
+    }
+  ],
+  "guardrails": [
+    {
+      "id": "AIGUARD-001",
+      "type": "prohibited-action",
+      "description": "The assistant must not confirm a conflicting appointment without front-desk employee approval — conflict approval can never be bypassed.",
+      "appliesToToolIds": [],
+      "evidenceRefs": [
+        {
+          "entityType": "ai-agent-need",
+          "entityId": "AINEED-001",
+          "description": "Customers should be able to ask the assistant questions about services and studio policies."
+        }
+      ]
+    },
+    {
+      "id": "AIGUARD-002",
+      "type": "prohibited-action",
+      "description": "The assistant may not cancel appointments autonomously.",
+      "appliesToToolIds": [],
+      "evidenceRefs": [
+        {
+          "entityType": "ai-agent-need",
+          "entityId": "AINEED-001",
+          "description": "Customers should be able to ask the assistant questions about services and studio policies."
+        }
+      ]
+    },
+    {
+      "id": "AIGUARD-003",
+      "type": "prohibited-action",
+      "description": "Conversation history is only needed during the active customer session and should not persist after the session ends.",
+      "appliesToToolIds": [],
+      "evidenceRefs": [
+        {
+          "entityType": "ai-agent-need",
+          "entityId": "AINEED-001",
+          "description": "Customers should be able to ask the assistant questions about services and studio policies."
+        }
+      ]
+    },
+    {
+      "id": "AIGUARD-004",
+      "type": "prohibited-action",
+      "description": "When the assistant cannot confidently answer from known business information, escalate the conversation to a front-desk employee.",
+      "appliesToToolIds": [],
+      "evidenceRefs": [
+        {
+          "entityType": "ai-agent-need",
+          "entityId": "AINEED-001",
+          "description": "Customers should be able to ask the assistant questions about services and studio policies."
+        }
+      ]
+    }
+  ],
+  "humanOversight": [],
+  "confidencePolicy": {
+    "mode": "not-specified",
+    "evidenceRefs": []
+  },
+  "riskPolicy": {
+    "requireHumanReviewFor": [],
+    "evidenceRefs": [
+      {
+        "entityType": "ai-agent-need",
+        "entityId": "AINEED-001",
+        "description": "Customers should be able to ask the assistant questions about services and studio policies."
+      }
+    ]
+  },
+  "escalationPolicy": [],
+  "relatedNeedIds": [
+    "AINEED-001"
+  ],
+  "relatedProcessIds": [],
+  "relatedWorkflowIds": [],
+  "relatedIntegrationIds": [
+    "INT-001"
+  ],
+  "relatedRequirementIds": [],
+  "informationGaps": [
+    {
+      "id": "AIGAP-001",
+      "topic": "Model / provider selection",
+      "question": "Which model/provider will satisfy the required capabilities (text-generation, tool-use)?",
+      "importance": "medium",
+      "blocking": false,
+      "relatedCapabilityIds": [
+        "ai-agents"
+      ]
+    }
+  ],
+  "evidenceRefs": [
+    {
+      "entityType": "ai-agent-need",
+      "entityId": "AINEED-001",
+      "description": "Customers should be able to ask the assistant questions about services and studio policies."
+    }
+  ],
+  "status": "complete",
+  "statusReasons": []
+}

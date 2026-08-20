@@ -1,0 +1,45 @@
+[
+  {
+    "id": "CANDIDATE-001",
+    "systemId": "SYS-001",
+    "status": "candidate",
+    "driverIds": [],
+    "strategyOptions": [
+      {
+        "strategy": "replatform",
+        "status": "explicit",
+        "rationale": "The business wants to modernize the Order Portal. The application must move from IBM WebSphere to Apache Tomcat while preserving application behavior. The migration must allow the current and modernized application versions to coexist during validation. No cloud provider has been selected. No microservices decomposition has been approved.",
+        "evidenceRefs": [
+          {
+            "entityType": "modernization-need",
+            "entityId": "MODNEED-001",
+            "description": "The business wants to modernize the Order Portal. The application must move from IBM WebSphere to Apache Tomcat while preserving application behavior. The migration must allow the current and modernized application versions to coexist during validation. No cloud provider has been selected. No microservices decomposition has been approved."
+          }
+        ],
+        "prerequisiteIds": [],
+        "riskIds": []
+      }
+    ],
+    "approach": "coexistence",
+    "dependencyIds": [
+      "DEPEND-001",
+      "DEPEND-002"
+    ],
+    "preservationRequirementIds": [
+      "PRESERVE-001",
+      "PRESERVE-002",
+      "PRESERVE-003"
+    ],
+    "riskIds": [
+      "MODRISK-001"
+    ],
+    "informationGapIds": [],
+    "evidenceRefs": [
+      {
+        "entityType": "modernization-need",
+        "entityId": "MODNEED-001",
+        "description": "The business wants to modernize the Order Portal. The application must move from IBM WebSphere to Apache Tomcat while preserving application behavior. The migration must allow the current and modernized application versions to coexist during validation. No cloud provider has been selected. No microservices decomposition has been approved."
+      }
+    ]
+  }
+]

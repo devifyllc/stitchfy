@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Final Report — Glow &amp; Go Beauty Bar</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body { font-family: system-ui, -apple-system, sans-serif; margin: 0; color: #1a1a1a; background: #f8f8f6; line-height: 1.55; font-size: 15px; }
+    .report-header { background: #2c2c2c; color: #fff; padding: 2rem 2.5rem; }
+    .report-header h1 { font-size: 1.75rem; margin-bottom: 0.25rem; }
+    .report-header .business { font-size: 1.1rem; opacity: 0.75; margin-bottom: 1rem; }
+    .report-header .meta { font-size: 0.8rem; opacity: 0.5; display: flex; gap: 2rem; flex-wrap: wrap; }
+    main { max-width: 1100px; margin: 0 auto; padding: 2rem 2.5rem; }
+    h2 { font-size: 1.2rem; margin: 2.5rem 0 0.75rem; border-bottom: 2px solid #eee; padding-bottom: 0.4rem; color: #2c2c2c; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; font-size: 0.875rem; }
+    th { background: #2c2c2c; color: #fff; padding: 0.6rem 0.75rem; text-align: left; font-weight: 600; }
+    td { padding: 0.5rem 0.75rem; border-bottom: 1px solid #eee; vertical-align: top; }
+    tr:nth-child(even) td { background: #fafafa; }
+    code { font-family: monospace; background: #f0f0f0; padding: 0.1em 0.3em; border-radius: 3px; font-size: 0.85em; }
+    ul, ol { padding-left: 1.5rem; margin-bottom: 1rem; }
+    li { margin-bottom: 0.4rem; line-height: 1.5; }
+    .cards { display: flex; flex-wrap: wrap; gap: 1rem; margin: 1rem 0 2rem; }
+    .card { background: #fff; border: 1px solid #e5e5e5; border-radius: 8px; padding: 1rem 1.5rem; min-width: 160px; flex: 1; }
+    .card-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; opacity: 0.5; margin-bottom: 0.25rem; }
+    .card-value { font-size: 1.05rem; font-weight: 700; }
+    .disclaimer { background: #fff9e6; border-left: 4px solid #f0c040; padding: 1rem 1.25rem; margin: 1.5rem 0; border-radius: 0 6px 6px 0; font-size: 0.9rem; }
+    .note { font-size: 0.85rem; opacity: 0.6; font-style: italic; margin-bottom: 0.5rem; }
+    .badge { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; color: #fff; }
+    footer { text-align: center; padding: 2rem; font-size: 0.8rem; opacity: 0.5; border-top: 1px solid #eee; margin-top: 3rem; }
+    a { color: #C4847A; }
+  </style>
+</head>
+<body>
+
+    <div class="report-header">
+  <h1>Final Report</h1>
+  <p class="business">Glow &amp; Go Beauty Bar</p>
+  <div class="meta">
+    <span>Generated: Jun 21, 2026, 3:00 AM</span>
+    <span>Framework: Stitchfy v2</span>
+    <span>Blueprint: output/blueprint/website-blueprint.v1.json</span>
+  </div>
+</div>
+<main>
+
+    <div class="cards">
+      <div class="card">
+    <div class="card-label">Business</div>
+    <div class="card-value" style="">Glow &amp; Go Beauty Bar</div>
+  </div>
+      <div class="card">
+    <div class="card-label">Industry</div>
+    <div class="card-value" style="">Beauty Salon / Blowout Bar</div>
+  </div>
+      <div class="card">
+    <div class="card-label">Location</div>
+    <div class="card-value" style="">Miami Beach, FL</div>
+  </div>
+      <div class="card">
+    <div class="card-label">Pages Generated</div>
+    <div class="card-value" style="">4</div>
+  </div>
+      <div class="card">
+    <div class="card-label">Static Site</div>
+    <div class="card-value" style="color: #27ae60;">✓ Built</div>
+  </div>
+      <div class="card">
+    <div class="card-label">Overall Status</div>
+    <div class="card-value" style="color: #c0392b;">⚠ Review needed</div>
+  </div>
+    </div>
+
+    <h2>Pipeline Summary</h2>
+    <table>
+      <thead><tr><th>Step</th><th>Artifact</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>1. Blueprint</td><td><code>output/blueprint/website-blueprint.v1.json</code></td><td><span class="badge" style="background:#27ae60">✓ PASS</span> Generated</td></tr>
+        <tr><td>2. Site source</td><td><code>output/generated-site/</code></td><td><span class="badge" style="background:#27ae60">✓ PASS</span> Generated</td></tr>
+        <tr><td>3. Static output</td><td><code>output/static-site/</code></td><td><span class="badge" style="background:#27ae60">✓ PASS</span> Built</td></tr>
+        <tr><td>4. Accessibility report</td><td><code>output/reports/accessibility-report.html</code></td><td><span class="badge" style="background:#27ae60">✓ PASS</span> Generated</td></tr>
+        <tr><td>5. SEO report</td><td><code>output/reports/seo-report.html</code></td><td><span class="badge" style="background:#27ae60">✓ PASS</span> Generated</td></tr>
+      </tbody>
+    </table>
+
+    <h2>HTML Checks Summary </h2>
+    <div class="cards">
+      <div class="card">
+    <div class="card-label">Total checks</div>
+    <div class="card-value" style="">56</div>
+  </div>
+      <div class="card">
+    <div class="card-label">Passed</div>
+    <div class="card-value" style="color: #27ae60;">41</div>
+  </div>
+      <div class="card">
+    <div class="card-label">Warnings</div>
+    <div class="card-value" style="color: #e67e22;">7</div>
+  </div>
+      <div class="card">
+    <div class="card-label">Failures</div>
+    <div class="card-value" style="color: #c0392b;">8</div>
+  </div>
+    </div>
+
+    <h2>Generated Routes</h2>
+    <table>
+      <thead><tr><th>Page</th><th>Path</th><th>File</th><th>Status</th></tr></thead>
+      <tbody><tr>
+      <td>home</td>
+      <td><code>/</code></td>
+      <td><code>app/page.tsx</code></td>
+      <td><span class="badge" style="background:#27ae60">✓ PASS</span></td>
+    </tr>
+<tr>
+      <td>services-pricing</td>
+      <td><code>/services-pricing</code></td>
+      <td><code>app/services-pricing/page.tsx</code></td>
+      <td><span class="badge" style="background:#27ae60">✓ PASS</span></td>
+    </tr>
+<tr>
+      <td>book-now</td>
+      <td><code>/book-now</code></td>
+      <td><code>app/book-now/page.tsx</code></td>
+      <td><span class="badge" style="background:#27ae60">✓ PASS</span></td>
+    </tr>
+<tr>
+      <td>contact</td>
+      <td><code>/contact</code></td>
+      <td><code>app/contact/page.tsx</code></td>
+      <td><span class="badge" style="background:#27ae60">✓ PASS</span></td>
+    </tr></tbody>
+    </table>
+
+    <h2>Unsupported Features</h2>
+    <p class="note">These features were requested or referenced but are not implemented in the static MVP.</p>
+    <table>
+      <thead><tr><th>Feature</th><th>Status</th><th>Recommendation</th></tr></thead>
+      <tbody><tr><td>Real-time booking engine or availability calendar</td><td><span class="badge" style="background:#7f8c8d">— SKIP</span> Not implemented</td><td>See booking platform or future phases</td></tr>
+<tr><td>Payment processing or e-commerce checkout</td><td><span class="badge" style="background:#7f8c8d">— SKIP</span> Not implemented</td><td>See booking platform or future phases</td></tr>
+<tr><td>User accounts, registration, or authentication</td><td><span class="badge" style="background:#7f8c8d">— SKIP</span> Not implemented</td><td>See booking platform or future phases</td></tr>
+<tr><td>Database persistence or backend API routes</td><td><span class="badge" style="background:#7f8c8d">— SKIP</span> Not implemented</td><td>See booking platform or future phases</td></tr>
+<tr><td>CRM integration (Salesforce, HubSpot, etc.)</td><td><span class="badge" style="background:#7f8c8d">— SKIP</span> Not implemented</td><td>See booking platform or future phases</td></tr>
+<tr><td>HIPAA-grade forms or electronic health records</td><td><span class="badge" style="background:#7f8c8d">— SKIP</span> Not implemented</td><td>See booking platform or future phases</td></tr>
+<tr><td>Server-side rendered (SSR) or incremental static regeneration (ISR) pages</td><td><span class="badge" style="background:#7f8c8d">— SKIP</span> Not implemented</td><td>See booking platform or future phases</td></tr>
+<tr><td>Image optimization via next/image with a remote server (unoptimized: true in static export)</td><td><span class="badge" style="background:#7f8c8d">— SKIP</span> Not implemented</td><td>See booking platform or future phases</td></tr></tbody>
+    </table>
+
+    <h2>Known Limitations</h2>
+    <ul><li>Gallery filtering requires JavaScript — with JS disabled, all images are shown (graceful degradation)</li>
+<li>Booking links navigate to an external platform — no on-site confirmation or calendar</li>
+<li>Contact form is a static mailto link — no server-side processing or spam protection</li>
+<li>No real-time availability information</li>
+<li>No account creation, login, or session management</li>
+<li>No payment processing — pricing is informational only</li>
+<li>OpenGraph og:image requires a real image at /public/og-image.jpg (1200×630px) — placeholder used in dev</li></ul>
+
+    <h2>Lighthouse Targets</h2>
+    <p class="note">Lighthouse scores were not generated in this run. Scores must be collected manually after deploying the site.</p>
+    <table>
+      <thead><tr><th>Category</th><th>Target</th><th>Actual</th></tr></thead>
+      <tbody>
+        <tr><td>performance</td><td>≥ 90</td><td style="opacity:0.5">Not run</td></tr>
+<tr><td>accessibility</td><td>≥ 95</td><td style="opacity:0.5">Not run</td></tr>
+<tr><td>best-practices</td><td>≥ 90</td><td style="opacity:0.5">Not run</td></tr>
+<tr><td>seo</td><td>≥ 95</td><td style="opacity:0.5">Not run</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Next Steps</h2>
+    <ol>
+      <li>Replace placeholder gallery images in <code>output/generated-site/public/images/</code> with real photos.</li>
+      <li>Update placeholder testimonials in <code>output/generated-site/site.config.ts</code> with real client reviews.</li>
+      <li>Set the real domain name in <code>output/generated-site/app/layout.tsx</code> (<code>metadataBase</code>).</li>
+      <li>Add <code>public/og-image.jpg</code> (1200×630px) for social media sharing.</li>
+      <li>Deploy <code>output/static-site/</code> to AWS S3, Netlify, Vercel, or any static host.</li>
+      <li>Run Lighthouse after deployment to verify performance and accessibility scores.</li>
+      <li>Verify all <code>tel:</code> links work on mobile devices.</li>
+    </ol>
+  
+<footer>
+  <p>Generated by Stitchfy v2 · Apache-2.0 · Devify LLC</p>
+  <p>Lighthouse scores were not generated in this run.</p>
+</footer>
+</body>
+</html>

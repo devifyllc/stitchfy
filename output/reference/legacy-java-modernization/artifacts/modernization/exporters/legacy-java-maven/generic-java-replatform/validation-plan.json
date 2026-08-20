@@ -1,0 +1,53 @@
+{
+  "candidateId": "CANDIDATE-001",
+  "existingValidationRequirementIds": [
+    "VALIDATE-001",
+    "VALIDATE-002",
+    "VALIDATE-003",
+    "VALIDATE-004"
+  ],
+  "testImpactSpecificationId": "TESTIMPACTSPEC-001",
+  "validationGates": [
+    {
+      "id": "VALGATE-001",
+      "name": "Build verification",
+      "description": "Build verification covering: Validate that the project builds successfully with the target runtime's dependency set.",
+      "testImpactAreaIds": [
+        "TESTIMPACT-001"
+      ],
+      "status": "defined"
+    },
+    {
+      "id": "VALGATE-002",
+      "name": "Runtime startup verification",
+      "description": "Runtime startup verification covering: Validate that the application starts successfully under the target runtime.",
+      "testImpactAreaIds": [
+        "TESTIMPACT-002"
+      ],
+      "status": "defined"
+    },
+    {
+      "id": "VALGATE-003",
+      "name": "Business behavior validation",
+      "description": "Business behavior validation covering: Behavioral regression validation: Existing order-management business behavior must remain unchanged.",
+      "testImpactAreaIds": [
+        "TESTIMPACT-004"
+      ],
+      "status": "defined"
+    },
+    {
+      "id": "VALGATE-004",
+      "name": "Integration compatibility validation",
+      "description": "Integration compatibility validation covering: Integration compatibility validation: Existing integration behavior with the Integration Gateway must remain compatible. Integration compatibility validation: The Order Database technology must not change during this modernization phase.",
+      "testImpactAreaIds": [
+        "TESTIMPACT-005",
+        "TESTIMPACT-006"
+      ],
+      "status": "defined"
+    }
+  ],
+  "unresolvedCriteria": [
+    "Target runtime \"Apache Tomcat\" is explicit, but no target version is specified — version-dependent transformations will remain unresolved.",
+    "Dependency \"com.example:internal-fixture-lib\" has a locally-unresolvable version — preserved as unresolved, not exported as a concrete proposal."
+  ]
+}

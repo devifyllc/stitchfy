@@ -1,0 +1,24 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "The Order Processor submits orders to the Fulfillment API.",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.fulfillment.example.test"
+    }
+  ],
+  "paths": {
+    "/v1/orders": {
+      "post": {
+        "summary": "REST over HTTPS",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    }
+  }
+}

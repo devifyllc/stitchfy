@@ -1,0 +1,74 @@
+{
+  "id": "INT-002",
+  "name": "The Order Portal reads and writes order records in the Order Database.",
+  "version": "1.0",
+  "sourceSystemId": "SYS-001",
+  "targetSystemId": "SYS-003",
+  "purpose": "The Order Portal reads and writes order records in the Order Database.",
+  "direction": "unknown",
+  "interactionPattern": "database",
+  "protocol": "jdbc",
+  "operations": [],
+  "dataContracts": [],
+  "authentication": {
+    "mechanism": "unknown",
+    "evidenceRefs": [
+      {
+        "entityType": "integration",
+        "entityId": "INTNEED-002",
+        "description": "The Order Portal reads and writes order records in the Order Database."
+      }
+    ]
+  },
+  "reliability": {
+    "retryRequired": "unknown",
+    "idempotencyRequired": "unknown",
+    "timeoutRequired": "unknown",
+    "orderingRequired": true,
+    "notes": []
+  },
+  "failureScenarios": [],
+  "security": {
+    "encryptionInTransit": "unknown",
+    "containsSensitiveData": "unknown",
+    "secretsRequired": "unknown",
+    "auditRequired": "unknown"
+  },
+  "relatedWorkflowIds": [],
+  "relatedProcessIds": [],
+  "relatedRequirementIds": [],
+  "informationGaps": [
+    {
+      "id": "INTGAP-003",
+      "topic": "Integration authentication",
+      "question": "What authentication mechanism is required for \"The Order Portal reads and writes order records in the Order Database.\"?",
+      "importance": "medium",
+      "blocking": false,
+      "relatedCapabilityIds": [
+        "integrations",
+        "security-governance"
+      ]
+    },
+    {
+      "id": "INTGAP-004",
+      "topic": "Integration failure handling",
+      "question": "What should happen if Order Database is unavailable during \"The Order Portal reads and writes order records in the Order Database.\"?",
+      "importance": "low",
+      "blocking": false,
+      "relatedCapabilityIds": [
+        "integrations"
+      ]
+    }
+  ],
+  "evidenceRefs": [
+    {
+      "entityType": "integration",
+      "entityId": "INTNEED-002",
+      "description": "The Order Portal reads and writes order records in the Order Database."
+    }
+  ],
+  "status": "needs-review",
+  "statusReasons": [
+    "authentication mechanism unknown"
+  ]
+}

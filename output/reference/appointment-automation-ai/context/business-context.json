@@ -1,0 +1,589 @@
+{
+  "businessName": "Riverside Wellness Studio",
+  "industry": "Service business (appointments)",
+  "goals": [
+    {
+      "id": "GOAL-001",
+      "description": "Let customers request appointments online at any time, not just during business hours",
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "goals",
+            "text": "Let customers request appointments online at any time, not just during business hours"
+          }
+        ],
+        "inferred": false
+      }
+    },
+    {
+      "id": "GOAL-002",
+      "description": "Reduce the time front-desk staff spend answering routine questions",
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "goals",
+            "text": "Reduce the time front-desk staff spend answering routine questions"
+          }
+        ],
+        "inferred": false
+      }
+    },
+    {
+      "id": "GOAL-003",
+      "description": "Keep a human in the loop whenever a request conflicts with an existing booking",
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "goals",
+            "text": "Keep a human in the loop whenever a request conflicts with an existing booking"
+          }
+        ],
+        "inferred": false
+      }
+    }
+  ],
+  "painPoints": [
+    {
+      "id": "PP-001",
+      "description": "Appointments can only be handled during operating hours",
+      "relatedProcessIds": [
+        "PROC-001"
+      ],
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "business-processes",
+            "text": "Appointments can only be handled during operating hours"
+          }
+        ],
+        "inferred": false
+      }
+    },
+    {
+      "id": "PP-002",
+      "description": "Manual calendar entry is error-prone",
+      "relatedProcessIds": [
+        "PROC-001"
+      ],
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "business-processes",
+            "text": "Manual calendar entry is error-prone"
+          }
+        ],
+        "inferred": false
+      }
+    },
+    {
+      "id": "PP-003",
+      "description": "Conflicting requests have occasionally been double-booked without review",
+      "relatedProcessIds": [
+        "PROC-001"
+      ],
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "business-processes",
+            "text": "Conflicting requests have occasionally been double-booked without review"
+          }
+        ],
+        "inferred": false
+      }
+    }
+  ],
+  "desiredOutcomes": [
+    {
+      "id": "OUTCOME-001",
+      "description": "Customers can request appointments and get routine questions answered at any time",
+      "relatedGoalIds": [],
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "desired-outcomes",
+            "text": "Customers can request appointments and get routine questions answered at any time"
+          }
+        ],
+        "inferred": false
+      }
+    },
+    {
+      "id": "OUTCOME-002",
+      "description": "Every conflicting request is reviewed and approved by a front-desk employee before confirmation",
+      "relatedGoalIds": [],
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "desired-outcomes",
+            "text": "Every conflicting request is reviewed and approved by a front-desk employee before confirmation"
+          }
+        ],
+        "inferred": false
+      }
+    },
+    {
+      "id": "OUTCOME-003",
+      "description": "Workflow, integration, and AI assistant activity are all observable in operation",
+      "relatedGoalIds": [],
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "desired-outcomes",
+            "text": "Workflow, integration, and AI assistant activity are all observable in operation"
+          }
+        ],
+        "inferred": false
+      }
+    }
+  ],
+  "actors": [
+    {
+      "id": "ACTOR-001",
+      "role": "Customers booking appointments",
+      "description": "Customers booking appointments",
+      "relatedProcessIds": [],
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "users",
+            "text": "Customers booking appointments"
+          }
+        ],
+        "inferred": false
+      }
+    },
+    {
+      "id": "ACTOR-002",
+      "role": "Front-desk employee handling requests and reviewing conflicts",
+      "description": "Front-desk employee handling requests and reviewing conflicts",
+      "relatedProcessIds": [],
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "users",
+            "text": "Front-desk employee handling requests and reviewing conflicts"
+          }
+        ],
+        "inferred": false
+      }
+    },
+    {
+      "id": "ACTOR-003",
+      "role": "Customer",
+      "description": "Customer",
+      "relatedProcessIds": [],
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "business-processes",
+            "text": "Customer"
+          }
+        ],
+        "inferred": false
+      }
+    },
+    {
+      "id": "ACTOR-004",
+      "role": "Front-desk employee",
+      "description": "Front-desk employee",
+      "relatedProcessIds": [],
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "business-processes",
+            "text": "Front-desk employee"
+          }
+        ],
+        "inferred": false
+      }
+    }
+  ],
+  "processes": [
+    {
+      "id": "PROC-001",
+      "name": "Appointment Booking",
+      "description": "",
+      "actorIds": [
+        "ACTOR-003",
+        "ACTOR-004"
+      ],
+      "trigger": "Customer requests an appointment by phone, WhatsApp, or the AI assistant",
+      "steps": [
+        "Customer requests an appointment",
+        "The system checks Google Calendar for availability",
+        "If the request conflicts with an existing booking, a front-desk employee must review and approve or reject it before it is confirmed",
+        "Confirmed appointments are recorded and a reminder is sent before the appointment"
+      ],
+      "systemIds": [
+        "SYS-001",
+        "SYS-002"
+      ],
+      "inputs": [],
+      "outputs": [],
+      "painPointIds": [
+        "PP-001",
+        "PP-002",
+        "PP-003"
+      ],
+      "businessRuleIds": [
+        "BR-001",
+        "BR-002"
+      ],
+      "manualSteps": [],
+      "automationCandidates": [
+        "Online appointment requests",
+        "Calendar synchronization",
+        "Automated confirmations and reminders",
+        "An AI assistant that answers routine questions and checks availability"
+      ],
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "business-processes",
+            "text": "Appointment Booking"
+          }
+        ],
+        "inferred": false
+      }
+    }
+  ],
+  "requirements": [
+    {
+      "id": "REQ-001",
+      "description": "Conflicting appointment requests must always be routed to a front-desk employee for approval before confirmation.",
+      "type": "operational",
+      "priority": "must",
+      "relatedGoalIds": [],
+      "relatedPainPointIds": [],
+      "relatedProcessIds": [],
+      "relatedOutcomeIds": [],
+      "acceptanceCriteria": [],
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "requirements",
+            "text": "Conflicting appointment requests must always be routed to a front-desk employee for approval before confirmation."
+          }
+        ],
+        "inferred": false
+      }
+    },
+    {
+      "id": "REQ-002",
+      "description": "Customer personal information must not appear in operational logs.",
+      "type": "operational",
+      "priority": "must",
+      "relatedGoalIds": [],
+      "relatedPainPointIds": [],
+      "relatedProcessIds": [],
+      "relatedOutcomeIds": [],
+      "acceptanceCriteria": [],
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "requirements",
+            "text": "Customer personal information must not appear in operational logs."
+          }
+        ],
+        "inferred": false
+      }
+    },
+    {
+      "id": "REQ-003",
+      "description": "Operations must be notified if automated confirmation or reminder delivery fails.",
+      "type": "automation",
+      "priority": "must",
+      "relatedGoalIds": [],
+      "relatedPainPointIds": [],
+      "relatedProcessIds": [],
+      "relatedOutcomeIds": [],
+      "acceptanceCriteria": [],
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "requirements",
+            "text": "Operations must be notified if automated confirmation or reminder delivery fails."
+          }
+        ],
+        "inferred": false
+      }
+    },
+    {
+      "id": "REQ-004",
+      "description": "Workflow, integration, and AI assistant activity must remain operationally visible.",
+      "type": "ai",
+      "priority": "must",
+      "relatedGoalIds": [],
+      "relatedPainPointIds": [],
+      "relatedProcessIds": [],
+      "relatedOutcomeIds": [],
+      "acceptanceCriteria": [],
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "requirements",
+            "text": "Workflow, integration, and AI assistant activity must remain operationally visible."
+          }
+        ],
+        "inferred": false
+      }
+    }
+  ],
+  "systems": [
+    {
+      "id": "SYS-001",
+      "name": "Google Calendar",
+      "category": "saas",
+      "purpose": "",
+      "integrations": [],
+      "dataHandled": [],
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "existing-systems",
+            "text": "Google Calendar"
+          }
+        ],
+        "inferred": false
+      }
+    },
+    {
+      "id": "SYS-002",
+      "name": "WhatsApp",
+      "category": "saas",
+      "purpose": "",
+      "integrations": [],
+      "dataHandled": [],
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "existing-systems",
+            "text": "WhatsApp"
+          }
+        ],
+        "inferred": false
+      }
+    }
+  ],
+  "integrationNeeds": [
+    {
+      "id": "INTNEED-001",
+      "description": "The booking system checks and reserves availability in Google Calendar.",
+      "relatedSystemIds": [
+        "SYS-001"
+      ],
+      "details": {
+        "Integration method": "REST over HTTPS",
+        "Authentication": "OAuth2"
+      },
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "integrations",
+            "text": "The booking system checks and reserves availability in Google Calendar."
+          }
+        ],
+        "inferred": false
+      }
+    }
+  ],
+  "dataEntities": [
+    {
+      "id": "DATA-001",
+      "name": "Customer name, phone number, and appointment history (personal customer information) collected during booking",
+      "description": "Customer name, phone number, and appointment history (personal customer information) collected during booking",
+      "sensitive": true,
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "data",
+            "text": "Customer name, phone number, and appointment history (personal customer information) collected during booking"
+          }
+        ],
+        "inferred": false
+      }
+    }
+  ],
+  "constraints": [],
+  "businessRules": [
+    {
+      "id": "BR-001",
+      "description": "Appointments cannot overlap for the same employee",
+      "relatedProcessIds": [
+        "PROC-001"
+      ],
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "business-processes",
+            "text": "Appointments cannot overlap for the same employee"
+          }
+        ],
+        "inferred": false
+      }
+    },
+    {
+      "id": "BR-002",
+      "description": "A conflicting appointment request must always be approved by a front-desk employee before confirmation",
+      "relatedProcessIds": [
+        "PROC-001"
+      ],
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "business-processes",
+            "text": "A conflicting appointment request must always be approved by a front-desk employee before confirmation"
+          }
+        ],
+        "inferred": false
+      }
+    }
+  ],
+  "informationGaps": [
+    {
+      "id": "GAP-001",
+      "topic": "Constraints",
+      "question": "Are there budget, timeline, regulatory, or technical constraints to account for?",
+      "importance": "low",
+      "blocking": false,
+      "relatedCapabilityIds": []
+    }
+  ],
+  "traceability": [
+    {
+      "fromId": "PROC-001",
+      "toId": "ACTOR-003",
+      "relationship": "performed-by"
+    },
+    {
+      "fromId": "PROC-001",
+      "toId": "ACTOR-004",
+      "relationship": "performed-by"
+    },
+    {
+      "fromId": "PROC-001",
+      "toId": "SYS-001",
+      "relationship": "uses-system"
+    },
+    {
+      "fromId": "PROC-001",
+      "toId": "SYS-002",
+      "relationship": "uses-system"
+    },
+    {
+      "fromId": "PROC-001",
+      "toId": "PP-001",
+      "relationship": "affects"
+    },
+    {
+      "fromId": "PROC-001",
+      "toId": "PP-002",
+      "relationship": "affects"
+    },
+    {
+      "fromId": "PROC-001",
+      "toId": "PP-003",
+      "relationship": "affects"
+    },
+    {
+      "fromId": "PROC-001",
+      "toId": "BR-001",
+      "relationship": "constrained-by"
+    },
+    {
+      "fromId": "PROC-001",
+      "toId": "BR-002",
+      "relationship": "constrained-by"
+    }
+  ],
+  "aiAgentNeeds": [
+    {
+      "id": "AINEED-001",
+      "name": "AI Agent Need",
+      "purpose": "Customers should be able to ask the assistant questions about services and studio policies.",
+      "actorIds": [
+        "ACTOR-003",
+        "ACTOR-004"
+      ],
+      "tasks": [
+        "Customers should be able to ask the assistant questions about services and studio policies.",
+        "The assistant may check appointment availability using the existing Google Calendar integration.",
+        "The assistant must not confirm a conflicting appointment without front-desk employee approval — conflict approval can never be bypassed.",
+        "The assistant may not cancel appointments autonomously.",
+        "Conversation history is only needed during the active customer session and should not persist after the session ends.",
+        "Model or provider has not been selected.",
+        "When the assistant cannot confidently answer from known business information, escalate the conversation to a front-desk employee."
+      ],
+      "relatedProcessIds": [],
+      "relatedRequirementIds": [],
+      "relatedOutcomeIds": [],
+      "desiredCapabilities": [
+        "conversation",
+        "tool-use",
+        "unknown"
+      ],
+      "humanOversightRequired": "unknown",
+      "metadata": {
+        "confidence": 1,
+        "sources": [
+          {
+            "sourceType": "input",
+            "section": "ai-agent-needs",
+            "text": "Customers should be able to ask the assistant questions about services and studio policies."
+          }
+        ],
+        "inferred": false
+      }
+    }
+  ],
+  "deploymentNeeds": [],
+  "modernizationNeeds": []
+}

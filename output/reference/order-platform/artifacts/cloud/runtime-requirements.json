@@ -1,0 +1,38 @@
+[
+  {
+    "id": "RUNTIME-001",
+    "executionModel": "request-driven",
+    "description": "Runtime for solution-managed component \"Order API\".",
+    "appliesTo": [
+      {
+        "entityType": "deployment-unit",
+        "entityId": "DEPLOYUNIT-001"
+      }
+    ],
+    "evidenceRefs": [
+      {
+        "entityType": "deployment-need",
+        "entityId": "DEPLOY-001",
+        "description": "The solution includes a solution-managed Order API that receives customer order requests."
+      }
+    ]
+  },
+  {
+    "id": "RUNTIME-002",
+    "executionModel": "background",
+    "description": "Runtime for solution-managed component \"Order Processor\".",
+    "appliesTo": [
+      {
+        "entityType": "deployment-unit",
+        "entityId": "DEPLOYUNIT-002"
+      }
+    ],
+    "evidenceRefs": [
+      {
+        "entityType": "deployment-need",
+        "entityId": "DEPLOY-003",
+        "description": "The solution includes a solution-managed Order Processor that processes accepted orders in the background."
+      }
+    ]
+  }
+]

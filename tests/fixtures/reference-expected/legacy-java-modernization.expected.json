@@ -1,0 +1,46 @@
+{
+  "planning": {
+    "selectedCapabilities": ["website", "integrations", "security-governance", "observability", "modernization"]
+  },
+  "modernization": {
+    "architecture": {
+      "migrationCandidates": [
+        {
+          "id": "CANDIDATE-001",
+          "systemId": "SYS-001",
+          "strategyOptions": [{ "strategy": "replatform", "status": "explicit" }]
+        }
+      ],
+      "modernizationDeltas": [
+        {
+          "id": "DELTA-001",
+          "systemId": "SYS-001",
+          "category": "runtime",
+          "currentState": "IBM WebSphere",
+          "targetState": "Apache Tomcat"
+        }
+      ],
+      "preservationRequirements": [
+        { "id": "PRESERVE-001", "type": "business-behavior" },
+        { "id": "PRESERVE-002", "type": "integration-contract" },
+        { "id": "PRESERVE-003", "type": "integration-contract" }
+      ]
+    },
+    "exports": [
+      {
+        "exporterId": "generic-java-replatform",
+        "readiness": { "status": "needs-review" },
+        "recipe": { "strategy": "replatform", "status": "needs-review" }
+      }
+    ]
+  },
+  "security": {
+    "requirements": [{}, {}]
+  },
+  "observability": {
+    "architecture": {
+      "healthRequirements": [{}, {}],
+      "signals": []
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "frameworkVersion": "2.2.0",
+  "solutionBlueprintSchema": "1.0",
+  "websiteBlueprintSchema": "1.0",
+  "gates": [
+    {
+      "id": "typecheck",
+      "name": "Type safety",
+      "command": "npm run typecheck",
+      "ok": true,
+      "durationMs": 13145
+    },
+    {
+      "id": "test",
+      "name": "Full test suite (incl. contract tests)",
+      "command": "npm run test",
+      "ok": true,
+      "durationMs": 14414
+    },
+    {
+      "id": "reference",
+      "name": "Reference solutions",
+      "command": "npm run reference:validate",
+      "ok": true,
+      "durationMs": 4413
+    }
+  ],
+  "manualGates": [
+    "npm run stitchfy",
+    "npm run solution"
+  ],
+  "status": "passed"
+}

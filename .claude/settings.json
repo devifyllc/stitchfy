@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "Bash(python3 -c ' *)",
-      "Bash(node -e \"const bp = require\\('./output/blueprint/website-blueprint.v1.json'\\); console.log\\(JSON.stringify\\(bp.ux.heroStyle, null, 2\\)\\);\")"
+      "Bash(node -e \"const bp = require\\('./output/blueprint/website-blueprint.v1.json'\\); console.log\\(JSON.stringify\\(bp.ux.heroStyle, null, 2\\)\\);\")",
+      "WebSearch",
+      "WebFetch(domain:raw.githubusercontent.com)"
     ]
   }
 }

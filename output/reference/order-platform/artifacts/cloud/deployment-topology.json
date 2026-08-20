@@ -1,0 +1,16 @@
+[
+  {
+    "id": "DEPLOYUNIT-001",
+    "name": "Order API",
+    "kind": "api",
+    "responsibility": "solution-managed",
+    "workloadProfile": "request-driven"
+  },
+  {
+    "id": "DEPLOYUNIT-002",
+    "name": "Order Processor",
+    "kind": "worker",
+    "responsibility": "solution-managed",
+    "workloadProfile": "background"
+  }
+]

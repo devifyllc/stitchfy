@@ -1,0 +1,34 @@
+[
+  {
+    "id": "DEPEND-001",
+    "sourceSystemId": "SYS-001",
+    "targetSystemId": "SYS-002",
+    "type": "api",
+    "direction": "unknown",
+    "integrationId": "INT-001",
+    "description": "The Order Portal sends order requests to the Integration Gateway.",
+    "evidenceRefs": [
+      {
+        "entityType": "integration",
+        "entityId": "INTNEED-001",
+        "description": "The Order Portal sends order requests to the Integration Gateway."
+      }
+    ]
+  },
+  {
+    "id": "DEPEND-002",
+    "sourceSystemId": "SYS-001",
+    "targetSystemId": "SYS-003",
+    "type": "database",
+    "direction": "unknown",
+    "integrationId": "INT-002",
+    "description": "The Order Portal reads and writes order records in the Order Database.",
+    "evidenceRefs": [
+      {
+        "entityType": "integration",
+        "entityId": "INTNEED-002",
+        "description": "The Order Portal reads and writes order records in the Order Database."
+      }
+    ]
+  }
+]

@@ -1,0 +1,59 @@
+{
+  "schemaVersion": "1.0",
+  "modernizationCandidateId": "CANDIDATE-001",
+  "systemId": "SYS-001",
+  "exporterId": "generic-java-replatform",
+  "exporterVersion": "1.0.0",
+  "strategy": "replatform",
+  "readiness": "needs-review",
+  "codebaseAnalysisId": "legacy-java-maven",
+  "preservationRequirementIds": [
+    "PRESERVE-001",
+    "PRESERVE-002",
+    "PRESERVE-003"
+  ],
+  "validationRequirementIds": [
+    "VALIDATE-001",
+    "VALIDATE-002",
+    "VALIDATE-003",
+    "VALIDATE-004"
+  ],
+  "dependencyChangeIds": [
+    "DEPCHANGE-001",
+    "DEPCHANGE-002",
+    "DEPCHANGE-003",
+    "DEPCHANGE-004",
+    "DEPCHANGE-005"
+  ],
+  "configurationChangeIds": [
+    "CFGCHANGE-001"
+  ],
+  "sourceCandidateIds": [
+    "SRCCHANGE-001"
+  ],
+  "informationGapIds": [
+    "MODGAP-001",
+    "MODGAP-002",
+    "MODGAP-003",
+    "MODGAP-004",
+    "MODGAP-005",
+    "MODGAP-006"
+  ],
+  "conflictIds": [],
+  "generatedFiles": [
+    "artifacts/modernization/exporters/legacy-java-maven/generic-java-replatform/migration-recipe.json",
+    "artifacts/modernization/exporters/legacy-java-maven/generic-java-replatform/migration-recipe.md",
+    "artifacts/modernization/exporters/legacy-java-maven/generic-java-replatform/dependency-change-plan.json",
+    "artifacts/modernization/exporters/legacy-java-maven/generic-java-replatform/dependency-change-plan.md",
+    "artifacts/modernization/exporters/legacy-java-maven/generic-java-replatform/configuration-change-plan.json",
+    "artifacts/modernization/exporters/legacy-java-maven/generic-java-replatform/configuration-change-plan.md",
+    "artifacts/modernization/exporters/legacy-java-maven/generic-java-replatform/source-review.json",
+    "artifacts/modernization/exporters/legacy-java-maven/generic-java-replatform/source-review.md",
+    "artifacts/modernization/exporters/legacy-java-maven/generic-java-replatform/test-impact.json",
+    "artifacts/modernization/exporters/legacy-java-maven/generic-java-replatform/test-impact.md",
+    "artifacts/modernization/exporters/legacy-java-maven/generic-java-replatform/validation-plan.json",
+    "artifacts/modernization/exporters/legacy-java-maven/generic-java-replatform/validation-plan.md",
+    "artifacts/modernization/exporters/legacy-java-maven/generic-java-replatform/modernization.manifest.json"
+  ],
+  "generatedAt": "2026-08-20T11:55:57.135Z"
+}

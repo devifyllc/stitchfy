@@ -109,9 +109,23 @@ output/generated-site/**
 !output/generated-site/.gitkeep
 output/static-site/**
 !output/static-site/.gitkeep
+output/stitch-site/**
+!output/stitch-site/.gitkeep
 output/reports/*.md
 output/reports/*.json
 !output/reports/.gitkeep
+
+# Solution pipeline output (Phase 0 architecture foundation)
+output/context/*.json
+!output/context/.gitkeep
+output/blueprints/*.json
+!output/blueprints/.gitkeep
+output/artifacts/**
+!output/artifacts/.gitkeep
+
+# Codebase analysis output (Phase 8.5A)
+output/analysis/**
+!output/analysis/.gitkeep
 
 # Next.js
 .next/

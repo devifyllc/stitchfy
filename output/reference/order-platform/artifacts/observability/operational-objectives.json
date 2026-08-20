@@ -1,0 +1,17 @@
+[
+  {
+    "id": "OBJ-001",
+    "name": "95% of accepted order submissions should complete within 2 seconds.",
+    "target": [],
+    "objectiveType": "latency",
+    "targetValue": "95% within 2 seconds",
+    "explicit": true,
+    "evidenceRefs": [
+      {
+        "entityType": "requirement",
+        "entityId": "REQ-004",
+        "description": "95% of accepted order submissions should complete within 2 seconds."
+      }
+    ]
+  }
+]

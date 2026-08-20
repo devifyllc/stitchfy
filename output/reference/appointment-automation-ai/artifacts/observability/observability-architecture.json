@@ -1,0 +1,1136 @@
+{
+  "version": "1.0",
+  "telemetryRequirements": [
+    {
+      "id": "TELREQ-002",
+      "purpose": "security",
+      "appliesTo": [],
+      "requiredSignals": [],
+      "description": "Telemetry must avoid recording the associated business payload until data classification (currently \"confidential\") and logging policy are resolved.",
+      "evidenceRefs": [
+        {
+          "entityType": "data-entity",
+          "entityId": "DATA-001",
+          "description": "Customer name, phone number, and appointment history (personal customer information) collected during booking"
+        }
+      ],
+      "status": "needs-information"
+    }
+  ],
+  "signals": [
+    {
+      "id": "SIGNAL-001",
+      "name": "Appointment Booking Workflow started",
+      "type": "event",
+      "description": "Workflow \"Appointment Booking Workflow\" started.",
+      "source": {
+        "entityType": "workflow",
+        "entityId": "WF-001"
+      },
+      "attributes": [
+        {
+          "name": "workflowId",
+          "purpose": "correlates events to this workflow",
+          "sensitivity": "internal",
+          "required": true
+        },
+        {
+          "name": "outcome",
+          "purpose": "execution outcome",
+          "sensitivity": "internal",
+          "required": true
+        }
+      ],
+      "sensitivity": "internal",
+      "provenance": "derived",
+      "evidenceRefs": [
+        {
+          "entityType": "process",
+          "entityId": "PROC-001",
+          "description": "Appointment Booking"
+        }
+      ]
+    },
+    {
+      "id": "SIGNAL-002",
+      "name": "Appointment Booking Workflow completed",
+      "type": "event",
+      "description": "Workflow \"Appointment Booking Workflow\" completed.",
+      "source": {
+        "entityType": "workflow",
+        "entityId": "WF-001"
+      },
+      "attributes": [
+        {
+          "name": "workflowId",
+          "purpose": "correlates events to this workflow",
+          "sensitivity": "internal",
+          "required": true
+        },
+        {
+          "name": "outcome",
+          "purpose": "execution outcome",
+          "sensitivity": "internal",
+          "required": true
+        }
+      ],
+      "sensitivity": "internal",
+      "provenance": "derived",
+      "evidenceRefs": [
+        {
+          "entityType": "process",
+          "entityId": "PROC-001",
+          "description": "Appointment Booking"
+        }
+      ]
+    },
+    {
+      "id": "SIGNAL-003",
+      "name": "Appointment Booking Workflow failed",
+      "type": "event",
+      "description": "Workflow \"Appointment Booking Workflow\" failed.",
+      "source": {
+        "entityType": "workflow",
+        "entityId": "WF-001"
+      },
+      "attributes": [
+        {
+          "name": "workflowId",
+          "purpose": "correlates events to this workflow",
+          "sensitivity": "internal",
+          "required": true
+        },
+        {
+          "name": "outcome",
+          "purpose": "execution outcome",
+          "sensitivity": "internal",
+          "required": true
+        }
+      ],
+      "sensitivity": "internal",
+      "provenance": "derived",
+      "evidenceRefs": [
+        {
+          "entityType": "process",
+          "entityId": "PROC-001",
+          "description": "Appointment Booking"
+        }
+      ]
+    },
+    {
+      "id": "SIGNAL-004",
+      "name": "Decision evaluated: Every conflicting request is reviewed and approved by a front-desk employee before confirmation",
+      "type": "event",
+      "description": "Decision \"Every conflicting request is reviewed and approved by a front-desk employee before confirmation\" was evaluated.",
+      "source": {
+        "entityType": "workflow-step",
+        "entityId": "STEP-005"
+      },
+      "attributes": [
+        {
+          "name": "workflowId",
+          "purpose": "correlates to the owning workflow",
+          "sensitivity": "internal",
+          "required": true
+        },
+        {
+          "name": "stepId",
+          "purpose": "the decision step",
+          "sensitivity": "internal",
+          "required": true
+        },
+        {
+          "name": "outcome",
+          "purpose": "which branch was taken",
+          "sensitivity": "internal",
+          "required": true
+        }
+      ],
+      "sensitivity": "internal",
+      "provenance": "derived",
+      "evidenceRefs": [
+        {
+          "entityType": "outcome",
+          "entityId": "OUTCOME-002",
+          "description": "Every conflicting request is reviewed and approved by a front-desk employee before confirmation"
+        }
+      ]
+    },
+    {
+      "id": "SIGNAL-005",
+      "name": "Decision evaluated: Conflicting appointment requests must always be routed to a front-desk employee for approval before confirmation.",
+      "type": "event",
+      "description": "Decision \"Conflicting appointment requests must always be routed to a front-desk employee for approval before confirmation.\" was evaluated.",
+      "source": {
+        "entityType": "workflow-step",
+        "entityId": "STEP-008"
+      },
+      "attributes": [
+        {
+          "name": "workflowId",
+          "purpose": "correlates to the owning workflow",
+          "sensitivity": "internal",
+          "required": true
+        },
+        {
+          "name": "stepId",
+          "purpose": "the decision step",
+          "sensitivity": "internal",
+          "required": true
+        },
+        {
+          "name": "outcome",
+          "purpose": "which branch was taken",
+          "sensitivity": "internal",
+          "required": true
+        }
+      ],
+      "sensitivity": "internal",
+      "provenance": "derived",
+      "evidenceRefs": [
+        {
+          "entityType": "requirement",
+          "entityId": "REQ-001",
+          "description": "Conflicting appointment requests must always be routed to a front-desk employee for approval before confirmation."
+        }
+      ]
+    },
+    {
+      "id": "SIGNAL-006",
+      "name": "Approval requested: Every conflicting request is reviewed and approved by a front-desk employee before confirmation",
+      "type": "event",
+      "description": "Human approval (\"Every conflicting request is reviewed and approved by a front-desk employee before confirmation\") was requested.",
+      "source": {
+        "entityType": "workflow-step",
+        "entityId": "STEP-007"
+      },
+      "attributes": [
+        {
+          "name": "workflowId",
+          "purpose": "correlates to the owning workflow",
+          "sensitivity": "internal",
+          "required": true
+        },
+        {
+          "name": "stepId",
+          "purpose": "the approval step",
+          "sensitivity": "internal",
+          "required": true
+        }
+      ],
+      "sensitivity": "internal",
+      "provenance": "derived",
+      "evidenceRefs": [
+        {
+          "entityType": "outcome",
+          "entityId": "OUTCOME-002",
+          "description": "Every conflicting request is reviewed and approved by a front-desk employee before confirmation"
+        }
+      ]
+    },
+    {
+      "id": "SIGNAL-007",
+      "name": "Approval completed: Every conflicting request is reviewed and approved by a front-desk employee before confirmation",
+      "type": "event",
+      "description": "Human approval (\"Every conflicting request is reviewed and approved by a front-desk employee before confirmation\") was resolved.",
+      "source": {
+        "entityType": "workflow-step",
+        "entityId": "STEP-007"
+      },
+      "attributes": [
+        {
+          "name": "workflowId",
+          "purpose": "correlates to the owning workflow",
+          "sensitivity": "internal",
+          "required": true
+        },
+        {
+          "name": "stepId",
+          "purpose": "the approval step",
+          "sensitivity": "internal",
+          "required": true
+        },
+        {
+          "name": "outcome",
+          "purpose": "approval decision",
+          "sensitivity": "internal",
+          "required": true
+        }
+      ],
+      "sensitivity": "internal",
+      "provenance": "derived",
+      "evidenceRefs": [
+        {
+          "entityType": "outcome",
+          "entityId": "OUTCOME-002",
+          "description": "Every conflicting request is reviewed and approved by a front-desk employee before confirmation"
+        }
+      ]
+    },
+    {
+      "id": "SIGNAL-008",
+      "name": "Approval requested: Conflicting appointment requests must always be routed to a front-desk employee for approval before confirmation.",
+      "type": "event",
+      "description": "Human approval (\"Conflicting appointment requests must always be routed to a front-desk employee for approval before confirmation.\") was requested.",
+      "source": {
+        "entityType": "workflow-step",
+        "entityId": "STEP-010"
+      },
+      "attributes": [
+        {
+          "name": "workflowId",
+          "purpose": "correlates to the owning workflow",
+          "sensitivity": "internal",
+          "required": true
+        },
+        {
+          "name": "stepId",
+          "purpose": "the approval step",
+          "sensitivity": "internal",
+          "required": true
+        }
+      ],
+      "sensitivity": "internal",
+      "provenance": "derived",
+      "evidenceRefs": [
+        {
+          "entityType": "requirement",
+          "entityId": "REQ-001",
+          "description": "Conflicting appointment requests must always be routed to a front-desk employee for approval before confirmation."
+        }
+      ]
+    },
+    {
+      "id": "SIGNAL-009",
+      "name": "Approval completed: Conflicting appointment requests must always be routed to a front-desk employee for approval before confirmation.",
+      "type": "event",
+      "description": "Human approval (\"Conflicting appointment requests must always be routed to a front-desk employee for approval before confirmation.\") was resolved.",
+      "source": {
+        "entityType": "workflow-step",
+        "entityId": "STEP-010"
+      },
+      "attributes": [
+        {
+          "name": "workflowId",
+          "purpose": "correlates to the owning workflow",
+          "sensitivity": "internal",
+          "required": true
+        },
+        {
+          "name": "stepId",
+          "purpose": "the approval step",
+          "sensitivity": "internal",
+          "required": true
+        },
+        {
+          "name": "outcome",
+          "purpose": "approval decision",
+          "sensitivity": "internal",
+          "required": true
+        }
+      ],
+      "sensitivity": "internal",
+      "provenance": "derived",
+      "evidenceRefs": [
+        {
+          "entityType": "requirement",
+          "entityId": "REQ-001",
+          "description": "Conflicting appointment requests must always be routed to a front-desk employee for approval before confirmation."
+        }
+      ]
+    },
+    {
+      "id": "SIGNAL-010",
+      "name": "Notification attempted: Confirmed appointments are recorded and a reminder is sent before the appointment",
+      "type": "event",
+      "description": "Notification (\"Confirmed appointments are recorded and a reminder is sent before the appointment\") delivery was attempted.",
+      "source": {
+        "entityType": "workflow",
+        "entityId": "WF-001"
+      },
+      "attributes": [
+        {
+          "name": "workflowId",
+          "purpose": "correlates to the owning workflow",
+          "sensitivity": "internal",
+          "required": true
+        },
+        {
+          "name": "outcome",
+          "purpose": "delivery attempt outcome",
+          "sensitivity": "internal",
+          "required": true
+        }
+      ],
+      "sensitivity": "internal",
+      "provenance": "derived",
+      "evidenceRefs": [
+        {
+          "entityType": "process",
+          "entityId": "PROC-001",
+          "description": "Appointment Booking"
+        }
+      ]
+    },
+    {
+      "id": "SIGNAL-011",
+      "name": "The system checks Google Calendar for availability attempted",
+      "type": "event",
+      "description": "Integration operation \"The system checks Google Calendar for availability\" (The booking system checks and reserves availability in Google Calendar.) attempted.",
+      "source": {
+        "entityType": "integration",
+        "entityId": "INT-001"
+      },
+      "attributes": [
+        {
+          "name": "integrationId",
+          "purpose": "correlates to the owning integration",
+          "sensitivity": "internal",
+          "required": true
+        },
+        {
+          "name": "operationId",
+          "purpose": "which operation",
+          "sensitivity": "internal",
+          "required": true
+        },
+        {
+          "name": "outcome",
+          "purpose": "attempt outcome",
+          "sensitivity": "internal",
+          "required": true
+        }
+      ],
+      "sensitivity": "internal",
+      "provenance": "derived",
+      "evidenceRefs": [
+        {
+          "entityType": "integration",
+          "entityId": "INTNEED-001",
+          "description": "The booking system checks and reserves availability in Google Calendar."
+        }
+      ]
+    },
+    {
+      "id": "SIGNAL-012",
+      "name": "The system checks Google Calendar for availability succeeded",
+      "type": "event",
+      "description": "Integration operation \"The system checks Google Calendar for availability\" (The booking system checks and reserves availability in Google Calendar.) succeeded.",
+      "source": {
+        "entityType": "integration",
+        "entityId": "INT-001"
+      },
+      "attributes": [
+        {
+          "name": "integrationId",
+          "purpose": "correlates to the owning integration",
+          "sensitivity": "internal",
+          "required": true
+        },
+        {
+          "name": "operationId",
+          "purpose": "which operation",
+          "sensitivity": "internal",
+          "required": true
+        },
+        {
+          "name": "outcome",
+          "purpose": "attempt outcome",
+          "sensitivity": "internal",
+          "required": true
+        }
+      ],
+      "sensitivity": "internal",
+      "provenance": "derived",
+      "evidenceRefs": [
+        {
+          "entityType": "integration",
+          "entityId": "INTNEED-001",
+          "description": "The booking system checks and reserves availability in Google Calendar."
+        }
+      ]
+    },
+    {
+      "id": "SIGNAL-013",
+      "name": "The system checks Google Calendar for availability failed",
+      "type": "event",
+      "description": "Integration operation \"The system checks Google Calendar for availability\" (The booking system checks and reserves availability in Google Calendar.) failed.",
+      "source": {
+        "entityType": "integration",
+        "entityId": "INT-001"
+      },
+      "attributes": [
+        {
+          "name": "integrationId",
+          "purpose": "correlates to the owning integration",
+          "sensitivity": "internal",
+          "required": true
+        },
+        {
+          "name": "operationId",
+          "purpose": "which operation",
+          "sensitivity": "internal",
+          "required": true
+        },
+        {
+          "name": "outcome",
+          "purpose": "attempt outcome",
+          "sensitivity": "internal",
+          "required": true
+        }
+      ],
+      "sensitivity": "internal",
+      "provenance": "derived",
+      "evidenceRefs": [
+        {
+          "entityType": "integration",
+          "entityId": "INTNEED-001",
+          "description": "The booking system checks and reserves availability in Google Calendar."
+        }
+      ]
+    },
+    {
+      "id": "SIGNAL-014",
+      "name": "Riverside Wellness Studio Assistant interaction started",
+      "type": "event",
+      "description": "Agent \"Riverside Wellness Studio Assistant\" interaction started.",
+      "source": {
+        "entityType": "ai-agent",
+        "entityId": "AIAGENT-001"
+      },
+      "attributes": [
+        {
+          "name": "agentId",
+          "purpose": "correlates to the owning agent",
+          "sensitivity": "internal",
+          "required": true
+        },
+        {
+          "name": "outcome",
+          "purpose": "invocation/interaction outcome",
+          "sensitivity": "internal",
+          "required": true
+        }
+      ],
+      "sensitivity": "internal",
+      "provenance": "derived",
+      "evidenceRefs": [
+        {
+          "entityType": "ai-agent-need",
+          "entityId": "AINEED-001",
+          "description": "Customers should be able to ask the assistant questions about services and studio policies."
+        }
+      ]
+    },
+    {
+      "id": "SIGNAL-015",
+      "name": "Riverside Wellness Studio Assistant interaction completed",
+      "type": "event",
+      "description": "Agent \"Riverside Wellness Studio Assistant\" interaction completed.",
+      "source": {
+        "entityType": "ai-agent",
+        "entityId": "AIAGENT-001"
+      },
+      "attributes": [
+        {
+          "name": "agentId",
+          "purpose": "correlates to the owning agent",
+          "sensitivity": "internal",
+          "required": true
+        },
+        {
+          "name": "outcome",
+          "purpose": "invocation/interaction outcome",
+          "sensitivity": "internal",
+          "required": true
+        }
+      ],
+      "sensitivity": "internal",
+      "provenance": "derived",
+      "evidenceRefs": [
+        {
+          "entityType": "ai-agent-need",
+          "entityId": "AINEED-001",
+          "description": "Customers should be able to ask the assistant questions about services and studio policies."
+        }
+      ]
+    },
+    {
+      "id": "SIGNAL-016",
+      "name": "Tool invocation: The system checks Google Calendar for availability requested",
+      "type": "event",
+      "description": "Tool \"The system checks Google Calendar for availability\" invocation by agent \"Riverside Wellness Studio Assistant\" requested.",
+      "source": {
+        "entityType": "ai-tool",
+        "entityId": "AITOOL-001"
+      },
+      "attributes": [
+        {
+          "name": "agentId",
+          "purpose": "correlates to the owning agent",
+          "sensitivity": "internal",
+          "required": true
+        },
+        {
+          "name": "toolId",
+          "purpose": "which tool",
+          "sensitivity": "internal",
+          "required": true
+        },
+        {
+          "name": "outcome",
+          "purpose": "invocation/interaction outcome",
+          "sensitivity": "internal",
+          "required": true
+        }
+      ],
+      "sensitivity": "internal",
+      "provenance": "derived",
+      "evidenceRefs": [
+        {
+          "entityType": "ai-agent-need",
+          "entityId": "AINEED-001",
+          "description": "Customers should be able to ask the assistant questions about services and studio policies."
+        },
+        {
+          "entityType": "integration",
+          "entityId": "INTNEED-001",
+          "description": "The booking system checks and reserves availability in Google Calendar."
+        }
+      ]
+    },
+    {
+      "id": "SIGNAL-017",
+      "name": "Tool invocation: The system checks Google Calendar for availability completed",
+      "type": "event",
+      "description": "Tool \"The system checks Google Calendar for availability\" invocation by agent \"Riverside Wellness Studio Assistant\" completed.",
+      "source": {
+        "entityType": "ai-tool",
+        "entityId": "AITOOL-001"
+      },
+      "attributes": [
+        {
+          "name": "agentId",
+          "purpose": "correlates to the owning agent",
+          "sensitivity": "internal",
+          "required": true
+        },
+        {
+          "name": "toolId",
+          "purpose": "which tool",
+          "sensitivity": "internal",
+          "required": true
+        },
+        {
+          "name": "outcome",
+          "purpose": "invocation/interaction outcome",
+          "sensitivity": "internal",
+          "required": true
+        }
+      ],
+      "sensitivity": "internal",
+      "provenance": "derived",
+      "evidenceRefs": [
+        {
+          "entityType": "ai-agent-need",
+          "entityId": "AINEED-001",
+          "description": "Customers should be able to ask the assistant questions about services and studio policies."
+        },
+        {
+          "entityType": "integration",
+          "entityId": "INTNEED-001",
+          "description": "The booking system checks and reserves availability in Google Calendar."
+        }
+      ]
+    },
+    {
+      "id": "SIGNAL-018",
+      "name": "Tool invocation: The system checks Google Calendar for availability failed",
+      "type": "event",
+      "description": "Tool \"The system checks Google Calendar for availability\" invocation by agent \"Riverside Wellness Studio Assistant\" failed.",
+      "source": {
+        "entityType": "ai-tool",
+        "entityId": "AITOOL-001"
+      },
+      "attributes": [
+        {
+          "name": "agentId",
+          "purpose": "correlates to the owning agent",
+          "sensitivity": "internal",
+          "required": true
+        },
+        {
+          "name": "toolId",
+          "purpose": "which tool",
+          "sensitivity": "internal",
+          "required": true
+        },
+        {
+          "name": "outcome",
+          "purpose": "invocation/interaction outcome",
+          "sensitivity": "internal",
+          "required": true
+        }
+      ],
+      "sensitivity": "internal",
+      "provenance": "derived",
+      "evidenceRefs": [
+        {
+          "entityType": "ai-agent-need",
+          "entityId": "AINEED-001",
+          "description": "Customers should be able to ask the assistant questions about services and studio policies."
+        },
+        {
+          "entityType": "integration",
+          "entityId": "INTNEED-001",
+          "description": "The booking system checks and reserves availability in Google Calendar."
+        }
+      ]
+    }
+  ],
+  "logRequirements": [
+    {
+      "id": "TELREQ-001",
+      "event": "integration operation outcome",
+      "level": "unknown",
+      "source": {
+        "entityType": "integration",
+        "entityId": "INT-001"
+      },
+      "fields": [],
+      "prohibitedData": [
+        "credential/API-key material"
+      ],
+      "evidenceRefs": [
+        {
+          "entityType": "integration",
+          "entityId": "INTNEED-001",
+          "description": "The booking system checks and reserves availability in Google Calendar."
+        }
+      ]
+    }
+  ],
+  "metricRequirements": [
+    {
+      "id": "METRIC-001",
+      "name": "The booking system checks and reserves availability in Google Calendar. operation count",
+      "kind": "counter",
+      "description": "Count of operation attempts for \"The booking system checks and reserves availability in Google Calendar.\".",
+      "source": {
+        "entityType": "integration",
+        "entityId": "INT-001"
+      },
+      "evidenceRefs": [
+        {
+          "entityType": "integration",
+          "entityId": "INTNEED-001",
+          "description": "The booking system checks and reserves availability in Google Calendar."
+        }
+      ]
+    },
+    {
+      "id": "METRIC-002",
+      "name": "The booking system checks and reserves availability in Google Calendar. failure count",
+      "kind": "counter",
+      "description": "Count of operation failures for \"The booking system checks and reserves availability in Google Calendar.\".",
+      "source": {
+        "entityType": "integration",
+        "entityId": "INT-001"
+      },
+      "evidenceRefs": [
+        {
+          "entityType": "integration",
+          "entityId": "INTNEED-001",
+          "description": "The booking system checks and reserves availability in Google Calendar."
+        }
+      ]
+    },
+    {
+      "id": "METRIC-003",
+      "name": "The booking system checks and reserves availability in Google Calendar. operation duration",
+      "kind": "timer",
+      "description": "Duration of operation attempts for \"The booking system checks and reserves availability in Google Calendar.\". No target/threshold implied.",
+      "source": {
+        "entityType": "integration",
+        "entityId": "INT-001"
+      },
+      "evidenceRefs": [
+        {
+          "entityType": "integration",
+          "entityId": "INTNEED-001",
+          "description": "The booking system checks and reserves availability in Google Calendar."
+        }
+      ]
+    }
+  ],
+  "correlationRequirements": [
+    {
+      "id": "CORR-001",
+      "description": "Operations for \"The booking system checks and reserves availability in Google Calendar.\" should be correlatable back to the workflow that triggered them.",
+      "architecturePath": [
+        {
+          "entityType": "workflow",
+          "entityId": "WF-001"
+        },
+        {
+          "entityType": "integration",
+          "entityId": "INT-001"
+        }
+      ],
+      "correlationRequired": true,
+      "evidenceRefs": [
+        {
+          "entityType": "integration",
+          "entityId": "INTNEED-001",
+          "description": "The booking system checks and reserves availability in Google Calendar."
+        }
+      ]
+    },
+    {
+      "id": "CORR-002",
+      "description": "Tool \"The system checks Google Calendar for availability\" invocations by agent \"Riverside Wellness Studio Assistant\" should be correlatable to the underlying integration operation.",
+      "architecturePath": [
+        {
+          "entityType": "ai-agent",
+          "entityId": "AIAGENT-001"
+        },
+        {
+          "entityType": "ai-tool",
+          "entityId": "AITOOL-001"
+        },
+        {
+          "entityType": "integration",
+          "entityId": "INT-001"
+        }
+      ],
+      "correlationRequired": true,
+      "evidenceRefs": [
+        {
+          "entityType": "ai-agent-need",
+          "entityId": "AINEED-001",
+          "description": "Customers should be able to ask the assistant questions about services and studio policies."
+        },
+        {
+          "entityType": "integration",
+          "entityId": "INTNEED-001",
+          "description": "The booking system checks and reserves availability in Google Calendar."
+        }
+      ]
+    }
+  ],
+  "healthRequirements": [
+    {
+      "id": "HEALTH-001",
+      "target": {
+        "entityType": "workflow",
+        "entityId": "WF-001"
+      },
+      "type": "business-process",
+      "description": "Ability to determine whether workflow \"Appointment Booking Workflow\" is completing successfully.",
+      "evidenceRefs": [
+        {
+          "entityType": "process",
+          "entityId": "PROC-001",
+          "description": "Appointment Booking"
+        }
+      ]
+    },
+    {
+      "id": "HEALTH-002",
+      "target": {
+        "entityType": "integration",
+        "entityId": "INT-001"
+      },
+      "type": "dependency",
+      "description": "Ability to determine whether \"The booking system checks and reserves availability in Google Calendar.\" is operational.",
+      "evidenceRefs": [
+        {
+          "entityType": "integration",
+          "entityId": "INTNEED-001",
+          "description": "The booking system checks and reserves availability in Google Calendar."
+        }
+      ]
+    }
+  ],
+  "alertRequirements": [
+    {
+      "id": "ALERT-001",
+      "name": "Operations must be notified if automated confirmation or reminder delivery fails.",
+      "sourceSignalIds": [],
+      "condition": "Operations must be notified if automated confirmation or reminder delivery fails.",
+      "severity": "warning",
+      "provenance": "explicit",
+      "evidenceRefs": [
+        {
+          "entityType": "requirement",
+          "entityId": "REQ-003",
+          "description": "Operations must be notified if automated confirmation or reminder delivery fails."
+        }
+      ]
+    },
+    {
+      "id": "ALERT-002",
+      "name": "Appointment Booking Workflow approval pending review",
+      "sourceSignalIds": [],
+      "condition": "Workflow \"Appointment Booking Workflow\" has a pending human approval requiring review.",
+      "severity": "warning",
+      "provenance": "derived",
+      "evidenceRefs": [
+        {
+          "entityType": "outcome",
+          "entityId": "OUTCOME-002",
+          "description": "Every conflicting request is reviewed and approved by a front-desk employee before confirmation"
+        }
+      ]
+    }
+  ],
+  "dashboardSpecifications": [
+    {
+      "id": "DASH-001",
+      "name": "Workflow Operations View",
+      "purpose": "Operational visibility into generated workflow execution outcomes, decisions, and approvals.",
+      "signalIds": [
+        "SIGNAL-001",
+        "SIGNAL-002",
+        "SIGNAL-003",
+        "SIGNAL-004",
+        "SIGNAL-005",
+        "SIGNAL-006",
+        "SIGNAL-007",
+        "SIGNAL-008",
+        "SIGNAL-009",
+        "SIGNAL-010"
+      ],
+      "audienceRoles": [
+        "operations"
+      ],
+      "evidenceRefs": [
+        {
+          "entityType": "process",
+          "entityId": "PROC-001",
+          "description": "Appointment Booking"
+        }
+      ]
+    },
+    {
+      "id": "DASH-002",
+      "name": "Integration Health View",
+      "purpose": "Operational visibility into external integration operation outcomes.",
+      "signalIds": [
+        "SIGNAL-011",
+        "SIGNAL-012",
+        "SIGNAL-013"
+      ],
+      "audienceRoles": [
+        "operations"
+      ],
+      "evidenceRefs": [
+        {
+          "entityType": "integration",
+          "entityId": "INTNEED-001",
+          "description": "The booking system checks and reserves availability in Google Calendar."
+        }
+      ]
+    },
+    {
+      "id": "DASH-003",
+      "name": "AI Agent Operations View",
+      "purpose": "Operational visibility into AI agent interactions, tool invocations, and escalations.",
+      "signalIds": [
+        "SIGNAL-014",
+        "SIGNAL-015",
+        "SIGNAL-016",
+        "SIGNAL-017",
+        "SIGNAL-018"
+      ],
+      "audienceRoles": [
+        "operations"
+      ],
+      "evidenceRefs": [
+        {
+          "entityType": "ai-agent-need",
+          "entityId": "AINEED-001",
+          "description": "Customers should be able to ask the assistant questions about services and studio policies."
+        }
+      ]
+    }
+  ],
+  "auditMappings": [
+    {
+      "id": "AUDITMAP-001",
+      "auditRequirementId": "AUDIT-001",
+      "signalIds": [
+        "SIGNAL-001",
+        "SIGNAL-002",
+        "SIGNAL-003",
+        "SIGNAL-010"
+      ],
+      "evidenceRefs": [
+        {
+          "entityType": "outcome",
+          "entityId": "OUTCOME-002",
+          "description": "Every conflicting request is reviewed and approved by a front-desk employee before confirmation"
+        }
+      ]
+    },
+    {
+      "id": "AUDITMAP-002",
+      "auditRequirementId": "AUDIT-002",
+      "signalIds": [
+        "SIGNAL-001",
+        "SIGNAL-002",
+        "SIGNAL-003",
+        "SIGNAL-010"
+      ],
+      "evidenceRefs": [
+        {
+          "entityType": "requirement",
+          "entityId": "REQ-001",
+          "description": "Conflicting appointment requests must always be routed to a front-desk employee for approval before confirmation."
+        }
+      ]
+    }
+  ],
+  "operationalObjectives": [],
+  "informationGaps": [
+    {
+      "id": "OBSGAP-001",
+      "topic": "Alert destination",
+      "question": "Who or what system should receive the alert for \"Operations must be notified if automated confirmation or reminder delivery fails.\"?",
+      "importance": "medium",
+      "blocking": false,
+      "relatedCapabilityIds": [
+        "observability"
+      ]
+    },
+    {
+      "id": "OBSGAP-002",
+      "topic": "Alert destination",
+      "question": "Who should be notified when workflow \"Appointment Booking Workflow\" has a pending approval (Approval requested: Every conflicting request is reviewed and approved by a front-desk employee before confirmation)?",
+      "importance": "low",
+      "blocking": false,
+      "relatedCapabilityIds": [
+        "observability"
+      ]
+    }
+  ],
+  "evidenceRefs": [
+    {
+      "entityType": "process",
+      "entityId": "PROC-001",
+      "description": "Appointment Booking"
+    },
+    {
+      "entityType": "process",
+      "entityId": "PROC-001",
+      "description": "Appointment Booking"
+    },
+    {
+      "entityType": "process",
+      "entityId": "PROC-001",
+      "description": "Appointment Booking"
+    },
+    {
+      "entityType": "outcome",
+      "entityId": "OUTCOME-002",
+      "description": "Every conflicting request is reviewed and approved by a front-desk employee before confirmation"
+    },
+    {
+      "entityType": "requirement",
+      "entityId": "REQ-001",
+      "description": "Conflicting appointment requests must always be routed to a front-desk employee for approval before confirmation."
+    },
+    {
+      "entityType": "outcome",
+      "entityId": "OUTCOME-002",
+      "description": "Every conflicting request is reviewed and approved by a front-desk employee before confirmation"
+    },
+    {
+      "entityType": "outcome",
+      "entityId": "OUTCOME-002",
+      "description": "Every conflicting request is reviewed and approved by a front-desk employee before confirmation"
+    },
+    {
+      "entityType": "requirement",
+      "entityId": "REQ-001",
+      "description": "Conflicting appointment requests must always be routed to a front-desk employee for approval before confirmation."
+    },
+    {
+      "entityType": "requirement",
+      "entityId": "REQ-001",
+      "description": "Conflicting appointment requests must always be routed to a front-desk employee for approval before confirmation."
+    },
+    {
+      "entityType": "process",
+      "entityId": "PROC-001",
+      "description": "Appointment Booking"
+    },
+    {
+      "entityType": "integration",
+      "entityId": "INTNEED-001",
+      "description": "The booking system checks and reserves availability in Google Calendar."
+    },
+    {
+      "entityType": "integration",
+      "entityId": "INTNEED-001",
+      "description": "The booking system checks and reserves availability in Google Calendar."
+    },
+    {
+      "entityType": "integration",
+      "entityId": "INTNEED-001",
+      "description": "The booking system checks and reserves availability in Google Calendar."
+    },
+    {
+      "entityType": "ai-agent-need",
+      "entityId": "AINEED-001",
+      "description": "Customers should be able to ask the assistant questions about services and studio policies."
+    },
+    {
+      "entityType": "ai-agent-need",
+      "entityId": "AINEED-001",
+      "description": "Customers should be able to ask the assistant questions about services and studio policies."
+    },
+    {
+      "entityType": "ai-agent-need",
+      "entityId": "AINEED-001",
+      "description": "Customers should be able to ask the assistant questions about services and studio policies."
+    },
+    {
+      "entityType": "integration",
+      "entityId": "INTNEED-001",
+      "description": "The booking system checks and reserves availability in Google Calendar."
+    },
+    {
+      "entityType": "ai-agent-need",
+      "entityId": "AINEED-001",
+      "description": "Customers should be able to ask the assistant questions about services and studio policies."
+    },
+    {
+      "entityType": "integration",
+      "entityId": "INTNEED-001",
+      "description": "The booking system checks and reserves availability in Google Calendar."
+    },
+    {
+      "entityType": "ai-agent-need",
+      "entityId": "AINEED-001",
+      "description": "Customers should be able to ask the assistant questions about services and studio policies."
+    },
+    {
+      "entityType": "integration",
+      "entityId": "INTNEED-001",
+      "description": "The booking system checks and reserves availability in Google Calendar."
+    },
+    {
+      "entityType": "data-entity",
+      "entityId": "DATA-001",
+      "description": "Customer name, phone number, and appointment history (personal customer information) collected during booking"
+    }
+  ],
+  "status": "needs-review",
+  "statusReasons": [
+    "some telemetry requirements need more information (data classification/logging policy)",
+    "some alert requirements have no known destination",
+    "no explicit operational objectives were stated",
+    "2 unresolved information gap(s)"
+  ]
+}
