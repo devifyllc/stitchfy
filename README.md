@@ -1,6 +1,6 @@
 # Stitchfy v2
 
-**A solution-engineering framework that transforms structured Markdown requirements into traceable solution architecture and implementation-oriented artifacts.**
+**A framework that turns structured Markdown requirements into traceable solution architecture, plus artifacts your team can start building from.**
 
 [![Version](https://img.shields.io/badge/version-2.2.0-brightgreen.svg)](package.json)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
@@ -11,25 +11,25 @@
 
 ## What is Stitchfy?
 
-Stitchfy is an open-source framework that takes a plain Markdown file describing a business — its goals, processes, systems, and requirements — and generates a structured, traceable solution architecture: which capabilities apply, what each one specifies, and (where a real exporter exists) implementation-oriented scaffolding a team can review and build from.
+Stitchfy is an open source framework. Give it a plain Markdown file describing a business (its goals, processes, systems, and requirements), and it generates a structured, traceable solution architecture: which capabilities apply, what each one specifies, and, where a real exporter exists, scaffolding a team can review and build from.
 
 It supports:
 
-- **Static website generation** — Stitchfy's original, fully executable generation capability: a complete accessible, SEO-optimized static site from one Markdown file. Unchanged and still fully working — see "Website Quick Start" below.
-- **Business process discovery** — structured extraction of goals, actors, processes, systems, integrations, and requirements from Markdown.
-- **Workflow automation specification generation** — steps, decisions, notifications, and human-in-the-loop approvals derived from real process/requirement text.
-- **Integration architecture generation** — REST/webhook contracts, authentication, and data contracts, plus a `generic-rest-typescript` export adapter for integrations with a complete contract.
-- **AI agent architecture generation** — tool/permission/guardrail/memory specifications tied to real integrations, never assumed autonomous, persistent, or bound to a specific model by default.
-- **Security and governance architecture generation** — requirements, trust boundaries, and risk assessment derived from real integration/data/workflow evidence.
-- **Observability architecture generation** — signals, alerts, and operational objectives citing real architecture entities, with no fabricated thresholds.
-- **Cloud/deployment architecture generation** — vendor-neutral deployment topology, never assuming a provider unless one is explicitly stated.
-- **Legacy modernization architecture generation** — assessment and migration-strategy architecture, optionally enriched with read-only local repository evidence, plus a `generic-java-replatform` export adapter that proposes (never applies) a migration recipe.
+- **Static website generation.** Stitchfy's original capability, and still fully working: a complete, accessible, SEO optimized static site built from one Markdown file. See "Website Quick Start" below.
+- **Business process discovery.** Structured extraction of goals, actors, processes, systems, integrations, and requirements from Markdown.
+- **Workflow automation specs.** Steps, decisions, notifications, and human in the loop approvals, derived from real process and requirement text.
+- **Integration architecture.** REST and webhook contracts, authentication, and data contracts, plus a `generic-rest-typescript` export adapter for integrations that have a complete contract.
+- **AI agent architecture.** Tool, permission, guardrail, and memory specifications tied to real integrations. Never assumed autonomous, persistent, or bound to a specific model by default.
+- **Security and governance architecture.** Requirements, trust boundaries, and risk assessment, derived from real integration, data, and workflow evidence.
+- **Observability architecture.** Signals, alerts, and operational objectives that cite real architecture entities, with no fabricated thresholds.
+- **Cloud and deployment architecture.** A vendor neutral deployment topology that never assumes a provider unless one is explicitly stated.
+- **Legacy modernization architecture.** Assessment and migration strategy, optionally enriched with read only local repository evidence, plus a `generic-java-replatform` export adapter that proposes (and never applies) a migration recipe.
 
-Each of the eight non-website capabilities is **selected**, not always run: a planning stage assesses every registered capability against structured evidence in the input document (an explicit `## Deployment Requirements` section, an explicit REST integration, an explicit `## AI Agent Needs` section, ...) before any of them execute, and records why each one was or wasn't selected — see `output/reference/<scenario>/reports/solution-plan.md` after running any example. Stitchfy never blindly runs every capability on every input. Most of the pipeline is fully deterministic; no AI/LLM call is required anywhere in the solution-architecture pipeline (see "OpenAI Integration" below for the one, optional, opt-in exception in the website blueprint pipeline).
+Each of the eight capabilities beyond the website is **selected**, not always run. A planning stage checks every registered capability against structured evidence in the input document (an explicit `## Deployment Requirements` section, an explicit REST integration, an explicit `## AI Agent Needs` section, and so on) before any of them execute, and records why each one was or wasn't chosen. Look in `output/reference/<scenario>/reports/solution-plan.md` after running any example to see that reasoning. Stitchfy never blindly runs every capability on every input, and most of the pipeline is fully deterministic: no AI or LLM call is required anywhere in the solution architecture pipeline. (See "OpenAI Integration" below for the one optional exception, in the website blueprint pipeline.)
 
-**Three canonical, end-to-end worked examples** exercising real combinations of these capabilities together live under `examples/reference/` — see `docs/reference/END_TO_END.md` for the full walkthrough.
+**Three canonical, end to end worked examples**, exercising real combinations of these capabilities together, live under `examples/reference/`. See `docs/reference/END_TO_END.md` for the full walkthrough.
 
-**Who it's built for:** Developers and agencies who need to turn a business requirements document into reviewable architecture — from a small-business website, through workflow/integration/AI-agent specifications, to a legacy-modernization migration recipe.
+**Who it's built for:** developers and agencies who need to turn a business requirements document into reviewable architecture, from a small business website, through workflow, integration, and AI agent specifications, to a legacy modernization migration recipe.
 
 ---
 
@@ -61,7 +61,7 @@ Optional Exporters / Codebase Evidence
    (generic-rest-typescript, generic-java-replatform, read-only repo analysis)
 ```
 
-Not every capability executes on every input — only the ones structured evidence actually supports. See `docs/reference/CAPABILITY_MATRIX.md` for exactly which capability fires on each of the three canonical references.
+Not every capability executes on every input. Only the ones structured evidence actually supports do. See `docs/reference/CAPABILITY_MATRIX.md` for exactly which capability fires on each of the three canonical references.
 
 ---
 
@@ -72,11 +72,11 @@ Building a professional website for a local business involves repetitive work: e
 Stitchfy encodes that professional knowledge into a pipeline. Each agent applies best practices for its domain so you don't have to rediscover them for every client:
 
 - The UX Agent decides page hierarchy and hero strategy based on industry type
-- The SEO Agent writes structured data (JSON-LD), Open Graph tags, and per-page meta descriptions
+- The SEO Agent writes structured data (JSON-LD), Open Graph tags, and per page meta descriptions
 - The Accessibility Agent enforces WCAG 2.1 AA requirements: skip links, landmarks, keyboard navigation, color contrast, ARIA
 - The Frontend Agent assembles everything into a validated blueprint that drives real code generation
 
-The output is a complete static site with pre-built components and an HTML audit report, all from one Markdown file.
+The output is a complete static site with prebuilt components and an HTML audit report, all from one Markdown file.
 
 ---
 
@@ -99,12 +99,16 @@ Produces, under the output directory (`output/` by default):
 
 | Directory | Contents |
 |---|---|
-| `context/` | `business-context.json` — the derived `BusinessContext` |
-| `blueprints/` | `solution-blueprint.v1.json` — the full validated `SolutionBlueprint` |
-| `artifacts/` | Per-capability generated JSON/Markdown, plus any exporter scaffolding |
-| `reports/` | `solution-plan.md` — the human-readable capability-selection report |
+| `context/` | `business-context.json`, the derived `BusinessContext` |
+| `blueprints/` | `solution-blueprint.v1.json`, the full validated `SolutionBlueprint` and the canonical machine readable contract |
+| `artifacts/` | Generated JSON and Markdown for each capability, plus any exporter scaffolding |
+| `reports/` | `solution-plan.md` (why each capability was selected) and `solution-report.html` (the same blueprint, explained for a human reader) |
 
-See `docs/reference/END_TO_END.md` for the full 8-step pipeline walkthrough, `docs/reference/CAPABILITY_MATRIX.md` for real per-scenario capability coverage, and `examples/reference/README.md` for all three canonical scenarios (including the two optional flags, `--codebase`/`--system-id` and `--modernization-export`, used by the legacy-modernization scenario). Run all three plus semantic validation at once with `npm run reference:validate`.
+`solution-blueprint.v1.json` is the canonical contract, but it's also a large, deeply nested JSON document spanning all eight capabilities, not something anyone should have to read in a text editor to understand what Stitchfy produced. `solution-report.html` exists for exactly that: a purely presentational, human readable explanation of the same blueprint, meant to be opened directly in a browser. It's generated automatically at the end of every `npm run solution` run, no extra flag needed, and it never redefines or recomputes anything: every status, count, risk, and recommendation shown in it is read straight from that run's `solution-blueprint.v1.json`.
+
+Every run writes its own copy into its own output directory, so there's no single shared report: each of the three canonical reference scenarios gets one (`output/reference/appointment-automation-ai/reports/solution-report.html`, `output/reference/order-platform/reports/solution-report.html`, `output/reference/legacy-java-modernization/reports/solution-report.html`), and so does any custom run, at `<your-output-dir>/reports/solution-report.html`. See `docs/architecture/ARCHITECTURE.md` ("Solution Report") for how it relates to the JSON contract and to the exporters specific to each capability.
+
+See `docs/reference/END_TO_END.md` for the full 8 step pipeline walkthrough, `docs/reference/CAPABILITY_MATRIX.md` for real per scenario capability coverage, and `examples/reference/README.md` for all three canonical scenarios, including the two optional flags used by the legacy modernization scenario (`--codebase`/`--system-id` and `--modernization-export`). Run all three, plus semantic validation, at once with `npm run reference:validate`.
 
 ---
 
@@ -140,9 +144,9 @@ npm run audit
 Open `output/static-site/index.html` (template) or `output/stitch-site/index.html` (Stitch) in any browser.
 
 > **Which generator should I use?**
-> - **No API key?** Use `npm run build:site` (template-based, always works).
-> - **Have a `STITCH_API_KEY`?** Use `npm run build:site:stitch` for AI-generated layouts. No OpenAI key needed.
-> - **Have an `OPENAI_API_KEY`?** See the [OpenAI Integration](#openai-integration) section. This enables AI-driven blueprints, not a different site generator.
+> - **No API key?** Use `npm run build:site` (template based, and it always works).
+> - **Have a `STITCH_API_KEY`?** Use `npm run build:site:stitch` for AI generated layouts. No OpenAI key needed.
+> - **Have an `OPENAI_API_KEY`?** See the [OpenAI Integration](#openai-integration) section below. It enables AI driven blueprints, not a different site generator.
 
 ---
 
@@ -226,9 +230,9 @@ output/blueprint/website-blueprint.v1.json
 |---|---|
 | `npm run solution -- --input path/to/file.md` | Run business discovery, capability selection, and every selected capability's architecture generation |
 | `npm run solution -- --input path/to/file.md --output path/to/output` | Write output to a specific directory |
-| `npm run solution -- --input path/to/file.md --codebase path/to/repo --system-id SYS-001` | Also run read-only repository evidence analysis, mapped to one explicit system |
-| `npm run solution -- ... --modernization-export generic-java-replatform` | Also generate a modernization migration recipe (requires `--codebase`/`--system-id`; never runs without this explicit flag) |
-| `npm run analyze:codebase -- --path path/to/repo` | Standalone repository inventory — no solution/system mapping required |
+| `npm run solution -- --input path/to/file.md --codebase path/to/repo --system-id SYS-001` | Also run read only repository evidence analysis, mapped to one explicit system |
+| `npm run solution -- ... --modernization-export generic-java-replatform` | Also generate a modernization migration recipe (requires `--codebase` and `--system-id`; it never runs without this explicit flag) |
+| `npm run analyze:codebase -- --path path/to/repo` | Standalone repository inventory, with no solution or system mapping required |
 | `npm run reference:validate` | Run all three canonical reference solutions and check them against semantic invariants |
 
 ### Website Generation
@@ -240,8 +244,8 @@ output/blueprint/website-blueprint.v1.json
 | `npm run validate` | Validate the input file and the last generated blueprint |
 | `npm run build:site` | Generate Next.js app and export to `output/static-site/` |
 | `npm run build:site -- --blueprint path/to/blueprint.json` | Build from a specific blueprint file |
-| `npm run build:site:stitch` | Generate AI-designed site via Google Stitch MCP |
-| `npm run audit` | Run 14-point HTML accessibility + SEO audit; write HTML reports |
+| `npm run build:site:stitch` | Generate AI designed site via Google Stitch MCP |
+| `npm run audit` | Run 14 point HTML accessibility + SEO audit; write HTML reports |
 
 ### Both
 
@@ -322,7 +326,7 @@ See the `examples/` directory for complete working inputs: `beauty-salon.md`, `m
 
 ### Blueprint
 
-`output/blueprint/website-blueprint.v1.json` is a versioned, Zod-validated JSON document with eight sections:
+`output/blueprint/website-blueprint.v1.json` is a versioned, Zod validated JSON document with eight sections:
 
 | Section | Content |
 |---|---|
@@ -330,27 +334,27 @@ See the `examples/` directory for complete working inputs: `beauty-salon.md`, `m
 | `business` | All extracted business data: hours, services, contact, socials, booking |
 | `pages` | Page definitions with purpose, sections, CTAs, and component hints |
 | `ux` | Color palette, typography, navigation, header/footer config, hero visual spec |
-| `seo` | Site title, per-page meta, JSON-LD fields, Open Graph values |
-| `accessibility` | WCAG 2.1 AA target, 30-item QA checklist, landmark + ARIA requirements |
+| `seo` | Site title, per page meta, JSON-LD fields, Open Graph values |
+| `accessibility` | WCAG 2.1 AA target, 30 item QA checklist, landmark + ARIA requirements |
 | `frontend` | Component map, routes, asset plan, unsupported features list |
 | `qa` | Lighthouse targets, known limitations, expected report list |
 
 ### Template site (`output/static-site/`)
 
-Generated by `npm run build:site`. A Next.js 14 App Router project built from 12 pre-built accessible React components in `site-template/components/`. Pure HTML/CSS/JS export. No Node.js runtime required.
+Generated by `npm run build:site`. It's a Next.js 14 App Router project, built from 12 prebuilt, accessible React components in `site-template/components/`, exported as pure HTML, CSS, and JS. No Node.js runtime required.
 
 ### Stitch site (`output/stitch-site/`)
 
-Generated by `npm run build:site:stitch`. Each page is AI-designed by Google Stitch using Gemini, then post-processed and reviewed by the framework's SEO and Accessibility agents before being written to disk.
+Generated by `npm run build:site:stitch`. Each page is designed by Google Stitch using Gemini, then post processed and reviewed by the framework's SEO and Accessibility agents before it's written to disk.
 
 ### Reports (`output/reports/`)
 
 | Report | Generator | Contents |
 |---|---|---|
-| `accessibility-report.html` | `npm run audit` | WCAG 2.1 AA checklist, per-page HTML analysis |
-| `seo-report.html` | `npm run audit` | Per-page meta, structured data, Open Graph audit |
+| `accessibility-report.html` | `npm run audit` | WCAG 2.1 AA checklist, per page HTML analysis |
+| `seo-report.html` | `npm run audit` | Per page meta, structured data, Open Graph audit |
 | `final-report.html` | `npm run audit` | Pipeline summary, route table, next steps |
-| `stitch-review-report.html` | `npm run build:site:stitch` | Per-page: auto-patches applied, manual findings |
+| `stitch-review-report.html` | `npm run build:site:stitch` | Per page: automatic patches applied, manual findings |
 
 ---
 
@@ -400,26 +404,26 @@ stitch-review-reporter        → output/reports/stitch-review-report.html
 After Stitch generates HTML, two agents run on each page before it is written to disk:
 
 **SEO Agent (`stitch-seo.agent.ts`)**
-- Patches: rewrites JSON-LD with correct `@type` (e.g. `BeautySalon`), absolute URL, and Schema.org-compliant opening hours (24hr format, individual days)
-- Flags: missing `og:image`, relative canonical URL, meta description that contains internal blueprint text, title exceeding 60 chars, dead links to routes not in the blueprint
+- Patches: rewrites the JSON-LD with the correct `@type` (for example `BeautySalon`), an absolute URL, and Schema.org compliant opening hours (24 hour format, individual days)
+- Flags: a missing `og:image`, a relative canonical URL, a meta description that contains internal blueprint text, a title over 60 characters, and dead links to routes not in the blueprint
 
 **Accessibility Agent (`stitch-a11y.agent.ts`)**
-- Patches: converts `data-alt` → `alt` on all `<img>` elements, adds `aria-label` to unlabelled `<nav>`, adds `aria-label="Open menu"` to the icon-only mobile menu button, replaces `focus:outline-none` with a visible focus ring, adds `role="img"` and `aria-label` to star rating groups, adds `aria-hidden="true"` to decorative material icons
-- Flags: footer links without a `<nav>` landmark, any remaining images without alt text, multiple `focus:outline-none` occurrences
+- Patches: converts `data-alt` to `alt` on every `<img>` element, adds `aria-label` to an unlabelled `<nav>`, adds `aria-label="Open menu"` to the icon only mobile menu button, replaces `focus:outline-none` with a visible focus ring, adds `role="img"` and `aria-label` to star rating groups, and adds `aria-hidden="true"` to decorative material icons
+- Flags: footer links without a `<nav>` landmark, any remaining images without alt text, and repeated `focus:outline-none` occurrences
 
-All patches are **attribute-level only**: no structural changes, no content edits. The review report shows exactly what was patched automatically and what requires human review before deploying.
+All patches are **attribute level only**: no structural changes, no content edits. The review report shows exactly what was patched automatically and what requires human review before deploying.
 
 ### Template vs. Stitch: choosing a generator
 
 | | Template (`build:site`) | Stitch (`build:site:stitch`) |
 |---|---|---|
 | API key required | No | Yes (STITCH_API_KEY) |
-| Visual quality | Consistent, predictable | Higher: AI-generated layouts |
+| Visual quality | Consistent, predictable | Higher: AI generated layouts |
 | Control | Full | Partial: Stitch decides visual detail |
 | Speed | Fast (no network calls) | Slower (~30–90s per page) |
 | Offline use | Yes | No |
 | Deterministic output | Yes | No: reruns differ |
-| Post-generation review | Via `npm run audit` | Built-in (agents run automatically) |
+| Post generation review | Via `npm run audit` | Built in (agents run automatically) |
 
 ---
 
@@ -452,15 +456,15 @@ The framework's Zod schema validates the agent output regardless of whether it c
 
 ## Industry Support
 
-The UX and SEO agents apply industry-specific defaults for color palette, typography, page strategy, JSON-LD schema type, and gallery content. The Stitch SEO agent uses the same mapping to set the correct `@type` in the generated JSON-LD.
+The UX and SEO agents apply industry specific defaults for color palette, typography, page strategy, JSON-LD schema type, and gallery content. The Stitch SEO agent uses the same mapping to set the correct `@type` in the generated JSON-LD.
 
 | Industry keyword | Schema.org type | Palette style | Gallery seeds |
 |---|---|---|---|
 | `beauty`, `salon`, `hair`, `nail`, `lash` | `BeautySalon` | Warm rose + cream gradient | Hair, nails, skincare |
-| `wellness`, `massage`, `yoga`, `spa` | `HealthAndBeautyBusiness` | Soft green + warm off-white | Massage, classes, body |
+| `wellness`, `massage`, `yoga`, `spa` | `HealthAndBeautyBusiness` | Soft green + warm off white | Massage, classes, body |
 | `medical`, `clinic`, `dental`, `doctor` | `MedicalClinic` | Clean white + navy | Facility, team, technology |
 | `restaurant`, `cafe`, `bistro`, `dining` | `Restaurant` | Warm cream + tan gradient | Food, drinks, ambiance |
-| *(any other)* | `LocalBusiness` | Neutral blue-grey | Services, team, facility |
+| *(any other)* | `LocalBusiness` | Neutral blue grey | Services, team, facility |
 
 ---
 
@@ -482,22 +486,22 @@ The hero background is derived from `ux.heroStyle` (a structured field the UX Ag
 
 In the Stitch generator, these same values are embedded directly into each page's generation prompt so Stitch stays constrained to the blueprint's brand.
 
-Gallery images use [picsum.photos](https://picsum.photos) in the template generator. The Stitch generator uses Gemini-generated images via Google's CDN. Replace the URLs before going live.
+Gallery images use [picsum.photos](https://picsum.photos) in the template generator. The Stitch generator uses Gemini generated images via Google's CDN. Replace the URLs before going live.
 
 ---
 
 ## What This Does NOT Include
 
-### Specification versus runtime (framework-wide)
+### Specification versus runtime (framework wide)
 
 Every capability in this framework generates a **specification or proposal**, never a running system. None of the following exist anywhere in Stitchfy:
 
-- A live workflow runtime — `WorkflowDefinition` is never executed
-- A live integration provider — no HTTP/webhook/JDBC call is ever made to a real external system
-- LLM/model execution — `AIAgentDefinition` is a tool/permission/guardrail specification, not a running agent; no model API is called
-- Cloud provisioning — `CloudArchitecture` never creates a server, container, or billable resource; no cloud SDK/Terraform/CloudFormation call exists
-- Monitoring-provider deployment — `ObservabilityArchitecture` never configures a real Datadog/Grafana/CloudWatch/etc. instance
-- Automatic patch or source-code transformation — `ModernizationExportBundle` is a reviewable proposal; no source file is ever written to
+- A live workflow runtime: `WorkflowDefinition` is never executed
+- A live integration provider: no HTTP, webhook, or JDBC call is ever made to a real external system
+- LLM or model execution: `AIAgentDefinition` is a tool, permission, and guardrail specification, not a running agent, and no model API is called
+- Cloud provisioning: `CloudArchitecture` never creates a server, container, or billable resource, and no cloud SDK, Terraform, or CloudFormation call exists
+- Monitoring provider deployment: `ObservabilityArchitecture` never configures a real Datadog, Grafana, CloudWatch, or similar instance
+- Automatic patching or source code transformation: `ModernizationExportBundle` is a reviewable proposal, and no source file is ever written to
 
 See `docs/reference/END_TO_END.md`'s "Artifact taxonomy" for the full architecture/evidence/scaffolding/runtime layering, and `docs/architecture/ROADMAP.md` for the specific deferred tracks (Runtime Integration Providers, AI Agent Runtime, Cloud/Observability Runtime Providers, Reviewed Source Transformation) that would eventually fill the runtime layer.
 
@@ -512,7 +516,7 @@ By design, the website generator produces **informational static websites only**
 - CRM or email marketing integrations
 - HIPAA-grade forms or protected health information handling
 
-Booking links point to third-party platforms the business already uses (Vagaro, Mindbody, OpenTable, etc.). Stitchfy generates the page that links out, not the booking engine itself.
+Booking links point to third party platforms the business already uses (Vagaro, Mindbody, OpenTable, etc.). Stitchfy generates the page that links out, not the booking engine itself.
 
 ### Capability status
 
@@ -522,7 +526,7 @@ Booking links point to third-party platforms the business already uses (Vagaro, 
 | Workflow Automation | Yes | No vendor exporter yet | No |
 | Integrations | Yes | `generic-rest-typescript` | No |
 | AI Agents | Yes | Deferred (Phase 6.5) | No |
-| Security & Governance | Yes | N/A (cross-cutting) | No |
+| Security & Governance | Yes | N/A (cross cutting) | No |
 | Observability | Yes | Deferred (Phase 7C) | No |
 | Cloud / Deployment | Yes | Deferred (Phase 7C) | No |
 | Legacy Modernization | Yes | `generic-java-replatform` | No source mutation (proposals only) |
@@ -550,19 +554,13 @@ vercel --prebuilt output/stitch-site
 
 ## Architecture History
 
-Stitchfy began as a website-only generator and evolved into the broader solution-engineering framework described above: website generation became one capability among eight, selected via a capability registry rather than hardcoded into the pipeline. The website pipeline documented earlier in this README is unchanged and keeps working exactly as described. See [docs/architecture/ARCHITECTURE.md](docs/architecture/ARCHITECTURE.md) for the full design rationale and [docs/architecture/ROADMAP.md](docs/architecture/ROADMAP.md) for the phase-by-phase history and what remains deferred.
+Stitchfy began as a website only generator and grew into the broader solution engineering framework described above: website generation became one capability among eight, selected through a capability registry rather than hardcoded into the pipeline. The website pipeline documented earlier in this README hasn't changed and still works exactly as described. See [docs/architecture/ARCHITECTURE.md](docs/architecture/ARCHITECTURE.md) for the full design rationale and [docs/architecture/ROADMAP.md](docs/architecture/ROADMAP.md) for the phase by phase history and what's still deferred.
 
-Stitchfy has completed an Architecture Stabilization / Release Candidate review (RC1) and a Stable Contract Promotion review (RC2): [docs/architecture/PUBLIC_CONTRACTS.md](docs/architecture/PUBLIC_CONTRACTS.md) classifies what's stable vs. experimental, [docs/architecture/COMPATIBILITY.md](docs/architecture/COMPATIBILITY.md) defines the compatibility/deprecation policy, and [docs/architecture/RELEASE_CANDIDATE.md](docs/architecture/RELEASE_CANDIDATE.md) has the full gate-by-gate result. Upgrading from an earlier version? See [docs/releases/2.2.0.md](docs/releases/2.2.0.md) and [docs/releases/UPGRADING_FROM_2_1.md](docs/releases/UPGRADING_FROM_2_1.md).
+Stitchfy has completed an Architecture Stabilization / Release Candidate review (RC1) and a Stable Contract Promotion review (RC2). [docs/architecture/PUBLIC_CONTRACTS.md](docs/architecture/PUBLIC_CONTRACTS.md) classifies what's stable versus experimental, [docs/architecture/COMPATIBILITY.md](docs/architecture/COMPATIBILITY.md) defines the compatibility and deprecation policy, and [docs/architecture/RELEASE_CANDIDATE.md](docs/architecture/RELEASE_CANDIDATE.md) has the full result, gate by gate. Upgrading from an earlier version? See [docs/releases/2.2.0.md](docs/releases/2.2.0.md) and [docs/releases/UPGRADING_FROM_2_1.md](docs/releases/UPGRADING_FROM_2_1.md).
 
 ### Codebase analysis (advanced)
 
-Legacy Modernization can optionally be enriched with real, read-only, local
-repository evidence (Maven/npm/Java) — see
-[docs/architecture/CODEBASE_ANALYSIS.md](docs/architecture/CODEBASE_ANALYSIS.md)
-for the full trust boundary and analyzer model, and
-[docs/reference/LEGACY_JAVA_MODERNIZATION.md](docs/reference/LEGACY_JAVA_MODERNIZATION.md)
-for a complete worked example including the `generic-java-replatform`
-export adapter.
+Legacy Modernization can optionally be enriched with real, read only, local repository evidence (Maven, npm, Java). See [docs/architecture/CODEBASE_ANALYSIS.md](docs/architecture/CODEBASE_ANALYSIS.md) for the full trust boundary and analyzer model, and [docs/reference/LEGACY_JAVA_MODERNIZATION.md](docs/reference/LEGACY_JAVA_MODERNIZATION.md) for a complete worked example including the `generic-java-replatform` export adapter.
 
 ---
 
@@ -643,7 +641,7 @@ stitchfy/
 └── package.json
 ```
 
-The tree above is the original website-pipeline layout and is still fully accurate for it. The Solution Architecture pipeline (see "Architecture at a glance" above) added, additively, alongside it:
+The tree above is the original website pipeline layout, and it's still fully accurate for it. The Solution Architecture pipeline (see "Architecture at a glance" above) was added alongside it, without changing anything shown above:
 
 ```
 stitchfy/

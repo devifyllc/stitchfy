@@ -12,6 +12,7 @@ All notable changes to Stitchfy are documented here. See `docs/releases/` for fu
 - Three canonical, end-to-end reference solutions (`examples/reference/`) and `npm run reference:validate`.
 - Release/contract tooling: `npm run rc:validate`, `npm run release:validate`, `npm run test`, `npm run test:contracts`.
 - First formal set of STABLE contracts: `WebsiteBlueprint` v1, `SolutionBlueprint` v1, `npm run stitchfy`, `npm run solution`, `npm run analyze:codebase` — see `docs/architecture/PUBLIC_CONTRACTS.md`.
+- Solution Report (`output/.../reports/solution-report.html`): a self-contained, interactive HTML projection of `solution-blueprint.v1.json`, generated automatically at the end of every `npm run solution` run — Capabilities and Implementation Backlog views, full evidence/traceability drill-down, no separate source of truth. See `docs/architecture/ARCHITECTURE.md` ("Solution Report").
 
 ### Changed
 

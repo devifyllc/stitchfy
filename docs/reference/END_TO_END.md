@@ -82,9 +82,13 @@ Produces, under `output/reference/order-platform/`:
 | Directory | Contents |
 |---|---|
 | `context/` | `business-context.json` — the derived `BusinessContext` |
-| `blueprints/` | `solution-blueprint.v1.json` — the full validated `SolutionBlueprint` |
+| `blueprints/` | `solution-blueprint.v1.json` — the full validated `SolutionBlueprint`, the canonical machine-readable contract |
 | `artifacts/` | Per-capability generated JSON/Markdown, plus any exporter scaffolding |
-| `reports/` | `solution-plan.md` — the human-readable capability-selection report |
+| `reports/` | `solution-plan.md` (capability-selection rationale) and `solution-report.html` (interactive human-readable projection of the blueprint — open directly in a browser) |
+
+`solution-report.html` adds nothing `solution-blueprint.v1.json` doesn't
+already contain — see `docs/architecture/ARCHITECTURE.md` ("Solution
+Report") for how the two relate.
 
 ## Artifact taxonomy
 
