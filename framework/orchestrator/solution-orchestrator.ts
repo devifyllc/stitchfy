@@ -31,6 +31,7 @@ import { runCapability } from "./capability-runner.js";
 import { writeBusinessContextArtifact } from "../core/business-context-writer.js";
 import { writeSolutionBlueprintArtifact } from "../core/solution-blueprint-writer.js";
 import { renderSolutionPlanReport, writeSolutionPlanReport } from "../reports/render-solution-plan-report.js";
+import { writeSolutionReport } from "../reports/solution-report/index.js";
 import { writeImplementationArtifacts } from "../core/artifact-writer.js";
 import { logAuditEvent } from "../governance/audit/audit-logger.js";
 import type { ProjectMeta } from "../schemas/blueprint.types.js";
@@ -319,6 +320,17 @@ export async function runSolutionPipeline(
 
   context.stage = "writing";
   ok(`${writeResult.filePath} (${writeResult.sizeKb} KB)`);
+
+  // Human-readable projection of the same blueprint (never a second source of
+  // truth — see docs/architecture/ARCHITECTURE.md "Solution Report"). Failing
+  // to render it never fails the pipeline: the canonical JSON contract above
+  // already succeeded.
+  const reportResult = writeSolutionReport(context.solutionBlueprint as SolutionBlueprint, outputDir);
+  if (reportResult.ok) {
+    ok(`${reportResult.filePath}`);
+  } else {
+    warn(`Solution report generation failed: ${reportResult.error}`);
+  }
 
   context.stage = "complete";
   context.completedAt = new Date().toISOString();
