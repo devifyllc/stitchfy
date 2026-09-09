@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solution Report — Northwind Order Platform</title>
+<style>
+:root {
+  --bg: #f5f6f8;
+  --surface: #ffffff;
+  --surface-alt: #eef0f3;
+  --border: #dde1e7;
+  --text: #14181f;
+  --text-muted: #5b6472;
+  --header-bg: #14181f;
+  --header-text: #e8eaf0;
+  --accent: #2f6fed;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --positive-bg: #e3f3e8; --positive-text: #1e7e42;
+  --negative-bg: #fbe7e4; --negative-text: #a13a2d;
+  --warning-bg: #fdf2d6; --warning-text: #8a5a00;
+  --neutral-bg: #eceef1; --neutral-text: #4b5563;
+  --info-bg: #e6edfc; --info-text: #2454b0;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #14171c; --surface: #1b1f26; --surface-alt: #222630; --border: #2c313a;
+    --text: #e6e8eb; --text-muted: #98a1ad; --header-bg: #0c0e12; --header-text: #e6e8eb;
+    --positive-bg: #123322; --positive-text: #6fd897;
+    --negative-bg: #3a1f1c; --negative-text: #f0958a;
+    --warning-bg: #3a2f10; --warning-text: #e8c163;
+    --neutral-bg: #262b33; --neutral-text: #b3bac4;
+    --info-bg: #1a2a4a; --info-text: #9db8f0;
+  }
+}
+* { box-sizing: border-box; }
+html { color-scheme: light dark; }
+body { margin: 0; font-family: var(--sans); background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.5; }
+code, .chip code { font-family: var(--mono); font-size: 0.85em; }
+a { color: var(--accent); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.dash { color: var(--text-muted); }
+
+.page-header { background: var(--header-bg); color: var(--header-text); padding: 1.5rem 2rem; }
+.ph-title-row { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+.page-header h1 { margin: 0; font-size: 1.5rem; }
+.meta-grid { display: flex; flex-wrap: wrap; gap: 1.5rem; margin: 0.75rem 0 0; padding: 0; }
+.meta-grid div { display: flex; flex-direction: column; gap: 0.15rem; }
+.meta-grid dt { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.6; }
+.meta-grid dd { margin: 0; font-size: 0.85rem; }
+.goal-summary { margin: 1rem 0 0; opacity: 0.85; max-width: 70ch; font-size: 0.9rem; }
+
+main { max-width: 1200px; margin: 0 auto; padding: 1.5rem 2rem 4rem; }
+
+.summary { margin-bottom: 1.5rem; }
+.summary h2 { font-size: 1rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); margin: 0 0 0.75rem; }
+.stat-tiles { list-style: none; display: flex; flex-wrap: wrap; gap: 0.75rem; margin: 0; padding: 0; }
+.stat-tile { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 0.6rem 1rem; min-width: 110px; display: flex; flex-direction: column; }
+.stat-value { font-size: 1.3rem; font-weight: 700; }
+.stat-label { font-size: 0.75rem; color: var(--text-muted); }
+
+.tabs { display: flex; gap: 0.25rem; border-bottom: 2px solid var(--border); margin-bottom: 1.25rem; }
+.tabs button { font: inherit; background: none; border: none; padding: 0.6rem 1rem; cursor: pointer; color: var(--text-muted); border-bottom: 2px solid transparent; margin-bottom: -2px; }
+.tabs button[aria-selected="true"] { color: var(--text); border-bottom-color: var(--accent); font-weight: 600; }
+
+.pill { display: inline-block; padding: 0.1rem 0.55rem; border-radius: 999px; font-size: 0.72rem; font-weight: 600; white-space: nowrap; }
+.pill-positive { background: var(--positive-bg); color: var(--positive-text); }
+.pill-negative { background: var(--negative-bg); color: var(--negative-text); }
+.pill-warning { background: var(--warning-bg); color: var(--warning-text); }
+.pill-neutral { background: var(--neutral-bg); color: var(--neutral-text); }
+.pill-info { background: var(--info-bg); color: var(--info-text); }
+
+.capability-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 0.9rem; }
+.capability-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 0.9rem 1rem; }
+.capability-card summary { cursor: pointer; list-style: none; }
+.capability-card summary::-webkit-details-marker { display: none; }
+.cc-summary-main { display: flex; justify-content: space-between; align-items: baseline; gap: 0.5rem; flex-wrap: wrap; }
+.cc-name { font-weight: 700; font-size: 1rem; }
+.cc-pills { display: flex; gap: 0.3rem; flex-wrap: wrap; }
+.cc-oneliner { margin: 0.4rem 0 0; color: var(--text-muted); font-size: 0.85rem; }
+.cc-metrics { margin-top: 0.5rem; display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.chip-metric { background: var(--surface-alt); border-radius: 4px; padding: 0.1rem 0.45rem; font-size: 0.75rem; color: var(--text-muted); }
+.cc-body { margin-top: 0.85rem; padding-top: 0.75rem; border-top: 1px solid var(--border); }
+.card-block { margin-bottom: 0.75rem; }
+.card-block h4 { margin: 0 0 0.35rem; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); }
+.reason-list { margin: 0; padding-left: 1.1rem; font-size: 0.85rem; }
+.related-row { display: flex; gap: 0.5rem; align-items: baseline; flex-wrap: wrap; margin-bottom: 0.3rem; font-size: 0.82rem; }
+.related-label { color: var(--text-muted); min-width: 90px; }
+.implemented-note, .architecture-status, .error-note { font-size: 0.8rem; color: var(--text-muted); }
+.error-note { color: var(--negative-text); }
+
+.chip-list { display: inline-flex; flex-wrap: wrap; gap: 0.3rem; }
+.chip { display: inline-flex; align-items: center; background: var(--surface-alt); border-radius: 4px; padding: 0.05rem 0.4rem; font-size: 0.78rem; text-decoration: none; color: var(--text); }
+.chip:hover { background: var(--info-bg); }
+.chip-static { color: var(--text-muted); }
+
+.evidence-list { margin: 0.3rem 0 0; padding-left: 1.1rem; font-size: 0.78rem; color: var(--text-muted); }
+.evidence-kind { text-transform: uppercase; font-size: 0.65rem; letter-spacing: 0.03em; }
+.evidence-type { opacity: 0.8; }
+
+.artifact-list { margin: 0; padding-left: 1.1rem; font-size: 0.82rem; }
+
+.backlog-toolbar { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.75rem; align-items: center; }
+.backlog-toolbar input, .backlog-toolbar select { font: inherit; padding: 0.4rem 0.6rem; border: 1px solid var(--border); border-radius: 6px; background: var(--surface); color: var(--text); }
+.backlog-toolbar input { flex: 1 1 220px; }
+#result-count { font-size: 0.8rem; color: var(--text-muted); margin-left: auto; }
+
+.table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 8px; }
+table { width: 100%; border-collapse: collapse; font-size: 0.85rem; background: var(--surface); }
+th { text-align: left; background: var(--surface-alt); padding: 0.55rem 0.7rem; font-weight: 600; white-space: nowrap; position: sticky; top: 0; }
+td { padding: 0.5rem 0.7rem; border-top: 1px solid var(--border); vertical-align: top; }
+.row-toggle { font: inherit; background: none; border: none; padding: 0; color: var(--accent); cursor: pointer; text-align: left; }
+.row-toggle:hover { text-decoration: underline; }
+.detail-row td { background: var(--surface-alt); }
+.detail-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 0.6rem 1.5rem; margin: 0; }
+.detail-field dt { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); margin-bottom: 0.15rem; }
+.detail-field dd { margin: 0; font-size: 0.85rem; }
+
+.appendix { margin-top: 2rem; }
+.appendix summary { cursor: pointer; }
+.artifact-groups { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; }
+.artifact-group { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem 0.9rem; }
+.artifact-group h3 { margin: 0 0 0.4rem; font-size: 0.9rem; }
+
+.empty-note { color: var(--text-muted); font-style: italic; }
+
+.report-footer { text-align: center; padding: 2rem; font-size: 0.78rem; color: var(--text-muted); border-top: 1px solid var(--border); margin-top: 2rem; }
+
+@media print {
+  .backlog-toolbar, .tabs { display: none; }
+  #panel-capabilities[hidden], #panel-backlog[hidden] { display: block !important; }
+  .capability-card, details { break-inside: avoid; }
+  a { color: inherit; text-decoration: none; }
+  body { background: #fff; color: #000; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
+</style>
+</head>
+<body>
+
+<header class="page-header">
+  <div class="ph-title-row">
+    <h1>Northwind Order Platform</h1>
+    <span class="pill pill-info">Retail software</span>
+  </div>
+  <dl class="meta-grid">
+    <div><dt>Source</dt><dd><code>order-platform.md</code></dd></div>
+    <div><dt>Framework</dt><dd>Stitchfy v2.2.0</dd></div>
+    <div><dt>Blueprint schema</dt><dd>v1.0</dd></div>
+    <div><dt>Generated</dt><dd>Sep 8, 2026, 7:14 PM</dd></div>
+  </dl>
+  <p class="goal-summary">Order submission problems are detected and addressed quickly</p>
+</header>
+<main>
+
+<section class="summary" aria-labelledby="summary-heading">
+  <h2 id="summary-heading">Executive Summary</h2>
+  <ul class="stat-tiles"><li class="stat-tile"><span class="stat-value">8</span><span class="stat-label">assessed capabilities</span></li><li class="stat-tile"><span class="stat-value">6</span><span class="stat-label">selected capabilities</span></li><li class="stat-tile"><span class="stat-value">1</span><span class="stat-label">discovered system</span></li><li class="stat-tile"><span class="stat-value">6</span><span class="stat-label">requirements</span></li><li class="stat-tile"><span class="stat-value">1</span><span class="stat-label">integration</span></li><li class="stat-tile"><span class="stat-value">1</span><span class="stat-label">risk</span></li><li class="stat-tile"><span class="stat-value">10</span><span class="stat-label">open questions</span></li><li class="stat-tile"><span class="stat-value">28</span><span class="stat-label">generated artifacts</span></li></ul>
+</section>
+
+<div class="tabs" role="tablist" aria-label="Solution report views">
+  <button type="button" role="tab" id="tab-capabilities" aria-selected="true" aria-controls="panel-capabilities">Capabilities</button>
+  <button type="button" role="tab" id="tab-backlog" aria-selected="false" aria-controls="panel-backlog">Implementation Backlog (34)</button>
+</div>
+
+<section id="panel-capabilities" role="tabpanel" aria-labelledby="tab-capabilities">
+<div class="capability-grid">
+<details class="capability-card" id="capability-website">
+  <summary>
+    <div class="cc-summary-main">
+      <span class="cc-name">Website</span>
+      <span class="cc-pills"><span class="pill pill-positive">recommended</span> <span class="pill pill-neutral">low confidence</span> <span class="pill pill-positive">executed</span></span>
+    </div>
+    <p class="cc-oneliner">Executed</p>
+    
+  </summary>
+  <div class="cc-body">
+    
+    
+    
+    <div class="card-block"><h4>Why</h4><ul class="reason-list"><li>Website matched its legacy keyword heuristic against BusinessContext. Not yet migrated to structured assessment — see docs/architecture/ROADMAP.md.</li></ul></div>
+    
+    
+    
+  </div>
+</details>
+
+<details class="capability-card" id="capability-workflow-automation">
+  <summary>
+    <div class="cc-summary-main">
+      <span class="cc-name">Workflow Automation</span>
+      <span class="cc-pills"><span class="pill pill-warning">needs-review</span> <span class="pill pill-neutral">medium confidence</span> <span class="pill pill-positive">executed</span></span>
+    </div>
+    <p class="cc-oneliner">Executed</p>
+    <div class="cc-metrics"><span class="chip-metric">1 workflow</span></div>
+  </summary>
+  <div class="cc-body">
+    
+    
+    <p class="implemented-note"><strong>Generated &amp; validated:</strong> Yes — indicates Stitchfy produced and validated an architecture specification for this capability, not that it was deployed, executed, or production-verified.</p>
+    <div class="card-block"><h4>Why</h4><ul class="reason-list"><li>Process &quot;Order Submission&quot; involves 2 actors — a hand-off between people.<ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>PROC-001</code> — Order Submission <span class="evidence-type">(process)</span></li><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>ACTOR-003</code> — Customer <span class="evidence-type">(actor)</span></li><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>ACTOR-002</code> — Fulfillment Coordinator <span class="evidence-type">(actor)</span></li></ul></li><li>Requirement &quot;API keys and customer order payloads must not appear in operational logs.&quot; is typed &quot;integration&quot;.<ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>REQ-005</code> — API keys and customer order payloads must not appear in operational logs. <span class="evidence-type">(requirement)</span></li></ul></li></ul></div>
+    <div class="card-block"><h4>Related</h4><div class="related-row"><span class="related-label">Requirements</span><span class="chip-list"><a class="chip" href="#entity-REQ-005" title="API keys and customer order payloads must not appear in operational logs."><code>REQ-005</code></a></span></div><div class="related-row"><span class="related-label">Processes</span><span class="chip-list"><span class="chip chip-static" title="Order Submission"><code>PROC-001</code></span></span></div></div>
+    
+    <div class="card-block"><h4>Artifacts</h4><ul class="artifact-list"><li><code>artifacts/workflow-automation/order-submission.workflow.json</code></li><li><code>artifacts/workflow-automation/order-submission.workflow.md</code></li></ul></div>
+  </div>
+</details>
+
+<details class="capability-card" id="capability-integrations">
+  <summary>
+    <div class="cc-summary-main">
+      <span class="cc-name">Integrations</span>
+      <span class="cc-pills"><span class="pill pill-positive">recommended</span> <span class="pill pill-neutral">high confidence</span> <span class="pill pill-positive">executed</span></span>
+    </div>
+    <p class="cc-oneliner">Executed</p>
+    <div class="cc-metrics"><span class="chip-metric">1 integration</span> <span class="chip-metric">1 export bundle</span></div>
+  </summary>
+  <div class="cc-body">
+    
+    
+    <p class="implemented-note"><strong>Generated &amp; validated:</strong> Yes — indicates Stitchfy produced and validated an architecture specification for this capability, not that it was deployed, executed, or production-verified.</p>
+    <div class="card-block"><h4>Why</h4><ul class="reason-list"><li>Discovery lists an explicit integration need: &quot;The Order Processor submits orders to the Fulfillment API.&quot;.<ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>INTNEED-001</code> — The Order Processor submits orders to the Fulfillment API. <span class="evidence-type">(integration)</span></li></ul></li><li>Requirement &quot;API keys and customer order payloads must not appear in operational logs.&quot; is typed &quot;integration&quot;.<ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>REQ-005</code> — API keys and customer order payloads must not appear in operational logs. <span class="evidence-type">(requirement)</span></li></ul></li></ul></div>
+    <div class="card-block"><h4>Related</h4><div class="related-row"><span class="related-label">Requirements</span><span class="chip-list"><a class="chip" href="#entity-REQ-005" title="API keys and customer order payloads must not appear in operational logs."><code>REQ-005</code></a></span></div></div>
+    
+    <div class="card-block"><h4>Artifacts</h4><ul class="artifact-list"><li><code>artifacts/integrations/the-order-processor-submits-orders-to-the-fulfillment-api.integration.json</code></li><li><code>artifacts/integrations/the-order-processor-submits-orders-to-the-fulfillment-api.integration.md</code></li><li><code>artifacts/integrations/the-order-processor-submits-orders-to-the-fulfillment-api.openapi.json</code></li><li><code>artifacts/integrations/exporters/fulfillment-api/generic-rest-typescript/client.ts</code></li><li><code>artifacts/integrations/exporters/fulfillment-api/generic-rest-typescript/types.ts</code></li><li><code>artifacts/integrations/exporters/fulfillment-api/generic-rest-typescript/config.ts</code></li><li><code>artifacts/integrations/exporters/fulfillment-api/generic-rest-typescript/integration.manifest.json</code></li><li><code>artifacts/integrations/exporters/fulfillment-api/generic-rest-typescript/README.md</code></li></ul></div>
+  </div>
+</details>
+
+<details class="capability-card" id="capability-ai-agents">
+  <summary>
+    <div class="cc-summary-main">
+      <span class="cc-name">AI Agents</span>
+      <span class="cc-pills"><span class="pill pill-negative">not-recommended</span> <span class="pill pill-neutral">high confidence</span> <span class="pill pill-neutral">skipped</span></span>
+    </div>
+    <p class="cc-oneliner">Not applicable to this business context</p>
+    
+  </summary>
+  <div class="cc-body">
+    
+    
+    
+    
+    
+    
+    
+  </div>
+</details>
+
+<details class="capability-card" id="capability-security-governance">
+  <summary>
+    <div class="cc-summary-main">
+      <span class="cc-name">Security &amp; Governance</span>
+      <span class="cc-pills"><span class="pill pill-positive">recommended</span> <span class="pill pill-neutral">medium confidence</span> <span class="pill pill-positive">executed</span></span>
+    </div>
+    <p class="cc-oneliner">Executed</p>
+    <div class="cc-metrics"><span class="chip-metric">2 security requirements</span> <span class="chip-metric">1 trust boundary</span> <span class="chip-metric">2 data protection requirements</span> <span class="chip-metric">1 risk</span></div>
+  </summary>
+  <div class="cc-body">
+    
+    
+    <p class="implemented-note"><strong>Generated &amp; validated:</strong> Yes — indicates Stitchfy produced and validated an architecture specification for this capability, not that it was deployed, executed, or production-verified.</p>
+    <div class="card-block"><h4>Why</h4><ul class="reason-list"><li>Discovery flagged an unresolved gap relevant to security/governance: &quot;Data&quot;.<ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>GAP-004</code> — Data <span class="evidence-type">(information-gap)</span></li></ul></li></ul></div>
+    
+    
+    <div class="card-block"><h4>Artifacts</h4><ul class="artifact-list"><li><code>artifacts/security-governance/security-architecture.json</code></li><li><code>artifacts/security-governance/security-architecture.md</code></li><li><code>artifacts/security-governance/risk-register.json</code></li><li><code>artifacts/security-governance/risk-register.md</code></li><li><code>artifacts/security-governance/governance-plan.json</code></li><li><code>artifacts/security-governance/governance-plan.md</code></li></ul></div>
+  </div>
+</details>
+
+<details class="capability-card" id="capability-observability">
+  <summary>
+    <div class="cc-summary-main">
+      <span class="cc-name">Observability</span>
+      <span class="cc-pills"><span class="pill pill-positive">recommended</span> <span class="pill pill-neutral">high confidence</span> <span class="pill pill-positive">executed</span></span>
+    </div>
+    <p class="cc-oneliner">Executed</p>
+    <div class="cc-metrics"><span class="chip-metric">2 telemetry requirements</span> <span class="chip-metric">6 signals</span> <span class="chip-metric">1 alert requirement</span> <span class="chip-metric">2 dashboards</span> <span class="chip-metric">1 operational objective</span></div>
+  </summary>
+  <div class="cc-body">
+    
+    <p class="architecture-status">Architecture status: <span class="pill pill-warning">needs-review</span></p>
+    <p class="implemented-note"><strong>Generated &amp; validated:</strong> Yes — indicates Stitchfy produced and validated an architecture specification for this capability, not that it was deployed, executed, or production-verified.</p>
+    <div class="card-block"><h4>Why</h4><ul class="reason-list"><li>Requirement &quot;Order-processing audit trails must be retained.&quot; describes an explicit operational concern.<ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>REQ-006</code> — Order-processing audit trails must be retained. <span class="evidence-type">(requirement)</span></li></ul></li><li>Business process &quot;Order Submission&quot; has 3 steps — likely to produce workflow operational visibility needs.<ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>PROC-001</code> — Order Submission <span class="evidence-type">(process)</span></li></ul></li><li>Integration need &quot;The Order Processor submits orders to the Fulfillment API.&quot; is likely to produce an external-boundary operation worth observing.<ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>INTNEED-001</code> — The Order Processor submits orders to the Fulfillment API. <span class="evidence-type">(integration)</span></li></ul></li></ul></div>
+    <div class="card-block"><h4>Related</h4><div class="related-row"><span class="related-label">Requirements</span><span class="chip-list"><a class="chip" href="#entity-REQ-006" title="Order-processing audit trails must be retained."><code>REQ-006</code></a></span></div><div class="related-row"><span class="related-label">Processes</span><span class="chip-list"><span class="chip chip-static" title="Order Submission"><code>PROC-001</code></span></span></div></div>
+    <div class="card-block"><h4>Status notes</h4><ul><li>some telemetry requirements need more information (data classification/logging policy)</li><li>some alert requirements have no known destination</li><li>1 unresolved information gap(s)</li></ul></div>
+    <div class="card-block"><h4>Artifacts</h4><ul class="artifact-list"><li><code>artifacts/observability/observability-architecture.json</code></li><li><code>artifacts/observability/observability-architecture.md</code></li><li><code>artifacts/observability/telemetry-catalog.json</code></li><li><code>artifacts/observability/telemetry-catalog.md</code></li><li><code>artifacts/observability/operational-objectives.json</code></li><li><code>artifacts/observability/operational-objectives.md</code></li></ul></div>
+  </div>
+</details>
+
+<details class="capability-card" id="capability-cloud">
+  <summary>
+    <div class="cc-summary-main">
+      <span class="cc-name">Cloud Architecture</span>
+      <span class="cc-pills"><span class="pill pill-positive">recommended</span> <span class="pill pill-neutral">medium confidence</span> <span class="pill pill-positive">executed</span></span>
+    </div>
+    <p class="cc-oneliner">Executed</p>
+    <div class="cc-metrics"><span class="chip-metric">2 deployment units</span> <span class="chip-metric">2 runtime requirements</span> <span class="chip-metric">2 environments</span> <span class="chip-metric">1 scalability requirement</span></div>
+  </summary>
+  <div class="cc-body">
+    
+    <p class="architecture-status">Architecture status: <span class="pill pill-warning">needs-review</span></p>
+    <p class="implemented-note"><strong>Generated &amp; validated:</strong> Yes — indicates Stitchfy produced and validated an architecture specification for this capability, not that it was deployed, executed, or production-verified.</p>
+    <div class="card-block"><h4>Why</h4><ul class="reason-list"><li>Deployment need &quot;DEPLOY-001&quot; (runtime): &quot;The solution includes a solution-managed Order API that receives customer order requests.&quot;.<ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>DEPLOY-001</code> — The solution includes a solution-managed Order API that receives customer order requests. <span class="evidence-type">(deployment-need)</span></li></ul></li><li>Deployment need &quot;DEPLOY-002&quot; (network): &quot;The Order API must be publicly reachable over HTTPS.&quot;.<ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>DEPLOY-002</code> — The Order API must be publicly reachable over HTTPS. <span class="evidence-type">(deployment-need)</span></li></ul></li><li>Deployment need &quot;DEPLOY-003&quot; (runtime): &quot;The solution includes a solution-managed Order Processor that processes accepted orders in the background.&quot;.<ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>DEPLOY-003</code> — The solution includes a solution-managed Order Processor that processes accepted orders in the background. <span class="evidence-type">(deployment-need)</span></li></ul></li><li>Deployment need &quot;DEPLOY-004&quot; (network): &quot;The Order Processor must not expose a public endpoint.&quot;.<ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>DEPLOY-004</code> — The Order Processor must not expose a public endpoint. <span class="evidence-type">(deployment-need)</span></li></ul></li><li>Deployment need &quot;DEPLOY-005&quot; (environment): &quot;The business requires separate Test and Production environments.&quot;.<ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>DEPLOY-005</code> — The business requires separate Test and Production environments. <span class="evidence-type">(deployment-need)</span></li></ul></li><li>Deployment need &quot;DEPLOY-006&quot; (persistence): &quot;Order processing state must persist and survive application restarts.&quot;.<ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>DEPLOY-006</code> — Order processing state must persist and survive application restarts. <span class="evidence-type">(deployment-need)</span></li></ul></li><li>Deployment need &quot;DEPLOY-007&quot; (scalability): &quot;Production must support at least 100 concurrent order submissions.&quot;.<ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>DEPLOY-007</code> — Production must support at least 100 concurrent order submissions. <span class="evidence-type">(deployment-need)</span></li></ul></li><li>Deployment need &quot;DEPLOY-008&quot; (resilience): &quot;The solution must continue accepting new orders when the external Fulfillment API is temporarily unavailable.&quot;.<ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>DEPLOY-008</code> — The solution must continue accepting new orders when the external Fulfillment API is temporarily unavailable. <span class="evidence-type">(deployment-need)</span></li></ul></li><li>Deployment need &quot;DEPLOY-009&quot; (hosting): &quot;No cloud provider has been selected.&quot;.<ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>DEPLOY-009</code> — No cloud provider has been selected. <span class="evidence-type">(deployment-need)</span></li></ul></li><li>Deployment need &quot;DEPLOY-010&quot; (persistence): &quot;No database technology has been selected.&quot;.<ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>DEPLOY-010</code> — No database technology has been selected. <span class="evidence-type">(deployment-need)</span></li></ul></li></ul></div>
+    
+    <div class="card-block"><h4>Status notes</h4><ul><li>cloud provider is unresolved</li><li>persistence technology is unresolved</li><li>deployment strategy is unresolved</li><li>3 unresolved information gap(s)</li></ul></div>
+    <div class="card-block"><h4>Artifacts</h4><ul class="artifact-list"><li><code>artifacts/cloud/cloud-architecture.json</code></li><li><code>artifacts/cloud/cloud-architecture.md</code></li><li><code>artifacts/cloud/deployment-topology.json</code></li><li><code>artifacts/cloud/deployment-topology.md</code></li><li><code>artifacts/cloud/runtime-requirements.json</code></li><li><code>artifacts/cloud/runtime-requirements.md</code></li></ul></div>
+  </div>
+</details>
+
+<details class="capability-card" id="capability-modernization">
+  <summary>
+    <div class="cc-summary-main">
+      <span class="cc-name">Legacy Modernization</span>
+      <span class="cc-pills"><span class="pill pill-negative">not-recommended</span> <span class="pill pill-neutral">high confidence</span> <span class="pill pill-neutral">skipped</span></span>
+    </div>
+    <p class="cc-oneliner">Not applicable to this business context</p>
+    
+  </summary>
+  <div class="cc-body">
+    
+    
+    
+    
+    
+    
+    
+  </div>
+</details></div>
+</section>
+
+<section id="panel-backlog" role="tabpanel" aria-labelledby="tab-backlog" hidden>
+
+<div class="backlog-toolbar">
+  <input type="search" id="backlog-search" placeholder="Search backlog…" aria-label="Search backlog">
+  <select id="filter-capability" aria-label="Filter by capability"><option value="">All capabilities</option><option value="ai-agents">AI Agents</option><option value="cloud">Cloud Architecture</option><option value="integrations">Integrations</option><option value="modernization">Legacy Modernization</option><option value="observability">Observability</option><option value="security-governance">Security &amp; Governance</option><option value="website">Website</option><option value="workflow-automation">Workflow Automation</option></select>
+  <select id="filter-type" aria-label="Filter by type"><option value="">All types</option><option value="Architecture Decision">Architecture Decision</option><option value="Information Gap">Information Gap</option><option value="Integration Action">Integration Action</option><option value="Observability Requirement">Observability Requirement</option><option value="Requirement">Requirement</option><option value="Risk">Risk</option><option value="Security Requirement">Security Requirement</option></select>
+  <select id="filter-status" aria-label="Filter by status"><option value="">All statuses</option><option value="deferred">deferred</option><option value="defined">defined</option><option value="needs-information">needs-information</option><option value="needs-review">needs-review</option><option value="not-selected">not-selected</option><option value="open">open</option><option value="selected">selected</option></select>
+  <select id="filter-priority" aria-label="Filter by priority"><option value="">All priorities</option><option value="must">must</option><option value="required">required</option><option value="review">review</option><option value="should">should</option></select>
+  <span id="result-count" role="status" aria-live="polite"></span>
+</div>
+<div class="table-wrap">
+  <table id="backlog-table">
+    <caption class="visually-hidden">Implementation backlog</caption>
+    <thead><tr><th scope="col">ID</th><th scope="col">Item</th><th scope="col">Type</th><th scope="col">Capability</th><th scope="col">Category</th><th scope="col">Priority</th><th scope="col">Status</th><th scope="col">Explicitness</th><th scope="col"><span class="visually-hidden">Details</span></th></tr></thead>
+    <tbody>
+<tr id="entity-REQ-001"
+      data-type="Requirement"
+      data-capability=""
+      data-status=""
+      data-priority="must"
+      data-search="req-001 every order submission must have a correlation identifier. requirement functional">
+    <td><code>REQ-001</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-REQ-001">
+        Every order submission must have a correlation identifier.
+      </button>
+    </td>
+    <td>Requirement</td>
+    <td><span class="dash">—</span></td>
+    <td>functional</td>
+    <td>must</td>
+    <td><span class="dash">—</span></td>
+    <td>explicit</td>
+  </tr>
+<tr class="detail-row" id="detail-entity-REQ-001" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Capability</dt><dd><span class="dash">—</span></dd></div><div class="detail-field"><dt>Category</dt><dd>functional</dd></div><div class="detail-field"><dt>Priority</dt><dd>must</dd></div><div class="detail-field"><dt>Explicitness</dt><dd>explicit</dd></div><div class="detail-field"><dt>Rationale</dt><dd><ul><li>requirements: Every order submission must have a correlation identifier.</li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-REQ-002"
+      data-type="Requirement"
+      data-capability=""
+      data-status=""
+      data-priority="must"
+      data-search="req-002 failed order submissions must be recorded. requirement functional">
+    <td><code>REQ-002</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-REQ-002">
+        Failed order submissions must be recorded.
+      </button>
+    </td>
+    <td>Requirement</td>
+    <td><span class="dash">—</span></td>
+    <td>functional</td>
+    <td>must</td>
+    <td><span class="dash">—</span></td>
+    <td>explicit</td>
+  </tr>
+<tr class="detail-row" id="detail-entity-REQ-002" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Capability</dt><dd><span class="dash">—</span></dd></div><div class="detail-field"><dt>Category</dt><dd>functional</dd></div><div class="detail-field"><dt>Priority</dt><dd>must</dd></div><div class="detail-field"><dt>Explicitness</dt><dd>explicit</dd></div><div class="detail-field"><dt>Rationale</dt><dd><ul><li>requirements: Failed order submissions must be recorded.</li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-REQ-003"
+      data-type="Requirement"
+      data-capability=""
+      data-status=""
+      data-priority="must"
+      data-search="req-003 operations must be notified after 5 consecutive failed fulfillment submissions. requirement functional">
+    <td><code>REQ-003</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-REQ-003">
+        Operations must be notified after 5 consecutive failed fulfillment submissions.
+      </button>
+    </td>
+    <td>Requirement</td>
+    <td><span class="dash">—</span></td>
+    <td>functional</td>
+    <td>must</td>
+    <td><span class="dash">—</span></td>
+    <td>explicit</td>
+  </tr>
+<tr class="detail-row" id="detail-entity-REQ-003" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Capability</dt><dd><span class="dash">—</span></dd></div><div class="detail-field"><dt>Category</dt><dd>functional</dd></div><div class="detail-field"><dt>Priority</dt><dd>must</dd></div><div class="detail-field"><dt>Explicitness</dt><dd>explicit</dd></div><div class="detail-field"><dt>Rationale</dt><dd><ul><li>requirements: Operations must be notified after 5 consecutive failed fulfillment submissions.</li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-REQ-004"
+      data-type="Requirement"
+      data-capability=""
+      data-status=""
+      data-priority="should"
+      data-search="req-004 95% of accepted order submissions should complete within 2 seconds. requirement functional">
+    <td><code>REQ-004</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-REQ-004">
+        95% of accepted order submissions should complete within 2 seconds.
+      </button>
+    </td>
+    <td>Requirement</td>
+    <td><span class="dash">—</span></td>
+    <td>functional</td>
+    <td>should</td>
+    <td><span class="dash">—</span></td>
+    <td>explicit</td>
+  </tr>
+<tr class="detail-row" id="detail-entity-REQ-004" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Capability</dt><dd><span class="dash">—</span></dd></div><div class="detail-field"><dt>Category</dt><dd>functional</dd></div><div class="detail-field"><dt>Priority</dt><dd>should</dd></div><div class="detail-field"><dt>Explicitness</dt><dd>explicit</dd></div><div class="detail-field"><dt>Rationale</dt><dd><ul><li>requirements: 95% of accepted order submissions should complete within 2 seconds.</li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-REQ-005"
+      data-type="Requirement"
+      data-capability=""
+      data-status=""
+      data-priority="must"
+      data-search="req-005 api keys and customer order payloads must not appear in operational logs. requirement integration">
+    <td><code>REQ-005</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-REQ-005">
+        API keys and customer order payloads must not appear in operational logs.
+      </button>
+    </td>
+    <td>Requirement</td>
+    <td><span class="dash">—</span></td>
+    <td>integration</td>
+    <td>must</td>
+    <td><span class="dash">—</span></td>
+    <td>explicit</td>
+  </tr>
+<tr class="detail-row" id="detail-entity-REQ-005" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Capability</dt><dd><span class="dash">—</span></dd></div><div class="detail-field"><dt>Category</dt><dd>integration</dd></div><div class="detail-field"><dt>Priority</dt><dd>must</dd></div><div class="detail-field"><dt>Explicitness</dt><dd>explicit</dd></div><div class="detail-field"><dt>Rationale</dt><dd><ul><li>requirements: API keys and customer order payloads must not appear in operational logs.</li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-REQ-006"
+      data-type="Requirement"
+      data-capability=""
+      data-status=""
+      data-priority="must"
+      data-search="req-006 order-processing audit trails must be retained. requirement functional">
+    <td><code>REQ-006</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-REQ-006">
+        Order-processing audit trails must be retained.
+      </button>
+    </td>
+    <td>Requirement</td>
+    <td><span class="dash">—</span></td>
+    <td>functional</td>
+    <td>must</td>
+    <td><span class="dash">—</span></td>
+    <td>explicit</td>
+  </tr>
+<tr class="detail-row" id="detail-entity-REQ-006" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Capability</dt><dd><span class="dash">—</span></dd></div><div class="detail-field"><dt>Category</dt><dd>functional</dd></div><div class="detail-field"><dt>Priority</dt><dd>must</dd></div><div class="detail-field"><dt>Explicitness</dt><dd>explicit</dd></div><div class="detail-field"><dt>Rationale</dt><dd><ul><li>requirements: Order-processing audit trails must be retained.</li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-DECISION-001"
+      data-type="Architecture Decision"
+      data-capability="website"
+      data-status="selected"
+      data-priority=""
+      data-search="decision-001 website: selected website matched its legacy keyword heuristic against businesscontext. not yet migrated to structured assessment — see docs/architecture/roadmap.md. architecture decision website">
+    <td><code>DECISION-001</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-DECISION-001">
+        website: selected
+      </button>
+    </td>
+    <td>Architecture Decision</td>
+    <td><a href="#capability-website">Website</a></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="pill pill-positive">selected</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-DECISION-001" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>Website matched its legacy keyword heuristic against BusinessContext. Not yet migrated to structured assessment — see docs/architecture/ROADMAP.md.</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-website">Website</a></dd></div><div class="detail-field"><dt>Status</dt><dd>selected</dd></div><div class="detail-field"><dt>Rationale</dt><dd><ul><li>Website matched its legacy keyword heuristic against BusinessContext. Not yet migrated to structured assessment — see docs/architecture/ROADMAP.md.</li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-DECISION-002"
+      data-type="Architecture Decision"
+      data-capability="workflow-automation"
+      data-status="deferred"
+      data-priority=""
+      data-search="decision-002 workflow-automation: deferred process &quot;order submission&quot; involves 2 actors — a hand-off between people. requirement &quot;api keys and customer order payloads must not appear in operational logs.&quot; is typed &quot;integration&quot;. architecture decision workflow-automation">
+    <td><code>DECISION-002</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-DECISION-002">
+        workflow-automation: deferred
+      </button>
+    </td>
+    <td>Architecture Decision</td>
+    <td><a href="#capability-workflow-automation">Workflow Automation</a></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="pill pill-warning">deferred</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-DECISION-002" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>Process &quot;Order Submission&quot; involves 2 actors — a hand-off between people. Requirement &quot;API keys and customer order payloads must not appear in operational logs.&quot; is typed &quot;integration&quot;.</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-workflow-automation">Workflow Automation</a></dd></div><div class="detail-field"><dt>Status</dt><dd>deferred</dd></div><div class="detail-field"><dt>Rationale</dt><dd><ul><li>Process &quot;Order Submission&quot; involves 2 actors — a hand-off between people.</li><li>Requirement &quot;API keys and customer order payloads must not appear in operational logs.&quot; is typed &quot;integration&quot;.</li></ul></dd></div><div class="detail-field"><dt>Evidence</dt><dd><ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>PROC-001</code> — Order Submission <span class="evidence-type">(process)</span></li><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>ACTOR-003</code> — Customer <span class="evidence-type">(actor)</span></li><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>ACTOR-002</code> — Fulfillment Coordinator <span class="evidence-type">(actor)</span></li><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>REQ-005</code> — API keys and customer order payloads must not appear in operational logs. <span class="evidence-type">(requirement)</span></li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-DECISION-003"
+      data-type="Architecture Decision"
+      data-capability="integrations"
+      data-status="selected"
+      data-priority=""
+      data-search="decision-003 integrations: selected discovery lists an explicit integration need: &quot;the order processor submits orders to the fulfillment api.&quot;. requirement &quot;api keys and customer order payloads must not appear in operational logs.&quot; is typed &quot;integration&quot;. architecture decision integrations">
+    <td><code>DECISION-003</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-DECISION-003">
+        integrations: selected
+      </button>
+    </td>
+    <td>Architecture Decision</td>
+    <td><a href="#capability-integrations">Integrations</a></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="pill pill-positive">selected</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-DECISION-003" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>Discovery lists an explicit integration need: &quot;The Order Processor submits orders to the Fulfillment API.&quot;. Requirement &quot;API keys and customer order payloads must not appear in operational logs.&quot; is typed &quot;integration&quot;.</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-integrations">Integrations</a></dd></div><div class="detail-field"><dt>Status</dt><dd>selected</dd></div><div class="detail-field"><dt>Rationale</dt><dd><ul><li>Discovery lists an explicit integration need: &quot;The Order Processor submits orders to the Fulfillment API.&quot;.</li><li>Requirement &quot;API keys and customer order payloads must not appear in operational logs.&quot; is typed &quot;integration&quot;.</li></ul></dd></div><div class="detail-field"><dt>Evidence</dt><dd><ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>INTNEED-001</code> — The Order Processor submits orders to the Fulfillment API. <span class="evidence-type">(integration)</span></li><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>REQ-005</code> — API keys and customer order payloads must not appear in operational logs. <span class="evidence-type">(requirement)</span></li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-DECISION-004"
+      data-type="Architecture Decision"
+      data-capability="ai-agents"
+      data-status="not-selected"
+      data-priority=""
+      data-search="decision-004 ai-agents: not-selected no matching evidence found for ai-agents. architecture decision ai-agents">
+    <td><code>DECISION-004</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-DECISION-004">
+        ai-agents: not-selected
+      </button>
+    </td>
+    <td>Architecture Decision</td>
+    <td><a href="#capability-ai-agents">AI Agents</a></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="pill pill-negative">not-selected</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-DECISION-004" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>No matching evidence found for ai-agents.</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-ai-agents">AI Agents</a></dd></div><div class="detail-field"><dt>Status</dt><dd>not-selected</dd></div><div class="detail-field"><dt>Rationale</dt><dd><ul><li>No matching evidence found for ai-agents.</li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-DECISION-005"
+      data-type="Architecture Decision"
+      data-capability="security-governance"
+      data-status="selected"
+      data-priority=""
+      data-search="decision-005 security-governance: selected discovery flagged an unresolved gap relevant to security/governance: &quot;data&quot;. architecture decision security-governance">
+    <td><code>DECISION-005</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-DECISION-005">
+        security-governance: selected
+      </button>
+    </td>
+    <td>Architecture Decision</td>
+    <td><a href="#capability-security-governance">Security &amp; Governance</a></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="pill pill-positive">selected</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-DECISION-005" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>Discovery flagged an unresolved gap relevant to security/governance: &quot;Data&quot;.</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-security-governance">Security &amp; Governance</a></dd></div><div class="detail-field"><dt>Status</dt><dd>selected</dd></div><div class="detail-field"><dt>Rationale</dt><dd><ul><li>Discovery flagged an unresolved gap relevant to security/governance: &quot;Data&quot;.</li></ul></dd></div><div class="detail-field"><dt>Evidence</dt><dd><ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>GAP-004</code> — Data <span class="evidence-type">(information-gap)</span></li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-DECISION-006"
+      data-type="Architecture Decision"
+      data-capability="observability"
+      data-status="selected"
+      data-priority=""
+      data-search="decision-006 observability: selected requirement &quot;order-processing audit trails must be retained.&quot; describes an explicit operational concern. business process &quot;order submission&quot; has 3 steps — likely to produce workflow operational visibility needs. integration need &quot;the order processor submits orders to the fulfillment api.&quot; is likely to produce an external-boundary operation worth observing. architecture decision observability">
+    <td><code>DECISION-006</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-DECISION-006">
+        observability: selected
+      </button>
+    </td>
+    <td>Architecture Decision</td>
+    <td><a href="#capability-observability">Observability</a></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="pill pill-positive">selected</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-DECISION-006" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>Requirement &quot;Order-processing audit trails must be retained.&quot; describes an explicit operational concern. Business process &quot;Order Submission&quot; has 3 steps — likely to produce workflow operational visibility needs. Integration need &quot;The Order Processor submits orders to the Fulfillment API.&quot; is likely to produce an external-boundary operation worth observing.</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-observability">Observability</a></dd></div><div class="detail-field"><dt>Status</dt><dd>selected</dd></div><div class="detail-field"><dt>Rationale</dt><dd><ul><li>Requirement &quot;Order-processing audit trails must be retained.&quot; describes an explicit operational concern.</li><li>Business process &quot;Order Submission&quot; has 3 steps — likely to produce workflow operational visibility needs.</li><li>Integration need &quot;The Order Processor submits orders to the Fulfillment API.&quot; is likely to produce an external-boundary operation worth observing.</li></ul></dd></div><div class="detail-field"><dt>Evidence</dt><dd><ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>REQ-006</code> — Order-processing audit trails must be retained. <span class="evidence-type">(requirement)</span></li><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>PROC-001</code> — Order Submission <span class="evidence-type">(process)</span></li><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>INTNEED-001</code> — The Order Processor submits orders to the Fulfillment API. <span class="evidence-type">(integration)</span></li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-DECISION-007"
+      data-type="Architecture Decision"
+      data-capability="cloud"
+      data-status="selected"
+      data-priority=""
+      data-search="decision-007 cloud: selected deployment need &quot;deploy-001&quot; (runtime): &quot;the solution includes a solution-managed order api that receives customer order requests.&quot;. deployment need &quot;deploy-002&quot; (network): &quot;the order api must be publicly reachable over https.&quot;. deployment need &quot;deploy-003&quot; (runtime): &quot;the solution includes a solution-managed order processor that processes accepted orders in the background.&quot;. deployment need &quot;deploy-004&quot; (network): &quot;the order processor must not expose a public endpoint.&quot;. deployment need &quot;deploy-005&quot; (environment): &quot;the business requires separate test and production environments.&quot;. deployment need &quot;deploy-006&quot; (persistence): &quot;order processing state must persist and survive application restarts.&quot;. deployment need &quot;deploy-007&quot; (scalability): &quot;production must support at least 100 concurrent order submissions.&quot;. deployment need &quot;deploy-008&quot; (resilience): &quot;the solution must continue accepting new orders when the external fulfillment api is temporarily unavailable.&quot;. deployment need &quot;deploy-009&quot; (hosting): &quot;no cloud provider has been selected.&quot;. deployment need &quot;deploy-010&quot; (persistence): &quot;no database technology has been selected.&quot;. architecture decision cloud">
+    <td><code>DECISION-007</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-DECISION-007">
+        cloud: selected
+      </button>
+    </td>
+    <td>Architecture Decision</td>
+    <td><a href="#capability-cloud">Cloud Architecture</a></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="pill pill-positive">selected</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-DECISION-007" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>Deployment need &quot;DEPLOY-001&quot; (runtime): &quot;The solution includes a solution-managed Order API that receives customer order requests.&quot;. Deployment need &quot;DEPLOY-002&quot; (network): &quot;The Order API must be publicly reachable over HTTPS.&quot;. Deployment need &quot;DEPLOY-003&quot; (runtime): &quot;The solution includes a solution-managed Order Processor that processes accepted orders in the background.&quot;. Deployment need &quot;DEPLOY-004&quot; (network): &quot;The Order Processor must not expose a public endpoint.&quot;. Deployment need &quot;DEPLOY-005&quot; (environment): &quot;The business requires separate Test and Production environments.&quot;. Deployment need &quot;DEPLOY-006&quot; (persistence): &quot;Order processing state must persist and survive application restarts.&quot;. Deployment need &quot;DEPLOY-007&quot; (scalability): &quot;Production must support at least 100 concurrent order submissions.&quot;. Deployment need &quot;DEPLOY-008&quot; (resilience): &quot;The solution must continue accepting new orders when the external Fulfillment API is temporarily unavailable.&quot;. Deployment need &quot;DEPLOY-009&quot; (hosting): &quot;No cloud provider has been selected.&quot;. Deployment need &quot;DEPLOY-010&quot; (persistence): &quot;No database technology has been selected.&quot;.</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-cloud">Cloud Architecture</a></dd></div><div class="detail-field"><dt>Status</dt><dd>selected</dd></div><div class="detail-field"><dt>Rationale</dt><dd><ul><li>Deployment need &quot;DEPLOY-001&quot; (runtime): &quot;The solution includes a solution-managed Order API that receives customer order requests.&quot;.</li><li>Deployment need &quot;DEPLOY-002&quot; (network): &quot;The Order API must be publicly reachable over HTTPS.&quot;.</li><li>Deployment need &quot;DEPLOY-003&quot; (runtime): &quot;The solution includes a solution-managed Order Processor that processes accepted orders in the background.&quot;.</li><li>Deployment need &quot;DEPLOY-004&quot; (network): &quot;The Order Processor must not expose a public endpoint.&quot;.</li><li>Deployment need &quot;DEPLOY-005&quot; (environment): &quot;The business requires separate Test and Production environments.&quot;.</li><li>Deployment need &quot;DEPLOY-006&quot; (persistence): &quot;Order processing state must persist and survive application restarts.&quot;.</li><li>Deployment need &quot;DEPLOY-007&quot; (scalability): &quot;Production must support at least 100 concurrent order submissions.&quot;.</li><li>Deployment need &quot;DEPLOY-008&quot; (resilience): &quot;The solution must continue accepting new orders when the external Fulfillment API is temporarily unavailable.&quot;.</li><li>Deployment need &quot;DEPLOY-009&quot; (hosting): &quot;No cloud provider has been selected.&quot;.</li><li>Deployment need &quot;DEPLOY-010&quot; (persistence): &quot;No database technology has been selected.&quot;.</li></ul></dd></div><div class="detail-field"><dt>Evidence</dt><dd><ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>DEPLOY-001</code> — The solution includes a solution-managed Order API that receives customer order requests. <span class="evidence-type">(deployment-need)</span></li><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>DEPLOY-002</code> — The Order API must be publicly reachable over HTTPS. <span class="evidence-type">(deployment-need)</span></li><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>DEPLOY-003</code> — The solution includes a solution-managed Order Processor that processes accepted orders in the background. <span class="evidence-type">(deployment-need)</span></li><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>DEPLOY-004</code> — The Order Processor must not expose a public endpoint. <span class="evidence-type">(deployment-need)</span></li><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>DEPLOY-005</code> — The business requires separate Test and Production environments. <span class="evidence-type">(deployment-need)</span></li><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>DEPLOY-006</code> — Order processing state must persist and survive application restarts. <span class="evidence-type">(deployment-need)</span></li><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>DEPLOY-007</code> — Production must support at least 100 concurrent order submissions. <span class="evidence-type">(deployment-need)</span></li><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>DEPLOY-008</code> — The solution must continue accepting new orders when the external Fulfillment API is temporarily unavailable. <span class="evidence-type">(deployment-need)</span></li><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>DEPLOY-009</code> — No cloud provider has been selected. <span class="evidence-type">(deployment-need)</span></li><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>DEPLOY-010</code> — No database technology has been selected. <span class="evidence-type">(deployment-need)</span></li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-DECISION-008"
+      data-type="Architecture Decision"
+      data-capability="modernization"
+      data-status="not-selected"
+      data-priority=""
+      data-search="decision-008 modernization: not-selected no matching evidence found for modernization. architecture decision modernization">
+    <td><code>DECISION-008</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-DECISION-008">
+        modernization: not-selected
+      </button>
+    </td>
+    <td>Architecture Decision</td>
+    <td><a href="#capability-modernization">Legacy Modernization</a></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="pill pill-negative">not-selected</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-DECISION-008" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>No matching evidence found for modernization.</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-modernization">Legacy Modernization</a></dd></div><div class="detail-field"><dt>Status</dt><dd>not-selected</dd></div><div class="detail-field"><dt>Rationale</dt><dd><ul><li>No matching evidence found for modernization.</li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-GAP-001"
+      data-type="Information Gap"
+      data-capability=""
+      data-status=""
+      data-priority=""
+      data-search="gap-001 pain points what current problems is this solution meant to solve? information gap medium">
+    <td><code>GAP-001</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-GAP-001">
+        Pain points
+      </button>
+    </td>
+    <td>Information Gap</td>
+    <td><span class="dash">—</span></td>
+    <td>medium</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-GAP-001" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>What current problems is this solution meant to solve?</dd></div><div class="detail-field"><dt>Capability</dt><dd><span class="dash">—</span></dd></div><div class="detail-field"><dt>Category</dt><dd>medium</dd></div><div class="detail-field"><dt>Blocking</dt><dd>No</dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-GAP-002"
+      data-type="Information Gap"
+      data-capability=""
+      data-status=""
+      data-priority=""
+      data-search="gap-002 constraints are there budget, timeline, regulatory, or technical constraints to account for? information gap low">
+    <td><code>GAP-002</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-GAP-002">
+        Constraints
+      </button>
+    </td>
+    <td>Information Gap</td>
+    <td><span class="dash">—</span></td>
+    <td>low</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-GAP-002" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>Are there budget, timeline, regulatory, or technical constraints to account for?</dd></div><div class="detail-field"><dt>Capability</dt><dd><span class="dash">—</span></dd></div><div class="detail-field"><dt>Category</dt><dd>low</dd></div><div class="detail-field"><dt>Blocking</dt><dd>No</dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-GAP-003"
+      data-type="Information Gap"
+      data-capability="workflow-automation"
+      data-status=""
+      data-priority=""
+      data-search="gap-003 business rules are there rules that must always hold (e.g. no double-booking, approval thresholds)? information gap low workflow-automation">
+    <td><code>GAP-003</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-GAP-003">
+        Business rules
+      </button>
+    </td>
+    <td>Information Gap</td>
+    <td><a href="#capability-workflow-automation">Workflow Automation</a></td>
+    <td>low</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-GAP-003" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>Are there rules that must always hold (e.g. no double-booking, approval thresholds)?</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-workflow-automation">Workflow Automation</a></dd></div><div class="detail-field"><dt>Category</dt><dd>low</dd></div><div class="detail-field"><dt>Blocking</dt><dd>No</dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-GAP-004"
+      data-type="Information Gap"
+      data-capability="security-governance cloud"
+      data-status=""
+      data-priority=""
+      data-search="gap-004 data what data does this solution create, store, or rely on? information gap medium security-governance cloud">
+    <td><code>GAP-004</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-GAP-004">
+        Data
+      </button>
+    </td>
+    <td>Information Gap</td>
+    <td><a href="#capability-security-governance">Security &amp; Governance</a>, <a href="#capability-cloud">Cloud Architecture</a></td>
+    <td>medium</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-GAP-004" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>What data does this solution create, store, or rely on?</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-security-governance">Security &amp; Governance</a>, <a href="#capability-cloud">Cloud Architecture</a></dd></div><div class="detail-field"><dt>Category</dt><dd>medium</dd></div><div class="detail-field"><dt>Blocking</dt><dd>No</dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-RISK-001"
+      data-type="Risk"
+      data-capability="security-governance"
+      data-status="open"
+      data-priority=""
+      data-search="risk-001 credential material for &quot;the order processor submits orders to the fulfillment api.&quot; requires protection; improper handling could expose access to the target system. risk security security-governance">
+    <td><code>RISK-001</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-RISK-001">
+        Credential material for &quot;The Order Processor submits orders to the Fulfillment API.&quot; requires protection; improper handling could expose access to the target system.
+      </button>
+    </td>
+    <td>Risk</td>
+    <td><a href="#capability-security-governance">Security &amp; Governance</a></td>
+    <td>security</td>
+    <td>impact: unknown</td>
+    <td><span class="pill pill-neutral">open</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-RISK-001" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-security-governance">Security &amp; Governance</a></dd></div><div class="detail-field"><dt>Category</dt><dd>security</dd></div><div class="detail-field"><dt>Impact</dt><dd>unknown</dd></div><div class="detail-field"><dt>Likelihood</dt><dd>unknown</dd></div><div class="detail-field"><dt>Status</dt><dd>open</dd></div><div class="detail-field"><dt>Rationale</dt><dd><ul><li>Treatment: mitigate</li></ul></dd></div><div class="detail-field"><dt>Architecture references</dt><dd><span class="chip-list"><a class="chip" href="#entity-INT-001" title="The Order Processor submits orders to the Fulfillment API."><code>INT-001</code></a></span></dd></div><div class="detail-field"><dt>Evidence</dt><dd><ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>INTNEED-001</code> — The Order Processor submits orders to the Fulfillment API. <span class="evidence-type">(integration)</span></li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-SECREQ-001"
+      data-type="Security Requirement"
+      data-capability="security-governance"
+      data-status="defined"
+      data-priority="required"
+      data-search="secreq-001 credentials for &quot;the order processor submits orders to the fulfillment api.&quot; (mechanism: api-key) must not be embedded directly in generated application code or static configuration committed to source control. security requirement secrets security-governance">
+    <td><code>SECREQ-001</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-SECREQ-001">
+        Credentials for &quot;The Order Processor submits orders to the Fulfillment API.&quot; (mechanism: api-key) must not be embedded directly in generated application code or static configuration committed to source control.
+      </button>
+    </td>
+    <td>Security Requirement</td>
+    <td><a href="#capability-security-governance">Security &amp; Governance</a></td>
+    <td>secrets</td>
+    <td>required</td>
+    <td><span class="pill pill-positive">defined</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-SECREQ-001" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-security-governance">Security &amp; Governance</a></dd></div><div class="detail-field"><dt>Category</dt><dd>secrets</dd></div><div class="detail-field"><dt>Priority</dt><dd>required</dd></div><div class="detail-field"><dt>Status</dt><dd>defined</dd></div><div class="detail-field"><dt>Architecture references</dt><dd><span class="chip-list"><a class="chip" href="#entity-INT-001" title="The Order Processor submits orders to the Fulfillment API."><code>INT-001</code></a></span></dd></div><div class="detail-field"><dt>Evidence</dt><dd><ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>INTNEED-001</code> — The Order Processor submits orders to the Fulfillment API. <span class="evidence-type">(integration)</span></li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-SECREQ-002"
+      data-type="Security Requirement"
+      data-capability="security-governance"
+      data-status="defined"
+      data-priority="review"
+      data-search="secreq-002 interaction with the system behind &quot;the order processor submits orders to the fulfillment api.&quot; crosses a trust boundary; requests and responses should be validated and protection requirements confirmed before implementation. security requirement integration security-governance">
+    <td><code>SECREQ-002</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-SECREQ-002">
+        Interaction with the system behind &quot;The Order Processor submits orders to the Fulfillment API.&quot; crosses a trust boundary; requests and responses should be validated and protection requirements confirmed before implementation.
+      </button>
+    </td>
+    <td>Security Requirement</td>
+    <td><a href="#capability-security-governance">Security &amp; Governance</a></td>
+    <td>integration</td>
+    <td>review</td>
+    <td><span class="pill pill-positive">defined</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-SECREQ-002" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-security-governance">Security &amp; Governance</a></dd></div><div class="detail-field"><dt>Category</dt><dd>integration</dd></div><div class="detail-field"><dt>Priority</dt><dd>review</dd></div><div class="detail-field"><dt>Status</dt><dd>defined</dd></div><div class="detail-field"><dt>Architecture references</dt><dd><span class="chip-list"><a class="chip" href="#entity-INT-001" title="The Order Processor submits orders to the Fulfillment API."><code>INT-001</code></a> <a class="chip" href="#entity-SYS-001" title="Fulfillment API"><code>SYS-001</code></a></span></dd></div><div class="detail-field"><dt>Evidence</dt><dd><ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>INTNEED-001</code> — The Order Processor submits orders to the Fulfillment API. <span class="evidence-type">(integration)</span></li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-TELREQ-002"
+      data-type="Observability Requirement"
+      data-capability="observability"
+      data-status="needs-information"
+      data-priority=""
+      data-search="telreq-002 telemetry must avoid recording the associated business payload until data classification (currently &quot;unknown&quot;) and logging policy are resolved. observability requirement telemetry: security observability">
+    <td><code>TELREQ-002</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-TELREQ-002">
+        Telemetry must avoid recording the associated business payload until data classification (currently &quot;unknown&quot;) and logging policy are resolved.
+      </button>
+    </td>
+    <td>Observability Requirement</td>
+    <td><a href="#capability-observability">Observability</a></td>
+    <td>telemetry: security</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="pill pill-warning">needs-information</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-TELREQ-002" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-observability">Observability</a></dd></div><div class="detail-field"><dt>Category</dt><dd>telemetry: security</dd></div><div class="detail-field"><dt>Status</dt><dd>needs-information</dd></div><div class="detail-field"><dt>Rationale</dt><dd><ul><li>Required signals: none specified</li></ul></dd></div><div class="detail-field"><dt>Architecture references</dt><dd><span class="chip-list"><span class="chip chip-static" title="Response"><code>CONTRACT-001</code></span></span></dd></div><div class="detail-field"><dt>Evidence</dt><dd><ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>INTNEED-001</code> — The Order Processor submits orders to the Fulfillment API. <span class="evidence-type">(integration)</span></li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-TELREQ-003"
+      data-type="Observability Requirement"
+      data-capability="observability"
+      data-status="needs-information"
+      data-priority=""
+      data-search="telreq-003 telemetry must avoid recording the associated business payload until data classification (currently &quot;unknown&quot;) and logging policy are resolved. observability requirement telemetry: security observability">
+    <td><code>TELREQ-003</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-TELREQ-003">
+        Telemetry must avoid recording the associated business payload until data classification (currently &quot;unknown&quot;) and logging policy are resolved.
+      </button>
+    </td>
+    <td>Observability Requirement</td>
+    <td><a href="#capability-observability">Observability</a></td>
+    <td>telemetry: security</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="pill pill-warning">needs-information</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-TELREQ-003" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-observability">Observability</a></dd></div><div class="detail-field"><dt>Category</dt><dd>telemetry: security</dd></div><div class="detail-field"><dt>Status</dt><dd>needs-information</dd></div><div class="detail-field"><dt>Rationale</dt><dd><ul><li>Required signals: none specified</li></ul></dd></div><div class="detail-field"><dt>Architecture references</dt><dd><span class="chip-list"><span class="chip chip-static" title="Request"><code>CONTRACT-002</code></span></span></dd></div><div class="detail-field"><dt>Evidence</dt><dd><ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>INTNEED-001</code> — The Order Processor submits orders to the Fulfillment API. <span class="evidence-type">(integration)</span></li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-ALERT-001"
+      data-type="Observability Requirement"
+      data-capability="observability"
+      data-status=""
+      data-priority=""
+      data-search="alert-001 operations must be notified after 5 consecutive failed fulfillment submissions. operations must be notified after 5 consecutive failed fulfillment submissions. observability requirement alert: warning observability">
+    <td><code>ALERT-001</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-ALERT-001">
+        Operations must be notified after 5 consecutive failed fulfillment submissions.
+      </button>
+    </td>
+    <td>Observability Requirement</td>
+    <td><a href="#capability-observability">Observability</a></td>
+    <td>alert: warning</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td>explicit</td>
+  </tr>
+<tr class="detail-row" id="detail-entity-ALERT-001" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>Operations must be notified after 5 consecutive failed fulfillment submissions.</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-observability">Observability</a></dd></div><div class="detail-field"><dt>Category</dt><dd>alert: warning</dd></div><div class="detail-field"><dt>Explicitness</dt><dd>explicit</dd></div><div class="detail-field"><dt>Rationale</dt><dd><ul><li>Threshold: 5 consecutive</li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-HEALTH-001"
+      data-type="Observability Requirement"
+      data-capability="observability"
+      data-status=""
+      data-priority=""
+      data-search="health-001 ability to determine whether workflow &quot;order submission workflow&quot; is completing successfully. observability requirement health: business-process observability">
+    <td><code>HEALTH-001</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-HEALTH-001">
+        Ability to determine whether workflow &quot;Order Submission Workflow&quot; is completing successfully.
+      </button>
+    </td>
+    <td>Observability Requirement</td>
+    <td><a href="#capability-observability">Observability</a></td>
+    <td>health: business-process</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-HEALTH-001" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-observability">Observability</a></dd></div><div class="detail-field"><dt>Category</dt><dd>health: business-process</dd></div><div class="detail-field"><dt>Architecture references</dt><dd><span class="chip-list"><span class="chip chip-static" title="Order Submission Workflow"><code>WF-001</code></span></span></dd></div><div class="detail-field"><dt>Evidence</dt><dd><ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>PROC-001</code> — Order Submission <span class="evidence-type">(process)</span></li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-HEALTH-002"
+      data-type="Observability Requirement"
+      data-capability="observability"
+      data-status=""
+      data-priority=""
+      data-search="health-002 ability to determine whether &quot;the order processor submits orders to the fulfillment api.&quot; is operational. observability requirement health: dependency observability">
+    <td><code>HEALTH-002</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-HEALTH-002">
+        Ability to determine whether &quot;The Order Processor submits orders to the Fulfillment API.&quot; is operational.
+      </button>
+    </td>
+    <td>Observability Requirement</td>
+    <td><a href="#capability-observability">Observability</a></td>
+    <td>health: dependency</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-HEALTH-002" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-observability">Observability</a></dd></div><div class="detail-field"><dt>Category</dt><dd>health: dependency</dd></div><div class="detail-field"><dt>Architecture references</dt><dd><span class="chip-list"><a class="chip" href="#entity-INT-001" title="The Order Processor submits orders to the Fulfillment API."><code>INT-001</code></a></span></dd></div><div class="detail-field"><dt>Evidence</dt><dd><ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>INTNEED-001</code> — The Order Processor submits orders to the Fulfillment API. <span class="evidence-type">(integration)</span></li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-OBJ-001"
+      data-type="Observability Requirement"
+      data-capability="observability"
+      data-status=""
+      data-priority=""
+      data-search="obj-001 95% of accepted order submissions should complete within 2 seconds. target: 95% within 2 seconds observability requirement objective: latency observability">
+    <td><code>OBJ-001</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-OBJ-001">
+        95% of accepted order submissions should complete within 2 seconds.
+      </button>
+    </td>
+    <td>Observability Requirement</td>
+    <td><a href="#capability-observability">Observability</a></td>
+    <td>objective: latency</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td>explicit</td>
+  </tr>
+<tr class="detail-row" id="detail-entity-OBJ-001" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>Target: 95% within 2 seconds</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-observability">Observability</a></dd></div><div class="detail-field"><dt>Category</dt><dd>objective: latency</dd></div><div class="detail-field"><dt>Explicitness</dt><dd>explicit</dd></div><div class="detail-field"><dt>Evidence</dt><dd><ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>REQ-004</code> — 95% of accepted order submissions should complete within 2 seconds. <span class="evidence-type">(requirement)</span></li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-OBSGAP-001"
+      data-type="Information Gap"
+      data-capability="observability"
+      data-status=""
+      data-priority=""
+      data-search="obsgap-001 alert destination who or what system should receive the alert for &quot;operations must be notified after 5 consecutive failed fulfillment submissions.&quot;? information gap medium observability">
+    <td><code>OBSGAP-001</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-OBSGAP-001">
+        Alert destination
+      </button>
+    </td>
+    <td>Information Gap</td>
+    <td><a href="#capability-observability">Observability</a></td>
+    <td>medium</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-OBSGAP-001" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>Who or what system should receive the alert for &quot;Operations must be notified after 5 consecutive failed fulfillment submissions.&quot;?</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-observability">Observability</a></dd></div><div class="detail-field"><dt>Category</dt><dd>medium</dd></div><div class="detail-field"><dt>Blocking</dt><dd>No</dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-INT-001"
+      data-type="Integration Action"
+      data-capability="integrations"
+      data-status="needs-review"
+      data-priority=""
+      data-search="int-001 the order processor submits orders to the fulfillment api. the order processor submits orders to the fulfillment api. integration action request-response integrations">
+    <td><code>INT-001</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-INT-001">
+        The Order Processor submits orders to the Fulfillment API.
+      </button>
+    </td>
+    <td>Integration Action</td>
+    <td><a href="#capability-integrations">Integrations</a></td>
+    <td>request-response</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="pill pill-warning">needs-review</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-INT-001" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>The Order Processor submits orders to the Fulfillment API.</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-integrations">Integrations</a></dd></div><div class="detail-field"><dt>Category</dt><dd>request-response</dd></div><div class="detail-field"><dt>Status</dt><dd>needs-review</dd></div><div class="detail-field"><dt>Rationale</dt><dd><ul><li>source system unknown</li></ul></dd></div><div class="detail-field"><dt>Related systems</dt><dd><span class="chip-list"><a class="chip" href="#entity-SYS-001" title="Fulfillment API"><code>SYS-001</code></a></span></dd></div><div class="detail-field"><dt>Related requirements</dt><dd><span class="chip-list"><a class="chip" href="#entity-REQ-005" title="API keys and customer order payloads must not appear in operational logs."><code>REQ-005</code></a></span></dd></div><div class="detail-field"><dt>Information gaps</dt><dd><span class="chip-list"><a class="chip" href="#entity-INTGAP-001" title="Integration source system"><code>INTGAP-001</code></a> <a class="chip" href="#entity-INTGAP-002" title="Integration failure handling"><code>INTGAP-002</code></a></span></dd></div><div class="detail-field"><dt>Evidence</dt><dd><ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>INTNEED-001</code> — The Order Processor submits orders to the Fulfillment API. <span class="evidence-type">(integration)</span></li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-INTGAP-001"
+      data-type="Information Gap"
+      data-capability="integrations"
+      data-status=""
+      data-priority=""
+      data-search="intgap-001 integration source system what system will initiate: the order processor submits orders to the fulfillment api.? information gap medium integrations">
+    <td><code>INTGAP-001</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-INTGAP-001">
+        Integration source system
+      </button>
+    </td>
+    <td>Information Gap</td>
+    <td><a href="#capability-integrations">Integrations</a></td>
+    <td>medium</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-INTGAP-001" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>What system will initiate: The Order Processor submits orders to the Fulfillment API.?</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-integrations">Integrations</a></dd></div><div class="detail-field"><dt>Category</dt><dd>medium</dd></div><div class="detail-field"><dt>Blocking</dt><dd>No</dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-INTGAP-002"
+      data-type="Information Gap"
+      data-capability="integrations"
+      data-status=""
+      data-priority=""
+      data-search="intgap-002 integration failure handling what should happen if fulfillment api is unavailable during &quot;the order processor submits orders to the fulfillment api.&quot;? information gap low integrations">
+    <td><code>INTGAP-002</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-INTGAP-002">
+        Integration failure handling
+      </button>
+    </td>
+    <td>Information Gap</td>
+    <td><a href="#capability-integrations">Integrations</a></td>
+    <td>low</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-INTGAP-002" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>What should happen if Fulfillment API is unavailable during &quot;The Order Processor submits orders to the Fulfillment API.&quot;?</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-integrations">Integrations</a></dd></div><div class="detail-field"><dt>Category</dt><dd>low</dd></div><div class="detail-field"><dt>Blocking</dt><dd>No</dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-CLOUDGAP-001"
+      data-type="Information Gap"
+      data-capability="cloud"
+      data-status=""
+      data-priority=""
+      data-search="cloudgap-001 cloud provider which provider, if any, is required for hosting this solution? information gap low cloud">
+    <td><code>CLOUDGAP-001</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-CLOUDGAP-001">
+        Cloud provider
+      </button>
+    </td>
+    <td>Information Gap</td>
+    <td><a href="#capability-cloud">Cloud Architecture</a></td>
+    <td>low</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-CLOUDGAP-001" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>Which provider, if any, is required for hosting this solution?</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-cloud">Cloud Architecture</a></dd></div><div class="detail-field"><dt>Category</dt><dd>low</dd></div><div class="detail-field"><dt>Blocking</dt><dd>No</dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-CLOUDGAP-002"
+      data-type="Information Gap"
+      data-capability="cloud"
+      data-status=""
+      data-priority=""
+      data-search="cloudgap-002 persistence technology what persistence technology should satisfy the identified durable-state requirements? information gap medium cloud">
+    <td><code>CLOUDGAP-002</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-CLOUDGAP-002">
+        Persistence technology
+      </button>
+    </td>
+    <td>Information Gap</td>
+    <td><a href="#capability-cloud">Cloud Architecture</a></td>
+    <td>medium</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-CLOUDGAP-002" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>What persistence technology should satisfy the identified durable-state requirements?</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-cloud">Cloud Architecture</a></dd></div><div class="detail-field"><dt>Category</dt><dd>medium</dd></div><div class="detail-field"><dt>Blocking</dt><dd>No</dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-CLOUDGAP-003"
+      data-type="Information Gap"
+      data-capability="cloud"
+      data-status=""
+      data-priority=""
+      data-search="cloudgap-003 deployment strategy what deployment strategy is required for solution-managed components? information gap low cloud">
+    <td><code>CLOUDGAP-003</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-CLOUDGAP-003">
+        Deployment strategy
+      </button>
+    </td>
+    <td>Information Gap</td>
+    <td><a href="#capability-cloud">Cloud Architecture</a></td>
+    <td>low</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-CLOUDGAP-003" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>What deployment strategy is required for solution-managed components?</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-cloud">Cloud Architecture</a></dd></div><div class="detail-field"><dt>Category</dt><dd>low</dd></div><div class="detail-field"><dt>Blocking</dt><dd>No</dd></div></dl>
+    </td>
+  </tr>
+    </tbody>
+  </table>
+</div>
+</section>
+
+
+<section class="appendix" aria-labelledby="artifacts-heading">
+  <h2 id="artifacts-heading">Generated Artifacts</h2>
+  <div class="artifact-groups"><div class="artifact-group">
+        <h3>Cloud Architecture</h3>
+        <ul class="artifact-list"><li><code>artifacts/cloud/cloud-architecture.json</code></li><li><code>artifacts/cloud/cloud-architecture.md</code></li><li><code>artifacts/cloud/deployment-topology.json</code></li><li><code>artifacts/cloud/deployment-topology.md</code></li><li><code>artifacts/cloud/runtime-requirements.json</code></li><li><code>artifacts/cloud/runtime-requirements.md</code></li></ul>
+      </div><div class="artifact-group">
+        <h3>Integrations</h3>
+        <ul class="artifact-list"><li><code>artifacts/integrations/exporters/fulfillment-api/generic-rest-typescript/README.md</code></li><li><code>artifacts/integrations/exporters/fulfillment-api/generic-rest-typescript/client.ts</code></li><li><code>artifacts/integrations/exporters/fulfillment-api/generic-rest-typescript/config.ts</code></li><li><code>artifacts/integrations/exporters/fulfillment-api/generic-rest-typescript/integration.manifest.json</code></li><li><code>artifacts/integrations/exporters/fulfillment-api/generic-rest-typescript/types.ts</code></li><li><code>artifacts/integrations/the-order-processor-submits-orders-to-the-fulfillment-api.integration.json</code></li><li><code>artifacts/integrations/the-order-processor-submits-orders-to-the-fulfillment-api.integration.md</code></li><li><code>artifacts/integrations/the-order-processor-submits-orders-to-the-fulfillment-api.openapi.json</code></li></ul>
+      </div><div class="artifact-group">
+        <h3>Observability</h3>
+        <ul class="artifact-list"><li><code>artifacts/observability/observability-architecture.json</code></li><li><code>artifacts/observability/observability-architecture.md</code></li><li><code>artifacts/observability/operational-objectives.json</code></li><li><code>artifacts/observability/operational-objectives.md</code></li><li><code>artifacts/observability/telemetry-catalog.json</code></li><li><code>artifacts/observability/telemetry-catalog.md</code></li></ul>
+      </div><div class="artifact-group">
+        <h3>Security &amp; Governance</h3>
+        <ul class="artifact-list"><li><code>artifacts/security-governance/governance-plan.json</code></li><li><code>artifacts/security-governance/governance-plan.md</code></li><li><code>artifacts/security-governance/risk-register.json</code></li><li><code>artifacts/security-governance/risk-register.md</code></li><li><code>artifacts/security-governance/security-architecture.json</code></li><li><code>artifacts/security-governance/security-architecture.md</code></li></ul>
+      </div><div class="artifact-group">
+        <h3>Workflow Automation</h3>
+        <ul class="artifact-list"><li><code>artifacts/workflow-automation/order-submission.workflow.json</code></li><li><code>artifacts/workflow-automation/order-submission.workflow.md</code></li></ul>
+      </div></div>
+</section>
+
+<details class="appendix">
+  <summary><h2 style="display:inline">Systems Referenced</h2></summary>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th scope="col">ID</th><th scope="col">Name</th></tr></thead>
+      <tbody><tr id="entity-SYS-001"><td><code>SYS-001</code></td><td>Fulfillment API</td></tr></tbody>
+    </table>
+  </div>
+</details>
+</main>
+<footer class="report-footer">
+  <p>Generated by Stitchfy v2.2.0 — this report is a presentation of <code>blueprints/solution-blueprint.v1.json</code>, not a separate source of truth.</p>
+</footer>
+<script>
+(function () {
+  "use strict";
+
+  // Tabs
+  var tabs = document.querySelectorAll('[role="tab"]');
+  tabs.forEach(function (tab) {
+    tab.addEventListener("click", function () {
+      tabs.forEach(function (t) {
+        t.setAttribute("aria-selected", "false");
+        document.getElementById(t.getAttribute("aria-controls")).hidden = true;
+      });
+      tab.setAttribute("aria-selected", "true");
+      document.getElementById(tab.getAttribute("aria-controls")).hidden = false;
+    });
+  });
+
+  // Expandable backlog rows
+  document.querySelectorAll(".row-toggle").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var target = document.getElementById(btn.getAttribute("aria-controls"));
+      if (!target) return;
+      var expanded = btn.getAttribute("aria-expanded") === "true";
+      btn.setAttribute("aria-expanded", String(!expanded));
+      target.hidden = expanded;
+    });
+  });
+
+  // Backlog filters
+  var table = document.getElementById("backlog-table");
+  if (table) {
+    var searchInput = document.getElementById("backlog-search");
+    var capabilityFilter = document.getElementById("filter-capability");
+    var typeFilter = document.getElementById("filter-type");
+    var statusFilter = document.getElementById("filter-status");
+    var priorityFilter = document.getElementById("filter-priority");
+    var resultCount = document.getElementById("result-count");
+    var rows = Array.prototype.slice.call(table.querySelectorAll("tbody > tr:not(.detail-row)"));
+
+    function applyFilters() {
+      var q = (searchInput.value || "").toLowerCase().trim();
+      var cap = capabilityFilter.value;
+      var type = typeFilter.value;
+      var status = statusFilter.value;
+      var priority = priorityFilter.value;
+      var visible = 0;
+
+      rows.forEach(function (row) {
+        var caps = (row.dataset.capability || "").split(" ");
+        var matches =
+          (!q || row.dataset.search.indexOf(q) !== -1) &&
+          (!cap || caps.indexOf(cap) !== -1) &&
+          (!type || row.dataset.type === type) &&
+          (!status || row.dataset.status === status) &&
+          (!priority || row.dataset.priority === priority);
+
+        row.hidden = !matches;
+        var detail = document.getElementById(row.id.replace(/^entity-/, "detail-entity-"));
+        if (detail && !matches) detail.hidden = true;
+        if (matches) visible++;
+      });
+
+      resultCount.textContent = visible + " of " + rows.length + " item" + (rows.length === 1 ? "" : "s");
+    }
+
+    [searchInput, capabilityFilter, typeFilter, statusFilter, priorityFilter].forEach(function (el) {
+      el.addEventListener("input", applyFilters);
+      el.addEventListener("change", applyFilters);
+    });
+    applyFilters();
+  }
+})();
+</script>
+</body>
+</html>

@@ -1589,6 +1589,88 @@ manifest/framework-version discovery, build analysis, source-code
 dependency analysis, migration recipe generation, and code-transformation
 scaffolding — none of it implemented here.
 
+## Solution Report
+
+`solution-blueprint.v1.json` is complete and traceable, but it is also a
+~500 KB document spanning eight capabilities' worth of nested schemas — not
+something a first-time reader should have to open in a text editor to
+understand what Stitchfy produced. The Solution Report
+(`output/.../reports/solution-report.html`) is an additional, purely
+presentational representation of the same blueprint:
+
+```
+solution-blueprint.v1.json  (canonical contract)
+        ↓
+SolutionReportProjection    (framework/reports/solution-report/projection.ts)
+        ↓
+solution-report.html        (framework/reports/solution-report/render.ts)
+```
+
+**JSON is the contract. HTML is the explanation. Exporters are the
+actions.** The report never becomes a second source of truth:
+
+- `entity-index.ts` walks the blueprint once and indexes every object
+  carrying a string `id`, purely so ids like `REQ-001`/`SYS-001`/`GAP-004`
+  become real in-page navigation anchors instead of opaque strings — it
+  invents no new facts, it just resolves an id to the label the blueprint
+  already gave it.
+- `capability-view.ts` builds one card per `SolutionBlueprint.capabilities`
+  entry (`CapabilityExecutionResult`), joined with its
+  `SolutionPlan.assessments` entry by `capabilityId`. The two status axes —
+  `assessmentStatus` (recommended/not-recommended/needs-review/blocked) and
+  `executionStatus` (executed/skipped/failed) — are rendered side by side,
+  never collapsed into one: a capability can be `recommended` and
+  `skipped` (blocked on an unresolved gap), and the report must not hide
+  that distinction. Per-capability metric counts (e.g. "2 dependencies",
+  "3 preservation requirements") are read directly from real array lengths
+  on that capability's typed output — see `METRIC_EXTRACTORS`; a capability
+  id with no curated extractor still renders, via a generic array-length
+  fallback, so a future ninth capability degrades gracefully instead of
+  breaking.
+- `backlog-view.ts` projects the same blueprint into a flat, filterable
+  Implementation Backlog: one extractor per known array (requirements,
+  security requirements, target-state/validation requirements, technical
+  debt, migration candidates, workstreams, migration-recipe steps, change
+  proposals, information gaps, risks, ...), each preserving its source
+  type as a fixed label (`"Risk"` stays `"Risk"`, `"Information Gap"` stays
+  `"Information Gap"` — never renamed to a generic "task"). An id that
+  appears in more than one section (e.g. a gap surfaced by both discovery
+  and a capability) is merged — its capability list grows — never
+  duplicated as two rows.
+- Every `EvidenceReference`/`ArchitectureReference`/`CodebaseEvidenceReference`
+  is normalized (`evidence.ts`) into one displayable shape that still
+  records which of the three independent domains it came from
+  (`kind: "discovery" | "architecture" | "codebase"`) — discovery evidence
+  ("why was this decided") is never presented as codebase evidence ("what
+  file supports this").
+
+No AI/LLM/MCP call happens at report-generation time — `render.ts` runs in
+the same `"writing"` stage as `solution-blueprint-writer.ts`, inside
+`solution-orchestrator.ts`, and `tests/reference-solutions.test.ts` /
+`scripts/reference-validate.ts` (which assert zero network calls for the
+whole pipeline) exercise it on every run. Google Stitch MCP was used
+exactly once, offline from the pipeline, as a one-time design-reference
+generation step (`generate_screen_from_text` against a prompt describing
+the desired GitLab/Backstage + Linear/Jira-navigator visual language) —
+its output informed the hand-written CSS in `render.ts` (spacing scale,
+monospace-for-ids convention, muted status-pill palette); it is not called
+again by the framework. This follows the same rule Stitch already follows
+for website generation: Stitch is presentation/design assistance only —
+every status, count, and recommendation the report displays is read from
+the blueprint, never invented or re-derived by an AI call.
+
+The output HTML is fully self-contained (inline CSS/JS, no external
+font/script CDN) and interactive without a server: tabs, search/filters,
+and expandable backlog rows are plain DOM show/hide over
+server-rendered, escaped markup (`html-escape.ts`) — the client script
+never uses `innerHTML` on blueprint-derived text, so escaping happens in
+exactly one place.
+
+Consumers remain free to read `solution-blueprint.v1.json` directly for
+anything downstream the HTML report doesn't cover (Jira/GitHub Issues/Azure
+DevOps generation, custom analytics, a future capability-specific
+exporter, ...) — the report is a view, not a gate.
+
 ## Adaptation from the literal proposed folder tree
 
 The originally proposed structure gives every capability 4-5 subfolders

@@ -100,9 +100,11 @@ Produces, under the output directory (`output/` by default):
 | Directory | Contents |
 |---|---|
 | `context/` | `business-context.json` — the derived `BusinessContext` |
-| `blueprints/` | `solution-blueprint.v1.json` — the full validated `SolutionBlueprint` |
+| `blueprints/` | `solution-blueprint.v1.json` — the full validated `SolutionBlueprint`, the canonical machine-readable contract |
 | `artifacts/` | Per-capability generated JSON/Markdown, plus any exporter scaffolding |
-| `reports/` | `solution-plan.md` — the human-readable capability-selection report |
+| `reports/` | `solution-plan.md` (capability-selection rationale) and `solution-report.html` (interactive human-readable projection of the same blueprint — open it directly in a browser) |
+
+`solution-report.html` is generated automatically at the end of every `npm run solution` run — no extra flag needed. It never redefines or recomputes anything: every status, count, risk, and recommendation shown in it is read directly from `solution-blueprint.v1.json`. See `docs/architecture/ARCHITECTURE.md` ("Solution Report") for how it relates to the JSON contract and to capability-specific exporters.
 
 See `docs/reference/END_TO_END.md` for the full 8-step pipeline walkthrough, `docs/reference/CAPABILITY_MATRIX.md` for real per-scenario capability coverage, and `examples/reference/README.md` for all three canonical scenarios (including the two optional flags, `--codebase`/`--system-id` and `--modernization-export`, used by the legacy-modernization scenario). Run all three plus semantic validation at once with `npm run reference:validate`.
 

@@ -1,0 +1,2138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solution Report — Order Portal Modernization</title>
+<style>
+:root {
+  --bg: #f5f6f8;
+  --surface: #ffffff;
+  --surface-alt: #eef0f3;
+  --border: #dde1e7;
+  --text: #14181f;
+  --text-muted: #5b6472;
+  --header-bg: #14181f;
+  --header-text: #e8eaf0;
+  --accent: #2f6fed;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --positive-bg: #e3f3e8; --positive-text: #1e7e42;
+  --negative-bg: #fbe7e4; --negative-text: #a13a2d;
+  --warning-bg: #fdf2d6; --warning-text: #8a5a00;
+  --neutral-bg: #eceef1; --neutral-text: #4b5563;
+  --info-bg: #e6edfc; --info-text: #2454b0;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #14171c; --surface: #1b1f26; --surface-alt: #222630; --border: #2c313a;
+    --text: #e6e8eb; --text-muted: #98a1ad; --header-bg: #0c0e12; --header-text: #e6e8eb;
+    --positive-bg: #123322; --positive-text: #6fd897;
+    --negative-bg: #3a1f1c; --negative-text: #f0958a;
+    --warning-bg: #3a2f10; --warning-text: #e8c163;
+    --neutral-bg: #262b33; --neutral-text: #b3bac4;
+    --info-bg: #1a2a4a; --info-text: #9db8f0;
+  }
+}
+* { box-sizing: border-box; }
+html { color-scheme: light dark; }
+body { margin: 0; font-family: var(--sans); background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.5; }
+code, .chip code { font-family: var(--mono); font-size: 0.85em; }
+a { color: var(--accent); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.dash { color: var(--text-muted); }
+
+.page-header { background: var(--header-bg); color: var(--header-text); padding: 1.5rem 2rem; }
+.ph-title-row { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+.page-header h1 { margin: 0; font-size: 1.5rem; }
+.meta-grid { display: flex; flex-wrap: wrap; gap: 1.5rem; margin: 0.75rem 0 0; padding: 0; }
+.meta-grid div { display: flex; flex-direction: column; gap: 0.15rem; }
+.meta-grid dt { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.6; }
+.meta-grid dd { margin: 0; font-size: 0.85rem; }
+.goal-summary { margin: 1rem 0 0; opacity: 0.85; max-width: 70ch; font-size: 0.9rem; }
+
+main { max-width: 1200px; margin: 0 auto; padding: 1.5rem 2rem 4rem; }
+
+.summary { margin-bottom: 1.5rem; }
+.summary h2 { font-size: 1rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); margin: 0 0 0.75rem; }
+.stat-tiles { list-style: none; display: flex; flex-wrap: wrap; gap: 0.75rem; margin: 0; padding: 0; }
+.stat-tile { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 0.6rem 1rem; min-width: 110px; display: flex; flex-direction: column; }
+.stat-value { font-size: 1.3rem; font-weight: 700; }
+.stat-label { font-size: 0.75rem; color: var(--text-muted); }
+
+.tabs { display: flex; gap: 0.25rem; border-bottom: 2px solid var(--border); margin-bottom: 1.25rem; }
+.tabs button { font: inherit; background: none; border: none; padding: 0.6rem 1rem; cursor: pointer; color: var(--text-muted); border-bottom: 2px solid transparent; margin-bottom: -2px; }
+.tabs button[aria-selected="true"] { color: var(--text); border-bottom-color: var(--accent); font-weight: 600; }
+
+.pill { display: inline-block; padding: 0.1rem 0.55rem; border-radius: 999px; font-size: 0.72rem; font-weight: 600; white-space: nowrap; }
+.pill-positive { background: var(--positive-bg); color: var(--positive-text); }
+.pill-negative { background: var(--negative-bg); color: var(--negative-text); }
+.pill-warning { background: var(--warning-bg); color: var(--warning-text); }
+.pill-neutral { background: var(--neutral-bg); color: var(--neutral-text); }
+.pill-info { background: var(--info-bg); color: var(--info-text); }
+
+.capability-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 0.9rem; }
+.capability-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 0.9rem 1rem; }
+.capability-card summary { cursor: pointer; list-style: none; }
+.capability-card summary::-webkit-details-marker { display: none; }
+.cc-summary-main { display: flex; justify-content: space-between; align-items: baseline; gap: 0.5rem; flex-wrap: wrap; }
+.cc-name { font-weight: 700; font-size: 1rem; }
+.cc-pills { display: flex; gap: 0.3rem; flex-wrap: wrap; }
+.cc-oneliner { margin: 0.4rem 0 0; color: var(--text-muted); font-size: 0.85rem; }
+.cc-metrics { margin-top: 0.5rem; display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.chip-metric { background: var(--surface-alt); border-radius: 4px; padding: 0.1rem 0.45rem; font-size: 0.75rem; color: var(--text-muted); }
+.cc-body { margin-top: 0.85rem; padding-top: 0.75rem; border-top: 1px solid var(--border); }
+.card-block { margin-bottom: 0.75rem; }
+.card-block h4 { margin: 0 0 0.35rem; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); }
+.reason-list { margin: 0; padding-left: 1.1rem; font-size: 0.85rem; }
+.related-row { display: flex; gap: 0.5rem; align-items: baseline; flex-wrap: wrap; margin-bottom: 0.3rem; font-size: 0.82rem; }
+.related-label { color: var(--text-muted); min-width: 90px; }
+.implemented-note, .architecture-status, .error-note { font-size: 0.8rem; color: var(--text-muted); }
+.error-note { color: var(--negative-text); }
+
+.chip-list { display: inline-flex; flex-wrap: wrap; gap: 0.3rem; }
+.chip { display: inline-flex; align-items: center; background: var(--surface-alt); border-radius: 4px; padding: 0.05rem 0.4rem; font-size: 0.78rem; text-decoration: none; color: var(--text); }
+.chip:hover { background: var(--info-bg); }
+.chip-static { color: var(--text-muted); }
+
+.evidence-list { margin: 0.3rem 0 0; padding-left: 1.1rem; font-size: 0.78rem; color: var(--text-muted); }
+.evidence-kind { text-transform: uppercase; font-size: 0.65rem; letter-spacing: 0.03em; }
+.evidence-type { opacity: 0.8; }
+
+.artifact-list { margin: 0; padding-left: 1.1rem; font-size: 0.82rem; }
+
+.backlog-toolbar { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.75rem; align-items: center; }
+.backlog-toolbar input, .backlog-toolbar select { font: inherit; padding: 0.4rem 0.6rem; border: 1px solid var(--border); border-radius: 6px; background: var(--surface); color: var(--text); }
+.backlog-toolbar input { flex: 1 1 220px; }
+#result-count { font-size: 0.8rem; color: var(--text-muted); margin-left: auto; }
+
+.table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 8px; }
+table { width: 100%; border-collapse: collapse; font-size: 0.85rem; background: var(--surface); }
+th { text-align: left; background: var(--surface-alt); padding: 0.55rem 0.7rem; font-weight: 600; white-space: nowrap; position: sticky; top: 0; }
+td { padding: 0.5rem 0.7rem; border-top: 1px solid var(--border); vertical-align: top; }
+.row-toggle { font: inherit; background: none; border: none; padding: 0; color: var(--accent); cursor: pointer; text-align: left; }
+.row-toggle:hover { text-decoration: underline; }
+.detail-row td { background: var(--surface-alt); }
+.detail-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 0.6rem 1.5rem; margin: 0; }
+.detail-field dt { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); margin-bottom: 0.15rem; }
+.detail-field dd { margin: 0; font-size: 0.85rem; }
+
+.appendix { margin-top: 2rem; }
+.appendix summary { cursor: pointer; }
+.artifact-groups { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; }
+.artifact-group { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem 0.9rem; }
+.artifact-group h3 { margin: 0 0 0.4rem; font-size: 0.9rem; }
+
+.empty-note { color: var(--text-muted); font-style: italic; }
+
+.report-footer { text-align: center; padding: 2rem; font-size: 0.78rem; color: var(--text-muted); border-top: 1px solid var(--border); margin-top: 2rem; }
+
+@media print {
+  .backlog-toolbar, .tabs { display: none; }
+  #panel-capabilities[hidden], #panel-backlog[hidden] { display: block !important; }
+  .capability-card, details { break-inside: avoid; }
+  a { color: inherit; text-decoration: none; }
+  body { background: #fff; color: #000; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
+</style>
+</head>
+<body>
+
+<header class="page-header">
+  <div class="ph-title-row">
+    <h1>Order Portal Modernization</h1>
+    <span class="pill pill-info">Retail software</span>
+  </div>
+  <dl class="meta-grid">
+    <div><dt>Source</dt><dd><code>legacy-java-modernization.md</code></dd></div>
+    <div><dt>Framework</dt><dd>Stitchfy v2.2.0</dd></div>
+    <div><dt>Blueprint schema</dt><dd>v1.0</dd></div>
+    <div><dt>Generated</dt><dd>Sep 8, 2026, 7:14 PM</dd></div>
+  </dl>
+  <p class="goal-summary">The Order Portal runs on a supported, maintainable application-server platform</p>
+</header>
+<main>
+
+<section class="summary" aria-labelledby="summary-heading">
+  <h2 id="summary-heading">Executive Summary</h2>
+  <ul class="stat-tiles"><li class="stat-tile"><span class="stat-value">8</span><span class="stat-label">assessed capabilities</span></li><li class="stat-tile"><span class="stat-value">5</span><span class="stat-label">selected capabilities</span></li><li class="stat-tile"><span class="stat-value">3</span><span class="stat-label">discovered systems</span></li><li class="stat-tile"><span class="stat-value">2</span><span class="stat-label">requirements</span></li><li class="stat-tile"><span class="stat-value">2</span><span class="stat-label">integrations</span></li><li class="stat-tile"><span class="stat-value">1</span><span class="stat-label">risk</span></li><li class="stat-tile"><span class="stat-value">15</span><span class="stat-label">open questions</span></li><li class="stat-tile"><span class="stat-value">7</span><span class="stat-label">implementation items</span></li><li class="stat-tile"><span class="stat-value">8</span><span class="stat-label">validation items</span></li><li class="stat-tile"><span class="stat-value">39</span><span class="stat-label">generated artifacts</span></li></ul>
+</section>
+
+<div class="tabs" role="tablist" aria-label="Solution report views">
+  <button type="button" role="tab" id="tab-capabilities" aria-selected="true" aria-controls="panel-capabilities">Capabilities</button>
+  <button type="button" role="tab" id="tab-backlog" aria-selected="false" aria-controls="panel-backlog">Implementation Backlog (70)</button>
+</div>
+
+<section id="panel-capabilities" role="tabpanel" aria-labelledby="tab-capabilities">
+<div class="capability-grid">
+<details class="capability-card" id="capability-website">
+  <summary>
+    <div class="cc-summary-main">
+      <span class="cc-name">Website</span>
+      <span class="cc-pills"><span class="pill pill-positive">recommended</span> <span class="pill pill-neutral">low confidence</span> <span class="pill pill-positive">executed</span></span>
+    </div>
+    <p class="cc-oneliner">Executed</p>
+    
+  </summary>
+  <div class="cc-body">
+    
+    
+    
+    <div class="card-block"><h4>Why</h4><ul class="reason-list"><li>Website matched its legacy keyword heuristic against BusinessContext. Not yet migrated to structured assessment — see docs/architecture/ROADMAP.md.</li></ul></div>
+    
+    
+    
+  </div>
+</details>
+
+<details class="capability-card" id="capability-workflow-automation">
+  <summary>
+    <div class="cc-summary-main">
+      <span class="cc-name">Workflow Automation</span>
+      <span class="cc-pills"><span class="pill pill-negative">not-recommended</span> <span class="pill pill-neutral">high confidence</span> <span class="pill pill-neutral">skipped</span></span>
+    </div>
+    <p class="cc-oneliner">Not applicable to this business context</p>
+    
+  </summary>
+  <div class="cc-body">
+    
+    
+    
+    
+    
+    
+    
+  </div>
+</details>
+
+<details class="capability-card" id="capability-integrations">
+  <summary>
+    <div class="cc-summary-main">
+      <span class="cc-name">Integrations</span>
+      <span class="cc-pills"><span class="pill pill-positive">recommended</span> <span class="pill pill-neutral">high confidence</span> <span class="pill pill-positive">executed</span></span>
+    </div>
+    <p class="cc-oneliner">Executed</p>
+    <div class="cc-metrics"><span class="chip-metric">2 integrations</span></div>
+  </summary>
+  <div class="cc-body">
+    
+    
+    <p class="implemented-note"><strong>Generated &amp; validated:</strong> Yes — indicates Stitchfy produced and validated an architecture specification for this capability, not that it was deployed, executed, or production-verified.</p>
+    <div class="card-block"><h4>Why</h4><ul class="reason-list"><li>Discovery lists an explicit integration need: &quot;The Order Portal sends order requests to the Integration Gateway.&quot;.<ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>INTNEED-001</code> — The Order Portal sends order requests to the Integration Gateway. <span class="evidence-type">(integration)</span></li></ul></li><li>Discovery lists an explicit integration need: &quot;The Order Portal reads and writes order records in the Order Database.&quot;.<ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>INTNEED-002</code> — The Order Portal reads and writes order records in the Order Database. <span class="evidence-type">(integration)</span></li></ul></li><li>Desired outcome &quot;The Order Portal runs on a supported, maintainable application-server platform&quot; names a discovered system (Order Portal).<ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>OUTCOME-001</code> — The Order Portal runs on a supported, maintainable application-server platform <span class="evidence-type">(outcome)</span></li><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>SYS-001</code> — Order Portal <span class="evidence-type">(system)</span></li></ul></li></ul></div>
+    <div class="card-block"><h4>Related</h4><div class="related-row"><span class="related-label">Systems</span><span class="chip-list"><a class="chip" href="#entity-SYS-001" title="Order Portal"><code>SYS-001</code></a></span></div><div class="related-row"><span class="related-label">Outcomes</span><span class="chip-list"><span class="chip chip-static"><code>OUTCOME-001</code></span></span></div></div>
+    
+    <div class="card-block"><h4>Artifacts</h4><ul class="artifact-list"><li><code>artifacts/integrations/the-order-portal-sends-order-requests-to-the-integration-gat.integration.json</code></li><li><code>artifacts/integrations/the-order-portal-sends-order-requests-to-the-integration-gat.integration.md</code></li><li><code>artifacts/integrations/the-order-portal-reads-and-writes-order-records-in-the-order.integration.json</code></li><li><code>artifacts/integrations/the-order-portal-reads-and-writes-order-records-in-the-order.integration.md</code></li></ul></div>
+  </div>
+</details>
+
+<details class="capability-card" id="capability-ai-agents">
+  <summary>
+    <div class="cc-summary-main">
+      <span class="cc-name">AI Agents</span>
+      <span class="cc-pills"><span class="pill pill-negative">not-recommended</span> <span class="pill pill-neutral">high confidence</span> <span class="pill pill-neutral">skipped</span></span>
+    </div>
+    <p class="cc-oneliner">Not applicable to this business context</p>
+    
+  </summary>
+  <div class="cc-body">
+    
+    
+    
+    
+    
+    
+    
+  </div>
+</details>
+
+<details class="capability-card" id="capability-security-governance">
+  <summary>
+    <div class="cc-summary-main">
+      <span class="cc-name">Security &amp; Governance</span>
+      <span class="cc-pills"><span class="pill pill-positive">recommended</span> <span class="pill pill-neutral">medium confidence</span> <span class="pill pill-positive">executed</span></span>
+    </div>
+    <p class="cc-oneliner">Executed</p>
+    <div class="cc-metrics"><span class="chip-metric">2 security requirements</span> <span class="chip-metric">2 trust boundaries</span></div>
+  </summary>
+  <div class="cc-body">
+    
+    
+    <p class="implemented-note"><strong>Generated &amp; validated:</strong> Yes — indicates Stitchfy produced and validated an architecture specification for this capability, not that it was deployed, executed, or production-verified.</p>
+    <div class="card-block"><h4>Why</h4><ul class="reason-list"><li>Discovery flagged an unresolved gap relevant to security/governance: &quot;Data&quot;.<ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>GAP-004</code> — Data <span class="evidence-type">(information-gap)</span></li></ul></li></ul></div>
+    
+    
+    <div class="card-block"><h4>Artifacts</h4><ul class="artifact-list"><li><code>artifacts/security-governance/security-architecture.json</code></li><li><code>artifacts/security-governance/security-architecture.md</code></li><li><code>artifacts/security-governance/risk-register.json</code></li><li><code>artifacts/security-governance/risk-register.md</code></li><li><code>artifacts/security-governance/governance-plan.json</code></li><li><code>artifacts/security-governance/governance-plan.md</code></li></ul></div>
+  </div>
+</details>
+
+<details class="capability-card" id="capability-observability">
+  <summary>
+    <div class="cc-summary-main">
+      <span class="cc-name">Observability</span>
+      <span class="cc-pills"><span class="pill pill-positive">recommended</span> <span class="pill pill-neutral">medium confidence</span> <span class="pill pill-positive">executed</span></span>
+    </div>
+    <p class="cc-oneliner">Executed</p>
+    
+  </summary>
+  <div class="cc-body">
+    
+    <p class="architecture-status">Architecture status: <span class="pill pill-warning">needs-review</span></p>
+    <p class="implemented-note"><strong>Generated &amp; validated:</strong> Yes — indicates Stitchfy produced and validated an architecture specification for this capability, not that it was deployed, executed, or production-verified.</p>
+    <div class="card-block"><h4>Why</h4><ul class="reason-list"><li>Integration need &quot;The Order Portal sends order requests to the Integration Gateway.&quot; is likely to produce an external-boundary operation worth observing.<ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>INTNEED-001</code> — The Order Portal sends order requests to the Integration Gateway. <span class="evidence-type">(integration)</span></li></ul></li><li>Integration need &quot;The Order Portal reads and writes order records in the Order Database.&quot; is likely to produce an external-boundary operation worth observing.<ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>INTNEED-002</code> — The Order Portal reads and writes order records in the Order Database. <span class="evidence-type">(integration)</span></li></ul></li></ul></div>
+    
+    <div class="card-block"><h4>Status notes</h4><ul><li>no explicit operational objectives were stated</li></ul></div>
+    <div class="card-block"><h4>Artifacts</h4><ul class="artifact-list"><li><code>artifacts/observability/observability-architecture.json</code></li><li><code>artifacts/observability/observability-architecture.md</code></li><li><code>artifacts/observability/telemetry-catalog.json</code></li><li><code>artifacts/observability/telemetry-catalog.md</code></li><li><code>artifacts/observability/operational-objectives.json</code></li><li><code>artifacts/observability/operational-objectives.md</code></li></ul></div>
+  </div>
+</details>
+
+<details class="capability-card" id="capability-cloud">
+  <summary>
+    <div class="cc-summary-main">
+      <span class="cc-name">Cloud Architecture</span>
+      <span class="cc-pills"><span class="pill pill-negative">not-recommended</span> <span class="pill pill-neutral">high confidence</span> <span class="pill pill-neutral">skipped</span></span>
+    </div>
+    <p class="cc-oneliner">Not applicable to this business context</p>
+    
+  </summary>
+  <div class="cc-body">
+    
+    
+    
+    
+    
+    
+    
+  </div>
+</details>
+
+<details class="capability-card" id="capability-modernization">
+  <summary>
+    <div class="cc-summary-main">
+      <span class="cc-name">Legacy Modernization</span>
+      <span class="cc-pills"><span class="pill pill-positive">recommended</span> <span class="pill pill-neutral">high confidence</span> <span class="pill pill-positive">executed</span></span>
+    </div>
+    <p class="cc-oneliner">Executed</p>
+    <div class="cc-metrics"><span class="chip-metric">1 modernization candidate</span> <span class="chip-metric">2 dependencies</span> <span class="chip-metric">3 preservation requirements</span> <span class="chip-metric">3 migration constraints</span> <span class="chip-metric">1 risk</span> <span class="chip-metric">4 validation requirements</span> <span class="chip-metric">1 technical debt finding</span> <span class="chip-metric">6 open questions</span></div>
+  </summary>
+  <div class="cc-body">
+    
+    <p class="architecture-status">Architecture status: <span class="pill pill-warning">needs-review</span></p>
+    <p class="implemented-note"><strong>Generated &amp; validated:</strong> Yes — indicates Stitchfy produced and validated an architecture specification for this capability, not that it was deployed, executed, or production-verified.</p>
+    <div class="card-block"><h4>Why</h4><ul class="reason-list"><li>Modernization need &quot;MODNEED-001&quot; identifies 1 system(s) with 5 stated outcome(s).<ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>MODNEED-001</code> — The business wants to modernize the Order Portal. <span class="evidence-type">(modernization-need)</span></li></ul></li><li>Requirement &quot;Support: Existing order operations continue without disruption during modernization&quot; describes an explicit modernization/migration concern.<ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>REQ-002</code> — Support: Existing order operations continue without disruption during modernization <span class="evidence-type">(requirement)</span></li></ul></li><li>System &quot;SYS-001&quot; is explicitly classified &quot;legacy&quot; — a supporting signal only; it does not by itself select a migration strategy.<ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>SYS-001</code> — Order Portal <span class="evidence-type">(system)</span></li></ul></li></ul></div>
+    <div class="card-block"><h4>Related</h4><div class="related-row"><span class="related-label">Systems</span><span class="chip-list"><a class="chip" href="#entity-SYS-001" title="Order Portal"><code>SYS-001</code></a></span></div><div class="related-row"><span class="related-label">Requirements</span><span class="chip-list"><a class="chip" href="#entity-REQ-002" title="Support: Existing order operations continue without disruption during modernization"><code>REQ-002</code></a></span></div></div>
+    <div class="card-block"><h4>Status notes</h4><ul><li>6 unresolved information gap(s)</li></ul></div>
+    <div class="card-block"><h4>Artifacts</h4><ul class="artifact-list"><li><code>artifacts/modernization/modernization-architecture.json</code></li><li><code>artifacts/modernization/modernization-architecture.md</code></li><li><code>artifacts/modernization/system-dependency-map.json</code></li><li><code>artifacts/modernization/system-dependency-map.md</code></li><li><code>artifacts/modernization/migration-strategy.json</code></li><li><code>artifacts/modernization/migration-strategy.md</code></li><li><code>artifacts/modernization/migration-roadmap.json</code></li><li><code>artifacts/modernization/migration-roadmap.md</code></li><li><code>analysis/codebase/modernization-codebase-evidence.json</code></li><li><code>analysis/codebase/modernization-codebase-evidence.md</code></li><li><code>artifacts/modernization/exporters/legacy-java-maven/generic-java-replatform/migration-recipe.json</code></li><li><code>artifacts/modernization/exporters/legacy-java-maven/generic-java-replatform/migration-recipe.md</code></li><li><code>artifacts/modernization/exporters/legacy-java-maven/generic-java-replatform/dependency-change-plan.json</code></li><li><code>artifacts/modernization/exporters/legacy-java-maven/generic-java-replatform/dependency-change-plan.md</code></li><li><code>artifacts/modernization/exporters/legacy-java-maven/generic-java-replatform/configuration-change-plan.json</code></li><li><code>artifacts/modernization/exporters/legacy-java-maven/generic-java-replatform/configuration-change-plan.md</code></li><li><code>artifacts/modernization/exporters/legacy-java-maven/generic-java-replatform/source-review.json</code></li><li><code>artifacts/modernization/exporters/legacy-java-maven/generic-java-replatform/source-review.md</code></li><li><code>artifacts/modernization/exporters/legacy-java-maven/generic-java-replatform/test-impact.json</code></li><li><code>artifacts/modernization/exporters/legacy-java-maven/generic-java-replatform/test-impact.md</code></li><li><code>artifacts/modernization/exporters/legacy-java-maven/generic-java-replatform/validation-plan.json</code></li><li><code>artifacts/modernization/exporters/legacy-java-maven/generic-java-replatform/validation-plan.md</code></li><li><code>artifacts/modernization/exporters/legacy-java-maven/generic-java-replatform/modernization.manifest.json</code></li></ul></div>
+  </div>
+</details></div>
+</section>
+
+<section id="panel-backlog" role="tabpanel" aria-labelledby="tab-backlog" hidden>
+
+<div class="backlog-toolbar">
+  <input type="search" id="backlog-search" placeholder="Search backlog…" aria-label="Search backlog">
+  <select id="filter-capability" aria-label="Filter by capability"><option value="">All capabilities</option><option value="ai-agents">AI Agents</option><option value="cloud">Cloud Architecture</option><option value="integrations">Integrations</option><option value="modernization">Legacy Modernization</option><option value="observability">Observability</option><option value="security-governance">Security &amp; Governance</option><option value="website">Website</option><option value="workflow-automation">Workflow Automation</option></select>
+  <select id="filter-type" aria-label="Filter by type"><option value="">All types</option><option value="Architecture Decision">Architecture Decision</option><option value="Change Proposal">Change Proposal</option><option value="Implementation Step">Implementation Step</option><option value="Information Gap">Information Gap</option><option value="Integration Action">Integration Action</option><option value="Manual Review">Manual Review</option><option value="Modernization Delta">Modernization Delta</option><option value="Observability Requirement">Observability Requirement</option><option value="Requirement">Requirement</option><option value="Risk">Risk</option><option value="Security Requirement">Security Requirement</option><option value="Target-State Requirement">Target-State Requirement</option><option value="Technical Debt Finding">Technical Debt Finding</option><option value="Test Impact">Test Impact</option><option value="Validation Gate">Validation Gate</option><option value="Validation Requirement">Validation Requirement</option><option value="Workstream">Workstream</option></select>
+  <select id="filter-status" aria-label="Filter by status"><option value="">All statuses</option><option value="candidate">candidate</option><option value="defined">defined</option><option value="needs-review">needs-review</option><option value="not-selected">not-selected</option><option value="proposed">proposed</option><option value="review">review</option><option value="selected">selected</option></select>
+  <select id="filter-priority" aria-label="Filter by priority"><option value="">All priorities</option><option value="review">review</option><option value="should">should</option></select>
+  <span id="result-count" role="status" aria-live="polite"></span>
+</div>
+<div class="table-wrap">
+  <table id="backlog-table">
+    <caption class="visually-hidden">Implementation backlog</caption>
+    <thead><tr><th scope="col">ID</th><th scope="col">Item</th><th scope="col">Type</th><th scope="col">Capability</th><th scope="col">Category</th><th scope="col">Priority</th><th scope="col">Status</th><th scope="col">Explicitness</th><th scope="col"><span class="visually-hidden">Details</span></th></tr></thead>
+    <tbody>
+<tr id="entity-REQ-001"
+      data-type="Requirement"
+      data-capability=""
+      data-status=""
+      data-priority="should"
+      data-search="req-001 support: the order portal runs on a supported, maintainable application-server platform requirement functional">
+    <td><code>REQ-001</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-REQ-001">
+        Support: The Order Portal runs on a supported, maintainable application-server platform
+      </button>
+    </td>
+    <td>Requirement</td>
+    <td><span class="dash">—</span></td>
+    <td>functional</td>
+    <td>should</td>
+    <td><span class="dash">—</span></td>
+    <td>derived</td>
+  </tr>
+<tr class="detail-row" id="detail-entity-REQ-001" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Capability</dt><dd><span class="dash">—</span></dd></div><div class="detail-field"><dt>Category</dt><dd>functional</dd></div><div class="detail-field"><dt>Priority</dt><dd>should</dd></div><div class="detail-field"><dt>Explicitness</dt><dd>derived</dd></div><div class="detail-field"><dt>Rationale</dt><dd><ul><li>desired-outcomes: The Order Portal runs on a supported, maintainable application-server platform</li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-REQ-002"
+      data-type="Requirement"
+      data-capability=""
+      data-status=""
+      data-priority="should"
+      data-search="req-002 support: existing order operations continue without disruption during modernization requirement functional">
+    <td><code>REQ-002</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-REQ-002">
+        Support: Existing order operations continue without disruption during modernization
+      </button>
+    </td>
+    <td>Requirement</td>
+    <td><span class="dash">—</span></td>
+    <td>functional</td>
+    <td>should</td>
+    <td><span class="dash">—</span></td>
+    <td>derived</td>
+  </tr>
+<tr class="detail-row" id="detail-entity-REQ-002" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Capability</dt><dd><span class="dash">—</span></dd></div><div class="detail-field"><dt>Category</dt><dd>functional</dd></div><div class="detail-field"><dt>Priority</dt><dd>should</dd></div><div class="detail-field"><dt>Explicitness</dt><dd>derived</dd></div><div class="detail-field"><dt>Rationale</dt><dd><ul><li>desired-outcomes: Existing order operations continue without disruption during modernization</li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-DECISION-001"
+      data-type="Architecture Decision"
+      data-capability="website"
+      data-status="selected"
+      data-priority=""
+      data-search="decision-001 website: selected website matched its legacy keyword heuristic against businesscontext. not yet migrated to structured assessment — see docs/architecture/roadmap.md. architecture decision website">
+    <td><code>DECISION-001</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-DECISION-001">
+        website: selected
+      </button>
+    </td>
+    <td>Architecture Decision</td>
+    <td><a href="#capability-website">Website</a></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="pill pill-positive">selected</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-DECISION-001" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>Website matched its legacy keyword heuristic against BusinessContext. Not yet migrated to structured assessment — see docs/architecture/ROADMAP.md.</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-website">Website</a></dd></div><div class="detail-field"><dt>Status</dt><dd>selected</dd></div><div class="detail-field"><dt>Rationale</dt><dd><ul><li>Website matched its legacy keyword heuristic against BusinessContext. Not yet migrated to structured assessment — see docs/architecture/ROADMAP.md.</li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-DECISION-002"
+      data-type="Architecture Decision"
+      data-capability="workflow-automation"
+      data-status="not-selected"
+      data-priority=""
+      data-search="decision-002 workflow-automation: not-selected no matching evidence found for workflow-automation. architecture decision workflow-automation">
+    <td><code>DECISION-002</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-DECISION-002">
+        workflow-automation: not-selected
+      </button>
+    </td>
+    <td>Architecture Decision</td>
+    <td><a href="#capability-workflow-automation">Workflow Automation</a></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="pill pill-negative">not-selected</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-DECISION-002" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>No matching evidence found for workflow-automation.</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-workflow-automation">Workflow Automation</a></dd></div><div class="detail-field"><dt>Status</dt><dd>not-selected</dd></div><div class="detail-field"><dt>Rationale</dt><dd><ul><li>No matching evidence found for workflow-automation.</li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-DECISION-003"
+      data-type="Architecture Decision"
+      data-capability="integrations"
+      data-status="selected"
+      data-priority=""
+      data-search="decision-003 integrations: selected discovery lists an explicit integration need: &quot;the order portal sends order requests to the integration gateway.&quot;. discovery lists an explicit integration need: &quot;the order portal reads and writes order records in the order database.&quot;. desired outcome &quot;the order portal runs on a supported, maintainable application-server platform&quot; names a discovered system (order portal). architecture decision integrations">
+    <td><code>DECISION-003</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-DECISION-003">
+        integrations: selected
+      </button>
+    </td>
+    <td>Architecture Decision</td>
+    <td><a href="#capability-integrations">Integrations</a></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="pill pill-positive">selected</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-DECISION-003" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>Discovery lists an explicit integration need: &quot;The Order Portal sends order requests to the Integration Gateway.&quot;. Discovery lists an explicit integration need: &quot;The Order Portal reads and writes order records in the Order Database.&quot;. Desired outcome &quot;The Order Portal runs on a supported, maintainable application-server platform&quot; names a discovered system (Order Portal).</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-integrations">Integrations</a></dd></div><div class="detail-field"><dt>Status</dt><dd>selected</dd></div><div class="detail-field"><dt>Rationale</dt><dd><ul><li>Discovery lists an explicit integration need: &quot;The Order Portal sends order requests to the Integration Gateway.&quot;.</li><li>Discovery lists an explicit integration need: &quot;The Order Portal reads and writes order records in the Order Database.&quot;.</li><li>Desired outcome &quot;The Order Portal runs on a supported, maintainable application-server platform&quot; names a discovered system (Order Portal).</li></ul></dd></div><div class="detail-field"><dt>Evidence</dt><dd><ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>INTNEED-001</code> — The Order Portal sends order requests to the Integration Gateway. <span class="evidence-type">(integration)</span></li><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>INTNEED-002</code> — The Order Portal reads and writes order records in the Order Database. <span class="evidence-type">(integration)</span></li><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>OUTCOME-001</code> — The Order Portal runs on a supported, maintainable application-server platform <span class="evidence-type">(outcome)</span></li><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>SYS-001</code> — Order Portal <span class="evidence-type">(system)</span></li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-DECISION-004"
+      data-type="Architecture Decision"
+      data-capability="ai-agents"
+      data-status="not-selected"
+      data-priority=""
+      data-search="decision-004 ai-agents: not-selected no matching evidence found for ai-agents. architecture decision ai-agents">
+    <td><code>DECISION-004</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-DECISION-004">
+        ai-agents: not-selected
+      </button>
+    </td>
+    <td>Architecture Decision</td>
+    <td><a href="#capability-ai-agents">AI Agents</a></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="pill pill-negative">not-selected</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-DECISION-004" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>No matching evidence found for ai-agents.</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-ai-agents">AI Agents</a></dd></div><div class="detail-field"><dt>Status</dt><dd>not-selected</dd></div><div class="detail-field"><dt>Rationale</dt><dd><ul><li>No matching evidence found for ai-agents.</li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-DECISION-005"
+      data-type="Architecture Decision"
+      data-capability="security-governance"
+      data-status="selected"
+      data-priority=""
+      data-search="decision-005 security-governance: selected discovery flagged an unresolved gap relevant to security/governance: &quot;data&quot;. architecture decision security-governance">
+    <td><code>DECISION-005</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-DECISION-005">
+        security-governance: selected
+      </button>
+    </td>
+    <td>Architecture Decision</td>
+    <td><a href="#capability-security-governance">Security &amp; Governance</a></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="pill pill-positive">selected</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-DECISION-005" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>Discovery flagged an unresolved gap relevant to security/governance: &quot;Data&quot;.</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-security-governance">Security &amp; Governance</a></dd></div><div class="detail-field"><dt>Status</dt><dd>selected</dd></div><div class="detail-field"><dt>Rationale</dt><dd><ul><li>Discovery flagged an unresolved gap relevant to security/governance: &quot;Data&quot;.</li></ul></dd></div><div class="detail-field"><dt>Evidence</dt><dd><ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>GAP-004</code> — Data <span class="evidence-type">(information-gap)</span></li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-DECISION-006"
+      data-type="Architecture Decision"
+      data-capability="observability"
+      data-status="selected"
+      data-priority=""
+      data-search="decision-006 observability: selected integration need &quot;the order portal sends order requests to the integration gateway.&quot; is likely to produce an external-boundary operation worth observing. integration need &quot;the order portal reads and writes order records in the order database.&quot; is likely to produce an external-boundary operation worth observing. architecture decision observability">
+    <td><code>DECISION-006</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-DECISION-006">
+        observability: selected
+      </button>
+    </td>
+    <td>Architecture Decision</td>
+    <td><a href="#capability-observability">Observability</a></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="pill pill-positive">selected</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-DECISION-006" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>Integration need &quot;The Order Portal sends order requests to the Integration Gateway.&quot; is likely to produce an external-boundary operation worth observing. Integration need &quot;The Order Portal reads and writes order records in the Order Database.&quot; is likely to produce an external-boundary operation worth observing.</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-observability">Observability</a></dd></div><div class="detail-field"><dt>Status</dt><dd>selected</dd></div><div class="detail-field"><dt>Rationale</dt><dd><ul><li>Integration need &quot;The Order Portal sends order requests to the Integration Gateway.&quot; is likely to produce an external-boundary operation worth observing.</li><li>Integration need &quot;The Order Portal reads and writes order records in the Order Database.&quot; is likely to produce an external-boundary operation worth observing.</li></ul></dd></div><div class="detail-field"><dt>Evidence</dt><dd><ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>INTNEED-001</code> — The Order Portal sends order requests to the Integration Gateway. <span class="evidence-type">(integration)</span></li><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>INTNEED-002</code> — The Order Portal reads and writes order records in the Order Database. <span class="evidence-type">(integration)</span></li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-DECISION-007"
+      data-type="Architecture Decision"
+      data-capability="cloud"
+      data-status="not-selected"
+      data-priority=""
+      data-search="decision-007 cloud: not-selected no matching evidence found for cloud. architecture decision cloud">
+    <td><code>DECISION-007</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-DECISION-007">
+        cloud: not-selected
+      </button>
+    </td>
+    <td>Architecture Decision</td>
+    <td><a href="#capability-cloud">Cloud Architecture</a></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="pill pill-negative">not-selected</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-DECISION-007" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>No matching evidence found for cloud.</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-cloud">Cloud Architecture</a></dd></div><div class="detail-field"><dt>Status</dt><dd>not-selected</dd></div><div class="detail-field"><dt>Rationale</dt><dd><ul><li>No matching evidence found for cloud.</li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-DECISION-008"
+      data-type="Architecture Decision"
+      data-capability="modernization"
+      data-status="selected"
+      data-priority=""
+      data-search="decision-008 modernization: selected modernization need &quot;modneed-001&quot; identifies 1 system(s) with 5 stated outcome(s). requirement &quot;support: existing order operations continue without disruption during modernization&quot; describes an explicit modernization/migration concern. system &quot;sys-001&quot; is explicitly classified &quot;legacy&quot; — a supporting signal only; it does not by itself select a migration strategy. architecture decision modernization">
+    <td><code>DECISION-008</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-DECISION-008">
+        modernization: selected
+      </button>
+    </td>
+    <td>Architecture Decision</td>
+    <td><a href="#capability-modernization">Legacy Modernization</a></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="pill pill-positive">selected</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-DECISION-008" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>Modernization need &quot;MODNEED-001&quot; identifies 1 system(s) with 5 stated outcome(s). Requirement &quot;Support: Existing order operations continue without disruption during modernization&quot; describes an explicit modernization/migration concern. System &quot;SYS-001&quot; is explicitly classified &quot;legacy&quot; — a supporting signal only; it does not by itself select a migration strategy.</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-modernization">Legacy Modernization</a></dd></div><div class="detail-field"><dt>Status</dt><dd>selected</dd></div><div class="detail-field"><dt>Rationale</dt><dd><ul><li>Modernization need &quot;MODNEED-001&quot; identifies 1 system(s) with 5 stated outcome(s).</li><li>Requirement &quot;Support: Existing order operations continue without disruption during modernization&quot; describes an explicit modernization/migration concern.</li><li>System &quot;SYS-001&quot; is explicitly classified &quot;legacy&quot; — a supporting signal only; it does not by itself select a migration strategy.</li></ul></dd></div><div class="detail-field"><dt>Evidence</dt><dd><ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>MODNEED-001</code> — The business wants to modernize the Order Portal. <span class="evidence-type">(modernization-need)</span></li><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>REQ-002</code> — Support: Existing order operations continue without disruption during modernization <span class="evidence-type">(requirement)</span></li><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>SYS-001</code> — Order Portal <span class="evidence-type">(system)</span></li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-GAP-001"
+      data-type="Information Gap"
+      data-capability=""
+      data-status=""
+      data-priority=""
+      data-search="gap-001 pain points what current problems is this solution meant to solve? information gap medium">
+    <td><code>GAP-001</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-GAP-001">
+        Pain points
+      </button>
+    </td>
+    <td>Information Gap</td>
+    <td><span class="dash">—</span></td>
+    <td>medium</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-GAP-001" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>What current problems is this solution meant to solve?</dd></div><div class="detail-field"><dt>Capability</dt><dd><span class="dash">—</span></dd></div><div class="detail-field"><dt>Category</dt><dd>medium</dd></div><div class="detail-field"><dt>Blocking</dt><dd>No</dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-GAP-002"
+      data-type="Information Gap"
+      data-capability=""
+      data-status=""
+      data-priority=""
+      data-search="gap-002 constraints are there budget, timeline, regulatory, or technical constraints to account for? information gap low">
+    <td><code>GAP-002</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-GAP-002">
+        Constraints
+      </button>
+    </td>
+    <td>Information Gap</td>
+    <td><span class="dash">—</span></td>
+    <td>low</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-GAP-002" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>Are there budget, timeline, regulatory, or technical constraints to account for?</dd></div><div class="detail-field"><dt>Capability</dt><dd><span class="dash">—</span></dd></div><div class="detail-field"><dt>Category</dt><dd>low</dd></div><div class="detail-field"><dt>Blocking</dt><dd>No</dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-GAP-003"
+      data-type="Information Gap"
+      data-capability="workflow-automation"
+      data-status=""
+      data-priority=""
+      data-search="gap-003 business rules are there rules that must always hold (e.g. no double-booking, approval thresholds)? information gap low workflow-automation">
+    <td><code>GAP-003</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-GAP-003">
+        Business rules
+      </button>
+    </td>
+    <td>Information Gap</td>
+    <td><a href="#capability-workflow-automation">Workflow Automation</a></td>
+    <td>low</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-GAP-003" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>Are there rules that must always hold (e.g. no double-booking, approval thresholds)?</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-workflow-automation">Workflow Automation</a></dd></div><div class="detail-field"><dt>Category</dt><dd>low</dd></div><div class="detail-field"><dt>Blocking</dt><dd>No</dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-GAP-004"
+      data-type="Information Gap"
+      data-capability="security-governance cloud"
+      data-status=""
+      data-priority=""
+      data-search="gap-004 data what data does this solution create, store, or rely on? information gap medium security-governance cloud">
+    <td><code>GAP-004</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-GAP-004">
+        Data
+      </button>
+    </td>
+    <td>Information Gap</td>
+    <td><a href="#capability-security-governance">Security &amp; Governance</a>, <a href="#capability-cloud">Cloud Architecture</a></td>
+    <td>medium</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-GAP-004" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>What data does this solution create, store, or rely on?</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-security-governance">Security &amp; Governance</a>, <a href="#capability-cloud">Cloud Architecture</a></dd></div><div class="detail-field"><dt>Category</dt><dd>medium</dd></div><div class="detail-field"><dt>Blocking</dt><dd>No</dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-GAP-005"
+      data-type="Information Gap"
+      data-capability=""
+      data-status=""
+      data-priority=""
+      data-search="gap-005 requirements no explicit requirements were provided — the requirements above were derived from desired outcomes. can you confirm or refine them? information gap medium">
+    <td><code>GAP-005</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-GAP-005">
+        Requirements
+      </button>
+    </td>
+    <td>Information Gap</td>
+    <td><span class="dash">—</span></td>
+    <td>medium</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-GAP-005" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>No explicit requirements were provided — the requirements above were derived from desired outcomes. Can you confirm or refine them?</dd></div><div class="detail-field"><dt>Capability</dt><dd><span class="dash">—</span></dd></div><div class="detail-field"><dt>Category</dt><dd>medium</dd></div><div class="detail-field"><dt>Blocking</dt><dd>No</dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-SECREQ-001"
+      data-type="Security Requirement"
+      data-capability="security-governance"
+      data-status="defined"
+      data-priority="review"
+      data-search="secreq-001 interaction with the system behind &quot;the order portal sends order requests to the integration gateway.&quot; crosses a trust boundary; requests and responses should be validated and protection requirements confirmed before implementation. security requirement integration security-governance">
+    <td><code>SECREQ-001</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-SECREQ-001">
+        Interaction with the system behind &quot;The Order Portal sends order requests to the Integration Gateway.&quot; crosses a trust boundary; requests and responses should be validated and protection requirements confirmed before implementation.
+      </button>
+    </td>
+    <td>Security Requirement</td>
+    <td><a href="#capability-security-governance">Security &amp; Governance</a></td>
+    <td>integration</td>
+    <td>review</td>
+    <td><span class="pill pill-positive">defined</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-SECREQ-001" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-security-governance">Security &amp; Governance</a></dd></div><div class="detail-field"><dt>Category</dt><dd>integration</dd></div><div class="detail-field"><dt>Priority</dt><dd>review</dd></div><div class="detail-field"><dt>Status</dt><dd>defined</dd></div><div class="detail-field"><dt>Architecture references</dt><dd><span class="chip-list"><a class="chip" href="#entity-INT-001" title="The Order Portal sends order requests to the Integration Gateway."><code>INT-001</code></a> <a class="chip" href="#entity-SYS-002" title="Integration Gateway"><code>SYS-002</code></a></span></dd></div><div class="detail-field"><dt>Evidence</dt><dd><ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>INTNEED-001</code> — The Order Portal sends order requests to the Integration Gateway. <span class="evidence-type">(integration)</span></li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-SECREQ-002"
+      data-type="Security Requirement"
+      data-capability="security-governance"
+      data-status="defined"
+      data-priority="review"
+      data-search="secreq-002 interaction with the system behind &quot;the order portal reads and writes order records in the order database.&quot; crosses a trust boundary; requests and responses should be validated and protection requirements confirmed before implementation. security requirement integration security-governance">
+    <td><code>SECREQ-002</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-SECREQ-002">
+        Interaction with the system behind &quot;The Order Portal reads and writes order records in the Order Database.&quot; crosses a trust boundary; requests and responses should be validated and protection requirements confirmed before implementation.
+      </button>
+    </td>
+    <td>Security Requirement</td>
+    <td><a href="#capability-security-governance">Security &amp; Governance</a></td>
+    <td>integration</td>
+    <td>review</td>
+    <td><span class="pill pill-positive">defined</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-SECREQ-002" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-security-governance">Security &amp; Governance</a></dd></div><div class="detail-field"><dt>Category</dt><dd>integration</dd></div><div class="detail-field"><dt>Priority</dt><dd>review</dd></div><div class="detail-field"><dt>Status</dt><dd>defined</dd></div><div class="detail-field"><dt>Architecture references</dt><dd><span class="chip-list"><a class="chip" href="#entity-INT-002" title="The Order Portal reads and writes order records in the Order Database."><code>INT-002</code></a> <a class="chip" href="#entity-SYS-003" title="Order Database"><code>SYS-003</code></a></span></dd></div><div class="detail-field"><dt>Evidence</dt><dd><ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>INTNEED-002</code> — The Order Portal reads and writes order records in the Order Database. <span class="evidence-type">(integration)</span></li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-HEALTH-001"
+      data-type="Observability Requirement"
+      data-capability="observability"
+      data-status=""
+      data-priority=""
+      data-search="health-001 ability to determine whether &quot;the order portal sends order requests to the integration gateway.&quot; is operational. observability requirement health: dependency observability">
+    <td><code>HEALTH-001</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-HEALTH-001">
+        Ability to determine whether &quot;The Order Portal sends order requests to the Integration Gateway.&quot; is operational.
+      </button>
+    </td>
+    <td>Observability Requirement</td>
+    <td><a href="#capability-observability">Observability</a></td>
+    <td>health: dependency</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-HEALTH-001" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-observability">Observability</a></dd></div><div class="detail-field"><dt>Category</dt><dd>health: dependency</dd></div><div class="detail-field"><dt>Architecture references</dt><dd><span class="chip-list"><a class="chip" href="#entity-INT-001" title="The Order Portal sends order requests to the Integration Gateway."><code>INT-001</code></a></span></dd></div><div class="detail-field"><dt>Evidence</dt><dd><ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>INTNEED-001</code> — The Order Portal sends order requests to the Integration Gateway. <span class="evidence-type">(integration)</span></li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-HEALTH-002"
+      data-type="Observability Requirement"
+      data-capability="observability"
+      data-status=""
+      data-priority=""
+      data-search="health-002 ability to determine whether &quot;the order portal reads and writes order records in the order database.&quot; is operational. observability requirement health: dependency observability">
+    <td><code>HEALTH-002</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-HEALTH-002">
+        Ability to determine whether &quot;The Order Portal reads and writes order records in the Order Database.&quot; is operational.
+      </button>
+    </td>
+    <td>Observability Requirement</td>
+    <td><a href="#capability-observability">Observability</a></td>
+    <td>health: dependency</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-HEALTH-002" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-observability">Observability</a></dd></div><div class="detail-field"><dt>Category</dt><dd>health: dependency</dd></div><div class="detail-field"><dt>Architecture references</dt><dd><span class="chip-list"><a class="chip" href="#entity-INT-002" title="The Order Portal reads and writes order records in the Order Database."><code>INT-002</code></a></span></dd></div><div class="detail-field"><dt>Evidence</dt><dd><ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>INTNEED-002</code> — The Order Portal reads and writes order records in the Order Database. <span class="evidence-type">(integration)</span></li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-INT-001"
+      data-type="Integration Action"
+      data-capability="integrations"
+      data-status="needs-review"
+      data-priority=""
+      data-search="int-001 the order portal sends order requests to the integration gateway. the order portal sends order requests to the integration gateway. integration action request-response integrations">
+    <td><code>INT-001</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-INT-001">
+        The Order Portal sends order requests to the Integration Gateway.
+      </button>
+    </td>
+    <td>Integration Action</td>
+    <td><a href="#capability-integrations">Integrations</a></td>
+    <td>request-response</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="pill pill-warning">needs-review</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-INT-001" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>The Order Portal sends order requests to the Integration Gateway.</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-integrations">Integrations</a></dd></div><div class="detail-field"><dt>Category</dt><dd>request-response</dd></div><div class="detail-field"><dt>Status</dt><dd>needs-review</dd></div><div class="detail-field"><dt>Rationale</dt><dd><ul><li>authentication mechanism unknown</li></ul></dd></div><div class="detail-field"><dt>Related systems</dt><dd><span class="chip-list"><a class="chip" href="#entity-SYS-001" title="Order Portal"><code>SYS-001</code></a> <a class="chip" href="#entity-SYS-002" title="Integration Gateway"><code>SYS-002</code></a></span></dd></div><div class="detail-field"><dt>Information gaps</dt><dd><span class="chip-list"><a class="chip" href="#entity-INTGAP-001" title="Integration authentication"><code>INTGAP-001</code></a> <a class="chip" href="#entity-INTGAP-002" title="Integration failure handling"><code>INTGAP-002</code></a></span></dd></div><div class="detail-field"><dt>Evidence</dt><dd><ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>INTNEED-001</code> — The Order Portal sends order requests to the Integration Gateway. <span class="evidence-type">(integration)</span></li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-INTGAP-001"
+      data-type="Information Gap"
+      data-capability="integrations"
+      data-status=""
+      data-priority=""
+      data-search="intgap-001 integration authentication what authentication mechanism is required for &quot;the order portal sends order requests to the integration gateway.&quot;? information gap medium integrations">
+    <td><code>INTGAP-001</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-INTGAP-001">
+        Integration authentication
+      </button>
+    </td>
+    <td>Information Gap</td>
+    <td><a href="#capability-integrations">Integrations</a></td>
+    <td>medium</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-INTGAP-001" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>What authentication mechanism is required for &quot;The Order Portal sends order requests to the Integration Gateway.&quot;?</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-integrations">Integrations</a></dd></div><div class="detail-field"><dt>Category</dt><dd>medium</dd></div><div class="detail-field"><dt>Blocking</dt><dd>No</dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-INTGAP-002"
+      data-type="Information Gap"
+      data-capability="integrations"
+      data-status=""
+      data-priority=""
+      data-search="intgap-002 integration failure handling what should happen if integration gateway is unavailable during &quot;the order portal sends order requests to the integration gateway.&quot;? information gap low integrations">
+    <td><code>INTGAP-002</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-INTGAP-002">
+        Integration failure handling
+      </button>
+    </td>
+    <td>Information Gap</td>
+    <td><a href="#capability-integrations">Integrations</a></td>
+    <td>low</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-INTGAP-002" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>What should happen if Integration Gateway is unavailable during &quot;The Order Portal sends order requests to the Integration Gateway.&quot;?</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-integrations">Integrations</a></dd></div><div class="detail-field"><dt>Category</dt><dd>low</dd></div><div class="detail-field"><dt>Blocking</dt><dd>No</dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-INT-002"
+      data-type="Integration Action"
+      data-capability="integrations"
+      data-status="needs-review"
+      data-priority=""
+      data-search="int-002 the order portal reads and writes order records in the order database. the order portal reads and writes order records in the order database. integration action database integrations">
+    <td><code>INT-002</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-INT-002">
+        The Order Portal reads and writes order records in the Order Database.
+      </button>
+    </td>
+    <td>Integration Action</td>
+    <td><a href="#capability-integrations">Integrations</a></td>
+    <td>database</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="pill pill-warning">needs-review</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-INT-002" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>The Order Portal reads and writes order records in the Order Database.</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-integrations">Integrations</a></dd></div><div class="detail-field"><dt>Category</dt><dd>database</dd></div><div class="detail-field"><dt>Status</dt><dd>needs-review</dd></div><div class="detail-field"><dt>Rationale</dt><dd><ul><li>authentication mechanism unknown</li></ul></dd></div><div class="detail-field"><dt>Related systems</dt><dd><span class="chip-list"><a class="chip" href="#entity-SYS-001" title="Order Portal"><code>SYS-001</code></a> <a class="chip" href="#entity-SYS-003" title="Order Database"><code>SYS-003</code></a></span></dd></div><div class="detail-field"><dt>Information gaps</dt><dd><span class="chip-list"><a class="chip" href="#entity-INTGAP-003" title="Integration authentication"><code>INTGAP-003</code></a> <a class="chip" href="#entity-INTGAP-004" title="Integration failure handling"><code>INTGAP-004</code></a></span></dd></div><div class="detail-field"><dt>Evidence</dt><dd><ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>INTNEED-002</code> — The Order Portal reads and writes order records in the Order Database. <span class="evidence-type">(integration)</span></li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-INTGAP-003"
+      data-type="Information Gap"
+      data-capability="integrations"
+      data-status=""
+      data-priority=""
+      data-search="intgap-003 integration authentication what authentication mechanism is required for &quot;the order portal reads and writes order records in the order database.&quot;? information gap medium integrations">
+    <td><code>INTGAP-003</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-INTGAP-003">
+        Integration authentication
+      </button>
+    </td>
+    <td>Information Gap</td>
+    <td><a href="#capability-integrations">Integrations</a></td>
+    <td>medium</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-INTGAP-003" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>What authentication mechanism is required for &quot;The Order Portal reads and writes order records in the Order Database.&quot;?</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-integrations">Integrations</a></dd></div><div class="detail-field"><dt>Category</dt><dd>medium</dd></div><div class="detail-field"><dt>Blocking</dt><dd>No</dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-INTGAP-004"
+      data-type="Information Gap"
+      data-capability="integrations"
+      data-status=""
+      data-priority=""
+      data-search="intgap-004 integration failure handling what should happen if order database is unavailable during &quot;the order portal reads and writes order records in the order database.&quot;? information gap low integrations">
+    <td><code>INTGAP-004</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-INTGAP-004">
+        Integration failure handling
+      </button>
+    </td>
+    <td>Information Gap</td>
+    <td><a href="#capability-integrations">Integrations</a></td>
+    <td>low</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-INTGAP-004" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>What should happen if Order Database is unavailable during &quot;The Order Portal reads and writes order records in the Order Database.&quot;?</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-integrations">Integrations</a></dd></div><div class="detail-field"><dt>Category</dt><dd>low</dd></div><div class="detail-field"><dt>Blocking</dt><dd>No</dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-TARGETSTATE-001"
+      data-type="Target-State Requirement"
+      data-capability="modernization"
+      data-status=""
+      data-priority=""
+      data-search="targetstate-001 target runtime: apache tomcat. target-state requirement runtime modernization">
+    <td><code>TARGETSTATE-001</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-TARGETSTATE-001">
+        Target runtime: Apache Tomcat.
+      </button>
+    </td>
+    <td>Target-State Requirement</td>
+    <td><a href="#capability-modernization">Legacy Modernization</a></td>
+    <td>runtime</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td>explicit</td>
+  </tr>
+<tr class="detail-row" id="detail-entity-TARGETSTATE-001" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-modernization">Legacy Modernization</a></dd></div><div class="detail-field"><dt>Category</dt><dd>runtime</dd></div><div class="detail-field"><dt>Explicitness</dt><dd>explicit</dd></div><div class="detail-field"><dt>Related systems</dt><dd><span class="chip-list"><a class="chip" href="#entity-SYS-001" title="Order Portal"><code>SYS-001</code></a></span></dd></div><div class="detail-field"><dt>Architecture references</dt><dd><span class="chip-list"><a class="chip" href="#entity-SYS-001" title="Order Portal"><code>SYS-001</code></a></span></dd></div><div class="detail-field"><dt>Evidence</dt><dd><ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>MODNEED-001</code> — The business wants to modernize the Order Portal. The application must move from IBM WebSphere to Apache Tomcat while preserving application behavior. The migration must allow the current and modernized application versions to coexist during validation. No cloud provider has been selected. No microservices decomposition has been approved. <span class="evidence-type">(modernization-need)</span></li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-TARGETSTATE-002"
+      data-type="Target-State Requirement"
+      data-capability="modernization"
+      data-status=""
+      data-priority=""
+      data-search="targetstate-002 security requirement must remain enforced after modernization: interaction with the system behind &quot;the order portal sends order requests to the integration gateway.&quot; crosses a trust boundary; requests and responses should be validated and protection requirements confirmed before implementation. target-state requirement security modernization">
+    <td><code>TARGETSTATE-002</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-TARGETSTATE-002">
+        Security requirement must remain enforced after modernization: Interaction with the system behind &quot;The Order Portal sends order requests to the Integration Gateway.&quot; crosses a trust boundary; requests and responses should be validated and protection requirements confirmed before implementation.
+      </button>
+    </td>
+    <td>Target-State Requirement</td>
+    <td><a href="#capability-modernization">Legacy Modernization</a></td>
+    <td>security</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td>explicit</td>
+  </tr>
+<tr class="detail-row" id="detail-entity-TARGETSTATE-002" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-modernization">Legacy Modernization</a></dd></div><div class="detail-field"><dt>Category</dt><dd>security</dd></div><div class="detail-field"><dt>Explicitness</dt><dd>explicit</dd></div><div class="detail-field"><dt>Related systems</dt><dd><span class="chip-list"><a class="chip" href="#entity-SYS-001" title="Order Portal"><code>SYS-001</code></a></span></dd></div><div class="detail-field"><dt>Architecture references</dt><dd><span class="chip-list"><a class="chip" href="#entity-INT-001" title="The Order Portal sends order requests to the Integration Gateway."><code>INT-001</code></a> <a class="chip" href="#entity-SYS-002" title="Integration Gateway"><code>SYS-002</code></a></span></dd></div><div class="detail-field"><dt>Evidence</dt><dd><ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>INTNEED-001</code> — The Order Portal sends order requests to the Integration Gateway. <span class="evidence-type">(integration)</span></li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-TARGETSTATE-003"
+      data-type="Target-State Requirement"
+      data-capability="modernization"
+      data-status=""
+      data-priority=""
+      data-search="targetstate-003 security requirement must remain enforced after modernization: interaction with the system behind &quot;the order portal reads and writes order records in the order database.&quot; crosses a trust boundary; requests and responses should be validated and protection requirements confirmed before implementation. target-state requirement security modernization">
+    <td><code>TARGETSTATE-003</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-TARGETSTATE-003">
+        Security requirement must remain enforced after modernization: Interaction with the system behind &quot;The Order Portal reads and writes order records in the Order Database.&quot; crosses a trust boundary; requests and responses should be validated and protection requirements confirmed before implementation.
+      </button>
+    </td>
+    <td>Target-State Requirement</td>
+    <td><a href="#capability-modernization">Legacy Modernization</a></td>
+    <td>security</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td>explicit</td>
+  </tr>
+<tr class="detail-row" id="detail-entity-TARGETSTATE-003" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-modernization">Legacy Modernization</a></dd></div><div class="detail-field"><dt>Category</dt><dd>security</dd></div><div class="detail-field"><dt>Explicitness</dt><dd>explicit</dd></div><div class="detail-field"><dt>Related systems</dt><dd><span class="chip-list"><a class="chip" href="#entity-SYS-001" title="Order Portal"><code>SYS-001</code></a></span></dd></div><div class="detail-field"><dt>Architecture references</dt><dd><span class="chip-list"><a class="chip" href="#entity-INT-002" title="The Order Portal reads and writes order records in the Order Database."><code>INT-002</code></a> <a class="chip" href="#entity-SYS-003" title="Order Database"><code>SYS-003</code></a></span></dd></div><div class="detail-field"><dt>Evidence</dt><dd><ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>INTNEED-002</code> — The Order Portal reads and writes order records in the Order Database. <span class="evidence-type">(integration)</span></li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-VALIDATE-001"
+      data-type="Validation Requirement"
+      data-capability="modernization"
+      data-status=""
+      data-priority=""
+      data-search="validate-001 validate that: existing order-management business behavior must remain unchanged. validation requirement behavior modernization">
+    <td><code>VALIDATE-001</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-VALIDATE-001">
+        Validate that: Existing order-management business behavior must remain unchanged.
+      </button>
+    </td>
+    <td>Validation Requirement</td>
+    <td><a href="#capability-modernization">Legacy Modernization</a></td>
+    <td>behavior</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-VALIDATE-001" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-modernization">Legacy Modernization</a></dd></div><div class="detail-field"><dt>Category</dt><dd>behavior</dd></div><div class="detail-field"><dt>Preservation requirements</dt><dd><span class="chip-list"><span class="chip chip-static" title="Existing order-management business behavior must remain unchanged."><code>PRESERVE-001</code></span></span></dd></div><div class="detail-field"><dt>Evidence</dt><dd><ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>MODNEED-001</code> — Existing order-management business behavior must remain unchanged. <span class="evidence-type">(modernization-need)</span></li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-VALIDATE-002"
+      data-type="Validation Requirement"
+      data-capability="modernization"
+      data-status=""
+      data-priority=""
+      data-search="validate-002 validate that: existing integration behavior with the integration gateway must remain compatible. validation requirement integration modernization">
+    <td><code>VALIDATE-002</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-VALIDATE-002">
+        Validate that: Existing integration behavior with the Integration Gateway must remain compatible.
+      </button>
+    </td>
+    <td>Validation Requirement</td>
+    <td><a href="#capability-modernization">Legacy Modernization</a></td>
+    <td>integration</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-VALIDATE-002" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-modernization">Legacy Modernization</a></dd></div><div class="detail-field"><dt>Category</dt><dd>integration</dd></div><div class="detail-field"><dt>Preservation requirements</dt><dd><span class="chip-list"><span class="chip chip-static" title="Existing integration behavior with the Integration Gateway must remain compatible."><code>PRESERVE-002</code></span></span></dd></div><div class="detail-field"><dt>Evidence</dt><dd><ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>MODNEED-001</code> — Existing integration behavior with the Integration Gateway must remain compatible. <span class="evidence-type">(modernization-need)</span></li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-VALIDATE-003"
+      data-type="Validation Requirement"
+      data-capability="modernization"
+      data-status=""
+      data-priority=""
+      data-search="validate-003 validate that: the order database technology must not change during this modernization phase. validation requirement integration modernization">
+    <td><code>VALIDATE-003</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-VALIDATE-003">
+        Validate that: The Order Database technology must not change during this modernization phase.
+      </button>
+    </td>
+    <td>Validation Requirement</td>
+    <td><a href="#capability-modernization">Legacy Modernization</a></td>
+    <td>integration</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-VALIDATE-003" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-modernization">Legacy Modernization</a></dd></div><div class="detail-field"><dt>Category</dt><dd>integration</dd></div><div class="detail-field"><dt>Preservation requirements</dt><dd><span class="chip-list"><span class="chip chip-static" title="The Order Database technology must not change during this modernization phase."><code>PRESERVE-003</code></span></span></dd></div><div class="detail-field"><dt>Evidence</dt><dd><ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>MODNEED-001</code> — The Order Database technology must not change during this modernization phase. <span class="evidence-type">(modernization-need)</span></li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-VALIDATE-004"
+      data-type="Validation Requirement"
+      data-capability="modernization"
+      data-status=""
+      data-priority=""
+      data-search="validate-004 verify preserved servlet behavior after runtime migration. validation requirement behavior modernization">
+    <td><code>VALIDATE-004</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-VALIDATE-004">
+        Verify preserved servlet behavior after runtime migration.
+      </button>
+    </td>
+    <td>Validation Requirement</td>
+    <td><a href="#capability-modernization">Legacy Modernization</a></td>
+    <td>behavior</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-VALIDATE-004" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-modernization">Legacy Modernization</a></dd></div><div class="detail-field"><dt>Category</dt><dd>behavior</dd></div><div class="detail-field"><dt>Preservation requirements</dt><dd><span class="chip-list"><span class="chip chip-static" title="Existing integration behavior with the Integration Gateway must remain compatible."><code>PRESERVE-002</code></span></span></dd></div><div class="detail-field"><dt>Evidence</dt><dd><ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>MODNEED-001</code> — Existing integration behavior with the Integration Gateway must remain compatible. <span class="evidence-type">(modernization-need)</span></li><li class="evidence-item"><span class="evidence-kind">codebase</span> <code>pom.xml:27</code> — symbol <code>javax.servlet:javax.servlet-api</code> <span class="evidence-type">(build-file)</span></li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-DELTA-001"
+      data-type="Modernization Delta"
+      data-capability="modernization"
+      data-status=""
+      data-priority=""
+      data-search="delta-001 ibm websphere → apache tomcat modernization delta runtime modernization">
+    <td><code>DELTA-001</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-DELTA-001">
+        IBM WebSphere → Apache Tomcat
+      </button>
+    </td>
+    <td>Modernization Delta</td>
+    <td><a href="#capability-modernization">Legacy Modernization</a></td>
+    <td>runtime</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-DELTA-001" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-modernization">Legacy Modernization</a></dd></div><div class="detail-field"><dt>Category</dt><dd>runtime</dd></div><div class="detail-field"><dt>Related systems</dt><dd><span class="chip-list"><a class="chip" href="#entity-SYS-001" title="Order Portal"><code>SYS-001</code></a></span></dd></div><div class="detail-field"><dt>Evidence</dt><dd><ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>MODNEED-001</code> — The business wants to modernize the Order Portal. The application must move from IBM WebSphere to Apache Tomcat while preserving application behavior. The migration must allow the current and modernized application versions to coexist during validation. No cloud provider has been selected. No microservices decomposition has been approved. <span class="evidence-type">(modernization-need)</span></li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-DEBT-001"
+      data-type="Technical Debt Finding"
+      data-capability="modernization"
+      data-status=""
+      data-priority=""
+      data-search="debt-001 analysis finding: dependency version for com.example:internal-fixture-lib could not be resolved locally. technical debt finding dependencies modernization">
+    <td><code>DEBT-001</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-DEBT-001">
+        Analysis finding: dependency version for com.example:internal-fixture-lib could not be resolved locally.
+      </button>
+    </td>
+    <td>Technical Debt Finding</td>
+    <td><a href="#capability-modernization">Legacy Modernization</a></td>
+    <td>dependencies</td>
+    <td>impact: unknown</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-DEBT-001" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-modernization">Legacy Modernization</a></dd></div><div class="detail-field"><dt>Category</dt><dd>dependencies</dd></div><div class="detail-field"><dt>Impact</dt><dd>unknown</dd></div><div class="detail-field"><dt>Related systems</dt><dd><span class="chip-list"><a class="chip" href="#entity-SYS-001" title="Order Portal"><code>SYS-001</code></a></span></dd></div><div class="detail-field"><dt>Evidence</dt><dd><ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">codebase</span> <code>pom.xml:33</code> — symbol <code>com.example:internal-fixture-lib</code> <span class="evidence-type">(build-file)</span></li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-CANDIDATE-001"
+      data-type="Architecture Decision"
+      data-capability="modernization"
+      data-status="candidate"
+      data-priority=""
+      data-search="candidate-001 modernization strategy for order portal strategy options: replatform (explicit) architecture decision modernization">
+    <td><code>CANDIDATE-001</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-CANDIDATE-001">
+        Modernization strategy for Order Portal
+      </button>
+    </td>
+    <td>Architecture Decision</td>
+    <td><a href="#capability-modernization">Legacy Modernization</a></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="pill pill-warning">candidate</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-CANDIDATE-001" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>Strategy options: replatform (explicit)</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-modernization">Legacy Modernization</a></dd></div><div class="detail-field"><dt>Status</dt><dd>candidate</dd></div><div class="detail-field"><dt>Rationale</dt><dd><ul><li>The business wants to modernize the Order Portal. The application must move from IBM WebSphere to Apache Tomcat while preserving application behavior. The migration must allow the current and modernized application versions to coexist during validation. No cloud provider has been selected. No microservices decomposition has been approved.</li></ul></dd></div><div class="detail-field"><dt>Related systems</dt><dd><span class="chip-list"><a class="chip" href="#entity-SYS-001" title="Order Portal"><code>SYS-001</code></a></span></dd></div><div class="detail-field"><dt>Preservation requirements</dt><dd><span class="chip-list"><span class="chip chip-static" title="Existing order-management business behavior must remain unchanged."><code>PRESERVE-001</code></span> <span class="chip chip-static" title="Existing integration behavior with the Integration Gateway must remain compatible."><code>PRESERVE-002</code></span> <span class="chip chip-static" title="The Order Database technology must not change during this modernization phase."><code>PRESERVE-003</code></span></span></dd></div><div class="detail-field"><dt>Related risks</dt><dd><span class="chip-list"><a class="chip" href="#entity-MODRISK-001" title="Running current and modernized versions of system &quot;SYS-001&quot; concurrently introduces state/data-consistency risk during the coexistence window."><code>MODRISK-001</code></a></span></dd></div><div class="detail-field"><dt>Evidence</dt><dd><ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>MODNEED-001</code> — The business wants to modernize the Order Portal. The application must move from IBM WebSphere to Apache Tomcat while preserving application behavior. The migration must allow the current and modernized application versions to coexist during validation. No cloud provider has been selected. No microservices decomposition has been approved. <span class="evidence-type">(modernization-need)</span></li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-WORKSTREAM-001"
+      data-type="Workstream"
+      data-capability="modernization"
+      data-status=""
+      data-priority=""
+      data-search="workstream-001 modernization: sys-001 modernize system &quot;sys-001&quot;. workstream modernization">
+    <td><code>WORKSTREAM-001</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-WORKSTREAM-001">
+        Modernization: SYS-001
+      </button>
+    </td>
+    <td>Workstream</td>
+    <td><a href="#capability-modernization">Legacy Modernization</a></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-WORKSTREAM-001" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>Modernize system &quot;SYS-001&quot;.</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-modernization">Legacy Modernization</a></dd></div><div class="detail-field"><dt>Related systems</dt><dd><span class="chip-list"><a class="chip" href="#entity-SYS-001" title="Order Portal"><code>SYS-001</code></a></span></dd></div><div class="detail-field"><dt>Evidence</dt><dd><ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>MODNEED-001</code> — The business wants to modernize the Order Portal. The application must move from IBM WebSphere to Apache Tomcat while preserving application behavior. The migration must allow the current and modernized application versions to coexist during validation. No cloud provider has been selected. No microservices decomposition has been approved. <span class="evidence-type">(modernization-need)</span></li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-MODRISK-001"
+      data-type="Risk"
+      data-capability="modernization"
+      data-status="needs-review"
+      data-priority=""
+      data-search="modrisk-001 running current and modernized versions of system &quot;sys-001&quot; concurrently introduces state/data-consistency risk during the coexistence window. risk modernization modernization">
+    <td><code>MODRISK-001</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-MODRISK-001">
+        Running current and modernized versions of system &quot;SYS-001&quot; concurrently introduces state/data-consistency risk during the coexistence window.
+      </button>
+    </td>
+    <td>Risk</td>
+    <td><a href="#capability-modernization">Legacy Modernization</a></td>
+    <td>modernization</td>
+    <td>impact: unknown</td>
+    <td><span class="pill pill-warning">needs-review</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-MODRISK-001" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-modernization">Legacy Modernization</a></dd></div><div class="detail-field"><dt>Category</dt><dd>modernization</dd></div><div class="detail-field"><dt>Impact</dt><dd>unknown</dd></div><div class="detail-field"><dt>Likelihood</dt><dd>unknown</dd></div><div class="detail-field"><dt>Status</dt><dd>needs-review</dd></div><div class="detail-field"><dt>Rationale</dt><dd><ul><li>Treatment: review</li></ul></dd></div><div class="detail-field"><dt>Architecture references</dt><dd><span class="chip-list"><a class="chip" href="#entity-SYS-001" title="Order Portal"><code>SYS-001</code></a></span></dd></div><div class="detail-field"><dt>Evidence</dt><dd><ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>MODNEED-001</code> — The business wants to modernize the Order Portal. The application must move from IBM WebSphere to Apache Tomcat while preserving application behavior. The migration must allow the current and modernized application versions to coexist during validation. No cloud provider has been selected. No microservices decomposition has been approved. <span class="evidence-type">(modernization-need)</span></li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-MODGAP-001"
+      data-type="Information Gap"
+      data-capability="modernization"
+      data-status=""
+      data-priority=""
+      data-search="modgap-001 process dependency which business processes depend on system &quot;order portal&quot;? information gap medium modernization">
+    <td><code>MODGAP-001</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-MODGAP-001">
+        Process dependency
+      </button>
+    </td>
+    <td>Information Gap</td>
+    <td><a href="#capability-modernization">Legacy Modernization</a></td>
+    <td>medium</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-MODGAP-001" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>Which business processes depend on system &quot;Order Portal&quot;?</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-modernization">Legacy Modernization</a></dd></div><div class="detail-field"><dt>Category</dt><dd>medium</dd></div><div class="detail-field"><dt>Blocking</dt><dd>No</dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-MODGAP-002"
+      data-type="Information Gap"
+      data-capability="modernization"
+      data-status=""
+      data-priority=""
+      data-search="modgap-002 system ownership who owns system &quot;order portal&quot;? information gap medium modernization">
+    <td><code>MODGAP-002</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-MODGAP-002">
+        System ownership
+      </button>
+    </td>
+    <td>Information Gap</td>
+    <td><a href="#capability-modernization">Legacy Modernization</a></td>
+    <td>medium</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-MODGAP-002" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>Who owns system &quot;Order Portal&quot;?</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-modernization">Legacy Modernization</a></dd></div><div class="detail-field"><dt>Category</dt><dd>medium</dd></div><div class="detail-field"><dt>Blocking</dt><dd>No</dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-MODGAP-003"
+      data-type="Information Gap"
+      data-capability="modernization"
+      data-status=""
+      data-priority=""
+      data-search="modgap-003 data migration does persistent data for system &quot;order portal&quot; need to migrate? information gap high modernization">
+    <td><code>MODGAP-003</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-MODGAP-003">
+        Data migration
+      </button>
+    </td>
+    <td>Information Gap</td>
+    <td><a href="#capability-modernization">Legacy Modernization</a></td>
+    <td>high</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-MODGAP-003" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>Does persistent data for system &quot;Order Portal&quot; need to migrate?</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-modernization">Legacy Modernization</a></dd></div><div class="detail-field"><dt>Category</dt><dd>high</dd></div><div class="detail-field"><dt>Blocking</dt><dd>No</dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-MODGAP-004"
+      data-type="Information Gap"
+      data-capability="modernization"
+      data-status=""
+      data-priority=""
+      data-search="modgap-004 rollback requirement what rollback requirement applies to system &quot;order portal&quot;&#39;s migration? information gap medium modernization">
+    <td><code>MODGAP-004</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-MODGAP-004">
+        Rollback requirement
+      </button>
+    </td>
+    <td>Information Gap</td>
+    <td><a href="#capability-modernization">Legacy Modernization</a></td>
+    <td>medium</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-MODGAP-004" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>What rollback requirement applies to system &quot;Order Portal&quot;&#39;s migration?</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-modernization">Legacy Modernization</a></dd></div><div class="detail-field"><dt>Category</dt><dd>medium</dd></div><div class="detail-field"><dt>Blocking</dt><dd>No</dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-MODGAP-005"
+      data-type="Information Gap"
+      data-capability="modernization"
+      data-status=""
+      data-priority=""
+      data-search="modgap-005 validation criteria what validation criteria define behavioral equivalence for system &quot;order portal&quot; after migration? information gap high modernization">
+    <td><code>MODGAP-005</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-MODGAP-005">
+        Validation criteria
+      </button>
+    </td>
+    <td>Information Gap</td>
+    <td><a href="#capability-modernization">Legacy Modernization</a></td>
+    <td>high</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-MODGAP-005" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>What validation criteria define behavioral equivalence for system &quot;Order Portal&quot; after migration?</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-modernization">Legacy Modernization</a></dd></div><div class="detail-field"><dt>Category</dt><dd>high</dd></div><div class="detail-field"><dt>Blocking</dt><dd>No</dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-MODGAP-006"
+      data-type="Information Gap"
+      data-capability="modernization"
+      data-status=""
+      data-priority=""
+      data-search="modgap-006 data ownership which system is authoritative for the data in &quot;order database&quot;? information gap low modernization">
+    <td><code>MODGAP-006</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-MODGAP-006">
+        Data ownership
+      </button>
+    </td>
+    <td>Information Gap</td>
+    <td><a href="#capability-modernization">Legacy Modernization</a></td>
+    <td>low</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-MODGAP-006" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>Which system is authoritative for the data in &quot;Order Database&quot;?</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-modernization">Legacy Modernization</a></dd></div><div class="detail-field"><dt>Category</dt><dd>low</dd></div><div class="detail-field"><dt>Blocking</dt><dd>No</dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-STEP-001"
+      data-type="Implementation Step"
+      data-capability="modernization"
+      data-status=""
+      data-priority=""
+      data-search="step-001 review runtime configuration and dependencies for compatibility with the target runtime (ibm websphere → apache tomcat). implementation step runtime modernization">
+    <td><code>STEP-001</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-STEP-001">
+        Review runtime configuration and dependencies for compatibility with the target runtime (IBM WebSphere → Apache Tomcat).
+      </button>
+    </td>
+    <td>Implementation Step</td>
+    <td><a href="#capability-modernization">Legacy Modernization</a></td>
+    <td>runtime</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td>derived</td>
+  </tr>
+<tr class="detail-row" id="detail-entity-STEP-001" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-modernization">Legacy Modernization</a></dd></div><div class="detail-field"><dt>Category</dt><dd>runtime</dd></div><div class="detail-field"><dt>Explicitness</dt><dd>derived</dd></div><div class="detail-field"><dt>Evidence</dt><dd><ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">codebase</span> <code>src/main/webapp/WEB-INF/ibm-web-bnd.xml</code> <span class="evidence-type">(configuration)</span></li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-STEP-002"
+      data-type="Implementation Step"
+      data-capability="modernization"
+      data-status=""
+      data-priority=""
+      data-search="step-002 review runtime-specific configuration for removal or replacement under the target runtime. implementation step configuration modernization">
+    <td><code>STEP-002</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-STEP-002">
+        Review runtime-specific configuration for removal or replacement under the target runtime.
+      </button>
+    </td>
+    <td>Implementation Step</td>
+    <td><a href="#capability-modernization">Legacy Modernization</a></td>
+    <td>configuration</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td>derived</td>
+  </tr>
+<tr class="detail-row" id="detail-entity-STEP-002" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-modernization">Legacy Modernization</a></dd></div><div class="detail-field"><dt>Category</dt><dd>configuration</dd></div><div class="detail-field"><dt>Explicitness</dt><dd>derived</dd></div><div class="detail-field"><dt>Evidence</dt><dd><ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">codebase</span> <code>src/main/webapp/WEB-INF/ibm-web-bnd.xml</code> <span class="evidence-type">(configuration)</span></li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-STEP-003"
+      data-type="Implementation Step"
+      data-capability="modernization"
+      data-status=""
+      data-priority=""
+      data-search="step-003 review direct dependencies for target-runtime compatibility; no dependency versions have been changed automatically. implementation step dependency modernization">
+    <td><code>STEP-003</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-STEP-003">
+        Review direct dependencies for target-runtime compatibility; no dependency versions have been changed automatically.
+      </button>
+    </td>
+    <td>Implementation Step</td>
+    <td><a href="#capability-modernization">Legacy Modernization</a></td>
+    <td>dependency</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td>requires-review</td>
+  </tr>
+<tr class="detail-row" id="detail-entity-STEP-003" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-modernization">Legacy Modernization</a></dd></div><div class="detail-field"><dt>Category</dt><dd>dependency</dd></div><div class="detail-field"><dt>Explicitness</dt><dd>requires-review</dd></div><div class="detail-field"><dt>Evidence</dt><dd><ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">codebase</span> <code>pom.xml:27</code> — symbol <code>javax.servlet:javax.servlet-api</code> <span class="evidence-type">(build-file)</span></li><li class="evidence-item"><span class="evidence-kind">codebase</span> <code>pom.xml:33</code> — symbol <code>com.example:internal-fixture-lib</code> <span class="evidence-type">(build-file)</span></li><li class="evidence-item"><span class="evidence-kind">codebase</span> <code>pom.xml:17</code> — symbol <code>org.springframework:spring-context</code> <span class="evidence-type">(build-file)</span></li><li class="evidence-item"><span class="evidence-kind">codebase</span> <code>pom.xml:22</code> — symbol <code>org.hibernate:hibernate-core</code> <span class="evidence-type">(build-file)</span></li><li class="evidence-item"><span class="evidence-kind">codebase</span> <code>src/main/java/com/example/OrderService.java:4</code> — symbol <code>org.springframework.stereotype.Service</code> <span class="evidence-type">(source)</span></li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-STEP-004"
+      data-type="Implementation Step"
+      data-capability="modernization"
+      data-status=""
+      data-priority=""
+      data-search="step-004 review servlet api usage for target-runtime and namespace compatibility. implementation step source modernization">
+    <td><code>STEP-004</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-STEP-004">
+        Review Servlet API usage for target-runtime and namespace compatibility.
+      </button>
+    </td>
+    <td>Implementation Step</td>
+    <td><a href="#capability-modernization">Legacy Modernization</a></td>
+    <td>source</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td>requires-review</td>
+  </tr>
+<tr class="detail-row" id="detail-entity-STEP-004" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-modernization">Legacy Modernization</a></dd></div><div class="detail-field"><dt>Category</dt><dd>source</dd></div><div class="detail-field"><dt>Explicitness</dt><dd>requires-review</dd></div><div class="detail-field"><dt>Evidence</dt><dd><ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">codebase</span> <code>src/main/java/com/example/OrderService.java:2</code> — symbol <code>javax.servlet.http.HttpServletRequest</code> <span class="evidence-type">(source)</span></li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-STEP-005"
+      data-type="Implementation Step"
+      data-capability="modernization"
+      data-status=""
+      data-priority=""
+      data-search="step-005 validate preserved business behavior, integration contracts, and data technology after migration. implementation step validation modernization">
+    <td><code>STEP-005</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-STEP-005">
+        Validate preserved business behavior, integration contracts, and data technology after migration.
+      </button>
+    </td>
+    <td>Implementation Step</td>
+    <td><a href="#capability-modernization">Legacy Modernization</a></td>
+    <td>validation</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td>derived</td>
+  </tr>
+<tr class="detail-row" id="detail-entity-STEP-005" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-modernization">Legacy Modernization</a></dd></div><div class="detail-field"><dt>Category</dt><dd>validation</dd></div><div class="detail-field"><dt>Explicitness</dt><dd>derived</dd></div><div class="detail-field"><dt>Prerequisites</dt><dd><span class="chip-list"><a class="chip" href="#entity-STEP-001" title="Review runtime configuration and dependencies for compatibility with the target runtime (IBM WebSphere → Apache Tomcat)."><code>STEP-001</code></a> <a class="chip" href="#entity-STEP-002" title="Review runtime-specific configuration for removal or replacement under the target runtime."><code>STEP-002</code></a> <a class="chip" href="#entity-STEP-003" title="Review direct dependencies for target-runtime compatibility; no dependency versions have been changed automatically."><code>STEP-003</code></a> <a class="chip" href="#entity-STEP-004" title="Review Servlet API usage for target-runtime and namespace compatibility."><code>STEP-004</code></a></span></dd></div><div class="detail-field"><dt>Preservation requirements</dt><dd><span class="chip-list"><span class="chip chip-static" title="Existing order-management business behavior must remain unchanged."><code>PRESERVE-001</code></span> <span class="chip chip-static" title="Existing integration behavior with the Integration Gateway must remain compatible."><code>PRESERVE-002</code></span> <span class="chip chip-static" title="The Order Database technology must not change during this modernization phase."><code>PRESERVE-003</code></span></span></dd></div><div class="detail-field"><dt>Validation requirements</dt><dd><span class="chip-list"><a class="chip" href="#entity-VALIDATE-001" title="Validate that: Existing order-management business behavior must remain unchanged."><code>VALIDATE-001</code></a> <a class="chip" href="#entity-VALIDATE-002" title="Validate that: Existing integration behavior with the Integration Gateway must remain compatible."><code>VALIDATE-002</code></a> <a class="chip" href="#entity-VALIDATE-003" title="Validate that: The Order Database technology must not change during this modernization phase."><code>VALIDATE-003</code></a> <a class="chip" href="#entity-VALIDATE-004" title="Verify preserved servlet behavior after runtime migration."><code>VALIDATE-004</code></a></span></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-STEP-006"
+      data-type="Implementation Step"
+      data-capability="modernization"
+      data-status=""
+      data-priority=""
+      data-search="step-006 complete the manual review items identified for this migration before proceeding. implementation step manual-review modernization">
+    <td><code>STEP-006</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-STEP-006">
+        Complete the manual review items identified for this migration before proceeding.
+      </button>
+    </td>
+    <td>Implementation Step</td>
+    <td><a href="#capability-modernization">Legacy Modernization</a></td>
+    <td>manual-review</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td>requires-review</td>
+  </tr>
+<tr class="detail-row" id="detail-entity-STEP-006" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-modernization">Legacy Modernization</a></dd></div><div class="detail-field"><dt>Category</dt><dd>manual-review</dd></div><div class="detail-field"><dt>Explicitness</dt><dd>requires-review</dd></div><div class="detail-field"><dt>Evidence</dt><dd><ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">codebase</span> <code>src/main/webapp/WEB-INF/ibm-web-bnd.xml</code> <span class="evidence-type">(configuration)</span></li><li class="evidence-item"><span class="evidence-kind">codebase</span> <code>pom.xml:33</code> — symbol <code>com.example:internal-fixture-lib</code> <span class="evidence-type">(build-file)</span></li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-DEPCHANGE-001"
+      data-type="Change Proposal"
+      data-capability="modernization"
+      data-status="needs-review"
+      data-priority=""
+      data-search="depchange-001 servlet api compatibility with the target runtime requires review; no target servlet api version is specified. javax.servlet:javax.servlet-api@3.1.0 change proposal dependency modernization">
+    <td><code>DEPCHANGE-001</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-DEPCHANGE-001">
+        Servlet API compatibility with the target runtime requires review; no target Servlet API version is specified.
+      </button>
+    </td>
+    <td>Change Proposal</td>
+    <td><a href="#capability-modernization">Legacy Modernization</a></td>
+    <td>dependency</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="pill pill-warning">needs-review</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-DEPCHANGE-001" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>javax.servlet:javax.servlet-api@3.1.0</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-modernization">Legacy Modernization</a></dd></div><div class="detail-field"><dt>Category</dt><dd>dependency</dd></div><div class="detail-field"><dt>Status</dt><dd>needs-review</dd></div><div class="detail-field"><dt>Evidence</dt><dd><ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">codebase</span> <code>pom.xml:27</code> — symbol <code>javax.servlet:javax.servlet-api</code> <span class="evidence-type">(build-file)</span></li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-DEPCHANGE-002"
+      data-type="Change Proposal"
+      data-capability="modernization"
+      data-status="needs-review"
+      data-priority=""
+      data-search="depchange-002 dependency version could not be resolved locally; review required before migration proceeds. com.example:internal-fixture-lib@unresolved change proposal dependency modernization">
+    <td><code>DEPCHANGE-002</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-DEPCHANGE-002">
+        Dependency version could not be resolved locally; review required before migration proceeds.
+      </button>
+    </td>
+    <td>Change Proposal</td>
+    <td><a href="#capability-modernization">Legacy Modernization</a></td>
+    <td>dependency</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="pill pill-warning">needs-review</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-DEPCHANGE-002" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>com.example:internal-fixture-lib@unresolved</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-modernization">Legacy Modernization</a></dd></div><div class="detail-field"><dt>Category</dt><dd>dependency</dd></div><div class="detail-field"><dt>Status</dt><dd>needs-review</dd></div><div class="detail-field"><dt>Evidence</dt><dd><ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">codebase</span> <code>pom.xml:33</code> — symbol <code>com.example:internal-fixture-lib</code> <span class="evidence-type">(build-file)</span></li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-DEPCHANGE-003"
+      data-type="Change Proposal"
+      data-capability="modernization"
+      data-status="proposed"
+      data-priority=""
+      data-search="depchange-003 no modernization evidence requires changing this dependency. spring framework@4.3.30.release change proposal dependency modernization">
+    <td><code>DEPCHANGE-003</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-DEPCHANGE-003">
+        No modernization evidence requires changing this dependency.
+      </button>
+    </td>
+    <td>Change Proposal</td>
+    <td><a href="#capability-modernization">Legacy Modernization</a></td>
+    <td>dependency</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="pill pill-warning">proposed</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-DEPCHANGE-003" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>Spring Framework@4.3.30.RELEASE</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-modernization">Legacy Modernization</a></dd></div><div class="detail-field"><dt>Category</dt><dd>dependency</dd></div><div class="detail-field"><dt>Status</dt><dd>proposed</dd></div><div class="detail-field"><dt>Evidence</dt><dd><ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">codebase</span> <code>pom.xml:17</code> — symbol <code>org.springframework:spring-context</code> <span class="evidence-type">(build-file)</span></li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-DEPCHANGE-004"
+      data-type="Change Proposal"
+      data-capability="modernization"
+      data-status="proposed"
+      data-priority=""
+      data-search="depchange-004 no modernization evidence requires changing this dependency. hibernate@5.2.18.final change proposal dependency modernization">
+    <td><code>DEPCHANGE-004</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-DEPCHANGE-004">
+        No modernization evidence requires changing this dependency.
+      </button>
+    </td>
+    <td>Change Proposal</td>
+    <td><a href="#capability-modernization">Legacy Modernization</a></td>
+    <td>dependency</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="pill pill-warning">proposed</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-DEPCHANGE-004" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>Hibernate@5.2.18.Final</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-modernization">Legacy Modernization</a></dd></div><div class="detail-field"><dt>Category</dt><dd>dependency</dd></div><div class="detail-field"><dt>Status</dt><dd>proposed</dd></div><div class="detail-field"><dt>Evidence</dt><dd><ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">codebase</span> <code>pom.xml:22</code> — symbol <code>org.hibernate:hibernate-core</code> <span class="evidence-type">(build-file)</span></li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-DEPCHANGE-005"
+      data-type="Change Proposal"
+      data-capability="modernization"
+      data-status="proposed"
+      data-priority=""
+      data-search="depchange-005 no modernization evidence requires changing this dependency. spring framework change proposal dependency modernization">
+    <td><code>DEPCHANGE-005</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-DEPCHANGE-005">
+        No modernization evidence requires changing this dependency.
+      </button>
+    </td>
+    <td>Change Proposal</td>
+    <td><a href="#capability-modernization">Legacy Modernization</a></td>
+    <td>dependency</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="pill pill-warning">proposed</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-DEPCHANGE-005" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>Spring Framework</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-modernization">Legacy Modernization</a></dd></div><div class="detail-field"><dt>Category</dt><dd>dependency</dd></div><div class="detail-field"><dt>Status</dt><dd>proposed</dd></div><div class="detail-field"><dt>Evidence</dt><dd><ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">codebase</span> <code>src/main/java/com/example/OrderService.java:4</code> — symbol <code>org.springframework.stereotype.Service</code> <span class="evidence-type">(source)</span></li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-CFGCHANGE-001"
+      data-type="Change Proposal"
+      data-capability="modernization"
+      data-status="needs-review"
+      data-priority=""
+      data-search="cfgchange-001 websphere-specific configuration requires review for the target runtime. change proposal configuration modernization">
+    <td><code>CFGCHANGE-001</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-CFGCHANGE-001">
+        WebSphere-specific configuration requires review for the target runtime.
+      </button>
+    </td>
+    <td>Change Proposal</td>
+    <td><a href="#capability-modernization">Legacy Modernization</a></td>
+    <td>configuration</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="pill pill-warning">needs-review</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-CFGCHANGE-001" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-modernization">Legacy Modernization</a></dd></div><div class="detail-field"><dt>Category</dt><dd>configuration</dd></div><div class="detail-field"><dt>Status</dt><dd>needs-review</dd></div><div class="detail-field"><dt>Evidence</dt><dd><ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">codebase</span> <code>src/main/webapp/WEB-INF/ibm-web-bnd.xml</code> <span class="evidence-type">(configuration)</span></li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-BUILDCHANGE-001"
+      data-type="Change Proposal"
+      data-capability="modernization"
+      data-status="proposed"
+      data-priority=""
+      data-search="buildchange-001 current packaging (war) is preserved; no packaging change is specified by the modernization architecture. change proposal build modernization">
+    <td><code>BUILDCHANGE-001</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-BUILDCHANGE-001">
+        Current packaging (war) is preserved; no packaging change is specified by the modernization architecture.
+      </button>
+    </td>
+    <td>Change Proposal</td>
+    <td><a href="#capability-modernization">Legacy Modernization</a></td>
+    <td>build</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="pill pill-warning">proposed</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-BUILDCHANGE-001" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-modernization">Legacy Modernization</a></dd></div><div class="detail-field"><dt>Category</dt><dd>build</dd></div><div class="detail-field"><dt>Status</dt><dd>proposed</dd></div><div class="detail-field"><dt>Evidence</dt><dd><ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">codebase</span> <code>pom.xml:2</code> — symbol <code>project</code> <span class="evidence-type">(build-file)</span></li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-BUILDCHANGE-002"
+      data-type="Change Proposal"
+      data-capability="modernization"
+      data-status="needs-review"
+      data-priority=""
+      data-search="buildchange-002 review build configuration for target-runtime compatibility. change proposal build modernization">
+    <td><code>BUILDCHANGE-002</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-BUILDCHANGE-002">
+        Review build configuration for target-runtime compatibility.
+      </button>
+    </td>
+    <td>Change Proposal</td>
+    <td><a href="#capability-modernization">Legacy Modernization</a></td>
+    <td>build</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="pill pill-warning">needs-review</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-BUILDCHANGE-002" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-modernization">Legacy Modernization</a></dd></div><div class="detail-field"><dt>Category</dt><dd>build</dd></div><div class="detail-field"><dt>Status</dt><dd>needs-review</dd></div><div class="detail-field"><dt>Evidence</dt><dd><ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">codebase</span> <code>pom.xml:2</code> — symbol <code>project</code> <span class="evidence-type">(build-file)</span></li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-SRCCHANGE-001"
+      data-type="Change Proposal"
+      data-capability="modernization"
+      data-status="review"
+      data-priority=""
+      data-search="srcchange-001 javax.servlet.http.httpservletrequest import observed. change proposal source modernization">
+    <td><code>SRCCHANGE-001</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-SRCCHANGE-001">
+        javax.servlet.http.HttpServletRequest import observed.
+      </button>
+    </td>
+    <td>Change Proposal</td>
+    <td><a href="#capability-modernization">Legacy Modernization</a></td>
+    <td>source</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="pill pill-warning">review</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-SRCCHANGE-001" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-modernization">Legacy Modernization</a></dd></div><div class="detail-field"><dt>Category</dt><dd>source</dd></div><div class="detail-field"><dt>Status</dt><dd>review</dd></div><div class="detail-field"><dt>Evidence</dt><dd><ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">codebase</span> <code>src/main/java/com/example/OrderService.java:2</code> — symbol <code>javax.servlet.http.HttpServletRequest</code> <span class="evidence-type">(source)</span></li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-MANUALREVIEW-001"
+      data-type="Manual Review"
+      data-capability="modernization"
+      data-status=""
+      data-priority=""
+      data-search="manualreview-001 websphere-specific configuration and servlet api compatibility server-specific configuration and servlet api usage require engineering review before migration; safe automated transformation cannot be established from repository evidence alone. manual review modernization">
+    <td><code>MANUALREVIEW-001</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-MANUALREVIEW-001">
+        WebSphere-specific configuration and Servlet API compatibility
+      </button>
+    </td>
+    <td>Manual Review</td>
+    <td><a href="#capability-modernization">Legacy Modernization</a></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-MANUALREVIEW-001" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>Server-specific configuration and Servlet API usage require engineering review before migration; safe automated transformation cannot be established from repository evidence alone.</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-modernization">Legacy Modernization</a></dd></div><div class="detail-field"><dt>Rationale</dt><dd><ul><li>No target-runtime configuration equivalence has been established.</li></ul></dd></div><div class="detail-field"><dt>Evidence</dt><dd><ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">codebase</span> <code>src/main/webapp/WEB-INF/ibm-web-bnd.xml</code> <span class="evidence-type">(configuration)</span></li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-MANUALREVIEW-002"
+      data-type="Manual Review"
+      data-capability="modernization"
+      data-status=""
+      data-priority=""
+      data-search="manualreview-002 unresolved dependency version(s) 1 direct dependency could not be resolved locally and require manual review before migration. manual review modernization">
+    <td><code>MANUALREVIEW-002</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-MANUALREVIEW-002">
+        Unresolved dependency version(s)
+      </button>
+    </td>
+    <td>Manual Review</td>
+    <td><a href="#capability-modernization">Legacy Modernization</a></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-MANUALREVIEW-002" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>1 direct dependency could not be resolved locally and require manual review before migration.</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-modernization">Legacy Modernization</a></dd></div><div class="detail-field"><dt>Rationale</dt><dd><ul><li>Dependency version is a local property reference that could not be resolved from the repository model.</li></ul></dd></div><div class="detail-field"><dt>Evidence</dt><dd><ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">codebase</span> <code>pom.xml:33</code> — symbol <code>com.example:internal-fixture-lib</code> <span class="evidence-type">(build-file)</span></li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-TESTIMPACT-001"
+      data-type="Test Impact"
+      data-capability="modernization"
+      data-status=""
+      data-priority=""
+      data-search="testimpact-001 validate that the project builds successfully with the target runtime&#39;s dependency set. test impact build modernization">
+    <td><code>TESTIMPACT-001</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-TESTIMPACT-001">
+        Validate that the project builds successfully with the target runtime&#39;s dependency set.
+      </button>
+    </td>
+    <td>Test Impact</td>
+    <td><a href="#capability-modernization">Legacy Modernization</a></td>
+    <td>build</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-TESTIMPACT-001" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-modernization">Legacy Modernization</a></dd></div><div class="detail-field"><dt>Category</dt><dd>build</dd></div><div class="detail-field"><dt>Architecture references</dt><dd><span class="chip-list"><a class="chip" href="#entity-SYS-001" title="Order Portal"><code>SYS-001</code></a></span></dd></div><div class="detail-field"><dt>Evidence</dt><dd><ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">codebase</span> <code>pom.xml:2</code> — symbol <code>project</code> <span class="evidence-type">(build-file)</span></li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-TESTIMPACT-002"
+      data-type="Test Impact"
+      data-capability="modernization"
+      data-status=""
+      data-priority=""
+      data-search="testimpact-002 validate that the application starts successfully under the target runtime. test impact startup modernization">
+    <td><code>TESTIMPACT-002</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-TESTIMPACT-002">
+        Validate that the application starts successfully under the target runtime.
+      </button>
+    </td>
+    <td>Test Impact</td>
+    <td><a href="#capability-modernization">Legacy Modernization</a></td>
+    <td>startup</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-TESTIMPACT-002" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-modernization">Legacy Modernization</a></dd></div><div class="detail-field"><dt>Category</dt><dd>startup</dd></div><div class="detail-field"><dt>Architecture references</dt><dd><span class="chip-list"><a class="chip" href="#entity-SYS-001" title="Order Portal"><code>SYS-001</code></a></span></dd></div><div class="detail-field"><dt>Evidence</dt><dd><ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">codebase</span> <code>src/main/webapp/WEB-INF/ibm-web-bnd.xml</code> <span class="evidence-type">(configuration)</span></li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-TESTIMPACT-003"
+      data-type="Test Impact"
+      data-capability="modernization"
+      data-status=""
+      data-priority=""
+      data-search="testimpact-003 validate servlet api compatibility under the target runtime. test impact runtime modernization">
+    <td><code>TESTIMPACT-003</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-TESTIMPACT-003">
+        Validate Servlet API compatibility under the target runtime.
+      </button>
+    </td>
+    <td>Test Impact</td>
+    <td><a href="#capability-modernization">Legacy Modernization</a></td>
+    <td>runtime</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-TESTIMPACT-003" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-modernization">Legacy Modernization</a></dd></div><div class="detail-field"><dt>Category</dt><dd>runtime</dd></div><div class="detail-field"><dt>Architecture references</dt><dd><span class="chip-list"><a class="chip" href="#entity-SYS-001" title="Order Portal"><code>SYS-001</code></a></span></dd></div><div class="detail-field"><dt>Evidence</dt><dd><ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">codebase</span> <code>pom.xml:27</code> — symbol <code>javax.servlet:javax.servlet-api</code> <span class="evidence-type">(build-file)</span></li><li class="evidence-item"><span class="evidence-kind">codebase</span> <code>src/main/java/com/example/OrderService.java:2</code> — symbol <code>javax.servlet.http.HttpServletRequest</code> <span class="evidence-type">(source)</span></li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-TESTIMPACT-004"
+      data-type="Test Impact"
+      data-capability="modernization"
+      data-status=""
+      data-priority=""
+      data-search="testimpact-004 behavioral regression validation: existing order-management business behavior must remain unchanged. test impact business-behavior modernization">
+    <td><code>TESTIMPACT-004</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-TESTIMPACT-004">
+        Behavioral regression validation: Existing order-management business behavior must remain unchanged.
+      </button>
+    </td>
+    <td>Test Impact</td>
+    <td><a href="#capability-modernization">Legacy Modernization</a></td>
+    <td>business-behavior</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-TESTIMPACT-004" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-modernization">Legacy Modernization</a></dd></div><div class="detail-field"><dt>Category</dt><dd>business-behavior</dd></div><div class="detail-field"><dt>Architecture references</dt><dd><span class="chip-list"><a class="chip" href="#entity-SYS-001" title="Order Portal"><code>SYS-001</code></a></span></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-TESTIMPACT-005"
+      data-type="Test Impact"
+      data-capability="modernization"
+      data-status=""
+      data-priority=""
+      data-search="testimpact-005 integration compatibility validation: existing integration behavior with the integration gateway must remain compatible. test impact integration modernization">
+    <td><code>TESTIMPACT-005</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-TESTIMPACT-005">
+        Integration compatibility validation: Existing integration behavior with the Integration Gateway must remain compatible.
+      </button>
+    </td>
+    <td>Test Impact</td>
+    <td><a href="#capability-modernization">Legacy Modernization</a></td>
+    <td>integration</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-TESTIMPACT-005" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-modernization">Legacy Modernization</a></dd></div><div class="detail-field"><dt>Category</dt><dd>integration</dd></div><div class="detail-field"><dt>Architecture references</dt><dd><span class="chip-list"><a class="chip" href="#entity-SYS-001" title="Order Portal"><code>SYS-001</code></a> <a class="chip" href="#entity-INT-001" title="The Order Portal sends order requests to the Integration Gateway."><code>INT-001</code></a></span></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-TESTIMPACT-006"
+      data-type="Test Impact"
+      data-capability="modernization"
+      data-status=""
+      data-priority=""
+      data-search="testimpact-006 integration compatibility validation: the order database technology must not change during this modernization phase. test impact integration modernization">
+    <td><code>TESTIMPACT-006</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-TESTIMPACT-006">
+        Integration compatibility validation: The Order Database technology must not change during this modernization phase.
+      </button>
+    </td>
+    <td>Test Impact</td>
+    <td><a href="#capability-modernization">Legacy Modernization</a></td>
+    <td>integration</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-TESTIMPACT-006" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-modernization">Legacy Modernization</a></dd></div><div class="detail-field"><dt>Category</dt><dd>integration</dd></div><div class="detail-field"><dt>Architecture references</dt><dd><span class="chip-list"><a class="chip" href="#entity-SYS-001" title="Order Portal"><code>SYS-001</code></a> <a class="chip" href="#entity-INT-002" title="The Order Portal reads and writes order records in the Order Database."><code>INT-002</code></a></span></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-VALGATE-001"
+      data-type="Validation Gate"
+      data-capability="modernization"
+      data-status="defined"
+      data-priority=""
+      data-search="valgate-001 build verification build verification covering: validate that the project builds successfully with the target runtime&#39;s dependency set. validation gate modernization">
+    <td><code>VALGATE-001</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-VALGATE-001">
+        Build verification
+      </button>
+    </td>
+    <td>Validation Gate</td>
+    <td><a href="#capability-modernization">Legacy Modernization</a></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="pill pill-positive">defined</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-VALGATE-001" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>Build verification covering: Validate that the project builds successfully with the target runtime&#39;s dependency set.</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-modernization">Legacy Modernization</a></dd></div><div class="detail-field"><dt>Status</dt><dd>defined</dd></div><div class="detail-field"><dt>Validation requirements</dt><dd><span class="chip-list"><a class="chip" href="#entity-VALIDATE-001" title="Validate that: Existing order-management business behavior must remain unchanged."><code>VALIDATE-001</code></a> <a class="chip" href="#entity-VALIDATE-002" title="Validate that: Existing integration behavior with the Integration Gateway must remain compatible."><code>VALIDATE-002</code></a> <a class="chip" href="#entity-VALIDATE-003" title="Validate that: The Order Database technology must not change during this modernization phase."><code>VALIDATE-003</code></a> <a class="chip" href="#entity-VALIDATE-004" title="Verify preserved servlet behavior after runtime migration."><code>VALIDATE-004</code></a></span></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-VALGATE-002"
+      data-type="Validation Gate"
+      data-capability="modernization"
+      data-status="defined"
+      data-priority=""
+      data-search="valgate-002 runtime startup verification runtime startup verification covering: validate that the application starts successfully under the target runtime. validation gate modernization">
+    <td><code>VALGATE-002</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-VALGATE-002">
+        Runtime startup verification
+      </button>
+    </td>
+    <td>Validation Gate</td>
+    <td><a href="#capability-modernization">Legacy Modernization</a></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="pill pill-positive">defined</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-VALGATE-002" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>Runtime startup verification covering: Validate that the application starts successfully under the target runtime.</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-modernization">Legacy Modernization</a></dd></div><div class="detail-field"><dt>Status</dt><dd>defined</dd></div><div class="detail-field"><dt>Validation requirements</dt><dd><span class="chip-list"><a class="chip" href="#entity-VALIDATE-001" title="Validate that: Existing order-management business behavior must remain unchanged."><code>VALIDATE-001</code></a> <a class="chip" href="#entity-VALIDATE-002" title="Validate that: Existing integration behavior with the Integration Gateway must remain compatible."><code>VALIDATE-002</code></a> <a class="chip" href="#entity-VALIDATE-003" title="Validate that: The Order Database technology must not change during this modernization phase."><code>VALIDATE-003</code></a> <a class="chip" href="#entity-VALIDATE-004" title="Verify preserved servlet behavior after runtime migration."><code>VALIDATE-004</code></a></span></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-VALGATE-003"
+      data-type="Validation Gate"
+      data-capability="modernization"
+      data-status="defined"
+      data-priority=""
+      data-search="valgate-003 business behavior validation business behavior validation covering: behavioral regression validation: existing order-management business behavior must remain unchanged. validation gate modernization">
+    <td><code>VALGATE-003</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-VALGATE-003">
+        Business behavior validation
+      </button>
+    </td>
+    <td>Validation Gate</td>
+    <td><a href="#capability-modernization">Legacy Modernization</a></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="pill pill-positive">defined</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-VALGATE-003" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>Business behavior validation covering: Behavioral regression validation: Existing order-management business behavior must remain unchanged.</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-modernization">Legacy Modernization</a></dd></div><div class="detail-field"><dt>Status</dt><dd>defined</dd></div><div class="detail-field"><dt>Validation requirements</dt><dd><span class="chip-list"><a class="chip" href="#entity-VALIDATE-001" title="Validate that: Existing order-management business behavior must remain unchanged."><code>VALIDATE-001</code></a> <a class="chip" href="#entity-VALIDATE-002" title="Validate that: Existing integration behavior with the Integration Gateway must remain compatible."><code>VALIDATE-002</code></a> <a class="chip" href="#entity-VALIDATE-003" title="Validate that: The Order Database technology must not change during this modernization phase."><code>VALIDATE-003</code></a> <a class="chip" href="#entity-VALIDATE-004" title="Verify preserved servlet behavior after runtime migration."><code>VALIDATE-004</code></a></span></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-VALGATE-004"
+      data-type="Validation Gate"
+      data-capability="modernization"
+      data-status="defined"
+      data-priority=""
+      data-search="valgate-004 integration compatibility validation integration compatibility validation covering: integration compatibility validation: existing integration behavior with the integration gateway must remain compatible. integration compatibility validation: the order database technology must not change during this modernization phase. validation gate modernization">
+    <td><code>VALGATE-004</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-VALGATE-004">
+        Integration compatibility validation
+      </button>
+    </td>
+    <td>Validation Gate</td>
+    <td><a href="#capability-modernization">Legacy Modernization</a></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="pill pill-positive">defined</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-VALGATE-004" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>Integration compatibility validation covering: Integration compatibility validation: Existing integration behavior with the Integration Gateway must remain compatible. Integration compatibility validation: The Order Database technology must not change during this modernization phase.</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-modernization">Legacy Modernization</a></dd></div><div class="detail-field"><dt>Status</dt><dd>defined</dd></div><div class="detail-field"><dt>Validation requirements</dt><dd><span class="chip-list"><a class="chip" href="#entity-VALIDATE-001" title="Validate that: Existing order-management business behavior must remain unchanged."><code>VALIDATE-001</code></a> <a class="chip" href="#entity-VALIDATE-002" title="Validate that: Existing integration behavior with the Integration Gateway must remain compatible."><code>VALIDATE-002</code></a> <a class="chip" href="#entity-VALIDATE-003" title="Validate that: The Order Database technology must not change during this modernization phase."><code>VALIDATE-003</code></a> <a class="chip" href="#entity-VALIDATE-004" title="Verify preserved servlet behavior after runtime migration."><code>VALIDATE-004</code></a></span></dd></div></dl>
+    </td>
+  </tr>
+    </tbody>
+  </table>
+</div>
+</section>
+
+
+<section class="appendix" aria-labelledby="artifacts-heading">
+  <h2 id="artifacts-heading">Generated Artifacts</h2>
+  <div class="artifact-groups"><div class="artifact-group">
+        <h3>Integrations</h3>
+        <ul class="artifact-list"><li><code>artifacts/integrations/the-order-portal-reads-and-writes-order-records-in-the-order.integration.json</code></li><li><code>artifacts/integrations/the-order-portal-reads-and-writes-order-records-in-the-order.integration.md</code></li><li><code>artifacts/integrations/the-order-portal-sends-order-requests-to-the-integration-gat.integration.json</code></li><li><code>artifacts/integrations/the-order-portal-sends-order-requests-to-the-integration-gat.integration.md</code></li></ul>
+      </div><div class="artifact-group">
+        <h3>Legacy Modernization</h3>
+        <ul class="artifact-list"><li><code>analysis/codebase/modernization-codebase-evidence.json</code></li><li><code>analysis/codebase/modernization-codebase-evidence.md</code></li><li><code>artifacts/modernization/exporters/legacy-java-maven/generic-java-replatform/configuration-change-plan.json</code></li><li><code>artifacts/modernization/exporters/legacy-java-maven/generic-java-replatform/configuration-change-plan.md</code></li><li><code>artifacts/modernization/exporters/legacy-java-maven/generic-java-replatform/dependency-change-plan.json</code></li><li><code>artifacts/modernization/exporters/legacy-java-maven/generic-java-replatform/dependency-change-plan.md</code></li><li><code>artifacts/modernization/exporters/legacy-java-maven/generic-java-replatform/migration-recipe.json</code></li><li><code>artifacts/modernization/exporters/legacy-java-maven/generic-java-replatform/migration-recipe.md</code></li><li><code>artifacts/modernization/exporters/legacy-java-maven/generic-java-replatform/modernization.manifest.json</code></li><li><code>artifacts/modernization/exporters/legacy-java-maven/generic-java-replatform/source-review.json</code></li><li><code>artifacts/modernization/exporters/legacy-java-maven/generic-java-replatform/source-review.md</code></li><li><code>artifacts/modernization/exporters/legacy-java-maven/generic-java-replatform/test-impact.json</code></li><li><code>artifacts/modernization/exporters/legacy-java-maven/generic-java-replatform/test-impact.md</code></li><li><code>artifacts/modernization/exporters/legacy-java-maven/generic-java-replatform/validation-plan.json</code></li><li><code>artifacts/modernization/exporters/legacy-java-maven/generic-java-replatform/validation-plan.md</code></li><li><code>artifacts/modernization/migration-roadmap.json</code></li><li><code>artifacts/modernization/migration-roadmap.md</code></li><li><code>artifacts/modernization/migration-strategy.json</code></li><li><code>artifacts/modernization/migration-strategy.md</code></li><li><code>artifacts/modernization/modernization-architecture.json</code></li><li><code>artifacts/modernization/modernization-architecture.md</code></li><li><code>artifacts/modernization/system-dependency-map.json</code></li><li><code>artifacts/modernization/system-dependency-map.md</code></li></ul>
+      </div><div class="artifact-group">
+        <h3>Observability</h3>
+        <ul class="artifact-list"><li><code>artifacts/observability/observability-architecture.json</code></li><li><code>artifacts/observability/observability-architecture.md</code></li><li><code>artifacts/observability/operational-objectives.json</code></li><li><code>artifacts/observability/operational-objectives.md</code></li><li><code>artifacts/observability/telemetry-catalog.json</code></li><li><code>artifacts/observability/telemetry-catalog.md</code></li></ul>
+      </div><div class="artifact-group">
+        <h3>Security &amp; Governance</h3>
+        <ul class="artifact-list"><li><code>artifacts/security-governance/governance-plan.json</code></li><li><code>artifacts/security-governance/governance-plan.md</code></li><li><code>artifacts/security-governance/risk-register.json</code></li><li><code>artifacts/security-governance/risk-register.md</code></li><li><code>artifacts/security-governance/security-architecture.json</code></li><li><code>artifacts/security-governance/security-architecture.md</code></li></ul>
+      </div></div>
+</section>
+
+<details class="appendix">
+  <summary><h2 style="display:inline">Systems Referenced</h2></summary>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th scope="col">ID</th><th scope="col">Name</th></tr></thead>
+      <tbody><tr id="entity-SYS-001"><td><code>SYS-001</code></td><td>Order Portal</td></tr><tr id="entity-SYS-002"><td><code>SYS-002</code></td><td>Integration Gateway</td></tr><tr id="entity-SYS-003"><td><code>SYS-003</code></td><td>Order Database</td></tr></tbody>
+    </table>
+  </div>
+</details>
+</main>
+<footer class="report-footer">
+  <p>Generated by Stitchfy v2.2.0 — this report is a presentation of <code>blueprints/solution-blueprint.v1.json</code>, not a separate source of truth.</p>
+</footer>
+<script>
+(function () {
+  "use strict";
+
+  // Tabs
+  var tabs = document.querySelectorAll('[role="tab"]');
+  tabs.forEach(function (tab) {
+    tab.addEventListener("click", function () {
+      tabs.forEach(function (t) {
+        t.setAttribute("aria-selected", "false");
+        document.getElementById(t.getAttribute("aria-controls")).hidden = true;
+      });
+      tab.setAttribute("aria-selected", "true");
+      document.getElementById(tab.getAttribute("aria-controls")).hidden = false;
+    });
+  });
+
+  // Expandable backlog rows
+  document.querySelectorAll(".row-toggle").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var target = document.getElementById(btn.getAttribute("aria-controls"));
+      if (!target) return;
+      var expanded = btn.getAttribute("aria-expanded") === "true";
+      btn.setAttribute("aria-expanded", String(!expanded));
+      target.hidden = expanded;
+    });
+  });
+
+  // Backlog filters
+  var table = document.getElementById("backlog-table");
+  if (table) {
+    var searchInput = document.getElementById("backlog-search");
+    var capabilityFilter = document.getElementById("filter-capability");
+    var typeFilter = document.getElementById("filter-type");
+    var statusFilter = document.getElementById("filter-status");
+    var priorityFilter = document.getElementById("filter-priority");
+    var resultCount = document.getElementById("result-count");
+    var rows = Array.prototype.slice.call(table.querySelectorAll("tbody > tr:not(.detail-row)"));
+
+    function applyFilters() {
+      var q = (searchInput.value || "").toLowerCase().trim();
+      var cap = capabilityFilter.value;
+      var type = typeFilter.value;
+      var status = statusFilter.value;
+      var priority = priorityFilter.value;
+      var visible = 0;
+
+      rows.forEach(function (row) {
+        var caps = (row.dataset.capability || "").split(" ");
+        var matches =
+          (!q || row.dataset.search.indexOf(q) !== -1) &&
+          (!cap || caps.indexOf(cap) !== -1) &&
+          (!type || row.dataset.type === type) &&
+          (!status || row.dataset.status === status) &&
+          (!priority || row.dataset.priority === priority);
+
+        row.hidden = !matches;
+        var detail = document.getElementById(row.id.replace(/^entity-/, "detail-entity-"));
+        if (detail && !matches) detail.hidden = true;
+        if (matches) visible++;
+      });
+
+      resultCount.textContent = visible + " of " + rows.length + " item" + (rows.length === 1 ? "" : "s");
+    }
+
+    [searchInput, capabilityFilter, typeFilter, statusFilter, priorityFilter].forEach(function (el) {
+      el.addEventListener("input", applyFilters);
+      el.addEventListener("change", applyFilters);
+    });
+    applyFilters();
+  }
+})();
+</script>
+</body>
+</html>

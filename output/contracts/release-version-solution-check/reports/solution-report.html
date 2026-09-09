@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solution Report — Luxe Beauty Studio</title>
+<style>
+:root {
+  --bg: #f5f6f8;
+  --surface: #ffffff;
+  --surface-alt: #eef0f3;
+  --border: #dde1e7;
+  --text: #14181f;
+  --text-muted: #5b6472;
+  --header-bg: #14181f;
+  --header-text: #e8eaf0;
+  --accent: #2f6fed;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --positive-bg: #e3f3e8; --positive-text: #1e7e42;
+  --negative-bg: #fbe7e4; --negative-text: #a13a2d;
+  --warning-bg: #fdf2d6; --warning-text: #8a5a00;
+  --neutral-bg: #eceef1; --neutral-text: #4b5563;
+  --info-bg: #e6edfc; --info-text: #2454b0;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #14171c; --surface: #1b1f26; --surface-alt: #222630; --border: #2c313a;
+    --text: #e6e8eb; --text-muted: #98a1ad; --header-bg: #0c0e12; --header-text: #e6e8eb;
+    --positive-bg: #123322; --positive-text: #6fd897;
+    --negative-bg: #3a1f1c; --negative-text: #f0958a;
+    --warning-bg: #3a2f10; --warning-text: #e8c163;
+    --neutral-bg: #262b33; --neutral-text: #b3bac4;
+    --info-bg: #1a2a4a; --info-text: #9db8f0;
+  }
+}
+* { box-sizing: border-box; }
+html { color-scheme: light dark; }
+body { margin: 0; font-family: var(--sans); background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.5; }
+code, .chip code { font-family: var(--mono); font-size: 0.85em; }
+a { color: var(--accent); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.dash { color: var(--text-muted); }
+
+.page-header { background: var(--header-bg); color: var(--header-text); padding: 1.5rem 2rem; }
+.ph-title-row { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+.page-header h1 { margin: 0; font-size: 1.5rem; }
+.meta-grid { display: flex; flex-wrap: wrap; gap: 1.5rem; margin: 0.75rem 0 0; padding: 0; }
+.meta-grid div { display: flex; flex-direction: column; gap: 0.15rem; }
+.meta-grid dt { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.6; }
+.meta-grid dd { margin: 0; font-size: 0.85rem; }
+.goal-summary { margin: 1rem 0 0; opacity: 0.85; max-width: 70ch; font-size: 0.9rem; }
+
+main { max-width: 1200px; margin: 0 auto; padding: 1.5rem 2rem 4rem; }
+
+.summary { margin-bottom: 1.5rem; }
+.summary h2 { font-size: 1rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); margin: 0 0 0.75rem; }
+.stat-tiles { list-style: none; display: flex; flex-wrap: wrap; gap: 0.75rem; margin: 0; padding: 0; }
+.stat-tile { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 0.6rem 1rem; min-width: 110px; display: flex; flex-direction: column; }
+.stat-value { font-size: 1.3rem; font-weight: 700; }
+.stat-label { font-size: 0.75rem; color: var(--text-muted); }
+
+.tabs { display: flex; gap: 0.25rem; border-bottom: 2px solid var(--border); margin-bottom: 1.25rem; }
+.tabs button { font: inherit; background: none; border: none; padding: 0.6rem 1rem; cursor: pointer; color: var(--text-muted); border-bottom: 2px solid transparent; margin-bottom: -2px; }
+.tabs button[aria-selected="true"] { color: var(--text); border-bottom-color: var(--accent); font-weight: 600; }
+
+.pill { display: inline-block; padding: 0.1rem 0.55rem; border-radius: 999px; font-size: 0.72rem; font-weight: 600; white-space: nowrap; }
+.pill-positive { background: var(--positive-bg); color: var(--positive-text); }
+.pill-negative { background: var(--negative-bg); color: var(--negative-text); }
+.pill-warning { background: var(--warning-bg); color: var(--warning-text); }
+.pill-neutral { background: var(--neutral-bg); color: var(--neutral-text); }
+.pill-info { background: var(--info-bg); color: var(--info-text); }
+
+.capability-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 0.9rem; }
+.capability-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 0.9rem 1rem; }
+.capability-card summary { cursor: pointer; list-style: none; }
+.capability-card summary::-webkit-details-marker { display: none; }
+.cc-summary-main { display: flex; justify-content: space-between; align-items: baseline; gap: 0.5rem; flex-wrap: wrap; }
+.cc-name { font-weight: 700; font-size: 1rem; }
+.cc-pills { display: flex; gap: 0.3rem; flex-wrap: wrap; }
+.cc-oneliner { margin: 0.4rem 0 0; color: var(--text-muted); font-size: 0.85rem; }
+.cc-metrics { margin-top: 0.5rem; display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.chip-metric { background: var(--surface-alt); border-radius: 4px; padding: 0.1rem 0.45rem; font-size: 0.75rem; color: var(--text-muted); }
+.cc-body { margin-top: 0.85rem; padding-top: 0.75rem; border-top: 1px solid var(--border); }
+.card-block { margin-bottom: 0.75rem; }
+.card-block h4 { margin: 0 0 0.35rem; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); }
+.reason-list { margin: 0; padding-left: 1.1rem; font-size: 0.85rem; }
+.related-row { display: flex; gap: 0.5rem; align-items: baseline; flex-wrap: wrap; margin-bottom: 0.3rem; font-size: 0.82rem; }
+.related-label { color: var(--text-muted); min-width: 90px; }
+.implemented-note, .architecture-status, .error-note { font-size: 0.8rem; color: var(--text-muted); }
+.error-note { color: var(--negative-text); }
+
+.chip-list { display: inline-flex; flex-wrap: wrap; gap: 0.3rem; }
+.chip { display: inline-flex; align-items: center; background: var(--surface-alt); border-radius: 4px; padding: 0.05rem 0.4rem; font-size: 0.78rem; text-decoration: none; color: var(--text); }
+.chip:hover { background: var(--info-bg); }
+.chip-static { color: var(--text-muted); }
+
+.evidence-list { margin: 0.3rem 0 0; padding-left: 1.1rem; font-size: 0.78rem; color: var(--text-muted); }
+.evidence-kind { text-transform: uppercase; font-size: 0.65rem; letter-spacing: 0.03em; }
+.evidence-type { opacity: 0.8; }
+
+.artifact-list { margin: 0; padding-left: 1.1rem; font-size: 0.82rem; }
+
+.backlog-toolbar { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.75rem; align-items: center; }
+.backlog-toolbar input, .backlog-toolbar select { font: inherit; padding: 0.4rem 0.6rem; border: 1px solid var(--border); border-radius: 6px; background: var(--surface); color: var(--text); }
+.backlog-toolbar input { flex: 1 1 220px; }
+#result-count { font-size: 0.8rem; color: var(--text-muted); margin-left: auto; }
+
+.table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 8px; }
+table { width: 100%; border-collapse: collapse; font-size: 0.85rem; background: var(--surface); }
+th { text-align: left; background: var(--surface-alt); padding: 0.55rem 0.7rem; font-weight: 600; white-space: nowrap; position: sticky; top: 0; }
+td { padding: 0.5rem 0.7rem; border-top: 1px solid var(--border); vertical-align: top; }
+.row-toggle { font: inherit; background: none; border: none; padding: 0; color: var(--accent); cursor: pointer; text-align: left; }
+.row-toggle:hover { text-decoration: underline; }
+.detail-row td { background: var(--surface-alt); }
+.detail-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 0.6rem 1.5rem; margin: 0; }
+.detail-field dt { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); margin-bottom: 0.15rem; }
+.detail-field dd { margin: 0; font-size: 0.85rem; }
+
+.appendix { margin-top: 2rem; }
+.appendix summary { cursor: pointer; }
+.artifact-groups { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; }
+.artifact-group { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem 0.9rem; }
+.artifact-group h3 { margin: 0 0 0.4rem; font-size: 0.9rem; }
+
+.empty-note { color: var(--text-muted); font-style: italic; }
+
+.report-footer { text-align: center; padding: 2rem; font-size: 0.78rem; color: var(--text-muted); border-top: 1px solid var(--border); margin-top: 2rem; }
+
+@media print {
+  .backlog-toolbar, .tabs { display: none; }
+  #panel-capabilities[hidden], #panel-backlog[hidden] { display: block !important; }
+  .capability-card, details { break-inside: avoid; }
+  a { color: inherit; text-decoration: none; }
+  body { background: #fff; color: #000; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
+</style>
+</head>
+<body>
+
+<header class="page-header">
+  <div class="ph-title-row">
+    <h1>Luxe Beauty Studio</h1>
+    <span class="pill pill-info">Beauty Salon</span>
+  </div>
+  <dl class="meta-grid">
+    <div><dt>Source</dt><dd><code>project.md</code></dd></div>
+    <div><dt>Framework</dt><dd>Stitchfy v2.2.0</dd></div>
+    <div><dt>Blueprint schema</dt><dd>v1.0</dd></div>
+    <div><dt>Generated</dt><dd>Sep 8, 2026, 7:14 PM</dd></div>
+  </dl>
+  
+</header>
+<main>
+
+<section class="summary" aria-labelledby="summary-heading">
+  <h2 id="summary-heading">Executive Summary</h2>
+  <ul class="stat-tiles"><li class="stat-tile"><span class="stat-value">8</span><span class="stat-label">assessed capabilities</span></li><li class="stat-tile"><span class="stat-value">2</span><span class="stat-label">selected capabilities</span></li><li class="stat-tile"><span class="stat-value">7</span><span class="stat-label">open questions</span></li><li class="stat-tile"><span class="stat-value">6</span><span class="stat-label">generated artifacts</span></li></ul>
+</section>
+
+<div class="tabs" role="tablist" aria-label="Solution report views">
+  <button type="button" role="tab" id="tab-capabilities" aria-selected="true" aria-controls="panel-capabilities">Capabilities</button>
+  <button type="button" role="tab" id="tab-backlog" aria-selected="false" aria-controls="panel-backlog">Implementation Backlog (15)</button>
+</div>
+
+<section id="panel-capabilities" role="tabpanel" aria-labelledby="tab-capabilities">
+<div class="capability-grid">
+<details class="capability-card" id="capability-website">
+  <summary>
+    <div class="cc-summary-main">
+      <span class="cc-name">Website</span>
+      <span class="cc-pills"><span class="pill pill-positive">recommended</span> <span class="pill pill-neutral">low confidence</span> <span class="pill pill-positive">executed</span></span>
+    </div>
+    <p class="cc-oneliner">Executed</p>
+    
+  </summary>
+  <div class="cc-body">
+    
+    
+    
+    <div class="card-block"><h4>Why</h4><ul class="reason-list"><li>Website matched its legacy keyword heuristic against BusinessContext. Not yet migrated to structured assessment — see docs/architecture/ROADMAP.md.</li></ul></div>
+    
+    
+    
+  </div>
+</details>
+
+<details class="capability-card" id="capability-workflow-automation">
+  <summary>
+    <div class="cc-summary-main">
+      <span class="cc-name">Workflow Automation</span>
+      <span class="cc-pills"><span class="pill pill-negative">not-recommended</span> <span class="pill pill-neutral">high confidence</span> <span class="pill pill-neutral">skipped</span></span>
+    </div>
+    <p class="cc-oneliner">Not applicable to this business context</p>
+    
+  </summary>
+  <div class="cc-body">
+    
+    
+    
+    
+    
+    
+    
+  </div>
+</details>
+
+<details class="capability-card" id="capability-integrations">
+  <summary>
+    <div class="cc-summary-main">
+      <span class="cc-name">Integrations</span>
+      <span class="cc-pills"><span class="pill pill-negative">not-recommended</span> <span class="pill pill-neutral">high confidence</span> <span class="pill pill-neutral">skipped</span></span>
+    </div>
+    <p class="cc-oneliner">Not applicable to this business context</p>
+    
+  </summary>
+  <div class="cc-body">
+    
+    
+    
+    
+    
+    
+    
+  </div>
+</details>
+
+<details class="capability-card" id="capability-ai-agents">
+  <summary>
+    <div class="cc-summary-main">
+      <span class="cc-name">AI Agents</span>
+      <span class="cc-pills"><span class="pill pill-negative">not-recommended</span> <span class="pill pill-neutral">high confidence</span> <span class="pill pill-neutral">skipped</span></span>
+    </div>
+    <p class="cc-oneliner">Not applicable to this business context</p>
+    
+  </summary>
+  <div class="cc-body">
+    
+    
+    
+    
+    
+    
+    
+  </div>
+</details>
+
+<details class="capability-card" id="capability-security-governance">
+  <summary>
+    <div class="cc-summary-main">
+      <span class="cc-name">Security &amp; Governance</span>
+      <span class="cc-pills"><span class="pill pill-positive">recommended</span> <span class="pill pill-neutral">medium confidence</span> <span class="pill pill-positive">executed</span></span>
+    </div>
+    <p class="cc-oneliner">Executed</p>
+    
+  </summary>
+  <div class="cc-body">
+    
+    
+    <p class="implemented-note"><strong>Generated &amp; validated:</strong> Yes — indicates Stitchfy produced and validated an architecture specification for this capability, not that it was deployed, executed, or production-verified.</p>
+    <div class="card-block"><h4>Why</h4><ul class="reason-list"><li>Discovery flagged an unresolved gap relevant to security/governance: &quot;Data&quot;.<ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>GAP-007</code> — Data <span class="evidence-type">(information-gap)</span></li></ul></li></ul></div>
+    
+    
+    <div class="card-block"><h4>Artifacts</h4><ul class="artifact-list"><li><code>artifacts/security-governance/security-architecture.json</code></li><li><code>artifacts/security-governance/security-architecture.md</code></li><li><code>artifacts/security-governance/risk-register.json</code></li><li><code>artifacts/security-governance/risk-register.md</code></li><li><code>artifacts/security-governance/governance-plan.json</code></li><li><code>artifacts/security-governance/governance-plan.md</code></li></ul></div>
+  </div>
+</details>
+
+<details class="capability-card" id="capability-observability">
+  <summary>
+    <div class="cc-summary-main">
+      <span class="cc-name">Observability</span>
+      <span class="cc-pills"><span class="pill pill-negative">not-recommended</span> <span class="pill pill-neutral">high confidence</span> <span class="pill pill-neutral">skipped</span></span>
+    </div>
+    <p class="cc-oneliner">Not applicable to this business context</p>
+    
+  </summary>
+  <div class="cc-body">
+    
+    
+    
+    
+    
+    
+    
+  </div>
+</details>
+
+<details class="capability-card" id="capability-cloud">
+  <summary>
+    <div class="cc-summary-main">
+      <span class="cc-name">Cloud Architecture</span>
+      <span class="cc-pills"><span class="pill pill-negative">not-recommended</span> <span class="pill pill-neutral">high confidence</span> <span class="pill pill-neutral">skipped</span></span>
+    </div>
+    <p class="cc-oneliner">Not applicable to this business context</p>
+    
+  </summary>
+  <div class="cc-body">
+    
+    
+    
+    
+    
+    
+    
+  </div>
+</details>
+
+<details class="capability-card" id="capability-modernization">
+  <summary>
+    <div class="cc-summary-main">
+      <span class="cc-name">Legacy Modernization</span>
+      <span class="cc-pills"><span class="pill pill-negative">not-recommended</span> <span class="pill pill-neutral">high confidence</span> <span class="pill pill-neutral">skipped</span></span>
+    </div>
+    <p class="cc-oneliner">Not applicable to this business context</p>
+    
+  </summary>
+  <div class="cc-body">
+    
+    
+    
+    
+    
+    
+    
+  </div>
+</details></div>
+</section>
+
+<section id="panel-backlog" role="tabpanel" aria-labelledby="tab-backlog" hidden>
+
+<div class="backlog-toolbar">
+  <input type="search" id="backlog-search" placeholder="Search backlog…" aria-label="Search backlog">
+  <select id="filter-capability" aria-label="Filter by capability"><option value="">All capabilities</option><option value="ai-agents">AI Agents</option><option value="cloud">Cloud Architecture</option><option value="integrations">Integrations</option><option value="modernization">Legacy Modernization</option><option value="observability">Observability</option><option value="security-governance">Security &amp; Governance</option><option value="website">Website</option><option value="workflow-automation">Workflow Automation</option></select>
+  <select id="filter-type" aria-label="Filter by type"><option value="">All types</option><option value="Architecture Decision">Architecture Decision</option><option value="Information Gap">Information Gap</option></select>
+  <select id="filter-status" aria-label="Filter by status"><option value="">All statuses</option><option value="not-selected">not-selected</option><option value="selected">selected</option></select>
+  <select id="filter-priority" aria-label="Filter by priority"><option value="">All priorities</option></select>
+  <span id="result-count" role="status" aria-live="polite"></span>
+</div>
+<div class="table-wrap">
+  <table id="backlog-table">
+    <caption class="visually-hidden">Implementation backlog</caption>
+    <thead><tr><th scope="col">ID</th><th scope="col">Item</th><th scope="col">Type</th><th scope="col">Capability</th><th scope="col">Category</th><th scope="col">Priority</th><th scope="col">Status</th><th scope="col">Explicitness</th><th scope="col"><span class="visually-hidden">Details</span></th></tr></thead>
+    <tbody>
+<tr id="entity-DECISION-001"
+      data-type="Architecture Decision"
+      data-capability="website"
+      data-status="selected"
+      data-priority=""
+      data-search="decision-001 website: selected website matched its legacy keyword heuristic against businesscontext. not yet migrated to structured assessment — see docs/architecture/roadmap.md. architecture decision website">
+    <td><code>DECISION-001</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-DECISION-001">
+        website: selected
+      </button>
+    </td>
+    <td>Architecture Decision</td>
+    <td><a href="#capability-website">Website</a></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="pill pill-positive">selected</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-DECISION-001" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>Website matched its legacy keyword heuristic against BusinessContext. Not yet migrated to structured assessment — see docs/architecture/ROADMAP.md.</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-website">Website</a></dd></div><div class="detail-field"><dt>Status</dt><dd>selected</dd></div><div class="detail-field"><dt>Rationale</dt><dd><ul><li>Website matched its legacy keyword heuristic against BusinessContext. Not yet migrated to structured assessment — see docs/architecture/ROADMAP.md.</li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-DECISION-002"
+      data-type="Architecture Decision"
+      data-capability="workflow-automation"
+      data-status="not-selected"
+      data-priority=""
+      data-search="decision-002 workflow-automation: not-selected no matching evidence found for workflow-automation. architecture decision workflow-automation">
+    <td><code>DECISION-002</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-DECISION-002">
+        workflow-automation: not-selected
+      </button>
+    </td>
+    <td>Architecture Decision</td>
+    <td><a href="#capability-workflow-automation">Workflow Automation</a></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="pill pill-negative">not-selected</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-DECISION-002" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>No matching evidence found for workflow-automation.</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-workflow-automation">Workflow Automation</a></dd></div><div class="detail-field"><dt>Status</dt><dd>not-selected</dd></div><div class="detail-field"><dt>Rationale</dt><dd><ul><li>No matching evidence found for workflow-automation.</li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-DECISION-003"
+      data-type="Architecture Decision"
+      data-capability="integrations"
+      data-status="not-selected"
+      data-priority=""
+      data-search="decision-003 integrations: not-selected no matching evidence found for integrations. architecture decision integrations">
+    <td><code>DECISION-003</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-DECISION-003">
+        integrations: not-selected
+      </button>
+    </td>
+    <td>Architecture Decision</td>
+    <td><a href="#capability-integrations">Integrations</a></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="pill pill-negative">not-selected</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-DECISION-003" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>No matching evidence found for integrations.</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-integrations">Integrations</a></dd></div><div class="detail-field"><dt>Status</dt><dd>not-selected</dd></div><div class="detail-field"><dt>Rationale</dt><dd><ul><li>No matching evidence found for integrations.</li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-DECISION-004"
+      data-type="Architecture Decision"
+      data-capability="ai-agents"
+      data-status="not-selected"
+      data-priority=""
+      data-search="decision-004 ai-agents: not-selected no matching evidence found for ai-agents. architecture decision ai-agents">
+    <td><code>DECISION-004</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-DECISION-004">
+        ai-agents: not-selected
+      </button>
+    </td>
+    <td>Architecture Decision</td>
+    <td><a href="#capability-ai-agents">AI Agents</a></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="pill pill-negative">not-selected</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-DECISION-004" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>No matching evidence found for ai-agents.</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-ai-agents">AI Agents</a></dd></div><div class="detail-field"><dt>Status</dt><dd>not-selected</dd></div><div class="detail-field"><dt>Rationale</dt><dd><ul><li>No matching evidence found for ai-agents.</li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-DECISION-005"
+      data-type="Architecture Decision"
+      data-capability="security-governance"
+      data-status="selected"
+      data-priority=""
+      data-search="decision-005 security-governance: selected discovery flagged an unresolved gap relevant to security/governance: &quot;data&quot;. architecture decision security-governance">
+    <td><code>DECISION-005</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-DECISION-005">
+        security-governance: selected
+      </button>
+    </td>
+    <td>Architecture Decision</td>
+    <td><a href="#capability-security-governance">Security &amp; Governance</a></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="pill pill-positive">selected</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-DECISION-005" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>Discovery flagged an unresolved gap relevant to security/governance: &quot;Data&quot;.</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-security-governance">Security &amp; Governance</a></dd></div><div class="detail-field"><dt>Status</dt><dd>selected</dd></div><div class="detail-field"><dt>Rationale</dt><dd><ul><li>Discovery flagged an unresolved gap relevant to security/governance: &quot;Data&quot;.</li></ul></dd></div><div class="detail-field"><dt>Evidence</dt><dd><ul class="evidence-list"><li class="evidence-item"><span class="evidence-kind">discovery</span> <code>GAP-007</code> — Data <span class="evidence-type">(information-gap)</span></li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-DECISION-006"
+      data-type="Architecture Decision"
+      data-capability="observability"
+      data-status="not-selected"
+      data-priority=""
+      data-search="decision-006 observability: not-selected no matching evidence found for observability. architecture decision observability">
+    <td><code>DECISION-006</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-DECISION-006">
+        observability: not-selected
+      </button>
+    </td>
+    <td>Architecture Decision</td>
+    <td><a href="#capability-observability">Observability</a></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="pill pill-negative">not-selected</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-DECISION-006" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>No matching evidence found for observability.</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-observability">Observability</a></dd></div><div class="detail-field"><dt>Status</dt><dd>not-selected</dd></div><div class="detail-field"><dt>Rationale</dt><dd><ul><li>No matching evidence found for observability.</li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-DECISION-007"
+      data-type="Architecture Decision"
+      data-capability="cloud"
+      data-status="not-selected"
+      data-priority=""
+      data-search="decision-007 cloud: not-selected no matching evidence found for cloud. architecture decision cloud">
+    <td><code>DECISION-007</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-DECISION-007">
+        cloud: not-selected
+      </button>
+    </td>
+    <td>Architecture Decision</td>
+    <td><a href="#capability-cloud">Cloud Architecture</a></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="pill pill-negative">not-selected</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-DECISION-007" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>No matching evidence found for cloud.</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-cloud">Cloud Architecture</a></dd></div><div class="detail-field"><dt>Status</dt><dd>not-selected</dd></div><div class="detail-field"><dt>Rationale</dt><dd><ul><li>No matching evidence found for cloud.</li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-DECISION-008"
+      data-type="Architecture Decision"
+      data-capability="modernization"
+      data-status="not-selected"
+      data-priority=""
+      data-search="decision-008 modernization: not-selected no matching evidence found for modernization. architecture decision modernization">
+    <td><code>DECISION-008</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-DECISION-008">
+        modernization: not-selected
+      </button>
+    </td>
+    <td>Architecture Decision</td>
+    <td><a href="#capability-modernization">Legacy Modernization</a></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="pill pill-negative">not-selected</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-DECISION-008" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>No matching evidence found for modernization.</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-modernization">Legacy Modernization</a></dd></div><div class="detail-field"><dt>Status</dt><dd>not-selected</dd></div><div class="detail-field"><dt>Rationale</dt><dd><ul><li>No matching evidence found for modernization.</li></ul></dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-GAP-001"
+      data-type="Information Gap"
+      data-capability=""
+      data-status=""
+      data-priority=""
+      data-search="gap-001 business goals what are the primary goals for this solution? information gap high">
+    <td><code>GAP-001</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-GAP-001">
+        Business goals
+      </button>
+    </td>
+    <td>Information Gap</td>
+    <td><span class="dash">—</span></td>
+    <td>high</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-GAP-001" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>What are the primary goals for this solution?</dd></div><div class="detail-field"><dt>Capability</dt><dd><span class="dash">—</span></dd></div><div class="detail-field"><dt>Category</dt><dd>high</dd></div><div class="detail-field"><dt>Blocking</dt><dd>Yes</dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-GAP-002"
+      data-type="Information Gap"
+      data-capability="workflow-automation ai-agents"
+      data-status=""
+      data-priority=""
+      data-search="gap-002 users / actors who are the people or roles involved in using or running this solution? information gap medium workflow-automation ai-agents">
+    <td><code>GAP-002</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-GAP-002">
+        Users / actors
+      </button>
+    </td>
+    <td>Information Gap</td>
+    <td><a href="#capability-workflow-automation">Workflow Automation</a>, <a href="#capability-ai-agents">AI Agents</a></td>
+    <td>medium</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-GAP-002" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>Who are the people or roles involved in using or running this solution?</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-workflow-automation">Workflow Automation</a>, <a href="#capability-ai-agents">AI Agents</a></dd></div><div class="detail-field"><dt>Category</dt><dd>medium</dd></div><div class="detail-field"><dt>Blocking</dt><dd>No</dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-GAP-003"
+      data-type="Information Gap"
+      data-capability=""
+      data-status=""
+      data-priority=""
+      data-search="gap-003 pain points what current problems is this solution meant to solve? information gap medium">
+    <td><code>GAP-003</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-GAP-003">
+        Pain points
+      </button>
+    </td>
+    <td>Information Gap</td>
+    <td><span class="dash">—</span></td>
+    <td>medium</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-GAP-003" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>What current problems is this solution meant to solve?</dd></div><div class="detail-field"><dt>Capability</dt><dd><span class="dash">—</span></dd></div><div class="detail-field"><dt>Category</dt><dd>medium</dd></div><div class="detail-field"><dt>Blocking</dt><dd>No</dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-GAP-004"
+      data-type="Information Gap"
+      data-capability="integrations modernization"
+      data-status=""
+      data-priority=""
+      data-search="gap-004 existing systems what systems or tools are currently used to run this business? information gap medium integrations modernization">
+    <td><code>GAP-004</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-GAP-004">
+        Existing systems
+      </button>
+    </td>
+    <td>Information Gap</td>
+    <td><a href="#capability-integrations">Integrations</a>, <a href="#capability-modernization">Legacy Modernization</a></td>
+    <td>medium</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-GAP-004" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>What systems or tools are currently used to run this business?</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-integrations">Integrations</a>, <a href="#capability-modernization">Legacy Modernization</a></dd></div><div class="detail-field"><dt>Category</dt><dd>medium</dd></div><div class="detail-field"><dt>Blocking</dt><dd>No</dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-GAP-005"
+      data-type="Information Gap"
+      data-capability=""
+      data-status=""
+      data-priority=""
+      data-search="gap-005 constraints are there budget, timeline, regulatory, or technical constraints to account for? information gap low">
+    <td><code>GAP-005</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-GAP-005">
+        Constraints
+      </button>
+    </td>
+    <td>Information Gap</td>
+    <td><span class="dash">—</span></td>
+    <td>low</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-GAP-005" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>Are there budget, timeline, regulatory, or technical constraints to account for?</dd></div><div class="detail-field"><dt>Capability</dt><dd><span class="dash">—</span></dd></div><div class="detail-field"><dt>Category</dt><dd>low</dd></div><div class="detail-field"><dt>Blocking</dt><dd>No</dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-GAP-006"
+      data-type="Information Gap"
+      data-capability="workflow-automation"
+      data-status=""
+      data-priority=""
+      data-search="gap-006 business rules are there rules that must always hold (e.g. no double-booking, approval thresholds)? information gap low workflow-automation">
+    <td><code>GAP-006</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-GAP-006">
+        Business rules
+      </button>
+    </td>
+    <td>Information Gap</td>
+    <td><a href="#capability-workflow-automation">Workflow Automation</a></td>
+    <td>low</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-GAP-006" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>Are there rules that must always hold (e.g. no double-booking, approval thresholds)?</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-workflow-automation">Workflow Automation</a></dd></div><div class="detail-field"><dt>Category</dt><dd>low</dd></div><div class="detail-field"><dt>Blocking</dt><dd>No</dd></div></dl>
+    </td>
+  </tr>
+<tr id="entity-GAP-007"
+      data-type="Information Gap"
+      data-capability="security-governance cloud"
+      data-status=""
+      data-priority=""
+      data-search="gap-007 data what data does this solution create, store, or rely on? information gap medium security-governance cloud">
+    <td><code>GAP-007</code></td>
+    <td>
+      <button type="button" class="row-toggle" aria-expanded="false" aria-controls="detail-entity-GAP-007">
+        Data
+      </button>
+    </td>
+    <td>Information Gap</td>
+    <td><a href="#capability-security-governance">Security &amp; Governance</a>, <a href="#capability-cloud">Cloud Architecture</a></td>
+    <td>medium</td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+    <td><span class="dash">—</span></td>
+  </tr>
+<tr class="detail-row" id="detail-entity-GAP-007" hidden>
+    <td colspan="9">
+      <dl class="detail-grid"><div class="detail-field"><dt>Description</dt><dd>What data does this solution create, store, or rely on?</dd></div><div class="detail-field"><dt>Capability</dt><dd><a href="#capability-security-governance">Security &amp; Governance</a>, <a href="#capability-cloud">Cloud Architecture</a></dd></div><div class="detail-field"><dt>Category</dt><dd>medium</dd></div><div class="detail-field"><dt>Blocking</dt><dd>No</dd></div></dl>
+    </td>
+  </tr>
+    </tbody>
+  </table>
+</div>
+</section>
+
+
+<section class="appendix" aria-labelledby="artifacts-heading">
+  <h2 id="artifacts-heading">Generated Artifacts</h2>
+  <div class="artifact-groups"><div class="artifact-group">
+        <h3>Security &amp; Governance</h3>
+        <ul class="artifact-list"><li><code>artifacts/security-governance/governance-plan.json</code></li><li><code>artifacts/security-governance/governance-plan.md</code></li><li><code>artifacts/security-governance/risk-register.json</code></li><li><code>artifacts/security-governance/risk-register.md</code></li><li><code>artifacts/security-governance/security-architecture.json</code></li><li><code>artifacts/security-governance/security-architecture.md</code></li></ul>
+      </div></div>
+</section>
+
+</main>
+<footer class="report-footer">
+  <p>Generated by Stitchfy v2.2.0 — this report is a presentation of <code>blueprints/solution-blueprint.v1.json</code>, not a separate source of truth.</p>
+</footer>
+<script>
+(function () {
+  "use strict";
+
+  // Tabs
+  var tabs = document.querySelectorAll('[role="tab"]');
+  tabs.forEach(function (tab) {
+    tab.addEventListener("click", function () {
+      tabs.forEach(function (t) {
+        t.setAttribute("aria-selected", "false");
+        document.getElementById(t.getAttribute("aria-controls")).hidden = true;
+      });
+      tab.setAttribute("aria-selected", "true");
+      document.getElementById(tab.getAttribute("aria-controls")).hidden = false;
+    });
+  });
+
+  // Expandable backlog rows
+  document.querySelectorAll(".row-toggle").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var target = document.getElementById(btn.getAttribute("aria-controls"));
+      if (!target) return;
+      var expanded = btn.getAttribute("aria-expanded") === "true";
+      btn.setAttribute("aria-expanded", String(!expanded));
+      target.hidden = expanded;
+    });
+  });
+
+  // Backlog filters
+  var table = document.getElementById("backlog-table");
+  if (table) {
+    var searchInput = document.getElementById("backlog-search");
+    var capabilityFilter = document.getElementById("filter-capability");
+    var typeFilter = document.getElementById("filter-type");
+    var statusFilter = document.getElementById("filter-status");
+    var priorityFilter = document.getElementById("filter-priority");
+    var resultCount = document.getElementById("result-count");
+    var rows = Array.prototype.slice.call(table.querySelectorAll("tbody > tr:not(.detail-row)"));
+
+    function applyFilters() {
+      var q = (searchInput.value || "").toLowerCase().trim();
+      var cap = capabilityFilter.value;
+      var type = typeFilter.value;
+      var status = statusFilter.value;
+      var priority = priorityFilter.value;
+      var visible = 0;
+
+      rows.forEach(function (row) {
+        var caps = (row.dataset.capability || "").split(" ");
+        var matches =
+          (!q || row.dataset.search.indexOf(q) !== -1) &&
+          (!cap || caps.indexOf(cap) !== -1) &&
+          (!type || row.dataset.type === type) &&
+          (!status || row.dataset.status === status) &&
+          (!priority || row.dataset.priority === priority);
+
+        row.hidden = !matches;
+        var detail = document.getElementById(row.id.replace(/^entity-/, "detail-entity-"));
+        if (detail && !matches) detail.hidden = true;
+        if (matches) visible++;
+      });
+
+      resultCount.textContent = visible + " of " + rows.length + " item" + (rows.length === 1 ? "" : "s");
+    }
+
+    [searchInput, capabilityFilter, typeFilter, statusFilter, priorityFilter].forEach(function (el) {
+      el.addEventListener("input", applyFilters);
+      el.addEventListener("change", applyFilters);
+    });
+    applyFilters();
+  }
+})();
+</script>
+</body>
+</html>
