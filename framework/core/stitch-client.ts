@@ -39,7 +39,7 @@ interface RpcResponse {
 
 // ─── Public result types ──────────────────────────────────────────────────────
 
-export type StitchModelId = "GEMINI_3_1_PRO" | "GEMINI_3_FLASH";
+export type StitchModelId = "GEMINI_3_8_FLASH" | "GEMINI_3_5_FLASH_LITE";
 
 export interface StitchPage {
   route: string;
@@ -124,7 +124,7 @@ export class StitchClient {
   async generateScreen(
     projectId: string,
     prompt: string,
-    modelId: StitchModelId = "GEMINI_3_1_PRO"
+    modelId: StitchModelId = "GEMINI_3_8_FLASH"
   ): Promise<string> {
     const text = await this.call("generate_screen_from_text", {
       projectId,
@@ -146,11 +146,11 @@ export class StitchClient {
    */
   async getScreen(projectId: string, screenId: string): Promise<string> {
     const name = `projects/${projectId}/screens/${screenId}`;
-    const MAX_RETRIES = 8;
+    const MAX_RETRIES = 16;
     const RETRY_DELAY_MS = 5000;
 
     for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
-      const text = await this.call("get_screen", { name, projectId, screenId });
+      const text = await this.call("get_screen", { name });
 
       let screenObj: Record<string, unknown>;
       try {

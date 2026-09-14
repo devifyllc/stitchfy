@@ -370,8 +370,8 @@ Stitchfy integrates with [Google Stitch](https://stitch.google.com) as an altern
 # Add to your .env file
 STITCH_API_KEY=your-key-here
 
-# Optional: choose the generation model (default: GEMINI_3_1_PRO)
-STITCH_MODEL=GEMINI_3_FLASH   # faster; GEMINI_3_1_PRO for higher quality
+# Optional: choose the generation model (default: GEMINI_3_8_FLASH)
+STITCH_MODEL=GEMINI_3_5_FLASH_LITE   # lighter/faster; GEMINI_3_8_FLASH for higher quality
 ```
 
 ### Stitch pipeline flow

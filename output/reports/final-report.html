@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Final Report — Glow &amp; Go Beauty Bar</title>
+  <title>Final Report — Bridgeview Family Medical Center</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; }
     body { font-family: system-ui, -apple-system, sans-serif; margin: 0; color: #1a1a1a; background: #f8f8f6; line-height: 1.55; font-size: 15px; }
@@ -35,11 +35,11 @@
 
     <div class="report-header">
   <h1>Final Report</h1>
-  <p class="business">Glow &amp; Go Beauty Bar</p>
+  <p class="business">Bridgeview Family Medical Center</p>
   <div class="meta">
-    <span>Generated: Aug 19, 2026, 6:52 PM</span>
+    <span>Generated: Sep 12, 2026, 12:25 PM</span>
     <span>Framework: Stitchfy v2</span>
-    <span>Blueprint: F:\devify\stitchfy\output\blueprint\website-blueprint.v1.json</span>
+    <span>Blueprint: output/blueprint/website-blueprint.v1.json</span>
   </div>
 </div>
 <main>
@@ -47,19 +47,19 @@
     <div class="cards">
       <div class="card">
     <div class="card-label">Business</div>
-    <div class="card-value" style="">Glow &amp; Go Beauty Bar</div>
+    <div class="card-value" style="">Bridgeview Family Medical Center</div>
   </div>
       <div class="card">
     <div class="card-label">Industry</div>
-    <div class="card-value" style="">Beauty Salon / Blowout Bar</div>
+    <div class="card-value" style="">Primary Care / Family Medicine</div>
   </div>
       <div class="card">
     <div class="card-label">Location</div>
-    <div class="card-value" style="">Miami Beach, FL</div>
+    <div class="card-value" style="">Chicago, IL</div>
   </div>
       <div class="card">
     <div class="card-label">Pages Generated</div>
-    <div class="card-value" style="">4</div>
+    <div class="card-value" style="">6</div>
   </div>
       <div class="card">
     <div class="card-label">Static Site</div>
@@ -75,7 +75,7 @@
     <table>
       <thead><tr><th>Step</th><th>Artifact</th><th>Status</th></tr></thead>
       <tbody>
-        <tr><td>1. Blueprint</td><td><code>F:\devify\stitchfy\output\blueprint\website-blueprint.v1.json</code></td><td><span class="badge" style="background:#27ae60">✓ PASS</span> Generated</td></tr>
+        <tr><td>1. Blueprint</td><td><code>output/blueprint/website-blueprint.v1.json</code></td><td><span class="badge" style="background:#27ae60">✓ PASS</span> Generated</td></tr>
         <tr><td>2. Site source</td><td><code>output/generated-site/</code></td><td><span class="badge" style="background:#e67e22">⚠ WARN</span> Run npm run build:site</td></tr>
         <tr><td>3. Static output</td><td><code>output/static-site/</code></td><td><span class="badge" style="background:#e67e22">⚠ WARN</span> Run npm run build:site</td></tr>
         <tr><td>4. Accessibility report</td><td><code>output/reports/accessibility-report.html</code></td><td><span class="badge" style="background:#27ae60">✓ PASS</span> Generated</td></tr>
@@ -113,21 +113,33 @@
       <td><span class="badge" style="background:#7f8c8d">— SKIP</span></td>
     </tr>
 <tr>
-      <td>services-pricing</td>
-      <td><code>/services-pricing</code></td>
-      <td><code>app/services-pricing/page.tsx</code></td>
+      <td>services</td>
+      <td><code>/services</code></td>
+      <td><code>app/services/page.tsx</code></td>
       <td><span class="badge" style="background:#7f8c8d">— SKIP</span></td>
     </tr>
 <tr>
-      <td>book-now</td>
-      <td><code>/book-now</code></td>
-      <td><code>app/book-now/page.tsx</code></td>
+      <td>our-providers</td>
+      <td><code>/providers</code></td>
+      <td><code>app/providers/page.tsx</code></td>
       <td><span class="badge" style="background:#7f8c8d">— SKIP</span></td>
     </tr>
 <tr>
-      <td>contact</td>
-      <td><code>/contact</code></td>
-      <td><code>app/contact/page.tsx</code></td>
+      <td>patient-information</td>
+      <td><code>/patient-info</code></td>
+      <td><code>app/patient-info/page.tsx</code></td>
+      <td><span class="badge" style="background:#7f8c8d">— SKIP</span></td>
+    </tr>
+<tr>
+      <td>contact-location</td>
+      <td><code>/contact-location</code></td>
+      <td><code>app/contact-location/page.tsx</code></td>
+      <td><span class="badge" style="background:#7f8c8d">— SKIP</span></td>
+    </tr>
+<tr>
+      <td>new-patients</td>
+      <td><code>/new-patients</code></td>
+      <td><code>app/new-patients/page.tsx</code></td>
       <td><span class="badge" style="background:#7f8c8d">— SKIP</span></td>
     </tr></tbody>
     </table>
@@ -153,6 +165,7 @@
 <li>No real-time availability information</li>
 <li>No account creation, login, or session management</li>
 <li>No payment processing — pricing is informational only</li>
+<li>No patient portal, EHR integration, or HIPAA-grade forms</li>
 <li>OpenGraph og:image requires a real image at /public/og-image.jpg (1200×630px) — placeholder used in dev</li></ul>
 
     <h2>Lighthouse Targets</h2>

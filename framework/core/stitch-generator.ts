@@ -13,7 +13,7 @@
  *   8. Generate output/reports/stitch-review-report.html
  *
  * Requires STITCH_API_KEY in the environment.
- * Optional: STITCH_MODEL ("GEMINI_3_1_PRO" | "GEMINI_3_FLASH", default: GEMINI_3_1_PRO)
+ * Optional: STITCH_MODEL ("GEMINI_3_8_FLASH" | "GEMINI_3_5_FLASH_LITE", default: GEMINI_3_8_FLASH)
  */
 
 import * as fs from "fs";
@@ -65,7 +65,7 @@ export async function generateWithStitch(
   }
 
   const modelId =
-    (process.env.STITCH_MODEL as "GEMINI_3_1_PRO" | "GEMINI_3_FLASH") ?? "GEMINI_3_1_PRO";
+    (process.env.STITCH_MODEL as "GEMINI_3_8_FLASH" | "GEMINI_3_5_FLASH_LITE") ?? "GEMINI_3_8_FLASH";
 
   const client = new StitchClient(apiKey);
   fs.mkdirSync(outputDir, { recursive: true });
