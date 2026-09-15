@@ -2,7 +2,7 @@
 
 **A framework that turns structured Markdown requirements into traceable solution architecture, plus artifacts your team can start building from.**
 
-[![Version](https://img.shields.io/badge/version-2.2.0-brightgreen.svg)](package.json)
+[![Version](https://img.shields.io/badge/version-2.2.1-brightgreen.svg)](package.json)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 [![Node](https://img.shields.io/badge/node-%3E%3D18-green.svg)](package.json)
 [![Next.js](https://img.shields.io/badge/Next.js-14-black.svg)](https://nextjs.org)
@@ -693,4 +693,4 @@ Copyright 2024–2025 Devify LLC
 
 ---
 
-*Stitchfy v2.2.0, built by [Devify LLC](https://github.com/devifyllc)*
+*Stitchfy v2.2.1, built by [Devify LLC](https://github.com/devifyllc)*

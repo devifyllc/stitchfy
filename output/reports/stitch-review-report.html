@@ -48,13 +48,13 @@
 <body>
 <div class="header">
   <h1>Stitchfy · Stitch Review Report</h1>
-  <p>Generated 9/12/2026, 1:21:17 PM · 5 page(s) reviewed</p>
+  <p>Generated 9/14/2026, 10:17:57 PM · 6 page(s) reviewed</p>
 </div>
 <div class="summary">
-  <div class="stat green"><div class="num">5</div><div class="lbl">Auto-patched</div></div>
-  <div class="stat red">  <div class="num">6</div>  <div class="lbl">Errors</div></div>
-  <div class="stat amber"><div class="num">8</div><div class="lbl">Warnings</div></div>
-  <div class="stat blue"> <div class="num">5</div>   <div class="lbl">Info</div></div>
+  <div class="stat green"><div class="num">7</div><div class="lbl">Auto-patched</div></div>
+  <div class="stat red">  <div class="num">7</div>  <div class="lbl">Errors</div></div>
+  <div class="stat amber"><div class="num">10</div><div class="lbl">Warnings</div></div>
+  <div class="stat blue"> <div class="num">6</div>   <div class="lbl">Info</div></div>
 </div>
 <div class="content">
 <div class="page-card">
@@ -94,7 +94,7 @@
   <span class="badge badge-warning">warning</span>
   <span class="badge badge-accessibility">accessibility</span>
   <strong>WCAG 2.4.7: focus visible</strong><br>
-  Found 6 uses of focus:outline-none. One (the menu button) is auto-patched. Others may suppress focus indicators.
+  Found 11 uses of focus:outline-none. One (the menu button) is auto-patched. Others may suppress focus indicators.
   <div class="rec">→ Search for focus:outline-none in the page and replace with focus:ring-* utilities.</div>
 </div><div class="finding-item finding-info">
   <span class="badge badge-info">info</span>
@@ -111,8 +111,38 @@
     <span class="page-route">/services</span>
   </div>
   <div class="page-body">
-    <div class="section-label">Auto-patched (0)</div>
-    <p class="empty">No patches needed — Stitch output was clean for this page.</p>
+    <div class="section-label">Auto-patched (1)</div>
+    <ul class="patch-list"><li class="patch-item">Add aria-label=&quot;Main navigation&quot; to unlabelled &lt;nav&gt; (WCAG 1.3.6)</li></ul>
+    <div class="section-label">Manual review required (3)</div>
+    <div class="finding-item finding-error">
+  <span class="badge badge-error">error</span>
+  <span class="badge badge-seo">seo</span>
+  <strong>SEO: og:image missing</strong><br>
+  No og:image meta tag found. Social sharing previews will have no image.
+  <div class="rec">→ Add &lt;meta property=&quot;og:image&quot; content=&quot;https://yourdomain.com/og-image.jpg&quot;&gt; in the blueprint's openGraph config.</div>
+</div><div class="finding-item finding-warning">
+  <span class="badge badge-warning">warning</span>
+  <span class="badge badge-seo">seo</span>
+  <strong>SEO: canonical URL is relative</strong><br>
+  Canonical link is set to &quot;/&quot; (relative). Search engines expect an absolute URL.
+  <div class="rec">→ Set openGraph.url in the blueprint (e.g. https://glowandgobar.com) before deploying.</div>
+</div><div class="finding-item finding-info">
+  <span class="badge badge-info">info</span>
+  <span class="badge badge-accessibility">accessibility</span>
+  <strong>WCAG 1.3.1: footer navigation landmark</strong><br>
+  Footer contains links but no &lt;nav&gt; landmark. Keyboard and AT users cannot jump to footer nav.
+  <div class="rec">→ Wrap footer links in &lt;nav aria-label=&quot;Footer navigation&quot;&gt;. This is a structural change — not auto-patched.</div>
+</div>
+  </div>
+</div>
+<div class="page-card">
+  <div class="page-header">
+    <span class="page-title">our-providers</span>
+    <span class="page-route">/providers</span>
+  </div>
+  <div class="page-body">
+    <div class="section-label">Auto-patched (1)</div>
+    <ul class="patch-list"><li class="patch-item">Add aria-label=&quot;Main navigation&quot; to unlabelled &lt;nav&gt; (WCAG 1.3.6)</li></ul>
     <div class="section-label">Manual review required (3)</div>
     <div class="finding-item finding-error">
   <span class="badge badge-error">error</span>
@@ -143,7 +173,7 @@
   <div class="page-body">
     <div class="section-label">Auto-patched (1)</div>
     <ul class="patch-list"><li class="patch-item">Add aria-label=&quot;Main navigation&quot; to unlabelled &lt;nav&gt; (WCAG 1.3.6)</li></ul>
-    <div class="section-label">Manual review required (3)</div>
+    <div class="section-label">Manual review required (4)</div>
     <div class="finding-item finding-error">
   <span class="badge badge-error">error</span>
   <span class="badge badge-seo">seo</span>
@@ -156,6 +186,12 @@
   <strong>SEO: canonical URL is relative</strong><br>
   Canonical link is set to &quot;/&quot; (relative). Search engines expect an absolute URL.
   <div class="rec">→ Set openGraph.url in the blueprint (e.g. https://glowandgobar.com) before deploying.</div>
+</div><div class="finding-item finding-warning">
+  <span class="badge badge-warning">warning</span>
+  <span class="badge badge-accessibility">accessibility</span>
+  <strong>WCAG 2.4.7: focus visible</strong><br>
+  Found 3 uses of focus:outline-none. One (the menu button) is auto-patched. Others may suppress focus indicators.
+  <div class="rec">→ Search for focus:outline-none in the page and replace with focus:ring-* utilities.</div>
 </div><div class="finding-item finding-info">
   <span class="badge badge-info">info</span>
   <span class="badge badge-accessibility">accessibility</span>
@@ -190,7 +226,7 @@
   <span class="badge badge-warning">warning</span>
   <span class="badge badge-accessibility">accessibility</span>
   <strong>WCAG 2.4.7: focus visible</strong><br>
-  Found 7 uses of focus:outline-none. One (the menu button) is auto-patched. Others may suppress focus indicators.
+  Found 3 uses of focus:outline-none. One (the menu button) is auto-patched. Others may suppress focus indicators.
   <div class="rec">→ Search for focus:outline-none in the page and replace with focus:ring-* utilities.</div>
 </div><div class="finding-item finding-info">
   <span class="badge badge-info">info</span>
