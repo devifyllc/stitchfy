@@ -1,10 +1,10 @@
 # Solution Plan
 
-_Generated: 2026-08-20T11:55:55.363Z_
+_Generated: 2026-09-15T03:40:28.476Z_
 
 ## Business Context
 
-- **Business:** Luxe Beauty Studio (Beauty Salon)
+- **Business:** Bridgeview Family Medical Center (Primary Care / Family Medicine)
 - Goals: 0
 - Actors: 0
 - Processes: 0

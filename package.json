@@ -1,6 +1,6 @@
 {
   "name": "stitchfy",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "Markdown-driven solution-engineering framework for traceable architecture, codebase evidence, and implementation-oriented artifacts",
   "license": "Apache-2.0",
   "author": "Devify LLC",

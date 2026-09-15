@@ -10,7 +10,7 @@ _Status: **complete**_
 - Detected languages: Java
 - Build descriptors: pom.xml
 - Modules: 1
-- Files analyzed: 5, ignored: 2
+- Files analyzed: 5, ignored: 1
 - Analyzers used: java-source, maven, repository
 
 ## Build Systems

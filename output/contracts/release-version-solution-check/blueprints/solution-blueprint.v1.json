@@ -1,13 +1,13 @@
 {
   "project": {
     "schemaVersion": "1.0",
-    "generatedAt": "2026-08-20T11:55:55.358Z",
+    "generatedAt": "2026-09-15T03:40:28.476Z",
     "sourceFile": "project.md",
-    "frameworkVersion": "2.2.0"
+    "frameworkVersion": "2.2.1"
   },
   "business": {
-    "businessName": "Luxe Beauty Studio",
-    "industry": "Beauty Salon",
+    "businessName": "Bridgeview Family Medical Center",
+    "industry": "Primary Care / Family Medicine",
     "goals": [],
     "users": [],
     "processes": [],
@@ -102,7 +102,7 @@
   ],
   "traceability": [],
   "planning": {
-    "generatedAt": "2026-08-20T11:55:55.363Z",
+    "generatedAt": "2026-09-15T03:40:28.476Z",
     "assessments": [
       {
         "capabilityId": "website",
@@ -322,92 +322,92 @@
       "status": "executed",
       "success": true,
       "summary": "Executed",
-      "durationMs": 11,
+      "durationMs": 2,
       "output": {
-        "projectId": "run-1787226955367",
-        "inputPath": "F:\\devify\\stitchfy\\input\\project.md",
-        "outputDir": "F:\\devify\\stitchfy\\output\\contracts\\release-version-solution-check",
-        "markdown": "# Project: Luxe Beauty Studio\r\n\r\n## Business Information\r\n\r\n- **Business Name:** Luxe Beauty Studio\r\n- **Industry:** Beauty Salon\r\n- **Description:** Luxe Beauty Studio is a premium full-service beauty salon in Austin, Texas. We offer hair, nails, and skincare services in a relaxing, modern environment where every client leaves feeling confident and beautiful.\r\n\r\n## Operating Hours\r\n\r\n- Monday–Friday: 9:00 AM – 7:00 PM\r\n- Saturday: 9:00 AM – 6:00 PM\r\n- Sunday: 10:00 AM – 4:00 PM\r\n- Closed on major holidays\r\n\r\n## Services\r\n\r\n- Haircuts & Styling\r\n- Color & Balayage\r\n- Blowouts & Deep Treatments\r\n- Manicure & Pedicure\r\n- Gel & Acrylic Nails\r\n- Facials & Skincare Treatments\r\n- Eyebrow Shaping & Tinting\r\n- Lash Extensions\r\n\r\n## Location\r\n\r\n- Address: 1234 South Congress Avenue, Suite 102, Austin, TX 78704\r\n- Neighborhood: South Congress (SoCo)\r\n- Parking: Free street parking and a small lot behind the building\r\n\r\n## Contact Information\r\n\r\n- Phone: (512) 555-0190\r\n- Email: hello@luxebeautystudio.com\r\n- Website: https://www.luxebeautystudio.com\r\n\r\n## Social Networks\r\n\r\n- Instagram: @luxebeautystudio\r\n- Facebook: /luxebeautystudio\r\n- TikTok: @luxebeautystudio\r\n\r\n## Booking Preference\r\n\r\n- Primary: Online booking via Vagaro (https://www.vagaro.com/luxebeautystudio)\r\n- Secondary: Phone call during business hours\r\n- Walk-ins welcome Monday–Friday; appointment recommended on weekends\r\n\r\n## Desired Pages\r\n\r\n- Home\r\n- Services\r\n- Gallery\r\n- About Us\r\n- Contact\r\n- Book Online\r\n\r\n## Brand Tone\r\n\r\n- Warm, welcoming, and luxurious but never pretentious\r\n- Modern and visually polished\r\n- Empowering and confidence-boosting\r\n- Conversational and human — not corporate\r\n\r\n## Color Preferences\r\n\r\n- Primary: Dusty rose (#C4847A)\r\n- Secondary: Warm white (#FAF8F5)\r\n- Accent: Soft gold (#C9A96E)\r\n- Text: Charcoal (#2C2C2C)\r\n- Borders/subtle backgrounds: Light blush (#EDD9D5)\r\n\r\n## Special Notes\r\n\r\n- Feature seasonal promotions prominently on the Home page\r\n- Include a \"Meet the Team\" section on the About page with stylist bios and photos\r\n- Gallery should support filtering by service category (hair, nails, skincare)\r\n- Display at least 4–5 testimonials on the homepage\r\n- The booking CTA button should appear persistently on every page\r\n- Accessibility is a priority — all images need alt text and color contrast must be WCAG AA compliant\r\n- Do NOT include real booking forms, payment flows, login/accounts, or a database\r\n- Site should be fully exportable as static HTML/CSS/JS\r\n",
+        "projectId": "run-1789443628477",
+        "inputPath": "/Users/paolazaratem/Desktop/stitchfy/stitchfy/input/project.md",
+        "outputDir": "/Users/paolazaratem/Desktop/stitchfy/stitchfy/output/contracts/release-version-solution-check",
+        "markdown": "# Project: Bridgeview Family Medical Center\n\n## Business Information\n\n- **Business Name:** Bridgeview Family Medical Center\n- **Industry:** Primary Care / Family Medicine\n- **Description:** Bridgeview Family Medical Center provides compassionate, patient-centered primary care for adults and children in Chicago's Lincoln Park neighborhood. We are accepting new patients.\n\n## Operating Hours\n\n- Monday–Friday: 8:00 AM – 6:00 PM\n- Saturday: 9:00 AM – 1:00 PM (by appointment only)\n- Sunday: Closed\n- Urgent after-hours line available for established patients\n\n## Services\n\n- Annual Physical Exams\n- Sick Visits & Urgent Care\n- Pediatric Well-Child Visits\n- Women's Health & Preventive Screenings\n- Chronic Disease Management (diabetes, hypertension, asthma)\n- Immunizations & Travel Medicine\n- Mental Health Referrals\n- Lab Work & Imaging Referrals\n\n## Location\n\n- Address: 2100 North Lincoln Avenue, Suite 310, Chicago, IL 60614\n- Neighborhood: Lincoln Park\n- Accessible via CTA Red Line (Fullerton stop)\n- Validated parking available in the building garage\n\n## Contact Information\n\n- Phone: (312) 555-0175\n- Fax: (312) 555-0176\n- Email: appointments@bridgeviewfmc.com\n\n## Social Networks\n\n- Facebook: /BridgeviewFMC\n\n## Booking Preference\n\n- New patients: Call to schedule or submit a request form\n- Established patients: Patient portal (athenahealth)\n- No walk-ins for scheduled appointments\n\n## Desired Pages\n\n- Home\n- Services\n- Our Providers\n- Patient Information\n- Contact & Location\n- New Patients\n\n## Brand Tone\n\n- Professional, trustworthy, and approachable\n- Warm and human — not cold or bureaucratic\n- Clear and plain-language — health literacy matters\n- Reassuring and calm\n\n## Color Preferences\n\n- Primary: Navy blue (#1B3A6B)\n- Secondary: Clean white (#FFFFFF)\n- Accent: Teal (#2A9D8F)\n- Text: Dark slate (#2D3748)\n\n## Special Notes\n\n- IMPORTANT: This site does NOT include any patient portal, EHR integration, HIPAA-grade forms, or medical records\n- The \"Contact\" form is a general inquiry form only — not for medical advice or emergencies\n- Include a visible disclaimer on the Contact page about not submitting medical questions via the form\n- Accepting new patients should be prominently highlighted on the Home page\n- ADA accessibility compliance is mandatory\n- Providers page should include photo, name, credentials, and specialty\n",
         "parsed": {
-          "title": "Luxe Beauty Studio",
+          "title": "Bridgeview Family Medical Center",
           "sections": {
             "business-information": {
               "heading": "Business Information",
               "keyValues": {
-                "Business Name": "Luxe Beauty Studio",
-                "Industry": "Beauty Salon",
-                "Description": "Luxe Beauty Studio is a premium full-service beauty salon in Austin, Texas. We offer hair, nails, and skincare services in a relaxing, modern environment where every client leaves feeling confident and beautiful."
+                "Business Name": "Bridgeview Family Medical Center",
+                "Industry": "Primary Care / Family Medicine",
+                "Description": "Bridgeview Family Medical Center provides compassionate, patient-centered primary care for adults and children in Chicago's Lincoln Park neighborhood. We are accepting new patients."
               },
               "items": [],
-              "raw": "\r\n\r\n- **Business Name:** Luxe Beauty Studio\r\n- **Industry:** Beauty Salon\r\n- **Description:** Luxe Beauty Studio is a premium full-service beauty salon in Austin, Texas. We offer hair, nails, and skincare services in a relaxing, modern environment where every client leaves feeling confident and beautiful.\r\n\r"
+              "raw": "\n\n- **Business Name:** Bridgeview Family Medical Center\n- **Industry:** Primary Care / Family Medicine\n- **Description:** Bridgeview Family Medical Center provides compassionate, patient-centered primary care for adults and children in Chicago's Lincoln Park neighborhood. We are accepting new patients.\n"
             },
             "operating-hours": {
               "heading": "Operating Hours",
               "keyValues": {
-                "Monday–Friday": "9:00 AM – 7:00 PM",
-                "Saturday": "9:00 AM – 6:00 PM",
-                "Sunday": "10:00 AM – 4:00 PM"
+                "Monday–Friday": "8:00 AM – 6:00 PM",
+                "Saturday": "9:00 AM – 1:00 PM (by appointment only)",
+                "Sunday": "Closed"
               },
               "items": [
-                "Closed on major holidays"
+                "Urgent after-hours line available for established patients"
               ],
-              "raw": "\r\n\r\n- Monday–Friday: 9:00 AM – 7:00 PM\r\n- Saturday: 9:00 AM – 6:00 PM\r\n- Sunday: 10:00 AM – 4:00 PM\r\n- Closed on major holidays\r\n\r"
+              "raw": "\n\n- Monday–Friday: 8:00 AM – 6:00 PM\n- Saturday: 9:00 AM – 1:00 PM (by appointment only)\n- Sunday: Closed\n- Urgent after-hours line available for established patients\n"
             },
             "services": {
               "heading": "Services",
               "keyValues": {},
               "items": [
-                "Haircuts & Styling",
-                "Color & Balayage",
-                "Blowouts & Deep Treatments",
-                "Manicure & Pedicure",
-                "Gel & Acrylic Nails",
-                "Facials & Skincare Treatments",
-                "Eyebrow Shaping & Tinting",
-                "Lash Extensions"
+                "Annual Physical Exams",
+                "Sick Visits & Urgent Care",
+                "Pediatric Well-Child Visits",
+                "Women's Health & Preventive Screenings",
+                "Chronic Disease Management (diabetes, hypertension, asthma)",
+                "Immunizations & Travel Medicine",
+                "Mental Health Referrals",
+                "Lab Work & Imaging Referrals"
               ],
-              "raw": "\r\n\r\n- Haircuts & Styling\r\n- Color & Balayage\r\n- Blowouts & Deep Treatments\r\n- Manicure & Pedicure\r\n- Gel & Acrylic Nails\r\n- Facials & Skincare Treatments\r\n- Eyebrow Shaping & Tinting\r\n- Lash Extensions\r\n\r"
+              "raw": "\n\n- Annual Physical Exams\n- Sick Visits & Urgent Care\n- Pediatric Well-Child Visits\n- Women's Health & Preventive Screenings\n- Chronic Disease Management (diabetes, hypertension, asthma)\n- Immunizations & Travel Medicine\n- Mental Health Referrals\n- Lab Work & Imaging Referrals\n"
             },
             "location": {
               "heading": "Location",
               "keyValues": {
-                "Address": "1234 South Congress Avenue, Suite 102, Austin, TX 78704",
-                "Neighborhood": "South Congress (SoCo)",
-                "Parking": "Free street parking and a small lot behind the building"
+                "Address": "2100 North Lincoln Avenue, Suite 310, Chicago, IL 60614",
+                "Neighborhood": "Lincoln Park"
               },
-              "items": [],
-              "raw": "\r\n\r\n- Address: 1234 South Congress Avenue, Suite 102, Austin, TX 78704\r\n- Neighborhood: South Congress (SoCo)\r\n- Parking: Free street parking and a small lot behind the building\r\n\r"
+              "items": [
+                "Accessible via CTA Red Line (Fullerton stop)",
+                "Validated parking available in the building garage"
+              ],
+              "raw": "\n\n- Address: 2100 North Lincoln Avenue, Suite 310, Chicago, IL 60614\n- Neighborhood: Lincoln Park\n- Accessible via CTA Red Line (Fullerton stop)\n- Validated parking available in the building garage\n"
             },
             "contact-information": {
               "heading": "Contact Information",
               "keyValues": {
-                "Phone": "(512) 555-0190",
-                "Email": "hello@luxebeautystudio.com",
-                "Website": "https://www.luxebeautystudio.com"
+                "Phone": "(312) 555-0175",
+                "Fax": "(312) 555-0176",
+                "Email": "appointments@bridgeviewfmc.com"
               },
               "items": [],
-              "raw": "\r\n\r\n- Phone: (512) 555-0190\r\n- Email: hello@luxebeautystudio.com\r\n- Website: https://www.luxebeautystudio.com\r\n\r"
+              "raw": "\n\n- Phone: (312) 555-0175\n- Fax: (312) 555-0176\n- Email: appointments@bridgeviewfmc.com\n"
             },
             "social-networks": {
               "heading": "Social Networks",
               "keyValues": {
-                "Instagram": "@luxebeautystudio",
-                "Facebook": "/luxebeautystudio",
-                "TikTok": "@luxebeautystudio"
+                "Facebook": "/BridgeviewFMC"
               },
               "items": [],
-              "raw": "\r\n\r\n- Instagram: @luxebeautystudio\r\n- Facebook: /luxebeautystudio\r\n- TikTok: @luxebeautystudio\r\n\r"
+              "raw": "\n\n- Facebook: /BridgeviewFMC\n"
             },
             "booking-preference": {
               "heading": "Booking Preference",
               "keyValues": {
-                "Primary": "Online booking via Vagaro (https://www.vagaro.com/luxebeautystudio)",
-                "Secondary": "Phone call during business hours"
+                "New patients": "Call to schedule or submit a request form",
+                "Established patients": "Patient portal (athenahealth)"
               },
               "items": [
-                "Walk-ins welcome Monday–Friday; appointment recommended on weekends"
+                "No walk-ins for scheduled appointments"
               ],
-              "raw": "\r\n\r\n- Primary: Online booking via Vagaro (https://www.vagaro.com/luxebeautystudio)\r\n- Secondary: Phone call during business hours\r\n- Walk-ins welcome Monday–Friday; appointment recommended on weekends\r\n\r"
+              "raw": "\n\n- New patients: Call to schedule or submit a request form\n- Established patients: Patient portal (athenahealth)\n- No walk-ins for scheduled appointments\n"
             },
             "desired-pages": {
               "heading": "Desired Pages",
@@ -415,114 +415,112 @@
               "items": [
                 "Home",
                 "Services",
-                "Gallery",
-                "About Us",
-                "Contact",
-                "Book Online"
+                "Our Providers",
+                "Patient Information",
+                "Contact & Location",
+                "New Patients"
               ],
-              "raw": "\r\n\r\n- Home\r\n- Services\r\n- Gallery\r\n- About Us\r\n- Contact\r\n- Book Online\r\n\r"
+              "raw": "\n\n- Home\n- Services\n- Our Providers\n- Patient Information\n- Contact & Location\n- New Patients\n"
             },
             "brand-tone": {
               "heading": "Brand Tone",
               "keyValues": {},
               "items": [
-                "Warm, welcoming, and luxurious but never pretentious",
-                "Modern and visually polished",
-                "Empowering and confidence-boosting",
-                "Conversational and human — not corporate"
+                "Professional, trustworthy, and approachable",
+                "Warm and human — not cold or bureaucratic",
+                "Clear and plain-language — health literacy matters",
+                "Reassuring and calm"
               ],
-              "raw": "\r\n\r\n- Warm, welcoming, and luxurious but never pretentious\r\n- Modern and visually polished\r\n- Empowering and confidence-boosting\r\n- Conversational and human — not corporate\r\n\r"
+              "raw": "\n\n- Professional, trustworthy, and approachable\n- Warm and human — not cold or bureaucratic\n- Clear and plain-language — health literacy matters\n- Reassuring and calm\n"
             },
             "color-preferences": {
               "heading": "Color Preferences",
               "keyValues": {
-                "Primary": "Dusty rose (#C4847A)",
-                "Secondary": "Warm white (#FAF8F5)",
-                "Accent": "Soft gold (#C9A96E)",
-                "Text": "Charcoal (#2C2C2C)",
-                "Borders/subtle backgrounds": "Light blush (#EDD9D5)"
+                "Primary": "Navy blue (#1B3A6B)",
+                "Secondary": "Clean white (#FFFFFF)",
+                "Accent": "Teal (#2A9D8F)",
+                "Text": "Dark slate (#2D3748)"
               },
               "items": [],
-              "raw": "\r\n\r\n- Primary: Dusty rose (#C4847A)\r\n- Secondary: Warm white (#FAF8F5)\r\n- Accent: Soft gold (#C9A96E)\r\n- Text: Charcoal (#2C2C2C)\r\n- Borders/subtle backgrounds: Light blush (#EDD9D5)\r\n\r"
+              "raw": "\n\n- Primary: Navy blue (#1B3A6B)\n- Secondary: Clean white (#FFFFFF)\n- Accent: Teal (#2A9D8F)\n- Text: Dark slate (#2D3748)\n"
             },
             "special-notes": {
               "heading": "Special Notes",
-              "keyValues": {},
+              "keyValues": {
+                "IMPORTANT": "This site does NOT include any patient portal, EHR integration, HIPAA-grade forms, or medical records"
+              },
               "items": [
-                "Feature seasonal promotions prominently on the Home page",
-                "Include a \"Meet the Team\" section on the About page with stylist bios and photos",
-                "Gallery should support filtering by service category (hair, nails, skincare)",
-                "Display at least 4–5 testimonials on the homepage",
-                "The booking CTA button should appear persistently on every page",
-                "Accessibility is a priority — all images need alt text and color contrast must be WCAG AA compliant",
-                "Do NOT include real booking forms, payment flows, login/accounts, or a database",
-                "Site should be fully exportable as static HTML/CSS/JS"
+                "The \"Contact\" form is a general inquiry form only — not for medical advice or emergencies",
+                "Include a visible disclaimer on the Contact page about not submitting medical questions via the form",
+                "Accepting new patients should be prominently highlighted on the Home page",
+                "ADA accessibility compliance is mandatory",
+                "Providers page should include photo, name, credentials, and specialty"
               ],
-              "raw": "\r\n\r\n- Feature seasonal promotions prominently on the Home page\r\n- Include a \"Meet the Team\" section on the About page with stylist bios and photos\r\n- Gallery should support filtering by service category (hair, nails, skincare)\r\n- Display at least 4–5 testimonials on the homepage\r\n- The booking CTA button should appear persistently on every page\r\n- Accessibility is a priority — all images need alt text and color contrast must be WCAG AA compliant\r\n- Do NOT include real booking forms, payment flows, login/accounts, or a database\r\n- Site should be fully exportable as static HTML/CSS/JS\r\n"
+              "raw": "\n\n- IMPORTANT: This site does NOT include any patient portal, EHR integration, HIPAA-grade forms, or medical records\n- The \"Contact\" form is a general inquiry form only — not for medical advice or emergencies\n- Include a visible disclaimer on the Contact page about not submitting medical questions via the form\n- Accepting new patients should be prominently highlighted on the Home page\n- ADA accessibility compliance is mandatory\n- Providers page should include photo, name, credentials, and specialty\n"
             }
           },
-          "raw": "# Project: Luxe Beauty Studio\r\n\r\n## Business Information\r\n\r\n- **Business Name:** Luxe Beauty Studio\r\n- **Industry:** Beauty Salon\r\n- **Description:** Luxe Beauty Studio is a premium full-service beauty salon in Austin, Texas. We offer hair, nails, and skincare services in a relaxing, modern environment where every client leaves feeling confident and beautiful.\r\n\r\n## Operating Hours\r\n\r\n- Monday–Friday: 9:00 AM – 7:00 PM\r\n- Saturday: 9:00 AM – 6:00 PM\r\n- Sunday: 10:00 AM – 4:00 PM\r\n- Closed on major holidays\r\n\r\n## Services\r\n\r\n- Haircuts & Styling\r\n- Color & Balayage\r\n- Blowouts & Deep Treatments\r\n- Manicure & Pedicure\r\n- Gel & Acrylic Nails\r\n- Facials & Skincare Treatments\r\n- Eyebrow Shaping & Tinting\r\n- Lash Extensions\r\n\r\n## Location\r\n\r\n- Address: 1234 South Congress Avenue, Suite 102, Austin, TX 78704\r\n- Neighborhood: South Congress (SoCo)\r\n- Parking: Free street parking and a small lot behind the building\r\n\r\n## Contact Information\r\n\r\n- Phone: (512) 555-0190\r\n- Email: hello@luxebeautystudio.com\r\n- Website: https://www.luxebeautystudio.com\r\n\r\n## Social Networks\r\n\r\n- Instagram: @luxebeautystudio\r\n- Facebook: /luxebeautystudio\r\n- TikTok: @luxebeautystudio\r\n\r\n## Booking Preference\r\n\r\n- Primary: Online booking via Vagaro (https://www.vagaro.com/luxebeautystudio)\r\n- Secondary: Phone call during business hours\r\n- Walk-ins welcome Monday–Friday; appointment recommended on weekends\r\n\r\n## Desired Pages\r\n\r\n- Home\r\n- Services\r\n- Gallery\r\n- About Us\r\n- Contact\r\n- Book Online\r\n\r\n## Brand Tone\r\n\r\n- Warm, welcoming, and luxurious but never pretentious\r\n- Modern and visually polished\r\n- Empowering and confidence-boosting\r\n- Conversational and human — not corporate\r\n\r\n## Color Preferences\r\n\r\n- Primary: Dusty rose (#C4847A)\r\n- Secondary: Warm white (#FAF8F5)\r\n- Accent: Soft gold (#C9A96E)\r\n- Text: Charcoal (#2C2C2C)\r\n- Borders/subtle backgrounds: Light blush (#EDD9D5)\r\n\r\n## Special Notes\r\n\r\n- Feature seasonal promotions prominently on the Home page\r\n- Include a \"Meet the Team\" section on the About page with stylist bios and photos\r\n- Gallery should support filtering by service category (hair, nails, skincare)\r\n- Display at least 4–5 testimonials on the homepage\r\n- The booking CTA button should appear persistently on every page\r\n- Accessibility is a priority — all images need alt text and color contrast must be WCAG AA compliant\r\n- Do NOT include real booking forms, payment flows, login/accounts, or a database\r\n- Site should be fully exportable as static HTML/CSS/JS\r\n"
+          "raw": "# Project: Bridgeview Family Medical Center\n\n## Business Information\n\n- **Business Name:** Bridgeview Family Medical Center\n- **Industry:** Primary Care / Family Medicine\n- **Description:** Bridgeview Family Medical Center provides compassionate, patient-centered primary care for adults and children in Chicago's Lincoln Park neighborhood. We are accepting new patients.\n\n## Operating Hours\n\n- Monday–Friday: 8:00 AM – 6:00 PM\n- Saturday: 9:00 AM – 1:00 PM (by appointment only)\n- Sunday: Closed\n- Urgent after-hours line available for established patients\n\n## Services\n\n- Annual Physical Exams\n- Sick Visits & Urgent Care\n- Pediatric Well-Child Visits\n- Women's Health & Preventive Screenings\n- Chronic Disease Management (diabetes, hypertension, asthma)\n- Immunizations & Travel Medicine\n- Mental Health Referrals\n- Lab Work & Imaging Referrals\n\n## Location\n\n- Address: 2100 North Lincoln Avenue, Suite 310, Chicago, IL 60614\n- Neighborhood: Lincoln Park\n- Accessible via CTA Red Line (Fullerton stop)\n- Validated parking available in the building garage\n\n## Contact Information\n\n- Phone: (312) 555-0175\n- Fax: (312) 555-0176\n- Email: appointments@bridgeviewfmc.com\n\n## Social Networks\n\n- Facebook: /BridgeviewFMC\n\n## Booking Preference\n\n- New patients: Call to schedule or submit a request form\n- Established patients: Patient portal (athenahealth)\n- No walk-ins for scheduled appointments\n\n## Desired Pages\n\n- Home\n- Services\n- Our Providers\n- Patient Information\n- Contact & Location\n- New Patients\n\n## Brand Tone\n\n- Professional, trustworthy, and approachable\n- Warm and human — not cold or bureaucratic\n- Clear and plain-language — health literacy matters\n- Reassuring and calm\n\n## Color Preferences\n\n- Primary: Navy blue (#1B3A6B)\n- Secondary: Clean white (#FFFFFF)\n- Accent: Teal (#2A9D8F)\n- Text: Dark slate (#2D3748)\n\n## Special Notes\n\n- IMPORTANT: This site does NOT include any patient portal, EHR integration, HIPAA-grade forms, or medical records\n- The \"Contact\" form is a general inquiry form only — not for medical advice or emergencies\n- Include a visible disclaimer on the Contact page about not submitting medical questions via the form\n- Accepting new patients should be prominently highlighted on the Home page\n- ADA accessibility compliance is mandatory\n- Providers page should include photo, name, credentials, and specialty\n"
         },
         "blueprint": {
           "project": {
             "schemaVersion": "1.0",
-            "generatedAt": "2026-08-20T11:55:55.368Z",
+            "generatedAt": "2026-09-15T03:40:28.477Z",
             "sourceFile": "project.md",
-            "frameworkVersion": "2.2.0"
+            "frameworkVersion": "2.2.1"
           },
           "business": {
-            "name": "Luxe Beauty Studio",
-            "industry": "Beauty Salon",
-            "description": "Luxe Beauty Studio is a premium full-service beauty salon in Austin, Texas. We offer hair, nails, and skincare services in a relaxing, modern environment where every client leaves feeling confident and beautiful.",
-            "location": "Austin, TX",
-            "address": "1234 South Congress Avenue, Suite 102, Austin, TX 78704",
+            "name": "Bridgeview Family Medical Center",
+            "industry": "Primary Care / Family Medicine",
+            "description": "Bridgeview Family Medical Center provides compassionate, patient-centered primary care for adults and children in Chicago's Lincoln Park neighborhood. We are accepting new patients.",
+            "location": "Chicago, IL",
+            "address": "2100 North Lincoln Avenue, Suite 310, Chicago, IL 60614",
             "serviceAreas": [
-              "Austin, TX"
+              "Chicago, IL"
             ],
-            "phone": "(512) 555-0190",
-            "email": "hello@luxebeautystudio.com",
+            "phone": "(312) 555-0175",
+            "email": "appointments@bridgeviewfmc.com",
             "operatingHours": {
-              "Monday–Friday": "9:00 AM – 7:00 PM",
-              "Saturday": "9:00 AM – 6:00 PM",
-              "Sunday": "10:00 AM – 4:00 PM",
-              "Note": "Closed on major holidays"
+              "Monday–Friday": "8:00 AM – 6:00 PM",
+              "Saturday": "9:00 AM – 1:00 PM (by appointment only)",
+              "Sunday": "Closed"
             },
             "socialLinks": {
-              "Instagram": "https://instagram.com/luxebeautystudio",
-              "Facebook": "https://facebook.com/luxebeautystudio",
-              "TikTok": "https://tiktok.com/@luxebeautystudio"
+              "Facebook": "https://facebook.com/BridgeviewFMC"
             },
-            "booking": "Walk-ins welcome Monday–Friday; appointment recommended on weekends; Online booking via Vagaro (https://www.vagaro.com/luxebeautystudio); Phone call during business hours",
+            "booking": "No walk-ins for scheduled appointments; Call to schedule or submit a request form; Patient portal (athenahealth)",
             "services": [
-              "Haircuts & Styling",
-              "Color & Balayage",
-              "Blowouts & Deep Treatments",
-              "Manicure & Pedicure",
-              "Gel & Acrylic Nails",
-              "Facials & Skincare Treatments",
-              "Eyebrow Shaping & Tinting",
-              "Lash Extensions"
+              "Annual Physical Exams",
+              "Sick Visits & Urgent Care",
+              "Pediatric Well-Child Visits",
+              "Women's Health & Preventive Screenings",
+              "Chronic Disease Management (diabetes, hypertension, asthma)",
+              "Immunizations & Travel Medicine",
+              "Mental Health Referrals",
+              "Lab Work & Imaging Referrals"
             ],
-            "complianceFlags": [],
+            "complianceFlags": [
+              "medical-context",
+              "minor-audience"
+            ],
             "missingInformation": []
           },
           "ux": {
             "brandPersonality": [
-              "Warm, welcoming, and luxurious but never pretentious",
-              "Modern and visually polished",
-              "Empowering and confidence-boosting",
-              "Conversational and human — not corporate"
+              "Professional, trustworthy, and approachable",
+              "Warm and human — not cold or bureaucratic",
+              "Clear and plain-language — health literacy matters",
+              "Reassuring and calm"
             ],
             "colorPalette": {
-              "primary": "#C4847A",
-              "secondary": "#FAF8F5",
-              "accent": "#C9A96E",
-              "text": "#2C2C2C",
-              "background": "#FAF8F5",
-              "border": "#EDD9D5"
+              "primary": "#1B3A6B",
+              "secondary": "#FFFFFF",
+              "accent": "#2A9D8F",
+              "text": "#2D3748",
+              "background": "#FFFFFF",
+              "border": "#E2E8F0"
             },
             "typography": {
-              "headingFont": "'Cormorant Garamond', Georgia, serif",
+              "headingFont": "'Inter', system-ui, sans-serif",
               "bodyFont": "'Inter', system-ui, sans-serif",
               "scaleBase": "16px",
               "headingWeight": "600"
@@ -544,20 +542,20 @@
                 "href": "/services"
               },
               {
-                "label": "Gallery",
-                "href": "/gallery"
+                "label": "Our Providers",
+                "href": "/providers"
               },
               {
-                "label": "About Us",
-                "href": "/about"
+                "label": "Patient Information",
+                "href": "/patient-info"
               },
               {
-                "label": "Contact",
-                "href": "/contact"
+                "label": "Contact & Location",
+                "href": "/contact-location"
               },
               {
-                "label": "Book Online",
-                "href": "/book"
+                "label": "New Patients",
+                "href": "/new-patients"
               }
             ],
             "header": {
@@ -565,7 +563,7 @@
               "showPhone": true,
               "showCTA": true,
               "ctaLabel": "Book Now",
-              "ctaHref": "/book"
+              "ctaHref": "/contact"
             },
             "footer": {
               "columns": [
@@ -576,15 +574,14 @@
               "showHours": true,
               "showSocial": true,
               "showAddress": true,
-              "legalNote": "© 2026 Luxe Beauty Studio. All rights reserved."
+              "legalNote": "© 2026 Bridgeview Family Medical Center. All rights reserved."
             },
             "heroStyle": {
-              "backgroundType": "gradient",
-              "gradientFrom": "#FAF8F5",
-              "gradientTo": "#EDD9D5",
-              "textColor": "#2C2C2C"
+              "backgroundType": "solid",
+              "backgroundColor": "#FFFFFF",
+              "textColor": "#2D3748"
             },
-            "homepageStrategy": "Lead with a strong hero showcasing Luxe Beauty Studio's primary value proposition. Follow with Haircuts & Styling, Color & Balayage, Blowouts & Deep Treatments as the featured services. Build trust with testimonials before presenting the booking CTA.",
+            "homepageStrategy": "Lead with a strong hero showcasing Bridgeview Family Medical Center's primary value proposition. Follow with Annual Physical Exams, Sick Visits & Urgent Care, Pediatric Well-Child Visits as the featured services. Build trust with testimonials before presenting the booking CTA.",
             "componentStrategy": [
               "AccessibilitySkipLink: first element in every page",
               "Header: sticky, includes CTA button",
@@ -619,204 +616,195 @@
               "id": "home",
               "path": "/",
               "title": "Home",
-              "purpose": "Convert visitors to bookings; showcase brand and top services",
+              "purpose": "Establish credibility; direct patients to the right service or provider",
               "sections": [
                 "Hero",
                 "ServicesGrid",
-                "TestimonialsSection",
-                "GallerySection",
-                "BookingCTA",
-                "HoursBlock"
+                "HoursBlock",
+                "CTASection",
+                "ContactSection"
               ],
               "primaryCTA": {
-                "label": "Book Now",
-                "href": "/book"
+                "label": "Request Appointment",
+                "href": "/contact"
               },
               "secondaryCTA": {
-                "label": "View Services",
+                "label": "Our Services",
                 "href": "/services"
               },
               "requiredContent": [
-                "Hero headline and tagline",
-                "Featured services (3–6)",
-                "Client testimonials (3–5)",
-                "Gallery preview (6 images)"
+                "Clear hero: who you are + who you serve",
+                "Key services (4–6)",
+                "Accepting new patients notice",
+                "Hours"
               ],
               "componentHints": [
-                "Full-width hero with brand color overlay",
-                "Services in 3-column grid",
-                "Testimonials in horizontal scroll on mobile"
+                "Professional hero — no stock photo clichés",
+                "Services as accessible cards",
+                "Prominent 'Accepting New Patients' badge"
               ]
             },
             {
               "id": "services",
               "path": "/services",
               "title": "Services",
-              "purpose": "Detail all services with descriptions and pricing",
+              "purpose": "List services clearly for patients researching care options",
               "sections": [
                 "ServicesGrid"
-              ],
-              "primaryCTA": {
-                "label": "Book This Service",
-                "href": "/book"
-              },
-              "secondaryCTA": null,
-              "requiredContent": [
-                "Service name",
-                "Description (1–2 sentences)",
-                "Starting price (if available)"
-              ],
-              "componentHints": [
-                "Full-width service cards with pricing",
-                "Group by category if > 8 services"
-              ]
-            },
-            {
-              "id": "gallery",
-              "path": "/gallery",
-              "title": "Gallery",
-              "purpose": "Showcase before/after and finished work to build confidence",
-              "sections": [
-                "GallerySection"
-              ],
-              "primaryCTA": {
-                "label": "Book Now",
-                "href": "/book"
-              },
-              "secondaryCTA": null,
-              "requiredContent": [
-                "Filterable images by service category",
-                "Alt text for each image"
-              ],
-              "componentHints": [
-                "Masonry or grid layout",
-                "Filter buttons: All / Hair / Nails / Skincare"
-              ]
-            },
-            {
-              "id": "about-us",
-              "path": "/about",
-              "title": "About Us",
-              "purpose": "Introduce the business and drive the primary contact/booking action",
-              "sections": [
-                "Hero",
-                "ServicesGrid",
-                "TestimonialsSection",
-                "CTASection",
-                "ContactSection"
               ],
               "primaryCTA": {
                 "label": "Contact Us",
                 "href": "/contact"
               },
-              "secondaryCTA": {
-                "label": "Our Services",
-                "href": "/services"
-              },
+              "secondaryCTA": null,
               "requiredContent": [
-                "Clear value proposition",
-                "Key services",
-                "Contact information"
+                "Service name",
+                "Brief plain-language description",
+                "No pricing (refer to office)"
               ],
               "componentHints": [
-                "Clean, professional hero",
-                "Services in card grid"
+                "Group by category: Preventive / Acute / Specialty",
+                "Avoid medical jargon"
               ]
             },
             {
-              "id": "contact",
-              "path": "/contact",
-              "title": "Contact",
-              "purpose": "Provide all contact information and operating hours",
+              "id": "our-providers",
+              "path": "/providers",
+              "title": "Our Providers",
+              "purpose": "Introduce the care team and build trust with credentials",
+              "sections": [
+                "Hero",
+                "TestimonialsSection"
+              ],
+              "primaryCTA": {
+                "label": "Request Appointment",
+                "href": "/contact"
+              },
+              "secondaryCTA": null,
+              "requiredContent": [
+                "Provider headshots and bios",
+                "Credentials and specialties",
+                "Languages spoken (if applicable)"
+              ],
+              "componentHints": [
+                "Provider cards in grid, one per physician",
+                "Credentials listed below each name"
+              ]
+            },
+            {
+              "id": "patient-information",
+              "path": "/patient-info",
+              "title": "Patient Information",
+              "purpose": "List services clearly for patients researching care options",
+              "sections": [
+                "ServicesGrid"
+              ],
+              "primaryCTA": {
+                "label": "Contact Us",
+                "href": "/contact"
+              },
+              "secondaryCTA": null,
+              "requiredContent": [
+                "Service name",
+                "Brief plain-language description",
+                "No pricing (refer to office)"
+              ],
+              "componentHints": [
+                "Group by category: Preventive / Acute / Specialty",
+                "Avoid medical jargon"
+              ]
+            },
+            {
+              "id": "contact-location",
+              "path": "/contact-location",
+              "title": "Contact & Location",
+              "purpose": "Enable patients to reach the practice and find the location",
               "sections": [
                 "ContactSection",
                 "HoursBlock"
               ],
               "primaryCTA": {
-                "label": "Book Appointment",
-                "href": "/book"
+                "label": "Call Us",
+                "href": "tel:3125550175"
               },
-              "secondaryCTA": null,
+              "secondaryCTA": {
+                "label": "Request Appointment",
+                "href": "/new-patients"
+              },
               "requiredContent": [
-                "Phone number (click-to-call)",
-                "Email address",
-                "Physical address",
-                "Operating hours"
+                "Phone (click-to-call)",
+                "Fax",
+                "Address with transit info",
+                "Hours",
+                "General inquiry disclaimer"
               ],
               "componentHints": [
-                "Address uses <address> semantic element",
-                "Phone as <a href='tel:'>"
+                "Prominent disclaimer: not for medical advice or emergencies",
+                "Click-to-call button visible on mobile"
               ]
             },
             {
-              "id": "book-online",
-              "path": "/book",
-              "title": "Book Online",
-              "purpose": "Introduce the business and drive the primary contact/booking action",
+              "id": "new-patients",
+              "path": "/new-patients",
+              "title": "New Patients",
+              "purpose": "List services clearly for patients researching care options",
               "sections": [
-                "Hero",
-                "ServicesGrid",
-                "TestimonialsSection",
-                "CTASection",
-                "ContactSection"
+                "ServicesGrid"
               ],
               "primaryCTA": {
                 "label": "Contact Us",
                 "href": "/contact"
               },
-              "secondaryCTA": {
-                "label": "Our Services",
-                "href": "/services"
-              },
+              "secondaryCTA": null,
               "requiredContent": [
-                "Clear value proposition",
-                "Key services",
-                "Contact information"
+                "Service name",
+                "Brief plain-language description",
+                "No pricing (refer to office)"
               ],
               "componentHints": [
-                "Clean, professional hero",
-                "Services in card grid"
+                "Group by category: Preventive / Acute / Specialty",
+                "Avoid medical jargon"
               ]
             }
           ],
           "seo": {
-            "siteTitle": "Luxe Beauty Studio | Beauty Salon in Austin, TX",
-            "defaultMetaDescription": "Beauty Salon in Austin, TX. Luxe Beauty Studio offers Haircuts & Styling, Color & Balayage, Blowouts & Deep Treatments and more. Book online today.",
+            "siteTitle": "Bridgeview Family Medical Center | Primary Care / Family Medicine in C",
+            "defaultMetaDescription": "Primary Care / Family Medicine in Chicago, IL. Bridgeview Family Medical Center offers Annual Physical Exams, Sick Visits & Urgent Care, Pediatric Well-Child Vi",
             "pageMeta": [
               {
                 "pageId": "home",
-                "title": "Luxe Beauty Studio | Beauty Salon in Austin, TX",
-                "description": "Welcome to Luxe Beauty Studio. Convert visitors to bookings; showcase brand and top services"
+                "title": "Bridgeview Family Medical Center | Primary Care / Family Medicine in C",
+                "description": "Welcome to Bridgeview Family Medical Center. Establish credibility; direct patients to the right service or provider"
               },
               {
                 "pageId": "services",
-                "title": "Services | Luxe Beauty Studio",
-                "description": "Explore all services offered by Luxe Beauty Studio. Detail all services with descriptions and pricing"
+                "title": "Services | Bridgeview Family Medical Center",
+                "description": "Explore all services offered by Bridgeview Family Medical Center. List services clearly for patients researching care options"
               },
               {
-                "pageId": "gallery",
-                "title": "Gallery | Luxe Beauty Studio",
-                "description": "Browse our work at Luxe Beauty Studio. See before-and-after photos and finished results."
+                "pageId": "our-providers",
+                "title": "Our Providers | Bridgeview Family Medical Center",
+                "description": "Meet the healthcare providers at Bridgeview Family Medical Center."
               },
               {
-                "pageId": "about-us",
-                "title": "About Us | Luxe Beauty Studio",
-                "description": "Learn about the team and philosophy at Luxe Beauty Studio in Austin, TX."
+                "pageId": "patient-information",
+                "title": "Patient Information | Bridgeview Family Medical Center",
+                "description": "List services clearly for patients researching care options"
               },
               {
-                "pageId": "contact",
-                "title": "Contact | Luxe Beauty Studio",
-                "description": "Get in touch with Luxe Beauty Studio. Find our address, phone, and hours."
+                "pageId": "contact-location",
+                "title": "Contact & Location | Bridgeview Family Medical Center",
+                "description": "Enable patients to reach the practice and find the location"
               },
               {
-                "pageId": "book-online",
-                "title": "Book Online | Luxe Beauty Studio",
-                "description": "Book your appointment online at Luxe Beauty Studio. Easy, fast scheduling."
+                "pageId": "new-patients",
+                "title": "New Patients | Bridgeview Family Medical Center",
+                "description": "Information for new patients at Bridgeview Family Medical Center. Serving Chicago, IL."
               }
             ],
             "h1Rules": [
               "One H1 per page — never more",
-              "H1 format for homepage: \"Luxe Beauty Studio — [Primary Service] in Austin, TX\"",
+              "H1 format for homepage: \"Bridgeview Family Medical Center — [Primary Service] in Chicago, IL\"",
               "H1 for inner pages: describe the page content specifically",
               "H1 must contain the primary keyword naturally — no keyword stuffing"
             ],
@@ -826,33 +814,33 @@
               "H2s should be scannable — describe the section without needing to read the body"
             ],
             "localSeo": [
-              "Claim and optimize Google Business Profile for \"Luxe Beauty Studio\"",
-              "NAP consistency: \"Luxe Beauty Studio\" / \"1234 South Congress Avenue, Suite 102, Austin, TX 78704\" / \"(512) 555-0190\" must be identical everywhere",
-              "Create local citations on Yelp, YellowPages, and Beauty Salon-specific directories",
+              "Claim and optimize Google Business Profile for \"Bridgeview Family Medical Center\"",
+              "NAP consistency: \"Bridgeview Family Medical Center\" / \"2100 North Lincoln Avenue, Suite 310, Chicago, IL 60614\" / \"(312) 555-0175\" must be identical everywhere",
+              "Create local citations on Yelp, YellowPages, and Primary Care / Family Medicine-specific directories",
               "Use schema.org LocalBusiness (or sub-type) JSON-LD on every page",
-              "Target geo-modified keywords: \"Beauty Salon in Austin, TX\", \"best beauty salon near me\"",
+              "Target geo-modified keywords: \"Primary Care / Family Medicine in Chicago, IL\", \"best primary care / family medicine near me\"",
               "Embed Google Maps on Contact page (static iframe, no API key needed)",
               "Encourage Google reviews — display schema-compliant review markup"
             ],
             "structuredDataRecommendations": [
-              "Use @type: \"BeautySalon\" (extends LocalBusiness)",
+              "Use @type: \"LocalBusiness\" (extends LocalBusiness)",
               "Include: name, description, address (PostalAddress), telephone, openingHoursSpecification",
               "Include: url, image, sameAs (social profile URLs)",
               "Add @type: WebSite with SearchAction for sitelinks search box potential",
               "Add @type: BreadcrumbList on inner pages",
-              "Add @type: Service for each of: Haircuts & Styling, Color & Balayage, Blowouts & Deep Treatments"
+              "Add @type: Service for each of: Annual Physical Exams, Sick Visits & Urgent Care, Pediatric Well-Child Visits"
             ],
             "openGraph": {
               "og:type": "website",
-              "og:site_name": "Luxe Beauty Studio",
-              "og:title": "Luxe Beauty Studio | Beauty Salon in Austin, TX",
-              "og:description": "Beauty Salon in Austin, TX. Luxe Beauty Studio offers Haircuts & Styling, Color & Balayage, Blowouts & Deep Treatments and more. Book online today.",
+              "og:site_name": "Bridgeview Family Medical Center",
+              "og:title": "Bridgeview Family Medical Center | Primary Care / Family Medicine in C",
+              "og:description": "Primary Care / Family Medicine in Chicago, IL. Bridgeview Family Medical Center offers Annual Physical Exams, Sick Visits & Urgent Care, Pediatric Well-Child Vi",
               "og:image": "/og-image.jpg",
               "og:image:width": "1200",
               "og:image:height": "630",
               "twitter:card": "summary_large_image",
-              "twitter:title": "Luxe Beauty Studio | Beauty Salon in Austin, TX",
-              "twitter:description": "Beauty Salon in Austin, TX. Luxe Beauty Studio offers Haircuts & Styling, Color & Balayage, Blowouts & Deep Treatments and more. Book online today."
+              "twitter:title": "Bridgeview Family Medical Center | Primary Care / Family Medicine in C",
+              "twitter:description": "Primary Care / Family Medicine in Chicago, IL. Bridgeview Family Medical Center offers Annual Physical Exams, Sick Visits & Urgent Care, Pediatric Well-Child Vi"
             },
             "imageAltTextRequirements": [
               "All images must have descriptive alt text — never empty or generic ('image1.jpg')",
@@ -904,7 +892,7 @@
               "No keyboard traps — user can always Tab out of any interactive element"
             ],
             "colorContrastRequirements": [
-              "Primary color (#C4847A) on white/light backgrounds: verify ≥ 4.5:1 using WebAIM Contrast Checker",
+              "Primary color (#1B3A6B) on white/light backgrounds: verify ≥ 4.5:1 using WebAIM Contrast Checker",
               "Text on hero overlay/image backgrounds: ensure overlay provides sufficient contrast",
               "Button text (white on primary color): verify ≥ 4.5:1",
               "Placeholder text in form inputs: ensure ≥ 4.5:1 (not just 3:1 as older WCAG 1.4.3 allowed)",
@@ -1070,6 +1058,26 @@
                 "priority": "must"
               },
               {
+                "rule": "emergency-contact-visible",
+                "description": "Emergency contact or after-hours line is visible without interaction — never hidden in a modal",
+                "priority": "must"
+              },
+              {
+                "rule": "plain-language",
+                "description": "All medical content uses plain language (≤ 8th grade reading level) — avoid jargon",
+                "priority": "must"
+              },
+              {
+                "rule": "no-medical-forms",
+                "description": "Do NOT collect health information, diagnosis details, or patient records through the contact form",
+                "priority": "must"
+              },
+              {
+                "rule": "disclaimer-prominent",
+                "description": "General inquiry form includes a visible disclaimer: 'Not for medical advice or emergencies'",
+                "priority": "must"
+              },
+              {
                 "rule": "form-label-visible",
                 "description": "All form inputs have a visible <label> — not placeholder-only labels",
                 "priority": "must"
@@ -1087,16 +1095,6 @@
               {
                 "rule": "form-required-marked",
                 "description": "Required fields are marked with aria-required='true' and a visible indicator",
-                "priority": "must"
-              },
-              {
-                "rule": "gallery-alt-descriptive",
-                "description": "Gallery images have service-specific alt text describing the treatment and result — not file names",
-                "priority": "must"
-              },
-              {
-                "rule": "gallery-filter-accessible",
-                "description": "Gallery filter buttons announce their active state via aria-pressed or aria-selected",
                 "priority": "must"
               }
             ]
@@ -1145,8 +1143,7 @@
                 "component": "Hero",
                 "usedIn": [
                   "home",
-                  "about-us",
-                  "book-online"
+                  "our-providers"
                 ],
                 "props": [
                   "headline",
@@ -1161,8 +1158,8 @@
                 "usedIn": [
                   "home",
                   "services",
-                  "about-us",
-                  "book-online"
+                  "patient-information",
+                  "new-patients"
                 ],
                 "props": [
                   "heading",
@@ -1171,46 +1168,10 @@
                 ]
               },
               {
-                "component": "TestimonialsSection",
-                "usedIn": [
-                  "home",
-                  "about-us",
-                  "book-online"
-                ],
-                "props": [
-                  "heading",
-                  "testimonials"
-                ]
-              },
-              {
-                "component": "GallerySection",
-                "usedIn": [
-                  "home",
-                  "gallery"
-                ],
-                "props": [
-                  "heading",
-                  "images",
-                  "categories",
-                  "filterable"
-                ]
-              },
-              {
-                "component": "BookingCTA",
-                "usedIn": [
-                  "home"
-                ],
-                "props": [
-                  "headline",
-                  "subheadline",
-                  "cta"
-                ]
-              },
-              {
                 "component": "HoursBlock",
                 "usedIn": [
                   "home",
-                  "contact"
+                  "contact-location"
                 ],
                 "props": [
                   "heading",
@@ -1220,8 +1181,7 @@
               {
                 "component": "CTASection",
                 "usedIn": [
-                  "about-us",
-                  "book-online"
+                  "home"
                 ],
                 "props": [
                   "headline",
@@ -1233,14 +1193,23 @@
               {
                 "component": "ContactSection",
                 "usedIn": [
-                  "about-us",
-                  "contact",
-                  "book-online"
+                  "home",
+                  "contact-location"
                 ],
                 "props": [
                   "heading",
                   "contact",
                   "showDisclaimer"
+                ]
+              },
+              {
+                "component": "TestimonialsSection",
+                "usedIn": [
+                  "our-providers"
+                ],
+                "props": [
+                  "heading",
+                  "testimonials"
                 ]
               }
             ],
@@ -1256,24 +1225,24 @@
                 "file": "app/services/page.tsx"
               },
               {
-                "path": "/gallery",
-                "pageId": "gallery",
-                "file": "app/gallery/page.tsx"
+                "path": "/providers",
+                "pageId": "our-providers",
+                "file": "app/providers/page.tsx"
               },
               {
-                "path": "/about",
-                "pageId": "about-us",
-                "file": "app/about/page.tsx"
+                "path": "/patient-info",
+                "pageId": "patient-information",
+                "file": "app/patient-info/page.tsx"
               },
               {
-                "path": "/contact",
-                "pageId": "contact",
-                "file": "app/contact/page.tsx"
+                "path": "/contact-location",
+                "pageId": "contact-location",
+                "file": "app/contact-location/page.tsx"
               },
               {
-                "path": "/book",
-                "pageId": "book-online",
-                "file": "app/book/page.tsx"
+                "path": "/new-patients",
+                "pageId": "new-patients",
+                "file": "app/new-patients/page.tsx"
               }
             ],
             "assets": {
@@ -1286,7 +1255,7 @@
               "contact": "General inquiry only — static mailto link or third-party form service (Formspree, etc.). No server-side processing. Includes disclaimer: 'Not for medical advice or emergencies.'"
             },
             "externalIntegrations": [
-              "Vagaro booking (external link — no SDK or embed)",
+              "Booking via phone or external platform (external link)",
               "Social media links (external <a> tags — no SDK or embed)",
               "Google Maps embed (static iframe — no API key required)"
             ],
@@ -1301,13 +1270,13 @@
               "Image optimization via next/image with a remote server (unoptimized: true in static export)"
             ],
             "implementationNotes": [
-              "Color palette is defined as CSS custom properties in site-template/app/globals.css — primary: #C4847A",
+              "Color palette is defined as CSS custom properties in site-template/app/globals.css — primary: #1B3A6B",
               "All pages use Next.js App Router (app/) with generateStaticParams for static generation",
               "No dynamic routes — all paths are pre-rendered at build time",
               "Images use <img> with explicit width/height or next/image with unoptimized: true",
               "Site is deployable to AWS S3, CloudFront, Netlify, Vercel static, or any static host",
               "Run 'next build' inside output/generated-site/ to export to output/static-site/",
-              "Typography: headings use 'Cormorant Garamond', Georgia, serif, body uses 'Inter', system-ui, sans-serif"
+              "Typography: headings use 'Inter', system-ui, sans-serif, body uses 'Inter', system-ui, sans-serif"
             ]
           },
           "qa": {
@@ -1328,7 +1297,6 @@
               "Screen reader test with VoiceOver (macOS) or NVDA (Windows)",
               "Color contrast check: primary button, body text, footer text",
               "Skip link visible and functional on first Tab keypress",
-              "Gallery: keyboard navigation through filter buttons and images",
               "Contact: form labels linked, required fields marked, error states announced"
             ],
             "seoChecks": [
@@ -1347,6 +1315,7 @@
               "No real-time availability information",
               "No account creation, login, or session management",
               "No payment processing — pricing is informational only",
+              "No patient portal, EHR integration, or HIPAA-grade forms",
               "OpenGraph og:image requires a real image at /public/og-image.jpg (1200×630px) — placeholder used in dev"
             ]
           }
@@ -1356,12 +1325,12 @@
           {
             "stage": "intake",
             "success": true,
-            "durationMs": 1
+            "durationMs": 0
           },
           {
             "stage": "ux",
             "success": true,
-            "durationMs": 1
+            "durationMs": 0
           },
           {
             "stage": "seo",
@@ -1379,8 +1348,8 @@
             "durationMs": 0
           }
         ],
-        "startedAt": "2026-08-20T11:55:55.367Z",
-        "completedAt": "2026-08-20T11:55:55.376Z"
+        "startedAt": "2026-09-15T03:40:28.477Z",
+        "completedAt": "2026-09-15T03:40:28.478Z"
       },
       "assessment": {
         "capabilityId": "website",
@@ -1468,7 +1437,7 @@
       "status": "executed",
       "success": true,
       "summary": "Executed",
-      "durationMs": 7,
+      "durationMs": 1,
       "output": {
         "implemented": true,
         "security": {
@@ -1511,48 +1480,48 @@
             "type": "config",
             "path": "artifacts/security-governance/security-architecture.json",
             "content": "{\n  \"version\": \"1.0\",\n  \"requirements\": [],\n  \"trustBoundaries\": [],\n  \"dataProtection\": [],\n  \"identityAccess\": [],\n  \"integrationSecurity\": [],\n  \"auditRequirements\": [],\n  \"risks\": [],\n  \"informationGaps\": [\n    {\n      \"gapId\": \"GAP-007\",\n      \"topic\": \"Data\",\n      \"question\": \"What data does this solution create, store, or rely on?\",\n      \"isNew\": false\n    }\n  ],\n  \"evidenceRefs\": [],\n  \"status\": \"draft\",\n  \"statusReasons\": [\n    \"1 unresolved information gap(s)\"\n  ]\n}",
-            "id": "artifact-1787226955383-j87kz0",
-            "generatedAt": "2026-08-20T11:55:55.383Z"
+            "id": "artifact-1789443628478-igoe47",
+            "generatedAt": "2026-09-15T03:40:28.478Z"
           },
           {
             "capabilityId": "security-governance",
             "type": "document",
             "path": "artifacts/security-governance/security-architecture.md",
             "content": "# Security Architecture\n\n_Status: **draft** (1 unresolved information gap(s))_\n\n> `implemented: true` on this capability means Stitchfy generated and validated a security/governance architecture for the currently known solution. It does not mean the resulting system is secure, compliant, certified, penetration-tested, or production-ready.\n\n## Scope\n\n0 trust boundary(ies), 0 security requirement(s), 0 data protection requirement(s), 0 risk(s) identified from the generated solution.\n\n## Systems and Trust Boundaries\n\nNone identified.\n\n## Identity and Authentication\n\nNo explicit identity requirements identified.\n\n## Authorization\n\nNo explicit authorization requirements identified.\n\n## Data Protection\n\nNone identified.\n\n## Integration Security\n\nNone identified.\n\n## Secrets\n\nNone identified.\n\n## Privacy Considerations\n\nNone identified.\n\n## Auditability\n\nNone identified.\n\n## Human Oversight\n\nNone identified.\n\n## Open Security Questions\n\n- **Data**: What data does this solution create, store, or rely on? _(already tracked upstream)_\n\n## Traceability\n\nSecurity requirements: 0, Trust boundaries: 0, Risks: 0, Evidence references: 0\n",
-            "id": "artifact-1787226955384-cgjppd",
-            "generatedAt": "2026-08-20T11:55:55.384Z"
+            "id": "artifact-1789443628478-aqu3sl",
+            "generatedAt": "2026-09-15T03:40:28.478Z"
           },
           {
             "capabilityId": "security-governance",
             "type": "config",
             "path": "artifacts/security-governance/risk-register.json",
             "content": "[]",
-            "id": "artifact-1787226955384-twks2e",
-            "generatedAt": "2026-08-20T11:55:55.384Z"
+            "id": "artifact-1789443628478-zj5y8u",
+            "generatedAt": "2026-09-15T03:40:28.478Z"
           },
           {
             "capabilityId": "security-governance",
             "type": "document",
             "path": "artifacts/security-governance/risk-register.md",
             "content": "# Risk Register\n\nNo risks identified from the currently known solution.\n",
-            "id": "artifact-1787226955384-gz2aee",
-            "generatedAt": "2026-08-20T11:55:55.384Z"
+            "id": "artifact-1789443628479-bmlq5o",
+            "generatedAt": "2026-09-15T03:40:28.479Z"
           },
           {
             "capabilityId": "security-governance",
             "type": "config",
             "path": "artifacts/security-governance/governance-plan.json",
             "content": "{\n  \"policies\": [],\n  \"humanOversight\": [],\n  \"auditRequirements\": [],\n  \"decisionControls\": [],\n  \"complianceConsiderations\": [],\n  \"informationGaps\": [\n    \"GAP-007\"\n  ],\n  \"status\": \"draft\"\n}",
-            "id": "artifact-1787226955384-6w6m3l",
-            "generatedAt": "2026-08-20T11:55:55.384Z"
+            "id": "artifact-1789443628479-h9v7rt",
+            "generatedAt": "2026-09-15T03:40:28.479Z"
           },
           {
             "capabilityId": "security-governance",
             "type": "document",
             "path": "artifacts/security-governance/governance-plan.md",
             "content": "# Governance Plan\n\n_Status: **draft**_\n\n> `implemented: true` on this capability means Stitchfy generated and validated a security/governance architecture for the currently known solution. It does not mean the resulting system is secure, compliant, certified, penetration-tested, or production-ready.\n\n## Human Approval Controls\n\nNone identified.\n\n## Decision Controls\n\nNone identified.\n\n## Audit Requirements\n\nNone identified.\n\n## Privacy Considerations\n\nNone identified.\n\n## Compliance Considerations\n\nNone explicitly stated.\n\n## Unresolved Governance Questions\n\n- GAP-007\n\n## Policies\n\nNone derived from an explicit business rule.\n",
-            "id": "artifact-1787226955384-c49sqi",
-            "generatedAt": "2026-08-20T11:55:55.384Z"
+            "id": "artifact-1789443628479-tgnuxl",
+            "generatedAt": "2026-09-15T03:40:28.479Z"
           }
         ],
         "notes": [

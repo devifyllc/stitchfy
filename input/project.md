@@ -1,84 +1,80 @@
-# Project: Luxe Beauty Studio
+# Project: Bridgeview Family Medical Center
 
 ## Business Information
 
-- **Business Name:** Luxe Beauty Studio
-- **Industry:** Beauty Salon
-- **Description:** Luxe Beauty Studio is a premium full-service beauty salon in Austin, Texas. We offer hair, nails, and skincare services in a relaxing, modern environment where every client leaves feeling confident and beautiful.
+- **Business Name:** Bridgeview Family Medical Center
+- **Industry:** Primary Care / Family Medicine
+- **Description:** Bridgeview Family Medical Center provides compassionate, patient-centered primary care for adults and children in Chicago's Lincoln Park neighborhood. We are accepting new patients.
 
 ## Operating Hours
 
-- Monday–Friday: 9:00 AM – 7:00 PM
-- Saturday: 9:00 AM – 6:00 PM
-- Sunday: 10:00 AM – 4:00 PM
-- Closed on major holidays
+- Monday–Friday: 8:00 AM – 6:00 PM
+- Saturday: 9:00 AM – 1:00 PM (by appointment only)
+- Sunday: Closed
+- Urgent after-hours line available for established patients
 
 ## Services
 
-- Haircuts & Styling
-- Color & Balayage
-- Blowouts & Deep Treatments
-- Manicure & Pedicure
-- Gel & Acrylic Nails
-- Facials & Skincare Treatments
-- Eyebrow Shaping & Tinting
-- Lash Extensions
+- Annual Physical Exams
+- Sick Visits & Urgent Care
+- Pediatric Well-Child Visits
+- Women's Health & Preventive Screenings
+- Chronic Disease Management (diabetes, hypertension, asthma)
+- Immunizations & Travel Medicine
+- Mental Health Referrals
+- Lab Work & Imaging Referrals
 
 ## Location
 
-- Address: 1234 South Congress Avenue, Suite 102, Austin, TX 78704
-- Neighborhood: South Congress (SoCo)
-- Parking: Free street parking and a small lot behind the building
+- Address: 2100 North Lincoln Avenue, Suite 310, Chicago, IL 60614
+- Neighborhood: Lincoln Park
+- Accessible via CTA Red Line (Fullerton stop)
+- Validated parking available in the building garage
 
 ## Contact Information
 
-- Phone: (512) 555-0190
-- Email: hello@luxebeautystudio.com
-- Website: https://www.luxebeautystudio.com
+- Phone: (312) 555-0175
+- Fax: (312) 555-0176
+- Email: appointments@bridgeviewfmc.com
 
 ## Social Networks
 
-- Instagram: @luxebeautystudio
-- Facebook: /luxebeautystudio
-- TikTok: @luxebeautystudio
+- Facebook: /BridgeviewFMC
 
 ## Booking Preference
 
-- Primary: Online booking via Vagaro (https://www.vagaro.com/luxebeautystudio)
-- Secondary: Phone call during business hours
-- Walk-ins welcome Monday–Friday; appointment recommended on weekends
+- New patients: Call to schedule or submit a request form
+- Established patients: Patient portal (athenahealth)
+- No walk-ins for scheduled appointments
 
 ## Desired Pages
 
 - Home
 - Services
-- Gallery
-- About Us
-- Contact
-- Book Online
+- Our Providers
+- Patient Information
+- Contact & Location
+- New Patients
 
 ## Brand Tone
 
-- Warm, welcoming, and luxurious but never pretentious
-- Modern and visually polished
-- Empowering and confidence-boosting
-- Conversational and human — not corporate
+- Professional, trustworthy, and approachable
+- Warm and human — not cold or bureaucratic
+- Clear and plain-language — health literacy matters
+- Reassuring and calm
 
 ## Color Preferences
 
-- Primary: Dusty rose (#C4847A)
-- Secondary: Warm white (#FAF8F5)
-- Accent: Soft gold (#C9A96E)
-- Text: Charcoal (#2C2C2C)
-- Borders/subtle backgrounds: Light blush (#EDD9D5)
+- Primary: Navy blue (#1B3A6B)
+- Secondary: Clean white (#FFFFFF)
+- Accent: Teal (#2A9D8F)
+- Text: Dark slate (#2D3748)
 
 ## Special Notes
 
-- Feature seasonal promotions prominently on the Home page
-- Include a "Meet the Team" section on the About page with stylist bios and photos
-- Gallery should support filtering by service category (hair, nails, skincare)
-- Display at least 4–5 testimonials on the homepage
-- The booking CTA button should appear persistently on every page
-- Accessibility is a priority — all images need alt text and color contrast must be WCAG AA compliant
-- Do NOT include real booking forms, payment flows, login/accounts, or a database
-- Site should be fully exportable as static HTML/CSS/JS
+- IMPORTANT: This site does NOT include any patient portal, EHR integration, HIPAA-grade forms, or medical records
+- The "Contact" form is a general inquiry form only — not for medical advice or emergencies
+- Include a visible disclaimer on the Contact page about not submitting medical questions via the form
+- Accepting new patients should be prominently highlighted on the Home page
+- ADA accessibility compliance is mandatory
+- Providers page should include photo, name, credentials, and specialty

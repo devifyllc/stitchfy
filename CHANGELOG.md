@@ -2,6 +2,15 @@
 
 All notable changes to Stitchfy are documented here. See `docs/releases/` for full, user-facing release notes and `docs/architecture/ROADMAP.md` for the detailed development history.
 
+## 2.2.1
+
+### Fixed
+
+- `build:site:stitch` (Google Stitch MCP pipeline) failed on every page: Google renamed the `generate_screen_from_text` `modelId` enum (`GEMINI_3_1_PRO`/`GEMINI_3_FLASH` → `GEMINI_3_8_FLASH`/`GEMINI_3_5_FLASH_LITE`) and changed `get_screen`'s accepted arguments to `name` only. `StitchClient` now validates the configured model against the live `tools/list` schema at startup and falls back through a known-good order instead of failing every page on a stale `STITCH_MODEL`.
+- `StitchClient` silently treated Stitch's application-level tool errors (`result.isError: true`) as successful content, surfacing as a confusing downstream parse failure instead of a clear error.
+- `generateScreen()` discarded the exported HTML when Stitch returned it inline in the `generate_screen_from_text` response itself, forcing a redundant `get_screen` poll that could stall indefinitely for a subset of screens even though the page had already generated successfully. Inline HTML is now used directly when present; a stalled `get_screen` poll now retries generation (up to 3 attempts, with backoff) before the page is reported as failed.
+- UX Agent: industry detection didn't match common phrasings like "Primary Care / Family Medicine", and page templates for ids without an exact template key (e.g. `our-providers`, `contact-location`) silently collapsed to duplicate homepage content instead of a relevant template.
+
 ## 2.2.0
 
 ### Added
