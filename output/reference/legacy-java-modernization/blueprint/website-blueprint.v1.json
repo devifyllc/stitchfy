@@ -1,9 +1,9 @@
 {
   "project": {
     "schemaVersion": "1.0",
-    "generatedAt": "2026-08-20T11:55:57.090Z",
+    "generatedAt": "2026-09-15T03:40:36.749Z",
     "sourceFile": "legacy-java-modernization.md",
-    "frameworkVersion": "2.2.0"
+    "frameworkVersion": "2.2.1"
   },
   "business": {
     "name": "Order Portal Modernization",

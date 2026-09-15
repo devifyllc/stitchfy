@@ -30,7 +30,7 @@ function detectIndustry(industry: string): IndustryType {
   const lower = industry.toLowerCase();
   if (/salon|beauty|nail|hair|lash|brow|wax/.test(lower)) return "beauty";
   if (/spa|massage|wellness|yoga|meditation|holistic/.test(lower)) return "wellness";
-  if (/medical|clinic|dental|doctor|physician|health center|urgent care/.test(lower)) return "medical";
+  if (/medical|clinic|dental|doctor|physician|health center|urgent care|primary care|family medicine|family practice|pediatric|internal medicine|healthcare/.test(lower)) return "medical";
   if (/restaurant|cafe|diner|bistro|food|bakery|coffee/.test(lower)) return "restaurant";
   return "default";
 }
@@ -148,6 +148,14 @@ const PAGE_TEMPLATES: Record<IndustryType, Record<string, PageTemplate>> = {
       requiredContent: ["Phone (click-to-call)", "Fax", "Address with transit info", "Hours", "General inquiry disclaimer"],
       componentHints: ["Prominent disclaimer: not for medical advice or emergencies", "Click-to-call button visible on mobile"],
     },
+    about: {
+      purpose: "Introduce the care team and build trust with credentials",
+      sections: ["Hero", "TestimonialsSection"],
+      primaryCTA: { label: "Request Appointment", href: "/contact" },
+      secondaryCTA: null,
+      requiredContent: ["Provider headshots and bios", "Credentials and specialties", "Languages spoken (if applicable)"],
+      componentHints: ["Provider cards in grid, one per physician", "Credentials listed below each name"],
+    },
   },
   restaurant: {
     home: {
@@ -203,9 +211,31 @@ const PAGE_TEMPLATES: Record<IndustryType, Record<string, PageTemplate>> = {
   },
 };
 
+/**
+ * Maps an arbitrary page id (e.g. "our-providers", "patient-information") to the
+ * closest template bucket ("home" | "services" | "about" | "gallery" | "contact").
+ * Custom page ids that don't exactly match a template key would otherwise silently
+ * collapse to the homepage template, duplicating content across pages.
+ */
+function toTemplateBucket(pageId: string): string {
+  if (/^home$/.test(pageId)) return "home";
+  if (/contact|location|reach|find-us/.test(pageId)) return "contact";
+  if (/gallery|portfolio|work/.test(pageId)) return "gallery";
+  if (/about|provider|team|staff|doctor|physician|our-story/.test(pageId)) return "about";
+  if (/service|menu|treatment|patient|offering/.test(pageId)) return "services";
+  return "home";
+}
+
 function getPageTemplate(industryType: IndustryType, pageId: string): PageTemplate {
   const industryTemplates = PAGE_TEMPLATES[industryType] ?? PAGE_TEMPLATES.default;
-  return industryTemplates[pageId] ?? PAGE_TEMPLATES.default[pageId] ?? PAGE_TEMPLATES.default.home;
+  if (industryTemplates[pageId]) return industryTemplates[pageId];
+
+  const bucket = toTemplateBucket(pageId);
+  return (
+    industryTemplates[bucket] ??
+    PAGE_TEMPLATES.default[bucket] ??
+    PAGE_TEMPLATES.default.home
+  );
 }
 
 // ─── Page ID + path derivation ────────────────────────────────────────────────

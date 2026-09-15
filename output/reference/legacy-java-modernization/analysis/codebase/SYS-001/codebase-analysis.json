@@ -11,7 +11,7 @@
     ],
     "moduleCount": 1,
     "analyzedFileCount": 5,
-    "ignoredFileCount": 2,
+    "ignoredFileCount": 1,
     "analyzersUsed": [
       "java-source",
       "maven",

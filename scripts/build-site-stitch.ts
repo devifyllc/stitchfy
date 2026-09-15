@@ -16,7 +16,7 @@
  *   npm run build:site:stitch
  *   npm run build:site:stitch -- --blueprint path/to/blueprint.json
  *   npm run build:site:stitch -- --no-audit   (skip step 3)
- *   STITCH_MODEL=GEMINI_3_FLASH npm run build:site:stitch
+ *   STITCH_MODEL=GEMINI_3_5_FLASH_LITE npm run build:site:stitch
  */
 
 import * as fs from "fs";
@@ -74,7 +74,7 @@ async function main() {
 
   ok(`Blueprint loaded — ${blueprint.pages.length} pages | ${blueprint.business.name} | ${blueprint.business.industry}`);
   console.log(`  Output: ${outputDir}`);
-  console.log(`  Model:  ${process.env.STITCH_MODEL ?? "GEMINI_3_1_PRO"}`);
+  console.log(`  Model:  ${process.env.STITCH_MODEL ?? "GEMINI_3_8_FLASH"}`);
 
   if (!process.env.STITCH_API_KEY) {
     fail("STITCH_API_KEY is not set.");

@@ -17,7 +17,7 @@ npm run typecheck                             # TypeScript check without emittin
 
 There is no test suite. `npm run typecheck` is the primary correctness gate before submitting changes.
 
-`build:site:stitch` requires `STITCH_API_KEY` in `.env`. Optional: `STITCH_MODEL` (`GEMINI_3_1_PRO` default, or `GEMINI_3_FLASH`).
+`build:site:stitch` requires `STITCH_API_KEY` in `.env`. Optional: `STITCH_MODEL` (`GEMINI_3_8_FLASH` default, or `GEMINI_3_5_FLASH_LITE`).
 
 ## Architecture
 
